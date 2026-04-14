@@ -13,7 +13,7 @@ import svgr from 'vite-plugin-svgr';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 const serverSettings: CommonServerOptions = {
-    port: 3000, // TODO: override with actual port
+    port: 3005,
     proxy: {
         '/api/gateway': {
             target: 'http://localhost:9000',

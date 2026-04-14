@@ -1,4 +1,4 @@
-# GridXXX-App
+# Gridmonitor-App
 
 Template app that bootstraps the creation of GridSuite apps.
 This template setup the authentication mechanism and provides a configured empty application.

@@ -13,7 +13,7 @@ jobs:
     uses: powsybl/github-ci/.github/workflows/patch-frontend-app-generic.yml@3ed0caeb3395e55868884f466d726ddaee877850
     with:
       releaseVersion: ${{ github.event.inputs.releaseVersion }}
-      dockerImage: docker.io/gridsuite/gridXXX-app
+      dockerImage: docker.io/gridsuite/gridmonitor-app
       dockerUsername: gridsuiteci
       githubappId: ${{ vars.GRIDSUITE_ACTIONS_APPID }}
     secrets:
