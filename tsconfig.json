@@ -1,0 +1,35 @@
+{
+    "compilerOptions": {
+        /* Language and Environment */
+        "target": "es6",
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "jsx": "react-jsx",
+
+        /* Modules and Resolution */
+        "baseUrl": "src",
+        "module": "esnext",
+        "moduleResolution": "bundler",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "paths": {
+            "assets/*": ["assets/*"]
+        },
+
+        /* Type Checking */
+        "strict": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "noFallthroughCasesInSwitch": true,
+
+        /* Output */
+        "noEmit": true
+    },
+    "include": [
+        "src",
+        // We must list config files in typescript because needed by prettier when called by eslint as plugin
+        "vitest.config.ts",
+        "vitest.setup.ts",
+        "prettier.config.js",
+        "vite.config.ts"
+    ]
+}

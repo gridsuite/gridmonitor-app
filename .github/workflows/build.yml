@@ -1,0 +1,20 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - 'main'
+  pull_request:
+
+jobs:
+  build:
+    uses: powsybl/github-ci/.github/workflows/build-frontend-app-generic.yml@3ed0caeb3395e55868884f466d726ddaee877850
+    with:
+      dockerImage: gridsuite/gridXXX-app
+      dockerUsername: gridsuiteci
+      eventType: gridXXX_app_updated
+      licensercPath: .github/config/.licenserc.yaml
+    secrets:
+      sonar-token: ${{ secrets.SONAR_TOKEN }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+      repo-token: ${{ secrets.REPO_ACCESS_TOKEN }}
