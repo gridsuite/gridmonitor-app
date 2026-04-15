@@ -11,6 +11,7 @@ import { FormattedMessage } from 'react-intl';
 import { Routes, Route, Navigate } from 'react-router';
 import { APP_PATHS } from './app-paths';
 import { processRoutes } from '../../features/process/router/process-routes';
+import { processConfigRoutes } from '../../features/process-config/router/process-config-routes';
 
 export function AppRouter() {
     return (
@@ -29,6 +30,7 @@ export function AppRouter() {
             <Route path={APP_PATHS.logoutCallback} element={<h1>Error: logout failed; you are still logged in.</h1>} />
 
             {processRoutes}
+            {processConfigRoutes}
 
             <Route
                 path={APP_PATHS.notFound}
