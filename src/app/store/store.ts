@@ -18,7 +18,11 @@ export const setupStore = (preloadedState?: PreloadedState) =>
         reducer,
         preloadedState,
         middleware: (getDefaultMiddleware) =>
-            getDefaultMiddleware()
+            getDefaultMiddleware({
+                serializableCheck: {
+                    ignoredPaths: ['authentication.user'],
+                },
+            })
                 .prepend(errorMiddleware)
                 .concat(monitorApi.middleware, studyApi.middleware, configApi.middleware),
     });
