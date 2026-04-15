@@ -73,7 +73,13 @@ const prettierConfig = [
 const projectConfig = [
     {
         name: 'project/ignores',
-        ignores: ['dist', 'build', 'coverage'],
+        ignores: [
+            'dist',
+            'build',
+            'coverage',
+            // generated files
+            '**/*.generated.ts',
+        ],
     },
     // Settings
     {

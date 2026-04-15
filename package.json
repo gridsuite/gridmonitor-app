@@ -40,6 +40,7 @@
     "scripts": {
         "start": "vite",
         "start:open": "vite --open",
+        "generate:api": "tsx codegen/rtk-query.codegen.ts",
         "build": "vite build",
         "serve": "vite preview",
         "test": "vitest",
@@ -55,6 +56,7 @@
     "devDependencies": {
         "@eslint/compat": "^1.4.1",
         "@eslint/js": "^9.38.0",
+        "@rtk-query/codegen-openapi": "^2.2.0",
         "@stylistic/eslint-plugin": "^3.1.0",
         "@testing-library/jest-dom": "^6.9.1",
         "@testing-library/react": "^16.3.2",
@@ -82,6 +84,8 @@
         "msw": "^2.13.2",
         "prettier": "^3.6.2",
         "prettier-plugin-properties": "^0.3.0",
+        "ts-node": "^10.9.2",
+        "tsx": "^4.21.0",
         "typescript": "~5.9.3",
         "typescript-eslint": "^8.46.2",
         "vite": "^7.1.12",

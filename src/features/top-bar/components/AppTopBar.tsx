@@ -25,6 +25,7 @@ import { AuthenticationState } from 'features/authentication/store/authenticatio
 import { fetchVersion } from 'shared/config/version';
 import { getServersInfos } from '../api/get-servers-infos';
 import AppPackage from '../../../../package.json';
+import { SettingsTabs } from './AppNavBar';
 
 export type AppTopBarProps = {
     user?: AuthenticationState['user'];
@@ -73,7 +74,9 @@ function AppTopBar({ user, userManager }: Readonly<AppTopBarProps>) {
             theme={themeLocal}
             onLanguageClick={handleChangeLanguage}
             language={languageLocal}
-        />
+        >
+            <SettingsTabs />
+        </TopBar>
     );
 }
 export default AppTopBar;

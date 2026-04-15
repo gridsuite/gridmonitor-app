@@ -8,8 +8,6 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useMatch, useNavigate } from 'react-router';
 import { AuthenticationRouter, CardErrorBoundary, initializeAuthenticationProd } from '@gridsuite/commons-ui';
-import { AppRouter } from 'app/router/AppRouter';
-import AppTopBar, { AppTopBarProps } from 'features/top-bar/components/app-top-bar';
 import {
     selectAuthenticationRouterError,
     selectShowAuthenticationRouterLogin,
@@ -19,7 +17,9 @@ import {
 import { getErrorMessage } from 'shared/lib/error';
 import { fetchIdpSettings } from 'shared/config/idp-settings';
 import { useAppParametersInvalidationListener } from 'features/app-parameters/hooks/use-app-parameters-invalidation-listener';
+import AppTopBar, { AppTopBarProps } from '../features/top-bar/components/AppTopBar';
 import { useAppDispatch, useAppSelector } from './store/store';
+import { AppRouter } from './router/AppRouter';
 
 function App() {
     const user = useAppSelector(selectUser);

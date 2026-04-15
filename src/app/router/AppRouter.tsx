@@ -9,12 +9,14 @@ import { getPreLoginPath } from '@gridsuite/commons-ui';
 import { Box, Typography } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { Routes, Route, Navigate } from 'react-router';
+import { APP_PATHS } from './app-paths';
+import { processRoutes } from '../../features/process/router/process-routes';
 
 export function AppRouter() {
     return (
         <Routes>
             <Route
-                path="/"
+                path={APP_PATHS.home}
                 element={
                     <Box mt={20}>
                         <Typography variant="h3" color="textPrimary" align="center">
@@ -23,10 +25,13 @@ export function AppRouter() {
                     </Box>
                 }
             />
-            <Route path="/sign-in-callback" element={<Navigate replace to={getPreLoginPath() || '/'} />} />
-            <Route path="/logout-callback" element={<h1>Error: logout failed; you are still logged in.</h1>} />
+            <Route path={APP_PATHS.signInCallback} element={<Navigate replace to={getPreLoginPath() || '/'} />} />
+            <Route path={APP_PATHS.logoutCallback} element={<h1>Error: logout failed; you are still logged in.</h1>} />
+
+            {processRoutes}
+
             <Route
-                path="*"
+                path={APP_PATHS.notFound}
                 element={
                     <h1>
                         <FormattedMessage id="PageNotFound" />
