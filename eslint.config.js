@@ -79,6 +79,7 @@ const projectConfig = [
             'coverage',
             // generated files
             '**/*.generated.ts',
+            'codegen',
         ],
     },
     // Settings

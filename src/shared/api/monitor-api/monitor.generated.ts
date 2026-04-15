@@ -1,4 +1,4 @@
-import { baseApi as api } from "shared/api/rtk-query/base-api";
+import { monitorBaseApi as api } from "shared/api/monitor-api/monitor-base-api";
 const injectedRtkApi = api.injectEndpoints({
   endpoints: (build) => ({
     getProcessConfig: build.query<

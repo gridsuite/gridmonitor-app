@@ -7,26 +7,26 @@
 
 import { GsLang, GsTheme, PARAM_LANGUAGE, PARAM_THEME, getAppName } from '@gridsuite/commons-ui';
 import { APP_NAME } from 'app/config/app-config';
-import { AppDispatch } from 'app/store/store';
+import type { AppDispatch } from 'app/store/store';
 import { AppParameters, AppParametersKey } from 'features/app-parameters/store/app-parameters.type';
 import {
     saveLocalStorageLanguage,
     saveLocalStorageTheme,
 } from 'features/app-parameters/store/app-parameters.local-storage';
-import { ApiTags, baseApi } from '../rtk-query/base-api';
+import { configBaseApi, ConfigTags } from './config-base-api';
 
-const CONFIG_URL = `/config/v1`;
+const CONFIG_URL = `/v1`;
 
 const makeConfigUrl = (path: string) => `${CONFIG_URL}${path}`;
 
-export const configApi = baseApi.injectEndpoints({
+export const configApi = configBaseApi.injectEndpoints({
     endpoints: (builder) => ({
         getConfigParameter: builder.query<ConfigParameter, string>({
             query: (name) => {
                 const appName = getAppName(APP_NAME, name);
                 return makeConfigUrl(`/applications/${appName}/parameters/${name}`);
             },
-            providesTags: (result, error, paramName) => [{ type: ApiTags.Config, id: paramName }],
+            providesTags: (result, error, paramName) => [{ type: ConfigTags.Parameters, id: paramName }],
             async onQueryStarted(arg, { queryFulfilled }) {
                 try {
                     const { data } = await queryFulfilled;
@@ -77,7 +77,7 @@ export const configApi = baseApi.injectEndpoints({
 });
 
 export const invalidateConfigQueries = (dispatch: AppDispatch, paramName: string) => {
-    dispatch(baseApi.util.invalidateTags([{ type: ApiTags.Config, id: paramName }]));
+    dispatch(configApi.util.invalidateTags([{ type: ConfigTags.Parameters, id: paramName }]));
 };
 
 // https://github.com/gridsuite/config-server/blob/main/src/main/java/org/gridsuite/config/server/dto/ParameterInfos.java

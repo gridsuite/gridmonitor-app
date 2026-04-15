@@ -7,9 +7,13 @@
 
 import { combineReducers } from '@reduxjs/toolkit';
 import { authenticationReducer } from 'features/authentication/store/authentication.slice';
-import { baseApi } from 'shared/api/rtk-query/base-api';
+import { monitorApi } from '../../shared/api/monitor-api/monitor.generated';
+import { configApi } from '../../shared/api/config-api/config-api';
+import { studyApi } from '../../shared/api/study-api/study-api';
 
 export const reducer = combineReducers({
     authentication: authenticationReducer,
-    [baseApi.reducerPath]: baseApi.reducer,
+    [monitorApi.reducerPath]: monitorApi.reducer,
+    [configApi.reducerPath]: configApi.reducer,
+    [studyApi.reducerPath]: studyApi.reducer,
 });

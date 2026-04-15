@@ -1,3 +1,7 @@
+import { useGetProcessConfigsQuery } from '../../../../shared/api/monitor-api/monitor.generated';
+
 export function ResultsPage() {
-    return <div>Results</div>;
+    const { data } = useGetProcessConfigsQuery({ processType: 'SECURITY_ANALYSIS' });
+
+    return JSON.stringify(data);
 }

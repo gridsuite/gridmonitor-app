@@ -6,17 +6,21 @@
  */
 
 import { configureStore } from '@reduxjs/toolkit';
-import { baseApi } from 'shared/api/rtk-query/base-api';
 import { useDispatch, useSelector } from 'react-redux';
 import { reducer } from './reducer';
 import { errorMiddleware } from './rtk-query-error-middleware';
+import { monitorApi } from '../../shared/api/monitor-api/monitor.generated';
+import { studyApi } from '../../shared/api/study-api/study-api';
+import { configApi } from '../../shared/api/config-api/config-api';
 
 export const setupStore = (preloadedState?: PreloadedState) =>
     configureStore({
         reducer,
         preloadedState,
         middleware: (getDefaultMiddleware) =>
-            getDefaultMiddleware().prepend(errorMiddleware).concat(baseApi.middleware),
+            getDefaultMiddleware()
+                .prepend(errorMiddleware)
+                .concat(monitorApi.middleware, studyApi.middleware, configApi.middleware),
     });
 
 export const store = setupStore();

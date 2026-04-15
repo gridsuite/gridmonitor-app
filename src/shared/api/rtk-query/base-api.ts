@@ -5,17 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import type { RootState } from '../../../app/store/store';
 
-export const ApiTags = {
-    Config: 'Config',
-} as const;
-
-export const baseApi = createApi({
-    reducerPath: 'api',
-    baseQuery: fetchBaseQuery({
-        baseUrl: import.meta.env.VITE_API_GATEWAY,
+export const createBaseQuery = (baseUrl: string) =>
+    fetchBaseQuery({
+        baseUrl,
         prepareHeaders: (headers, { getState }) => {
             const state = getState() as RootState;
 
@@ -27,7 +22,4 @@ export const baseApi = createApi({
 
             return headers;
         },
-    }),
-    tagTypes: Object.values(ApiTags),
-    endpoints: () => ({}),
-});
+    });

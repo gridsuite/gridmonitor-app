@@ -6,13 +6,13 @@
  */
 
 import { GridSuiteModule } from '@gridsuite/commons-ui';
-import { baseApi } from '../rtk-query/base-api';
+import { studyBaseApi } from './study-base-api';
 
 const STUDY_URL = `/study/v1`;
 
 const makeStudyUrl = (path: string) => `${STUDY_URL}${path}`;
 
-export const studyApi = baseApi.injectEndpoints({
+export const studyApi = studyBaseApi.injectEndpoints({
     endpoints: (builder) => ({
         getAboutInfos: builder.query<GridSuiteModule[], void>({
             query: () => makeStudyUrl('/servers/about?view=yyy'),
