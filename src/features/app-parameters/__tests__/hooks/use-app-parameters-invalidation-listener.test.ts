@@ -6,18 +6,14 @@
  */
 import { renderHook } from '@testing-library/react';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-import { connectConfigNotificationsWs } from 'shared/api/ws/config-ws';
+import * as configWs from 'shared/api/ws/config-ws';
 import { createTestContext } from 'test-utils/create-test-context';
 import { useAppParametersInvalidationListener } from 'features/app-parameters/hooks/use-app-parameters-invalidation-listener';
-import { invalidateConfigQueries } from 'shared/api/config-api/config-api';
+import * as configApiModule from 'shared/api/config-api/config-api';
+import { connectConfigNotificationsWs } from '../../../../shared/api/ws/config-ws';
 
-vi.mock('shared/api/ws/config-ws', () => ({
-    connectNotificationsWsUpdateConfig: vi.fn(),
-}));
-
-vi.mock('shared/api/config-api/config-api', () => ({
-    invalidateConfigQueries: vi.fn(),
-}));
+vi.spyOn(configWs, 'connectConfigNotificationsWs').mockImplementation(vi.fn());
+vi.spyOn(configApiModule, 'invalidateConfigQueries').mockImplementation(vi.fn());
 
 describe('useAppParametersInvalidationListener', () => {
     let mockWs: {
@@ -56,7 +52,7 @@ describe('useAppParametersInvalidationListener', () => {
             }),
         } as MessageEvent);
 
-        expect(invalidateConfigQueries).toHaveBeenCalledWith(expect.anything(), 'theme');
+        expect(configApiModule.invalidateConfigQueries).toHaveBeenCalledWith(expect.anything(), 'theme');
     });
 
     it('closes websocket on unmount', () => {

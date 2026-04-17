@@ -5,3 +5,5 @@ export {
     useGetLaunchedProcessesQuery,
     useExecuteProcessMutation,
 } from './monitor.generated';
+
+export type { ExecuteProcessApiResponse } from './monitor.generated';
