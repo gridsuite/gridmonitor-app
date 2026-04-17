@@ -4,6 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
 import { AppParameters, AppParametersKey } from 'features/app-parameters/store/app-parameters.type';
 import { useUpdateConfigParameterMutation } from 'shared/api/config-api/config-api';
 import { useGetConfigParameterWithFallback } from './use-get-config-parameter-with-fallback';
