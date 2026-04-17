@@ -11,6 +11,12 @@ export {
     useGetStepsInfosQuery,
     useGetLaunchedProcessesQuery,
     useExecuteProcessMutation,
+    ProcessType,
 } from './monitor.generated';
 
-export type { ExecuteProcessApiResponse } from './monitor.generated';
+export type {
+    ExecuteProcessApiResponse,
+    PersistedProcessConfig,
+    ProcessExecution,
+    ProcessExecutionStep,
+} from './monitor.generated';

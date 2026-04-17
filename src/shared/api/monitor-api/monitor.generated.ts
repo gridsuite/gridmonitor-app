@@ -119,7 +119,7 @@ export type UpdateProcessConfigApiResponse = unknown;
 export type UpdateProcessConfigApiArg = {
     /** process config UUID */
     uuid: string;
-    body: SecurityAnalysisConfig;
+    body: LoadFlowConfig | SecurityAnalysisConfig;
 };
 export type DeleteProcessConfigApiResponse = unknown;
 export type DeleteProcessConfigApiArg = {
@@ -130,11 +130,11 @@ export type GetProcessConfigsApiResponse =
     /** status 200 The process configs of the given type were returned */ PersistedProcessConfig[];
 export type GetProcessConfigsApiArg = {
     /** Process type */
-    processType: 'SECURITY_ANALYSIS';
+    processType: ProcessType;
 };
 export type CreateProcessConfigApiResponse = /** status 200 process config was created */ string;
 export type CreateProcessConfigApiArg = {
-    body: SecurityAnalysisConfig;
+    body: LoadFlowConfig | SecurityAnalysisConfig;
 };
 export type DuplicateProcessConfigApiResponse = /** status 200 process config was duplicated */ string;
 export type DuplicateProcessConfigApiArg = {
@@ -165,7 +165,7 @@ export type CompareProcessConfigsApiArg = {
 export type GetLaunchedProcessesApiResponse = /** status 200 The launched processes */ ProcessExecution[];
 export type GetLaunchedProcessesApiArg = {
     /** Process type */
-    processType: 'SECURITY_ANALYSIS';
+    processType: ProcessType;
 };
 export type GetStepsInfosApiResponse = /** status 200 The execution steps statuses */ ProcessExecutionStep[];
 export type GetStepsInfosApiArg = {
@@ -194,20 +194,26 @@ export type DeleteExecutionApiArg = {
 export type ProcessConfigBase = {
     processType: string;
 };
+export type LoadFlowConfig = {
+    processType: 'LoadFlowConfig';
+} & ProcessConfigBase & {
+        loadflowParametersUuid: string;
+        modificationUuids: string[];
+    };
 export type SecurityAnalysisConfig = {
     processType: 'SecurityAnalysisConfig';
 } & ProcessConfigBase & {
-        securityAnalysisParametersUuid?: string;
-        modificationUuids?: string[];
-        loadflowParametersUuid?: string;
+        securityAnalysisParametersUuid: string;
+        modificationUuids: string[];
+        loadflowParametersUuid: string;
     };
 export type PersistedProcessConfig = {
     id?: string;
-    processConfig?: SecurityAnalysisConfig;
+    processConfig?: LoadFlowConfig | SecurityAnalysisConfig;
 };
 export type MetadataInfos = {
     id?: string;
-    type?: 'SECURITY_ANALYSIS';
+    type?: ProcessType;
 };
 export type ProcessConfigFieldComparison = {
     field?: string;
@@ -222,31 +228,31 @@ export type ProcessConfigComparison = {
     differences?: ProcessConfigFieldComparison[];
 };
 export type ProcessExecution = {
-    id?: string;
-    type?: string;
-    caseUuid?: string;
-    processConfigId?: string;
-    status?: 'SCHEDULED' | 'RUNNING' | 'COMPLETED' | 'FAILED';
-    executionEnvName?: string;
+    id: string;
+    type: string;
+    caseUuid: string;
+    processConfigId: string;
+    status: ProcessStatus;
+    executionEnvName: string;
     scheduledAt?: string;
     startedAt?: string;
     completedAt?: string;
-    userId?: string;
+    userId: string;
 };
 export type ProcessExecutionStep = {
-    id?: string;
-    stepType?: string;
-    stepOrder?: number;
-    status?: 'SCHEDULED' | 'RUNNING' | 'COMPLETED' | 'FAILED' | 'SKIPPED';
+    id: string;
+    stepType: string;
+    stepOrder: number;
+    status: StepStatus;
     resultId?: string;
-    resultType?: 'SECURITY_ANALYSIS';
+    resultType?: ResultType;
     reportId?: string;
     startedAt?: string;
     completedAt?: string;
 };
 export type ReportLog = {
     message?: string;
-    severity?: 'UNKNOWN' | 'TRACE' | 'DEBUG' | 'DETAIL' | 'INFO' | 'WARN' | 'ERROR' | 'FATAL';
+    severity?: Severity;
     depth?: number;
     parentId?: string;
 };
@@ -256,6 +262,37 @@ export type ReportPage = {
     totalElements?: number;
     totalPages?: number;
 };
+export enum ProcessType {
+    SecurityAnalysis = 'SECURITY_ANALYSIS',
+    Loadflow = 'LOADFLOW',
+}
+export enum ProcessStatus {
+    Scheduled = 'SCHEDULED',
+    Running = 'RUNNING',
+    Completed = 'COMPLETED',
+    Failed = 'FAILED',
+}
+export enum StepStatus {
+    Scheduled = 'SCHEDULED',
+    Running = 'RUNNING',
+    Completed = 'COMPLETED',
+    Failed = 'FAILED',
+    Skipped = 'SKIPPED',
+}
+export enum ResultType {
+    SecurityAnalysis = 'SECURITY_ANALYSIS',
+    Loadflow = 'LOADFLOW',
+}
+export enum Severity {
+    Unknown = 'UNKNOWN',
+    Trace = 'TRACE',
+    Debug = 'DEBUG',
+    Detail = 'DETAIL',
+    Info = 'INFO',
+    Warn = 'WARN',
+    Error = 'ERROR',
+    Fatal = 'FATAL',
+}
 export const {
     useGetProcessConfigQuery,
     useUpdateProcessConfigMutation,
