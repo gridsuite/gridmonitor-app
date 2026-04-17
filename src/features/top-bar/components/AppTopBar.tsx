@@ -8,7 +8,6 @@
 import { useEffect, useState } from 'react';
 import {
     fetchAppsMetadata,
-    LIGHT_THEME,
     logout,
     Metadata,
     PARAM_LANGUAGE,
@@ -55,13 +54,7 @@ function AppTopBar({ user, userManager }: Readonly<AppTopBarProps>) {
         <TopBar
             appName={APP_NAME}
             appColor="grey"
-            appLogo={
-                themeLocal === LIGHT_THEME ? (
-                    <PowsyblLogo /> // GridXXXLogoLight
-                ) : (
-                    <PowsyblLogo /> // GridXXXLogoDark
-                )
-            }
+            appLogo={<PowsyblLogo />}
             appVersion={AppPackage.version}
             appLicense={AppPackage.license}
             onLogoutClick={() => logout(dispatch, userManager.instance)}
