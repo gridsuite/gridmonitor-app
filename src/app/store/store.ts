@@ -9,7 +9,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
 import { reducer } from './reducer';
 import { errorMiddleware } from './rtk-query-error-middleware';
-import { monitorApi } from '../../shared/api/monitor-api/monitor.generated';
+import { monitorApi } from '../../shared/api/monitor-api';
 import { studyApi } from '../../shared/api/study-api/study-api';
 import { configApi } from '../../shared/api/config-api/config-api';
 

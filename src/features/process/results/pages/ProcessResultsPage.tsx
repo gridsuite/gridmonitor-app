@@ -1,7 +1,7 @@
 import { Link } from 'react-router';
 import { Box, Divider, List, ListItem, ListItemText, Paper, Stack, Typography } from '@mui/material';
-import { useGetLaunchedProcessesQuery } from '../../../../shared/api/monitor-api/monitor.generated';
 import { PROCESS_PATHS } from '../../router/process-paths';
+import { useGetLaunchedProcessesQuery } from '../../../../shared/api/monitor-api';
 
 export function ProcessResultsPage() {
     const { data: processExecutions = [] } = useGetLaunchedProcessesQuery({ processType: 'SECURITY_ANALYSIS' });

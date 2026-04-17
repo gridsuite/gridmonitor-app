@@ -13,7 +13,7 @@ import {
     Stack,
     Typography,
 } from '@mui/material';
-import { useGetStepsInfosQuery } from '../../../../shared/api/monitor-api/monitor.generated';
+import { useGetStepsInfosQuery } from 'shared/api/monitor-api';
 
 type StepStatus = 'SCHEDULED' | 'RUNNING' | 'COMPLETED' | 'FAILED' | 'SKIPPED';
 

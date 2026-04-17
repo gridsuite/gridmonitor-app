@@ -1,9 +1,16 @@
+/**
+ * Copyright (c) 2026, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
 import { useState } from 'react';
 import { z } from 'zod';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Alert, Box, Button, Checkbox, FormControlLabel, Paper, Stack, TextField, Typography } from '@mui/material';
-import { useExecuteProcessMutation } from '../../../../shared/api/monitor-api/monitor.generated';
+import { useExecuteProcessMutation } from 'shared/api/monitor-api';
 
 const executeProcessSchema = z.object({
     caseUuid: z.string().trim().min(1, 'Case UUID is required'),

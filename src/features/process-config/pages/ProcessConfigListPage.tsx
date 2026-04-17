@@ -12,7 +12,7 @@ import {
     Typography,
     Button,
 } from '@mui/material';
-import { useGetProcessConfigsQuery } from '../../../shared/api/monitor-api/monitor.generated';
+import { useGetProcessConfigsQuery } from '../../../shared/api/monitor-api';
 
 function getDisplayValue(value: unknown): string {
     if (value === null || value === undefined || value === '') {
@@ -93,7 +93,6 @@ export function ProcessConfigListPage() {
     if (!data || data.length === 0) {
         return <Alert severity="info">No security analysis configurations found.</Alert>;
     }
-
     return (
         <Stack spacing={3}>
             <Box>

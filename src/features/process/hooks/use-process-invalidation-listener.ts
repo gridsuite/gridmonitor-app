@@ -8,16 +8,18 @@
 import { useAppDispatch, useAppSelector } from 'app/store/store';
 import { selectUser } from 'features/authentication/store/authentication.selectors';
 import { useEffect } from 'react';
-import { invalidateConfigQueries } from 'shared/api/config-api/config-api';
-import { connectConfigNotificationsWs } from 'shared/api/ws/config-ws';
+import { connectMonitorNotificationsWs } from 'shared/api/ws/monitor-ws';
+import { invalidateProcessExecutionsLists } from 'shared/api/monitor-api';
 
-type ConfigNotificationData = {
+type MonitorNotificationData = {
     headers?: {
-        parameterName?: string;
+        updateType?: string;
+        processType?: string;
+        processExecutionId?: string;
     };
 };
 
-export const useAppParametersInvalidationListener = () => {
+export const useMonitorInvalidationsListener = () => {
     const user = useAppSelector(selectUser);
     const dispatch = useAppDispatch();
 
@@ -26,11 +28,11 @@ export const useAppParametersInvalidationListener = () => {
             return undefined;
         }
 
-        const ws = connectConfigNotificationsWs();
+        const ws = connectMonitorNotificationsWs();
         ws.onmessage = (event) => {
-            const eventData = JSON.parse(event.data) as ConfigNotificationData;
-            if (eventData.headers?.parameterName) {
-                invalidateConfigQueries(dispatch, eventData.headers.parameterName);
+            const eventData = JSON.parse(event.data) as MonitorNotificationData;
+            if (eventData.headers?.updateType === 'PROCESS_EXECUTION_UPDATED') {
+                invalidateProcessExecutionsLists(dispatch);
             }
         };
         ws.onerror = (event) => {

@@ -25,7 +25,7 @@ export function SettingsTabs() {
         if (location.pathname.startsWith(PROCESS_PATHS.execute)) {
             return PROCESS_PATHS.execute;
         }
-        return false;
+        return location.pathname;
     })();
 
     return (

@@ -8,14 +8,14 @@
 import { APP_NAME } from 'app/config/app-config';
 import { createReconnectingWebSocket } from './ws-client';
 
-const PREFIX_CONFIG_NOTIFICATION_WS = `${import.meta.env.VITE_WS_GATEWAY}/config-notification`;
+const PREFIX_MONITOR_NOTIFICATION_WS = `${import.meta.env.VITE_WS_GATEWAY}/monitor-notification`;
 
-export function connectConfigNotificationsWs() {
+export function connectMonitorNotificationsWs() {
     return createReconnectingWebSocket({
-        path: `${PREFIX_CONFIG_NOTIFICATION_WS}/notify`,
+        path: `${PREFIX_MONITOR_NOTIFICATION_WS}/notify`,
         queryParams: {
             appName: APP_NAME,
         },
-        name: 'config-notifications',
+        name: 'monitor-notifications',
     });
 }

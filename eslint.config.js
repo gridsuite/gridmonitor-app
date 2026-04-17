@@ -192,6 +192,24 @@ const projectConfig = [
             ],
         },
     },
+    // Generated RTK Query API should not be imported directly, otherwise all enhancements are ignored
+    {
+        files: ['src/**/*.{ts,tsx}'],
+        ignores: ['src/shared/api/**/*.enhanced.ts', 'src/shared/api/**/index.ts'],
+        rules: {
+            'no-restricted-imports': [
+                'error',
+                {
+                    patterns: [
+                        {
+                            group: ['*.generated', '**/*.generated'],
+                            message: 'Do not import generated APIs directly. Use the enhanced API instead.',
+                        },
+                    ],
+                },
+            ],
+        },
+    },
 ];
 
 export default [...jsConfig, ...reactConfig, ...typescriptConfig, ...prettierConfig, ...projectConfig];

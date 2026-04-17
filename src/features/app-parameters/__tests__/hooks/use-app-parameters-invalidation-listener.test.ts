@@ -6,7 +6,7 @@
  */
 import { renderHook } from '@testing-library/react';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-import { connectNotificationsWsUpdateConfig } from 'shared/api/ws/config-ws';
+import { connectConfigNotificationsWs } from 'shared/api/ws/config-ws';
 import { createTestContext } from 'test-utils/create-test-context';
 import { useAppParametersInvalidationListener } from 'features/app-parameters/hooks/use-app-parameters-invalidation-listener';
 import { invalidateConfigQueries } from 'shared/api/config-api/config-api';
@@ -31,7 +31,7 @@ describe('useAppParametersInvalidationListener', () => {
             close: vi.fn(),
         };
 
-        vi.mocked(connectNotificationsWsUpdateConfig, { partial: true }).mockReturnValue(mockWs);
+        vi.mocked(connectConfigNotificationsWs, { partial: true }).mockReturnValue(mockWs);
 
         vi.clearAllMocks();
     });
@@ -41,7 +41,7 @@ describe('useAppParametersInvalidationListener', () => {
 
         renderHook(() => useAppParametersInvalidationListener(), { wrapper });
 
-        expect(connectNotificationsWsUpdateConfig).toHaveBeenCalled();
+        expect(connectConfigNotificationsWs).toHaveBeenCalled();
     });
 
     it('invalidates config when receiving a message', () => {

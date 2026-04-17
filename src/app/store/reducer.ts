@@ -7,9 +7,9 @@
 
 import { combineReducers } from '@reduxjs/toolkit';
 import { authenticationReducer } from 'features/authentication/store/authentication.slice';
-import { monitorApi } from '../../shared/api/monitor-api/monitor.generated';
 import { configApi } from '../../shared/api/config-api/config-api';
 import { studyApi } from '../../shared/api/study-api/study-api';
+import { monitorApi } from '../../shared/api/monitor-api';
 
 export const reducer = combineReducers({
     authentication: authenticationReducer,

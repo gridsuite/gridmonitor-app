@@ -1,332 +1,275 @@
-import { monitorBaseApi as api } from "shared/api/monitor-api/monitor-base-api";
+import { monitorBaseApi as api } from 'shared/api/monitor-api/monitor-base-api';
 const injectedRtkApi = api.injectEndpoints({
-  endpoints: (build) => ({
-    getProcessConfig: build.query<
-      GetProcessConfigApiResponse,
-      GetProcessConfigApiArg
-    >({
-      query: (queryArg) => ({ url: `/v1/process-configs/${queryArg.uuid}` }),
+    endpoints: (build) => ({
+        getProcessConfig: build.query<GetProcessConfigApiResponse, GetProcessConfigApiArg>({
+            query: (queryArg) => ({ url: `/v1/process-configs/${queryArg.uuid}` }),
+        }),
+        updateProcessConfig: build.mutation<UpdateProcessConfigApiResponse, UpdateProcessConfigApiArg>({
+            query: (queryArg) => ({
+                url: `/v1/process-configs/${queryArg.uuid}`,
+                method: 'PUT',
+                body: queryArg.body,
+            }),
+        }),
+        deleteProcessConfig: build.mutation<DeleteProcessConfigApiResponse, DeleteProcessConfigApiArg>({
+            query: (queryArg) => ({
+                url: `/v1/process-configs/${queryArg.uuid}`,
+                method: 'DELETE',
+            }),
+        }),
+        getProcessConfigs: build.query<GetProcessConfigsApiResponse, GetProcessConfigsApiArg>({
+            query: (queryArg) => ({
+                url: `/v1/process-configs`,
+                params: {
+                    processType: queryArg.processType,
+                },
+            }),
+        }),
+        createProcessConfig: build.mutation<CreateProcessConfigApiResponse, CreateProcessConfigApiArg>({
+            query: (queryArg) => ({
+                url: `/v1/process-configs`,
+                method: 'POST',
+                body: queryArg.body,
+            }),
+        }),
+        duplicateProcessConfig: build.mutation<DuplicateProcessConfigApiResponse, DuplicateProcessConfigApiArg>({
+            query: (queryArg) => ({
+                url: `/v1/process-configs/duplication`,
+                method: 'POST',
+                params: {
+                    duplicateFrom: queryArg.duplicateFrom,
+                },
+            }),
+        }),
+        executeProcess: build.mutation<ExecuteProcessApiResponse, ExecuteProcessApiArg>({
+            query: (queryArg) => ({
+                url: `/v1/execute`,
+                method: 'POST',
+                headers: {
+                    userId: queryArg.userId,
+                },
+                params: {
+                    caseUuid: queryArg.caseUuid,
+                    processConfigUuid: queryArg.processConfigUuid,
+                    isDebug: queryArg.isDebug,
+                },
+            }),
+        }),
+        getProcessConfigsMetadata: build.query<GetProcessConfigsMetadataApiResponse, GetProcessConfigsMetadataApiArg>({
+            query: (queryArg) => ({
+                url: `/v1/process-configs/metadata`,
+                params: {
+                    ids: queryArg.ids,
+                },
+            }),
+        }),
+        compareProcessConfigs: build.query<CompareProcessConfigsApiResponse, CompareProcessConfigsApiArg>({
+            query: (queryArg) => ({
+                url: `/v1/process-configs/compare`,
+                params: {
+                    uuid1: queryArg.uuid1,
+                    uuid2: queryArg.uuid2,
+                },
+            }),
+        }),
+        getLaunchedProcesses: build.query<GetLaunchedProcessesApiResponse, GetLaunchedProcessesApiArg>({
+            query: (queryArg) => ({
+                url: `/v1/executions`,
+                params: {
+                    processType: queryArg.processType,
+                },
+            }),
+        }),
+        getStepsInfos: build.query<GetStepsInfosApiResponse, GetStepsInfosApiArg>({
+            query: (queryArg) => ({
+                url: `/v1/executions/${queryArg.executionId}/step-infos`,
+            }),
+        }),
+        getExecutionResults: build.query<GetExecutionResultsApiResponse, GetExecutionResultsApiArg>({
+            query: (queryArg) => ({
+                url: `/v1/executions/${queryArg.executionId}/results`,
+            }),
+        }),
+        getExecutionReports: build.query<GetExecutionReportsApiResponse, GetExecutionReportsApiArg>({
+            query: (queryArg) => ({
+                url: `/v1/executions/${queryArg.executionId}/reports`,
+            }),
+        }),
+        getDebugInfos: build.query<GetDebugInfosApiResponse, GetDebugInfosApiArg>({
+            query: (queryArg) => ({
+                url: `/v1/executions/${queryArg.executionId}/debug-infos`,
+            }),
+        }),
+        deleteExecution: build.mutation<DeleteExecutionApiResponse, DeleteExecutionApiArg>({
+            query: (queryArg) => ({
+                url: `/v1/executions/${queryArg.executionId}`,
+                method: 'DELETE',
+            }),
+        }),
     }),
-    updateProcessConfig: build.mutation<
-      UpdateProcessConfigApiResponse,
-      UpdateProcessConfigApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/v1/process-configs/${queryArg.uuid}`,
-        method: "PUT",
-        body: queryArg.body,
-      }),
-    }),
-    deleteProcessConfig: build.mutation<
-      DeleteProcessConfigApiResponse,
-      DeleteProcessConfigApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/v1/process-configs/${queryArg.uuid}`,
-        method: "DELETE",
-      }),
-    }),
-    getProcessConfigs: build.query<
-      GetProcessConfigsApiResponse,
-      GetProcessConfigsApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/v1/process-configs`,
-        params: {
-          processType: queryArg.processType,
-        },
-      }),
-    }),
-    createProcessConfig: build.mutation<
-      CreateProcessConfigApiResponse,
-      CreateProcessConfigApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/v1/process-configs`,
-        method: "POST",
-        body: queryArg.body,
-      }),
-    }),
-    duplicateProcessConfig: build.mutation<
-      DuplicateProcessConfigApiResponse,
-      DuplicateProcessConfigApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/v1/process-configs/duplication`,
-        method: "POST",
-        params: {
-          duplicateFrom: queryArg.duplicateFrom,
-        },
-      }),
-    }),
-    executeProcess: build.mutation<
-      ExecuteProcessApiResponse,
-      ExecuteProcessApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/v1/execute`,
-        method: "POST",
-        headers: {
-          userId: queryArg.userId,
-        },
-        params: {
-          caseUuid: queryArg.caseUuid,
-          processConfigUuid: queryArg.processConfigUuid,
-          isDebug: queryArg.isDebug,
-        },
-      }),
-    }),
-    getProcessConfigsMetadata: build.query<
-      GetProcessConfigsMetadataApiResponse,
-      GetProcessConfigsMetadataApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/v1/process-configs/metadata`,
-        params: {
-          ids: queryArg.ids,
-        },
-      }),
-    }),
-    compareProcessConfigs: build.query<
-      CompareProcessConfigsApiResponse,
-      CompareProcessConfigsApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/v1/process-configs/compare`,
-        params: {
-          uuid1: queryArg.uuid1,
-          uuid2: queryArg.uuid2,
-        },
-      }),
-    }),
-    getLaunchedProcesses: build.query<
-      GetLaunchedProcessesApiResponse,
-      GetLaunchedProcessesApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/v1/executions`,
-        params: {
-          processType: queryArg.processType,
-        },
-      }),
-    }),
-    getStepsInfos: build.query<GetStepsInfosApiResponse, GetStepsInfosApiArg>({
-      query: (queryArg) => ({
-        url: `/v1/executions/${queryArg.executionId}/step-infos`,
-      }),
-    }),
-    getExecutionResults: build.query<
-      GetExecutionResultsApiResponse,
-      GetExecutionResultsApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/v1/executions/${queryArg.executionId}/results`,
-      }),
-    }),
-    getExecutionReports: build.query<
-      GetExecutionReportsApiResponse,
-      GetExecutionReportsApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/v1/executions/${queryArg.executionId}/reports`,
-      }),
-    }),
-    getDebugInfos: build.query<GetDebugInfosApiResponse, GetDebugInfosApiArg>({
-      query: (queryArg) => ({
-        url: `/v1/executions/${queryArg.executionId}/debug-infos`,
-      }),
-    }),
-    deleteExecution: build.mutation<
-      DeleteExecutionApiResponse,
-      DeleteExecutionApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/v1/executions/${queryArg.executionId}`,
-        method: "DELETE",
-      }),
-    }),
-  }),
-  overrideExisting: false,
+    overrideExisting: false,
 });
-export { injectedRtkApi as monitorApi };
-export type GetProcessConfigApiResponse =
-  /** status 200 process config was returned */ PersistedProcessConfig;
+export { injectedRtkApi as monitorGeneratedApi };
+export type GetProcessConfigApiResponse = /** status 200 process config was returned */ PersistedProcessConfig;
 export type GetProcessConfigApiArg = {
-  /** process config UUID */
-  uuid: string;
+    /** process config UUID */
+    uuid: string;
 };
 export type UpdateProcessConfigApiResponse = unknown;
 export type UpdateProcessConfigApiArg = {
-  /** process config UUID */
-  uuid: string;
-  body: SecurityAnalysisConfig;
+    /** process config UUID */
+    uuid: string;
+    body: SecurityAnalysisConfig;
 };
 export type DeleteProcessConfigApiResponse = unknown;
 export type DeleteProcessConfigApiArg = {
-  /** process config UUID */
-  uuid: string;
+    /** process config UUID */
+    uuid: string;
 };
 export type GetProcessConfigsApiResponse =
-  /** status 200 The process configs of the given type were returned */ PersistedProcessConfig[];
+    /** status 200 The process configs of the given type were returned */ PersistedProcessConfig[];
 export type GetProcessConfigsApiArg = {
-  /** Process type */
-  processType: "SECURITY_ANALYSIS";
+    /** Process type */
+    processType: 'SECURITY_ANALYSIS';
 };
-export type CreateProcessConfigApiResponse =
-  /** status 200 process config was created */ string;
+export type CreateProcessConfigApiResponse = /** status 200 process config was created */ string;
 export type CreateProcessConfigApiArg = {
-  body: SecurityAnalysisConfig;
+    body: SecurityAnalysisConfig;
 };
-export type DuplicateProcessConfigApiResponse =
-  /** status 200 process config was duplicated */ string;
+export type DuplicateProcessConfigApiResponse = /** status 200 process config was duplicated */ string;
 export type DuplicateProcessConfigApiArg = {
-  /** UUID of the process config to duplicate */
-  duplicateFrom: string;
+    /** UUID of the process config to duplicate */
+    duplicateFrom: string;
 };
-export type ExecuteProcessApiResponse =
-  /** status 200 The process execution has been started */ string;
+export type ExecuteProcessApiResponse = /** status 200 The process execution has been started */ string;
 export type ExecuteProcessApiArg = {
-  /** Case uuid */
-  caseUuid: string;
-  /** Process config uuid */
-  processConfigUuid: string;
-  isDebug?: boolean;
-  userId: string;
+    /** Case uuid */
+    caseUuid: string;
+    /** Process config uuid */
+    processConfigUuid: string;
+    isDebug?: boolean;
+    userId: string;
 };
 export type GetProcessConfigsMetadataApiResponse =
-  /** status 200 process configs metadata were returned */ MetadataInfos[];
+    /** status 200 process configs metadata were returned */ MetadataInfos[];
 export type GetProcessConfigsMetadataApiArg = {
-  ids: string[];
+    ids: string[];
 };
-export type CompareProcessConfigsApiResponse =
-  /** status 200 Comparison result returned */ ProcessConfigComparison;
+export type CompareProcessConfigsApiResponse = /** status 200 Comparison result returned */ ProcessConfigComparison;
 export type CompareProcessConfigsApiArg = {
-  /** First process config UUID */
-  uuid1: string;
-  /** Second process config UUID */
-  uuid2: string;
+    /** First process config UUID */
+    uuid1: string;
+    /** Second process config UUID */
+    uuid2: string;
 };
-export type GetLaunchedProcessesApiResponse =
-  /** status 200 The launched processes */ ProcessExecution[];
+export type GetLaunchedProcessesApiResponse = /** status 200 The launched processes */ ProcessExecution[];
 export type GetLaunchedProcessesApiArg = {
-  /** Process type */
-  processType: "SECURITY_ANALYSIS";
+    /** Process type */
+    processType: 'SECURITY_ANALYSIS';
 };
-export type GetStepsInfosApiResponse =
-  /** status 200 The execution steps statuses */ ProcessExecutionStep[];
+export type GetStepsInfosApiResponse = /** status 200 The execution steps statuses */ ProcessExecutionStep[];
 export type GetStepsInfosApiArg = {
-  /** Execution UUID */
-  executionId: string;
+    /** Execution UUID */
+    executionId: string;
 };
-export type GetExecutionResultsApiResponse =
-  /** status 200 The execution results */ string[];
+export type GetExecutionResultsApiResponse = /** status 200 The execution results */ string[];
 export type GetExecutionResultsApiArg = {
-  /** Execution UUID */
-  executionId: string;
+    /** Execution UUID */
+    executionId: string;
 };
-export type GetExecutionReportsApiResponse =
-  /** status 200 The execution reports */ ReportPage[];
+export type GetExecutionReportsApiResponse = /** status 200 The execution reports */ ReportPage[];
 export type GetExecutionReportsApiArg = {
-  /** Execution UUID */
-  executionId: string;
+    /** Execution UUID */
+    executionId: string;
 };
-export type GetDebugInfosApiResponse =
-  /** status 200 Debug file downloaded */ string;
+export type GetDebugInfosApiResponse = /** status 200 Debug file downloaded */ string;
 export type GetDebugInfosApiArg = {
-  /** Execution UUID */
-  executionId: string;
+    /** Execution UUID */
+    executionId: string;
 };
 export type DeleteExecutionApiResponse = unknown;
 export type DeleteExecutionApiArg = {
-  executionId: string;
+    executionId: string;
 };
 export type ProcessConfigBase = {
-  processType: string;
+    processType: string;
 };
 export type SecurityAnalysisConfig = {
-  processType: "SecurityAnalysisConfig";
+    processType: 'SecurityAnalysisConfig';
 } & ProcessConfigBase & {
-    securityAnalysisParametersUuid?: string;
-    modificationUuids?: string[];
-    loadflowParametersUuid?: string;
-  };
+        securityAnalysisParametersUuid?: string;
+        modificationUuids?: string[];
+        loadflowParametersUuid?: string;
+    };
 export type PersistedProcessConfig = {
-  id?: string;
-  processConfig?: SecurityAnalysisConfig;
+    id?: string;
+    processConfig?: SecurityAnalysisConfig;
 };
 export type MetadataInfos = {
-  id?: string;
-  type?: "SECURITY_ANALYSIS";
+    id?: string;
+    type?: 'SECURITY_ANALYSIS';
 };
 export type ProcessConfigFieldComparison = {
-  field?: string;
-  identical?: boolean;
-  value1?: any;
-  value2?: any;
+    field?: string;
+    identical?: boolean;
+    value1?: any;
+    value2?: any;
 };
 export type ProcessConfigComparison = {
-  processConfigUuid1?: string;
-  processConfigUuid2?: string;
-  identical?: boolean;
-  differences?: ProcessConfigFieldComparison[];
+    processConfigUuid1?: string;
+    processConfigUuid2?: string;
+    identical?: boolean;
+    differences?: ProcessConfigFieldComparison[];
 };
 export type ProcessExecution = {
-  id?: string;
-  type?: string;
-  caseUuid?: string;
-  processConfigId?: string;
-  status?: "SCHEDULED" | "RUNNING" | "COMPLETED" | "FAILED";
-  executionEnvName?: string;
-  scheduledAt?: string;
-  startedAt?: string;
-  completedAt?: string;
-  userId?: string;
+    id?: string;
+    type?: string;
+    caseUuid?: string;
+    processConfigId?: string;
+    status?: 'SCHEDULED' | 'RUNNING' | 'COMPLETED' | 'FAILED';
+    executionEnvName?: string;
+    scheduledAt?: string;
+    startedAt?: string;
+    completedAt?: string;
+    userId?: string;
 };
 export type ProcessExecutionStep = {
-  id?: string;
-  stepType?: string;
-  stepOrder?: number;
-  status?: "SCHEDULED" | "RUNNING" | "COMPLETED" | "FAILED" | "SKIPPED";
-  resultId?: string;
-  resultType?: "SECURITY_ANALYSIS";
-  reportId?: string;
-  startedAt?: string;
-  completedAt?: string;
+    id?: string;
+    stepType?: string;
+    stepOrder?: number;
+    status?: 'SCHEDULED' | 'RUNNING' | 'COMPLETED' | 'FAILED' | 'SKIPPED';
+    resultId?: string;
+    resultType?: 'SECURITY_ANALYSIS';
+    reportId?: string;
+    startedAt?: string;
+    completedAt?: string;
 };
 export type ReportLog = {
-  message?: string;
-  severity?:
-    | "UNKNOWN"
-    | "TRACE"
-    | "DEBUG"
-    | "DETAIL"
-    | "INFO"
-    | "WARN"
-    | "ERROR"
-    | "FATAL";
-  depth?: number;
-  parentId?: string;
+    message?: string;
+    severity?: 'UNKNOWN' | 'TRACE' | 'DEBUG' | 'DETAIL' | 'INFO' | 'WARN' | 'ERROR' | 'FATAL';
+    depth?: number;
+    parentId?: string;
 };
 export type ReportPage = {
-  number?: number;
-  content?: ReportLog[];
-  totalElements?: number;
-  totalPages?: number;
+    number?: number;
+    content?: ReportLog[];
+    totalElements?: number;
+    totalPages?: number;
 };
 export const {
-  useGetProcessConfigQuery,
-  useUpdateProcessConfigMutation,
-  useDeleteProcessConfigMutation,
-  useGetProcessConfigsQuery,
-  useCreateProcessConfigMutation,
-  useDuplicateProcessConfigMutation,
-  useExecuteProcessMutation,
-  useGetProcessConfigsMetadataQuery,
-  useCompareProcessConfigsQuery,
-  useGetLaunchedProcessesQuery,
-  useGetStepsInfosQuery,
-  useGetExecutionResultsQuery,
-  useGetExecutionReportsQuery,
-  useGetDebugInfosQuery,
-  useDeleteExecutionMutation,
+    useGetProcessConfigQuery,
+    useUpdateProcessConfigMutation,
+    useDeleteProcessConfigMutation,
+    useGetProcessConfigsQuery,
+    useCreateProcessConfigMutation,
+    useDuplicateProcessConfigMutation,
+    useExecuteProcessMutation,
+    useGetProcessConfigsMetadataQuery,
+    useCompareProcessConfigsQuery,
+    useGetLaunchedProcessesQuery,
+    useGetStepsInfosQuery,
+    useGetExecutionResultsQuery,
+    useGetExecutionReportsQuery,
+    useGetDebugInfosQuery,
+    useDeleteExecutionMutation,
 } = injectedRtkApi;
