@@ -6,11 +6,11 @@
  */
 
 import { List, Paper } from '@mui/material';
-import type { ProcessExecution } from 'shared/api/monitor-api';
 import { ProcessResultsItem } from './ProcessResultsItem';
+import { ProcessExecutionInfos } from '../models/process-result';
 
 type ProcessResultsListProps = {
-    executions: ProcessExecution[];
+    executions: ProcessExecutionInfos[];
 };
 
 export function ProcessResultsList({ executions }: Readonly<ProcessResultsListProps>) {

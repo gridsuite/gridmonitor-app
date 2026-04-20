@@ -80,7 +80,7 @@ describe('ProcessExecutePage', () => {
     it('shows validation errors and prevent API call when submitting empty form', async () => {
         const spy = vi.fn();
 
-        server.use(http.post('*/execute', spy));
+        server.use(http.post('*/v1/execute', spy));
 
         const user = userEvent.setup();
         render(<ProcessExecutePage />, {

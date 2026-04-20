@@ -7,7 +7,14 @@
 
 import { useMemo } from 'react';
 import { useParams } from 'react-router';
-import { useGetStepsInfosQuery } from 'shared/api/monitor-api';
+import { ProcessExecutionStep, useGetStepsInfosQuery } from 'shared/api/monitor-api';
+import { ProcessStepModel } from '../models/process-result';
+
+export const mapStepsInfos = (api: ProcessExecutionStep): ProcessStepModel => ({
+    ...api,
+    startedAt: api.startedAt ? new Date(api.startedAt) : undefined,
+    completedAt: api.completedAt ? new Date(api.completedAt) : undefined,
+});
 
 export function useProcessStepInfos() {
     const { id } = useParams<{ id: string }>();
@@ -18,15 +25,7 @@ export function useProcessStepInfos() {
         isSuccess,
     } = useGetStepsInfosQuery({ executionId: id ?? '' }, { skip: !id });
 
-    const steps = useMemo(
-        () =>
-            [...data].sort((left, right) => {
-                const leftOrder = left.stepOrder ?? Number.MAX_SAFE_INTEGER;
-                const rightOrder = right.stepOrder ?? Number.MAX_SAFE_INTEGER;
-                return leftOrder - rightOrder;
-            }),
-        [data]
-    );
+    const steps = useMemo(() => data.map(mapStepsInfos), [data]);
 
     return {
         executionId: id,

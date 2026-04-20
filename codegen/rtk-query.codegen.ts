@@ -12,4 +12,7 @@ async function run() {
     await generateEndpoints(monitorConfig);
 }
 
-run();
+run().catch((err) => {
+    console.error(err);
+    process.exit(1);
+});

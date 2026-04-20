@@ -6,13 +6,13 @@
  */
 
 import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router';
 import { describe, expect, it } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { createTestContext } from 'test-utils/create-test-context';
 import { server } from 'test-utils/msw/server';
 import { ProcessResultsPage } from '../../pages/ProcessResultsPage';
+import { PROCESS_PATHS } from '../../../router/process-paths';
 
 describe('ProcessResultsPage', () => {
     it('displays process executions successfully', async () => {
@@ -28,7 +28,6 @@ describe('ProcessResultsPage', () => {
             )
         );
 
-        const user = userEvent.setup();
         const { wrapper } = createTestContext();
 
         render(
@@ -45,7 +44,10 @@ describe('ProcessResultsPage', () => {
         expect(screen.getByText('Id :')).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'execution-1' })).toBeInTheDocument();
 
-        await user.click(screen.getByRole('link', { name: 'execution-1' }));
+        expect(screen.getByRole('link', { name: 'execution-1' })).toHaveAttribute(
+            'href',
+            PROCESS_PATHS.stepInfos('execution-1')
+        );
     });
 
     it('displays the loading state', async () => {

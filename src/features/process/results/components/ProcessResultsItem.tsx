@@ -7,15 +7,11 @@
 
 import { Link } from 'react-router';
 import { Box, Divider, ListItem, ListItemText, Stack } from '@mui/material';
-import type { ProcessExecution } from 'shared/api/monitor-api';
 import { PROCESS_PATHS } from '../../router/process-paths';
-
-function formatDate(value?: string) {
-    return new Date(value ?? '').toLocaleString();
-}
+import { ProcessExecutionInfos } from '../models/process-result';
 
 type ProcessResultsItemProps = {
-    execution: ProcessExecution;
+    execution: ProcessExecutionInfos;
 };
 
 export function ProcessResultsItem({ execution }: Readonly<ProcessResultsItemProps>) {
@@ -28,11 +24,10 @@ export function ProcessResultsItem({ execution }: Readonly<ProcessResultsItemPro
                             <Box>
                                 Id : <Link to={PROCESS_PATHS.stepInfos(execution.id ?? '')}>{execution.id}</Link>
                             </Box>
-                            <Box>
-                                Start : {formatDate(execution.startedAt)}
-                                <Divider />
-                                End : {formatDate(execution.completedAt)}
-                            </Box>
+                            <Stack direction="column">
+                                <Box>Start : {execution.startedAt?.toLocaleString()}</Box>
+                                <Box>End : {execution.completedAt?.toLocaleString()}</Box>
+                            </Stack>
                         </Stack>
                     }
                 />

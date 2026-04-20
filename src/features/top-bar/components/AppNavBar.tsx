@@ -25,15 +25,7 @@ const tabs: NavBarTab[] = [
 
 export function SettingsTabs() {
     const location = useLocation();
-    const currentTab = (() => {
-        if (location.pathname.startsWith(PROCESS_PATHS.results)) {
-            return PROCESS_PATHS.results;
-        }
-        if (location.pathname.startsWith(PROCESS_PATHS.execute)) {
-            return PROCESS_PATHS.execute;
-        }
-        return location.pathname;
-    })();
+    const currentTab = tabs.find((t) => location.pathname.startsWith(t.path))?.path ?? false;
 
     return (
         <Tabs value={currentTab}>

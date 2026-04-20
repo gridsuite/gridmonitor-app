@@ -23,7 +23,7 @@ export function ProcessConfigList({ configs, expandedItems, onToggleExpanded }: 
                     Security Analysis Configurations
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                    {configs.length} configuration{configs.length > 1 ? 's' : ''} returned by the API.
+                    {configs.length} configuration{configs.length !== 1 ? 's' : ''} returned by the API.
                 </Typography>
             </Box>
 

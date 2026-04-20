@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { ProcessStepInfos } from '../components/ProcessStepInfos';
+import { ProcessStepInfosView } from '../components/ProcessStepInfosView';
 import { ProcessStepInfosAlert } from '../components/ProcessStepInfosAlert';
 import { useProcessStepInfos } from '../hooks/useProcessStepInfos';
 
@@ -21,7 +21,7 @@ export function ProcessStepInfosPage() {
                 isMissingExecutionId={isMissingExecutionId}
             />
             {!isMissingExecutionId && !isLoading && !isError && !isEmpty && executionId && (
-                <ProcessStepInfos executionId={executionId} steps={steps} />
+                <ProcessStepInfosView executionId={executionId} steps={steps} />
             )}
         </>
     );

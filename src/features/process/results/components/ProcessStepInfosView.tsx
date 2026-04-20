@@ -6,15 +6,15 @@
  */
 
 import { Box, Stack, Typography } from '@mui/material';
-import type { ProcessExecutionStep } from 'shared/api/monitor-api';
 import { ProcessStepInfosItem } from './ProcessStepInfosItem';
+import { ProcessStepModel } from '../models/process-result';
 
 type ProcessStepInfosProps = {
     executionId: string;
-    steps: ProcessExecutionStep[];
+    steps: ProcessStepModel[];
 };
 
-export function ProcessStepInfos({ executionId, steps }: Readonly<ProcessStepInfosProps>) {
+export function ProcessStepInfosView({ executionId, steps }: Readonly<ProcessStepInfosProps>) {
     return (
         <Stack spacing={3}>
             <Box>
@@ -22,7 +22,7 @@ export function ProcessStepInfos({ executionId, steps }: Readonly<ProcessStepInf
                     Process Step Information
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                    {steps.length} step{steps.length > 1 ? 's' : ''} for execution {executionId}.
+                    {steps.length} step{steps.length !== 1 ? 's' : ''} for execution {executionId}.
                 </Typography>
             </Box>
 

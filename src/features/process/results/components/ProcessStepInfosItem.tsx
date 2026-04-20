@@ -8,24 +8,9 @@
 import { useState } from 'react';
 import { Box, Button, Card, CardContent, Chip, Collapse, Divider, Paper, Stack, Typography } from '@mui/material';
 import type { ProcessExecutionStep } from 'shared/api/monitor-api';
+import { ProcessStepModel } from '../models/process-result';
 
 type StepStatus = NonNullable<ProcessExecutionStep['status']>;
-
-function formatDate(value?: string): string {
-    if (!value) {
-        return 'N/A';
-    }
-
-    const date = new Date(value);
-    if (Number.isNaN(date.getTime())) {
-        return value;
-    }
-
-    return new Intl.DateTimeFormat(undefined, {
-        dateStyle: 'medium',
-        timeStyle: 'short',
-    }).format(date);
-}
 
 function getStatusColor(status?: StepStatus): 'default' | 'primary' | 'success' | 'error' | 'warning' {
     switch (status) {
@@ -62,7 +47,7 @@ function FieldRow({ label, value }: Readonly<{ label: string; value?: string | n
 
 type ProcessStepInfosItemProps = {
     index: number;
-    step: ProcessExecutionStep;
+    step: ProcessStepModel;
 };
 
 export function ProcessStepInfosItem({ index, step }: Readonly<ProcessStepInfosItemProps>) {
@@ -99,8 +84,8 @@ export function ProcessStepInfosItem({ index, step }: Readonly<ProcessStepInfosI
                         </Box>
                         <Box sx={{ flex: 1 }}>
                             <Stack spacing={2}>
-                                <FieldRow label="Started At" value={formatDate(step.startedAt)} />
-                                <FieldRow label="Completed At" value={formatDate(step.completedAt)} />
+                                <FieldRow label="Started At" value={step.startedAt?.toLocaleString()} />
+                                <FieldRow label="Completed At" value={step.completedAt?.toLocaleString()} />
                                 <FieldRow label="Result Type" value={step.resultType} />
                             </Stack>
                         </Box>
@@ -123,21 +108,16 @@ export function ProcessStepInfosItem({ index, step }: Readonly<ProcessStepInfosI
                             variant="outlined"
                             sx={{
                                 p: 2,
-                                bgcolor: 'grey.50',
                                 overflowX: 'auto',
                             }}
                         >
                             <Typography
-                                component="pre"
-                                variant="body2"
                                 sx={{
-                                    m: 0,
-                                    fontFamily: 'monospace',
                                     whiteSpace: 'pre-wrap',
                                     wordBreak: 'break-word',
                                 }}
                             >
-                                {JSON.stringify(step, null, 2)}
+                                {JSON.stringify(step, null, 4)}
                             </Typography>
                         </Paper>
                     </Collapse>

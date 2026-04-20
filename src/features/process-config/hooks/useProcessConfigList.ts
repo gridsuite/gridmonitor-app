@@ -6,7 +6,7 @@
  */
 
 import { useState } from 'react';
-import { useGetProcessConfigsQuery, ProcessType } from 'shared/api/monitor-api';
+import { useGetProcessConfigsQuery, ProcessType, PersistedProcessConfig } from 'shared/api/monitor-api';
 
 export function useProcessConfigList() {
     const { data = [], isError, isLoading } = useGetProcessConfigsQuery({ processType: ProcessType.SecurityAnalysis });
@@ -19,10 +19,12 @@ export function useProcessConfigList() {
         }));
     };
 
+    const configs = data as PersistedProcessConfig[];
+
     return {
-        configs: data,
+        configs,
         expandedItems,
-        isEmpty: data.length === 0,
+        isEmpty: configs.length === 0,
         isError,
         isLoading,
         onToggleExpanded,

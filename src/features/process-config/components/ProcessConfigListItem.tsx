@@ -6,7 +6,7 @@
  */
 
 import { Box, Button, Card, CardContent, Chip, Collapse, Divider, Paper, Stack, Typography } from '@mui/material';
-import type { PersistedProcessConfig } from 'shared/api/monitor-api';
+import { PersistedProcessConfig, ProcessType } from 'shared/api/monitor-api';
 
 function getDisplayValue(value: unknown): string {
     if (value === null || value === undefined || value === '') {
@@ -81,7 +81,7 @@ export function ProcessConfigListItem({
 }: Readonly<ProcessConfigListItemProps>) {
     const config = item.processConfig;
 
-    if (!config || config.processType !== 'SecurityAnalysisConfig') {
+    if (config?.processType !== ProcessType.SecurityAnalysis) {
         return null;
     }
 
