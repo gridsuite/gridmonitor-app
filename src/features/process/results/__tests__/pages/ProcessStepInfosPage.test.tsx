@@ -57,7 +57,7 @@ describe('ProcessStepInfosPage', () => {
 
         await user.click(screen.getAllByRole('button', { name: 'Show raw data' })[0]);
 
-        expect(screen.getByText(/"id": "step-1"/)).toBeInTheDocument();
+        expect(screen.getByText(/"id": "step-2"/)).toBeInTheDocument();
     });
 
     it('displays the loading state', async () => {

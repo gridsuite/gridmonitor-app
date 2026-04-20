@@ -21,7 +21,7 @@ describe('ProcessConfigListPage', () => {
                     {
                         id: 'config-1',
                         processConfig: {
-                            processType: 'SecurityAnalysisConfig',
+                            processType: 'SECURITY_ANALYSIS',
                             securityAnalysisParametersUuid: 'sa-params-1',
                             loadflowParametersUuid: 'loadflow-1',
                             modificationUuids: ['mod-1'],
@@ -30,7 +30,7 @@ describe('ProcessConfigListPage', () => {
                     {
                         id: 'config-2',
                         processConfig: {
-                            processType: 'SecurityAnalysisConfig',
+                            processType: 'SECURITY_ANALYSIS',
                             securityAnalysisParametersUuid: 'sa-params-2',
                             loadflowParametersUuid: 'loadflow-2',
                             modificationUuids: [],
