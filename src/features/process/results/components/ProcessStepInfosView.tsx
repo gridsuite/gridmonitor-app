@@ -22,7 +22,7 @@ export function ProcessStepInfosView({ executionId, steps }: Readonly<ProcessSte
                     Process Step Information
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                    {steps.length} step{steps.length !== 1 ? 's' : ''} for execution {executionId}.
+                    {steps.length} step{steps.length === 1 ? '' : 's'} for execution {executionId}.
                 </Typography>
             </Box>
 
