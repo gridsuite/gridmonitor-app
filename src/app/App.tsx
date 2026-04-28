@@ -20,7 +20,7 @@ import { useAppParametersInvalidationListener } from 'features/app-parameters/ho
 import AppTopBar, { AppTopBarProps } from '../features/top-bar/components/AppTopBar';
 import { useAppDispatch, useAppSelector } from './store/store';
 import { AppRouter } from './router/AppRouter';
-import { useMonitorInvalidationsListener } from '../features/process/hooks/use-process-invalidation-listener';
+import { useMonitorInvalidationsListener } from 'features/process-config/hooks/use-process-invalidation-listener';
 
 function App() {
     const user = useAppSelector(selectUser);

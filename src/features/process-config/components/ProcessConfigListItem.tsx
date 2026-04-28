@@ -144,7 +144,6 @@ export function ProcessConfigListItem({
                             variant="outlined"
                             sx={{
                                 p: 2,
-                                bgcolor: 'grey.50',
                                 overflowX: 'auto',
                             }}
                         >

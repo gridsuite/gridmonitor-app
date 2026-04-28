@@ -5,9 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'app/store/store';
 import { selectUser } from 'features/authentication/store/authentication.selectors';
-import { useEffect } from 'react';
 import { connectMonitorNotificationsWs } from 'shared/api/ws/monitor-ws';
 import { invalidateProcessExecutionsLists } from 'shared/api/monitor-api';
 

@@ -7,7 +7,7 @@
 
 import { ProcessStepInfosView } from '../components/ProcessStepInfosView';
 import { ProcessStepInfosAlert } from '../components/ProcessStepInfosAlert';
-import { useProcessStepInfos } from '../hooks/useProcessStepInfos';
+import { useProcessStepInfos } from '../hooks/use-process-step-infos';
 
 export function ProcessStepInfosPage() {
     const { executionId, isEmpty, isError, isLoading, isMissingExecutionId, steps } = useProcessStepInfos();

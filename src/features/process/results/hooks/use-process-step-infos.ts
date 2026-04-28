@@ -5,7 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useMemo } from 'react';
 import { useParams } from 'react-router';
 import { ProcessExecutionStep, useGetStepsInfosQuery } from 'shared/api/monitor-api';
 import { ProcessStepModel } from '../models/process-result';
@@ -25,8 +24,7 @@ export function useProcessStepInfos() {
         isSuccess,
     } = useGetStepsInfosQuery({ executionId: id ?? '' }, { skip: !id });
 
-    const steps = useMemo(() => data.map(mapStepsInfos), [data]);
-
+    const steps = data.map(mapStepsInfos);
     return {
         executionId: id,
         isEmpty: steps.length === 0,

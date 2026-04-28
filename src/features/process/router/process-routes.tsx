@@ -17,6 +17,7 @@ export const processRoutes = (
         <Route path="results">
             <Route index element={<ProcessResultsPage />} />
             <Route path=":id">
+                <Route index element={<Navigate to="step-infos" replace />} />
                 <Route path="step-infos" element={<ProcessStepInfosPage />} />
             </Route>
         </Route>

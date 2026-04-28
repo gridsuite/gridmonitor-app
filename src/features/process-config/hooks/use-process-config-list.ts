@@ -19,6 +19,9 @@ export function useProcessConfigList() {
         }));
     };
 
+    // OpenAPI code generation may produce incorrect or imprecise types (ex: missing discriminators).
+    // This cast aligns the response with the actual backend contract.
+    // Keep in sync with the backend model and remove once the generator issue is fixed.
     const configs = data as PersistedProcessConfig[];
 
     return {

@@ -8,7 +8,7 @@
 import { Typography } from '@mui/material';
 import { ProcessResultsAlert } from '../components/ProcessResultsAlert';
 import { ProcessResultsList } from '../components/ProcessResultsList';
-import { useProcessResults } from '../hooks/useProcessResults';
+import { useProcessResults } from '../hooks/use-process-results';
 
 export function ProcessResultsPage() {
     const { executions, isEmpty, isError, isLoading } = useProcessResults();
