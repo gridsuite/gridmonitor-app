@@ -10,8 +10,8 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import { describe, expect, it } from 'vitest';
 import { http, HttpResponse } from 'msw';
-import { createTestContext } from 'test-utils/create-test-context';
-import { server } from 'test-utils/msw/server';
+import { server } from 'shared/test-utils/msw/server';
+import { createBaseContext } from 'features/test-utils/create-base-context';
 import { ProcessStepInfosPage } from '../../pages/ProcessStepInfosPage';
 
 describe('ProcessStepInfosPage', () => {
@@ -36,7 +36,7 @@ describe('ProcessStepInfosPage', () => {
         );
 
         const user = userEvent.setup();
-        const { wrapper } = createTestContext();
+        const { wrapper } = createBaseContext();
 
         render(
             <MemoryRouter initialEntries={['/process/results/execution-1/step-infos']}>
@@ -71,7 +71,7 @@ describe('ProcessStepInfosPage', () => {
             })
         );
 
-        const { wrapper } = createTestContext();
+        const { wrapper } = createBaseContext();
 
         render(
             <MemoryRouter initialEntries={['/process/results/execution-1/step-infos']}>
@@ -88,7 +88,7 @@ describe('ProcessStepInfosPage', () => {
     it('displays the error state', async () => {
         server.use(http.get('*/v1/executions/execution-1/step-infos', () => HttpResponse.error()));
 
-        const { wrapper } = createTestContext();
+        const { wrapper } = createBaseContext();
 
         render(
             <MemoryRouter initialEntries={['/process/results/execution-1/step-infos']}>

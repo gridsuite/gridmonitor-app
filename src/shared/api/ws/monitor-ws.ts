@@ -5,8 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { APP_NAME } from 'app/config/app-config';
 import { createReconnectingWebSocket } from './ws-client';
+import { getAppName } from '../../config/config-params';
 
 const PREFIX_MONITOR_NOTIFICATION_WS = `${import.meta.env.VITE_WS_GATEWAY}/monitor-notification`;
 
@@ -14,7 +14,7 @@ export function connectMonitorNotificationsWs() {
     return createReconnectingWebSocket({
         path: `${PREFIX_MONITOR_NOTIFICATION_WS}/notify`,
         queryParams: {
-            appName: APP_NAME,
+            appName: getAppName(),
         },
         name: 'monitor-notifications',
     });

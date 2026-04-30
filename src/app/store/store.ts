@@ -7,11 +7,12 @@
 
 import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
+import { errorMiddleware } from 'shared/store/rtk-query-error-middleware';
+import { monitorApi } from 'shared/api/monitor-api';
+import { studyApi } from 'shared/api/study-api/study-api';
+import { configApi } from 'shared/api/config-api/config-api';
+import { updateConfigParams } from 'shared/config/config-params';
 import { reducer } from './reducer';
-import { errorMiddleware } from './rtk-query-error-middleware';
-import { monitorApi } from '../../shared/api/monitor-api';
-import { studyApi } from '../../shared/api/study-api/study-api';
-import { configApi } from '../../shared/api/config-api/config-api';
 
 export const setupStore = (preloadedState?: PreloadedState) =>
     configureStore({
@@ -28,6 +29,8 @@ export const setupStore = (preloadedState?: PreloadedState) =>
     });
 
 export const store = setupStore();
+// push store to configParams to be able to access it in the token selector at low-level module
+updateConfigParams({ store });
 
 export type PreloadedState = Parameters<typeof reducer>[0];
 export type RootState = ReturnType<typeof reducer>;

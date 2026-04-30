@@ -5,15 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { GsLang, GsTheme, PARAM_LANGUAGE, PARAM_THEME, getAppName } from '@gridsuite/commons-ui';
-import { APP_NAME } from 'app/config/app-config';
-import type { AppDispatch } from 'app/store/store';
-import { AppParameters, AppParametersKey } from 'features/app-parameters/store/app-parameters.type';
-import {
-    saveLocalStorageLanguage,
-    saveLocalStorageTheme,
-} from 'features/app-parameters/store/app-parameters.local-storage';
+import { getAppName as getConfigAppName, PARAM_LANGUAGE, PARAM_THEME } from '@gridsuite/commons-ui';
+import { saveLocalStorageLanguage, saveLocalStorageTheme } from './config-api.local-storage';
 import { configBaseApi, ConfigTags } from './config-base-api';
+import { ConfigParameter, UpdateConfigParameterRequest } from './config-api.type';
+import { AnyAppDispatch } from '../../store/state.type';
+import { getAppName } from '../../config/config-params';
 
 const CONFIG_URL = `/v1`;
 
@@ -23,7 +20,7 @@ export const configApi = configBaseApi.injectEndpoints({
     endpoints: (builder) => ({
         getConfigParameter: builder.query<ConfigParameter, string>({
             query: (name) => {
-                const appName = getAppName(APP_NAME, name);
+                const appName = getConfigAppName(getAppName(), name);
                 return makeConfigUrl(`/applications/${appName}/parameters/${name}`);
             },
             providesTags: (result, error, paramName) => [{ type: ConfigTags.Parameters, id: paramName }],
@@ -49,7 +46,7 @@ export const configApi = configBaseApi.injectEndpoints({
         }),
         updateConfigParameter: builder.mutation<void, UpdateConfigParameterRequest>({
             query: ({ name, value }) => {
-                const appName = getAppName(APP_NAME, name);
+                const appName = getConfigAppName(getAppName(), name);
                 return {
                     url: makeConfigUrl(
                         `/applications/${appName}/parameters/${name}?value=${encodeURIComponent(value)}`
@@ -76,23 +73,8 @@ export const configApi = configBaseApi.injectEndpoints({
     }),
 });
 
-export const invalidateConfigQueries = (dispatch: AppDispatch, paramName: string) => {
+export const invalidateConfigQueries = (dispatch: AnyAppDispatch, paramName: string) => {
     dispatch(configApi.util.invalidateTags([{ type: ConfigTags.Parameters, id: paramName }]));
-};
-
-// https://github.com/gridsuite/config-server/blob/main/src/main/java/org/gridsuite/config/server/dto/ParameterInfos.java
-export type ConfigParameter =
-    | {
-          readonly name: typeof PARAM_LANGUAGE;
-          value: GsLang;
-      }
-    | {
-          readonly name: typeof PARAM_THEME;
-          value: GsTheme;
-      };
-export type UpdateConfigParameterRequest = {
-    name: AppParametersKey;
-    value: AppParameters[AppParametersKey];
 };
 
 export const { useGetConfigParameterQuery, useUpdateConfigParameterMutation } = configApi;

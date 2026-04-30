@@ -6,15 +6,15 @@
  */
 
 import { fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import type { RootState } from '../../../app/store/store';
+import { getTokenSelector } from '../../config/config-params';
 
 export const createBaseQuery = (baseUrl: string) =>
     fetchBaseQuery({
         baseUrl,
         prepareHeaders: (headers, { getState }) => {
-            const state = getState() as RootState;
+            const state = getState();
 
-            const token = state?.authentication?.user?.id_token;
+            const token = getTokenSelector()(state);
 
             if (token) {
                 headers.set('Authorization', `Bearer ${token}`);

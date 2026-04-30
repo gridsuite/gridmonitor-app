@@ -9,8 +9,16 @@ import { AppParameters, AppParametersKey } from 'features/app-parameters/store/a
 import { useUpdateConfigParameterMutation } from 'shared/api/config-api/config-api';
 import { useGetConfigParameterWithFallback } from './use-get-config-parameter-with-fallback';
 
-export function useAppParameterState<K extends AppParametersKey>(paramName: K) {
-    const { data: paramValue } = useGetConfigParameterWithFallback(paramName);
+type UseAppParameterStateProps<K extends AppParametersKey> = {
+    paramName: K;
+    isAuthenticated: boolean;
+};
+
+export function useAppParameterState<K extends AppParametersKey>({
+    paramName,
+    isAuthenticated,
+}: UseAppParameterStateProps<K>) {
+    const { data: paramValue } = useGetConfigParameterWithFallback({ paramName, isAuthenticated });
     const [updateConfigParameter] = useUpdateConfigParameterMutation();
 
     const setValue = async (newValue: AppParameters[K]) => {

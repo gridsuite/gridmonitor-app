@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import type { ProcessExecution, ProcessExecutionStep } from '../../../../shared/api/monitor-api';
+import type { ProcessExecution, ProcessExecutionStep } from 'shared/api/monitor-api';
 
 export type ProcessStepModel = Omit<ProcessExecutionStep, 'startedAt' | 'completedAt'> & {
     startedAt?: Date;

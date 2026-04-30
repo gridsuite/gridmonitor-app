@@ -5,4 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export type { AppParameters, AppParametersKey } from 'shared/api/config-api/config-api.type';
+import type { ThunkDispatch, UnknownAction } from '@reduxjs/toolkit';
+
+// type which is structurally compatible with AppDispatch
+export type AnyAppDispatch = ThunkDispatch<unknown, unknown, UnknownAction>;

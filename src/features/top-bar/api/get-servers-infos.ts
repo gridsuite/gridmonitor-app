@@ -6,14 +6,14 @@
  */
 
 import { GridSuiteModule } from '@gridsuite/commons-ui';
-import { store } from 'app/store/store';
 import { rtkQueryToPromise } from 'shared/api/rtk-query/rtk-query-to-promise';
-import { studyApi } from 'shared/api/study-api/study-api';
 import { getErrorMessage } from 'shared/lib/error';
+import { AnyAppDispatch } from 'shared/store/state.type';
+import { studyApi } from 'shared/api/study-api/study-api';
 
-export const getServersInfos = (): Promise<GridSuiteModule[]> => {
+export const getServersInfos = (dispatch: AnyAppDispatch): Promise<GridSuiteModule[]> => {
     return rtkQueryToPromise(
-        store.dispatch(
+        dispatch(
             studyApi.endpoints.getAboutInfos.initiate(undefined, {
                 forceRefetch: true,
             })

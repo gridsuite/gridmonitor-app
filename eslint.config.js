@@ -140,6 +140,18 @@ const projectConfig = [
                     optionalDependencies: false,
                 },
             ],
+            'import-x/no-restricted-paths': [
+                'error',
+                {
+                    zones: [
+                        // shared must not import from features or app
+                        { target: './src/shared', from: './src/features' },
+                        { target: './src/shared', from: './src/app' },
+                        // features must not import from app
+                        { target: './src/features', from: './src/app' },
+                    ],
+                },
+            ],
 
             // Disable strict type-aware rules that weren't in old config
             '@typescript-eslint/no-unsafe-enum-comparison': 'off',
