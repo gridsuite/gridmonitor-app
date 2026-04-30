@@ -9,7 +9,7 @@ import { FormProvider } from 'react-hook-form';
 import { Box, Paper, Stack, Typography } from '@mui/material';
 import { ExecuteProcessForm } from '../components/ExecuteProcessForm';
 import { ExecuteProcessResult } from '../components/ExecuteProcessResult';
-import { useExecuteProcess } from '../hooks/useExecuteProcess';
+import { useExecuteProcess } from '../hooks/use-execute-process';
 
 export function ProcessExecutePage() {
     const { form, onSubmit, result } = useExecuteProcess();

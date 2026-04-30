@@ -10,7 +10,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import * as monitorWs from 'shared/api/ws/monitor-ws';
 import * as monitorApiModule from 'shared/api/monitor-api';
 import { createTestContext } from 'test-utils/create-test-context';
-import { useMonitorInvalidationsListener } from 'features/process-config/hooks/use-process-invalidation-listener';
+import { useProcessInvalidationsListener } from 'features/process-config/hooks/use-process-invalidation-listener';
 import { connectMonitorNotificationsWs } from 'shared/api/ws/monitor-ws';
 
 vi.spyOn(monitorWs, 'connectMonitorNotificationsWs').mockImplementation(vi.fn());
@@ -34,15 +34,15 @@ describe('useMonitorInvalidationsListener', () => {
     it('connects websocket on mount', () => {
         const { wrapper } = createTestContext();
 
-        renderHook(() => useMonitorInvalidationsListener(), { wrapper });
+        renderHook(() => useProcessInvalidationsListener({ isAuthenticated: true }), { wrapper });
 
         expect(connectMonitorNotificationsWs).toHaveBeenCalled();
     });
 
     it('does not connect websocket when user is not authenticated', () => {
-        const { wrapper } = createTestContext({ authentication: { user: null } });
+        const { wrapper } = createTestContext();
 
-        renderHook(() => useMonitorInvalidationsListener(), { wrapper });
+        renderHook(() => useProcessInvalidationsListener({ isAuthenticated: false }), { wrapper });
 
         expect(connectMonitorNotificationsWs).not.toHaveBeenCalled();
     });
@@ -50,7 +50,7 @@ describe('useMonitorInvalidationsListener', () => {
     it('invalidates process execution lists when receiving an update message', () => {
         const { wrapper } = createTestContext();
 
-        renderHook(() => useMonitorInvalidationsListener(), { wrapper });
+        renderHook(() => useProcessInvalidationsListener({ isAuthenticated: true }), { wrapper });
 
         mockWs.onmessage?.({
             data: JSON.stringify({
@@ -64,7 +64,7 @@ describe('useMonitorInvalidationsListener', () => {
     it('closes websocket on unmount', () => {
         const { wrapper } = createTestContext();
 
-        const { unmount } = renderHook(() => useMonitorInvalidationsListener(), { wrapper });
+        const { unmount } = renderHook(() => useProcessInvalidationsListener({ isAuthenticated: true }), { wrapper });
 
         unmount();
 

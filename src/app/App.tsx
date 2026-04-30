@@ -17,7 +17,7 @@ import {
 import { getErrorMessage } from 'shared/lib/error';
 import { fetchIdpSettings } from 'shared/config/idp-settings';
 import { useAppParametersInvalidationListener } from 'features/app-parameters/hooks/use-app-parameters-invalidation-listener';
-import { useMonitorInvalidationsListener } from 'features/process-config/hooks/use-process-invalidation-listener';
+import { useProcessInvalidationsListener } from 'features/process-config/hooks/use-process-invalidation-listener';
 import AppTopBar, { AppTopBarProps } from 'features/top-bar/components/AppTopBar';
 import { useAppDispatch, useAppSelector } from './store/store';
 import { AppRouter } from './router/AppRouter';
@@ -72,8 +72,8 @@ function App() {
         // Note: dispatch and initialMatchSilentRenewCallbackUrl won't change
     }, [initialMatchSigninCallbackUrl, initialMatchSilentRenewCallbackUrl, dispatch]);
 
-    useAppParametersInvalidationListener();
-    useMonitorInvalidationsListener();
+    useAppParametersInvalidationListener({ isAuthenticated: user !== null });
+    useProcessInvalidationsListener({ isAuthenticated: user !== null });
 
     return (
         <>

@@ -12,6 +12,7 @@ import { createTestContext } from 'test-utils/create-test-context';
 import { useAppParametersInvalidationListener } from 'features/app-parameters/hooks/use-app-parameters-invalidation-listener';
 import * as configApiModule from 'shared/api/config-api/config-api';
 import { connectConfigNotificationsWs } from '../../../../shared/api/ws/config-ws';
+import { useProcessInvalidationsListener } from '../../../process-config/hooks/use-process-invalidation-listener';
 
 vi.spyOn(configWs, 'connectConfigNotificationsWs').mockImplementation(vi.fn());
 vi.spyOn(configApiModule, 'invalidateConfigQueries').mockImplementation(vi.fn());
@@ -36,15 +37,23 @@ describe('useAppParametersInvalidationListener', () => {
     it('connects websocket on mount', () => {
         const { wrapper } = createTestContext();
 
-        renderHook(() => useAppParametersInvalidationListener(), { wrapper });
+        renderHook(() => useAppParametersInvalidationListener({ isAuthenticated: true }), { wrapper });
 
         expect(connectConfigNotificationsWs).toHaveBeenCalled();
+    });
+
+    it('does not connect websocket when user is not authenticated', () => {
+        const { wrapper } = createTestContext();
+
+        renderHook(() => useProcessInvalidationsListener({ isAuthenticated: false }), { wrapper });
+
+        expect(connectConfigNotificationsWs).not.toHaveBeenCalled();
     });
 
     it('invalidates config when receiving a message', () => {
         const { wrapper } = createTestContext();
 
-        renderHook(() => useAppParametersInvalidationListener(), { wrapper });
+        renderHook(() => useAppParametersInvalidationListener({ isAuthenticated: true }), { wrapper });
 
         // simulate websocket message
         mockWs.onmessage?.({
@@ -59,7 +68,9 @@ describe('useAppParametersInvalidationListener', () => {
     it('closes websocket on unmount', () => {
         const { wrapper } = createTestContext();
 
-        const { unmount } = renderHook(() => useAppParametersInvalidationListener(), { wrapper });
+        const { unmount } = renderHook(() => useAppParametersInvalidationListener({ isAuthenticated: true }), {
+            wrapper,
+        });
 
         unmount();
 

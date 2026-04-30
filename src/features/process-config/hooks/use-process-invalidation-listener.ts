@@ -6,8 +6,7 @@
  */
 
 import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from 'app/store/store';
-import { selectUser } from 'features/authentication/store/authentication.selectors';
+import { useAppDispatch } from 'app/store/store';
 import { connectMonitorNotificationsWs } from 'shared/api/ws/monitor-ws';
 import { invalidateProcessExecutionsLists } from 'shared/api/monitor-api';
 
@@ -19,12 +18,11 @@ type MonitorNotificationData = {
     };
 };
 
-export const useMonitorInvalidationsListener = () => {
-    const user = useAppSelector(selectUser);
+export const useProcessInvalidationsListener = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        if (user === null) {
+        if (!isAuthenticated) {
             return undefined;
         }
 
@@ -40,5 +38,5 @@ export const useMonitorInvalidationsListener = () => {
         };
 
         return () => ws.close();
-    }, [dispatch, user]);
+    }, [dispatch, isAuthenticated]);
 };
