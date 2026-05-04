@@ -29,7 +29,7 @@ describe('useGetConfigParameterWithFallback', () => {
 
         const { wrapper } = createTestContext();
 
-        const { result } = renderHook(() => useGetConfigParameterWithFallback(PARAM_THEME, 'testUserId'), { wrapper });
+        const { result } = renderHook(() => useGetConfigParameterWithFallback(PARAM_THEME), { wrapper });
 
         await waitFor(() => {
             expect(result.current.isSuccess).toBe(true);

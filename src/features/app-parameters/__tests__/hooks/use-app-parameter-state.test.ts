@@ -35,7 +35,7 @@ describe('useAppParameterState', () => {
             })
         );
         const { wrapper } = createTestContext();
-        const { result } = renderHook(() => useAppParameterState('theme', 'testUserId'), { wrapper });
+        const { result } = renderHook(() => useAppParameterState('theme'), { wrapper });
 
         // check state before updating
         await waitFor(() => {
@@ -75,7 +75,7 @@ describe('useAppParameterState', () => {
         );
 
         const { wrapper } = createTestContext();
-        const { result } = renderHook(() => useAppParameterState('theme', 'testUserId'), { wrapper });
+        const { result } = renderHook(() => useAppParameterState('theme'), { wrapper });
 
         // check state before updating
         await waitFor(() => {

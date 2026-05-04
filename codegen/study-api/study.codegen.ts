@@ -6,6 +6,7 @@
  */
 
 import type { ConfigFile } from '@rtk-query/codegen-openapi';
+import { gatewayManagedHeaderOverrides } from '../gateway-managed-header-overrides';
 
 const config: ConfigFile = {
     schemaFile: 'codegen/study-api/api-docs.json',
@@ -16,6 +17,7 @@ const config: ConfigFile = {
     hooks: true,
     useEnumType: true,
     filterEndpoints: ['getSuiteAboutInformation'],
+    endpointOverrides: gatewayManagedHeaderOverrides,
 };
 
 export default config;

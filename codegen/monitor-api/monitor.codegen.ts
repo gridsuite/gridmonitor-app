@@ -6,6 +6,7 @@
  */
 
 import type { ConfigFile } from '@rtk-query/codegen-openapi';
+import { gatewayManagedHeaderOverrides } from '../gateway-managed-header-overrides';
 
 const config: ConfigFile = {
     schemaFile: 'codegen/monitor-api/api-docs.json',
@@ -15,6 +16,7 @@ const config: ConfigFile = {
     exportName: 'monitorGeneratedApi',
     hooks: true,
     useEnumType: true,
+    endpointOverrides: gatewayManagedHeaderOverrides,
 };
 
 export default config;

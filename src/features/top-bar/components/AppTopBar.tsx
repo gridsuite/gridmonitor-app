@@ -35,9 +35,8 @@ function AppTopBar({ user, userManager }: Readonly<AppTopBarProps>) {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const [appsAndUrls, setAppsAndUrls] = useState<Metadata[]>([]);
-    const userId = user?.profile.name; // TODO: fix once userId param is fixed in backend
-    const [themeLocal, handleChangeTheme] = useAppParameterState(PARAM_THEME, userId);
-    const [languageLocal, handleChangeLanguage] = useAppParameterState(PARAM_LANGUAGE, userId);
+    const [themeLocal, handleChangeTheme] = useAppParameterState(PARAM_THEME);
+    const [languageLocal, handleChangeLanguage] = useAppParameterState(PARAM_LANGUAGE);
 
     useEffect(() => {
         if (user !== null) {

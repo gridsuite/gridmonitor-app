@@ -44,7 +44,7 @@ export const configApi = configGeneratedApi.enhanceEndpoints({
                 const patch = dispatch(
                     configApi.util.updateQueryData(
                         'getParameter',
-                        { name: params.name, appName: params.appName, userId: params.userId },
+                        { name: params.name, appName: params.appName },
                         (draft) => {
                             if (draft) {
                                 draft.value = params.value;
