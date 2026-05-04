@@ -7,7 +7,7 @@
 
 import { AppParameters, AppParametersKey } from 'features/app-parameters/store/app-parameters.type';
 import { getAppName } from '@gridsuite/commons-ui';
-import { useUpdateParameterMutation } from '../../../shared/api/config-api/config.enhanced';
+import { useUpdateParameterMutation } from 'shared/api/config-api';
 import { useGetConfigParameterWithFallback } from './use-get-config-parameter-with-fallback';
 import { APP_NAME } from '../../../app/config/app-config';
 

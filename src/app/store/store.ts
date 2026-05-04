@@ -7,11 +7,11 @@
 
 import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
+import { monitorApi } from 'shared/api/monitor-api';
+import { studyApi } from 'shared/api/study-api';
+import { configApi } from 'shared/api/config-api';
 import { reducer } from './reducer';
 import { errorMiddleware } from './rtk-query-error-middleware';
-import { monitorApi } from '../../shared/api/monitor-api';
-import { studyApi } from '../../shared/api/study-api/study.enhanced';
-import { configApi } from '../../shared/api/config-api/config.enhanced';
 
 export const setupStore = (preloadedState?: PreloadedState) =>
     configureStore({
