@@ -66,6 +66,7 @@ export default defineConfig({
         alias: {
             '@': path.resolve(__dirname, './src'),
             assets: path.resolve(__dirname, './src/assets'),
+            '@mui/material/utils': path.resolve(__dirname, './node_modules/@mui/material/utils/index.js'),
         },
     },
     server: serverSettings, // for npm run start
