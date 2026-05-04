@@ -11,7 +11,7 @@ import { ExecuteProcessForm } from '../components/ExecuteProcessForm';
 import { ExecuteProcessResult } from '../components/ExecuteProcessResult';
 import { useExecuteProcess } from '../hooks/use-execute-process';
 
-export function ProcessExecutePage() {
+function ProcessExecutePage() {
     const { form, onSubmit, result } = useExecuteProcess();
 
     return (
@@ -36,3 +36,5 @@ export function ProcessExecutePage() {
         </Box>
     );
 }
+
+export default ProcessExecutePage;

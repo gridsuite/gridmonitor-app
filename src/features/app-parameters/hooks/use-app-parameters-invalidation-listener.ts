@@ -7,8 +7,8 @@
 
 import { useAppDispatch } from 'app/store/store';
 import { useEffect } from 'react';
-import { invalidateConfigQueries } from 'shared/api/config-api/config-api';
 import { connectConfigNotificationsWs } from 'shared/api/ws/config-ws';
+import { invalidateConfigQueries } from '../../../shared/api/config-api/config.enhanced';
 
 type ConfigNotificationData = {
     headers?: {

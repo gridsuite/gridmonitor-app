@@ -11,7 +11,7 @@ import { describe, expect, it } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { createTestContext } from 'test-utils/create-test-context';
 import { server } from 'test-utils/msw/server';
-import { ProcessResultsPage } from '../../pages/ProcessResultsPage';
+import ProcessResultsPage from '../../pages/ProcessResultsPage';
 import { PROCESS_PATHS } from '../../../router/process-paths';
 
 describe('ProcessResultsPage', () => {

@@ -10,7 +10,7 @@ import { vi, describe, it, expect, beforeEach } from 'vitest';
 import * as configWs from 'shared/api/ws/config-ws';
 import { createTestContext } from 'test-utils/create-test-context';
 import { useAppParametersInvalidationListener } from 'features/app-parameters/hooks/use-app-parameters-invalidation-listener';
-import * as configApiModule from 'shared/api/config-api/config-api';
+import * as configApiModule from '../../../../shared/api/config-api/config.enhanced';
 import { connectConfigNotificationsWs } from '../../../../shared/api/ws/config-ws';
 import { useProcessInvalidationsListener } from '../../../process-config/hooks/use-process-invalidation-listener';
 

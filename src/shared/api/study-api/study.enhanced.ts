@@ -5,9 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { lazy } from 'react';
-import { Route } from 'react-router';
+import { studyGeneratedApi } from './study.generated';
 
-const ProcessConfigListPage = lazy(() => import('../pages/ProcessConfigListPage'));
-
-export const processConfigRoutes = <Route path="process-config" element={<ProcessConfigListPage />} />;
+export const studyApi = studyGeneratedApi;

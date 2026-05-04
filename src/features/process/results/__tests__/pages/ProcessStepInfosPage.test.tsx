@@ -12,7 +12,7 @@ import { describe, expect, it } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { createTestContext } from 'test-utils/create-test-context';
 import { server } from 'test-utils/msw/server';
-import { ProcessStepInfosPage } from '../../pages/ProcessStepInfosPage';
+import ProcessStepInfosPage from '../../pages/ProcessStepInfosPage';
 
 describe('ProcessStepInfosPage', () => {
     it('displays process step information successfully', async () => {

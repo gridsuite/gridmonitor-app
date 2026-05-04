@@ -5,18 +5,31 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { GridSuiteModule } from '@gridsuite/commons-ui';
 import { store } from 'app/store/store';
 import { rtkQueryToPromise } from 'shared/api/rtk-query/rtk-query-to-promise';
-import { studyApi } from 'shared/api/study-api/study-api';
 import { getErrorMessage } from 'shared/lib/error';
+import { AboutInfo, studyApi, Type } from 'shared/api/study-api';
+import { GridSuiteModule } from '@gridsuite/commons-ui';
 
-export const getServersInfos = (): Promise<GridSuiteModule[]> => {
-    return rtkQueryToPromise(
+// TODO: remove this function once the backend is fixed with actual types
+const toGridSuiteModule = (aboutInfos: AboutInfo[]): GridSuiteModule[] => {
+    return aboutInfos.map((aboutInfo) => ({
+        name: aboutInfo.name ?? '',
+        type: aboutInfo.type ?? Type.Other,
+        version: aboutInfo.version ?? '',
+        gitTag: aboutInfo.gitTag ?? '',
+    }));
+};
+
+export const getServersInfos = async () => {
+    const serverInfos = rtkQueryToPromise(
         store.dispatch(
-            studyApi.endpoints.getAboutInfos.initiate(undefined, {
-                forceRefetch: true,
-            })
+            studyApi.endpoints.getSuiteAboutInformation.initiate(
+                {},
+                {
+                    forceRefetch: true,
+                }
+            )
         ),
         {
             onError: (error) => {
@@ -25,4 +38,6 @@ export const getServersInfos = (): Promise<GridSuiteModule[]> => {
             },
         }
     );
+
+    return serverInfos.then(toGridSuiteModule);
 };

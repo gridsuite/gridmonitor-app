@@ -11,7 +11,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { createTestContext } from 'test-utils/create-test-context';
 import { server } from 'test-utils/msw/server';
-import { ProcessExecutePage } from '../../pages/ProcessExecutePage';
+import ProcessExecutePage from '../../pages/ProcessExecutePage';
 
 describe('ProcessExecutePage', () => {
     it('submits the form and displays the success message', async () => {

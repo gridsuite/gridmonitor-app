@@ -6,17 +6,21 @@
  */
 
 import { AppParameters, AppParametersKey } from 'features/app-parameters/store/app-parameters.type';
-import { useUpdateConfigParameterMutation } from 'shared/api/config-api/config-api';
+import { getAppName } from '@gridsuite/commons-ui';
+import { useUpdateParameterMutation } from '../../../shared/api/config-api/config.enhanced';
 import { useGetConfigParameterWithFallback } from './use-get-config-parameter-with-fallback';
+import { APP_NAME } from '../../../app/config/app-config';
 
-export function useAppParameterState<K extends AppParametersKey>(paramName: K) {
-    const { data: paramValue } = useGetConfigParameterWithFallback(paramName);
-    const [updateConfigParameter] = useUpdateConfigParameterMutation();
+export function useAppParameterState<K extends AppParametersKey>(paramName: K, userId?: string) {
+    const { data: paramValue } = useGetConfigParameterWithFallback(paramName, userId);
+    const [updateConfigParameter] = useUpdateParameterMutation();
 
     const setValue = async (newValue: AppParameters[K]) => {
         await updateConfigParameter({
+            appName: getAppName(APP_NAME, paramName),
             name: paramName,
             value: newValue,
+            userId: userId ?? '',
         }).unwrap();
     };
 

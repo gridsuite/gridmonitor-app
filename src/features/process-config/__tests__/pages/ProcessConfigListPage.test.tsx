@@ -11,7 +11,7 @@ import { describe, expect, it } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { createTestContext } from 'test-utils/create-test-context';
 import { server } from 'test-utils/msw/server';
-import { ProcessConfigListPage } from '../../pages/ProcessConfigListPage';
+import ProcessConfigListPage from '../../pages/ProcessConfigListPage';
 
 describe('ProcessConfigListPage', () => {
     it('displays the list successfully', async () => {
