@@ -5,6 +5,4 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { studyGeneratedApi } from './study.generated';
-
-export const studyApi = studyGeneratedApi;
+export { studyGeneratedApi as studyApi } from './study.generated';
