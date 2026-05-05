@@ -4,9 +4,6 @@ const injectedRtkApi = api.injectEndpoints({
     getParameter: build.query<GetParameterApiResponse, GetParameterApiArg>({
       query: (queryArg) => ({
         url: `/v1/applications/${queryArg.appName}/parameters/${queryArg.name}`,
-        headers: {
-          userId: queryArg.userId,
-        },
       }),
     }),
     updateParameter: build.mutation<
@@ -16,9 +13,6 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/v1/applications/${queryArg.appName}/parameters/${queryArg.name}`,
         method: "PUT",
-        headers: {
-          userId: queryArg.userId,
-        },
         params: {
           value: queryArg.value,
         },
@@ -31,13 +25,11 @@ export { injectedRtkApi as configGeneratedApi };
 export type GetParameterApiResponse =
   /** status 200 The configuration parameter for the application */ ParameterInfos;
 export type GetParameterApiArg = {
-  userId: string;
   appName: string;
   name: string;
 };
 export type UpdateParameterApiResponse = unknown;
 export type UpdateParameterApiArg = {
-  userId: string;
   appName: string;
   name: string;
   value: string;

@@ -29,13 +29,6 @@ export function ExecuteProcessForm({ isLoading, onSubmit }: Readonly<ExecuteProc
         name: 'processConfigUuid',
     });
 
-    const {
-        field: userIdField,
-        fieldState: { error: userIdError },
-    } = useController({
-        name: 'userId',
-    });
-
     const { field: debugField } = useController({
         name: 'isDebug',
     });
@@ -61,14 +54,6 @@ export function ExecuteProcessForm({ isLoading, onSubmit }: Readonly<ExecuteProc
                     fullWidth
                     error={Boolean(processConfigUuidError)}
                     helperText={processConfigUuidError?.message}
-                />
-
-                <TextField
-                    {...userIdField}
-                    label="User ID"
-                    fullWidth
-                    error={Boolean(userIdError)}
-                    helperText={userIdError?.message}
                 />
 
                 <FormControlLabel

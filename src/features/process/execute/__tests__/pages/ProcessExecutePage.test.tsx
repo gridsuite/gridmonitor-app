@@ -15,7 +15,11 @@ import ProcessExecutePage from '../../pages/ProcessExecutePage';
 
 describe('ProcessExecutePage', () => {
     it('submits the form and displays the success message', async () => {
-        server.use(http.post('*/v1/execute', () => HttpResponse.json('execution-id')));
+        server.use(
+            http.post('*/v1/execute', () => {
+                return HttpResponse.json('execution-id');
+            })
+        );
 
         const user = userEvent.setup();
         const { wrapper } = createTestContext();
@@ -24,7 +28,6 @@ describe('ProcessExecutePage', () => {
 
         await user.type(screen.getByLabelText('Case UUID'), 'case-uuid');
         await user.type(screen.getByLabelText('Process Config UUID'), 'process-config-uuid');
-        await user.type(screen.getByLabelText('User ID'), 'user-id');
 
         await user.click(screen.getByRole('button', { name: 'Execute process' }));
 
@@ -51,7 +54,6 @@ describe('ProcessExecutePage', () => {
 
         await user.type(screen.getByLabelText('Case UUID'), 'case-uuid');
         await user.type(screen.getByLabelText('Process Config UUID'), 'process-config-uuid');
-        await user.type(screen.getByLabelText('User ID'), 'user-id');
 
         await user.click(screen.getByRole('button', { name: 'Execute process' }));
 
@@ -68,7 +70,6 @@ describe('ProcessExecutePage', () => {
 
         await user.type(screen.getByLabelText('Case UUID'), 'case-uuid');
         await user.type(screen.getByLabelText('Process Config UUID'), 'process-config-uuid');
-        await user.type(screen.getByLabelText('User ID'), 'user-id');
 
         await user.click(screen.getByRole('button', { name: 'Execute process' }));
 
@@ -90,7 +91,7 @@ describe('ProcessExecutePage', () => {
         await user.click(screen.getByRole('button', { name: 'Execute process' }));
 
         const invalidFields = document.querySelectorAll('[aria-invalid="true"]');
-        expect(invalidFields.length).toBe(3);
+        expect(invalidFields.length).toBe(2);
 
         expect(spy).not.toHaveBeenCalled();
     });

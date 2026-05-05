@@ -66,9 +66,6 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/v1/execute`,
         method: "POST",
-        headers: {
-          userId: queryArg.userId,
-        },
         params: {
           caseUuid: queryArg.caseUuid,
           processConfigUuid: queryArg.processConfigUuid,
@@ -191,7 +188,6 @@ export type ExecuteProcessApiArg = {
   /** Process config uuid */
   processConfigUuid: string;
   isDebug?: boolean;
-  userId: string;
 };
 export type GetProcessConfigsMetadataApiResponse =
   /** status 200 process configs metadata were returned */ MetadataInfos[];
