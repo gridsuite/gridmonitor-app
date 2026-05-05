@@ -12,7 +12,6 @@ import { createTestContext } from 'test-utils/create-test-context';
 import { useAppParametersInvalidationListener } from 'features/app-parameters/hooks/use-app-parameters-invalidation-listener';
 import * as configApiModule from 'shared/api/config-api';
 import { connectConfigNotificationsWs } from 'shared/api/ws/config-ws';
-import { useProcessInvalidationsListener } from 'features/process-config/hooks/use-process-invalidation-listener';
 
 vi.spyOn(configWs, 'connectConfigNotificationsWs').mockImplementation(vi.fn());
 vi.spyOn(configApiModule, 'invalidateConfigQueries').mockImplementation(vi.fn());
@@ -45,7 +44,7 @@ describe('useAppParametersInvalidationListener', () => {
     it('does not connect websocket when user is not authenticated', () => {
         const { wrapper } = createTestContext();
 
-        renderHook(() => useProcessInvalidationsListener({ isAuthenticated: false }), { wrapper });
+        renderHook(() => useAppParametersInvalidationListener({ isAuthenticated: false }), { wrapper });
 
         expect(connectConfigNotificationsWs).not.toHaveBeenCalled();
     });
