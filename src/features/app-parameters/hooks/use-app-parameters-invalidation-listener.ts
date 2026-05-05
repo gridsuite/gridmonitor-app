@@ -5,11 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useAppDispatch, useAppSelector } from 'app/store/store';
-import { selectUser } from 'features/authentication/store/authentication.selectors';
+import { useAppDispatch } from 'app/store/store';
 import { useEffect } from 'react';
-import { invalidateConfigQueries } from 'shared/api/config-api/config-api';
-import { connectNotificationsWsUpdateConfig } from 'shared/api/ws/config-ws';
+import { connectConfigNotificationsWs } from 'shared/api/ws/config-ws';
+import { invalidateConfigQueries } from 'shared/api/config-api';
 
 type ConfigNotificationData = {
     headers?: {
@@ -17,16 +16,15 @@ type ConfigNotificationData = {
     };
 };
 
-export const useAppParametersInvalidationListener = () => {
-    const user = useAppSelector(selectUser);
+export const useAppParametersInvalidationListener = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        if (user === null) {
+        if (!isAuthenticated) {
             return undefined;
         }
 
-        const ws = connectNotificationsWsUpdateConfig();
+        const ws = connectConfigNotificationsWs();
         ws.onmessage = (event) => {
             const eventData = JSON.parse(event.data) as ConfigNotificationData;
             if (eventData.headers?.parameterName) {
@@ -38,5 +36,5 @@ export const useAppParametersInvalidationListener = () => {
         };
 
         return () => ws.close();
-    }, [dispatch, user]);
+    }, [dispatch, isAuthenticated]);
 };

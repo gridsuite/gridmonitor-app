@@ -22,5 +22,6 @@ header:
     - '**/*.svg'
     - '**/*.css'
     - '**/*.conf'
+    - '**/*.generated.ts'
 
   comment: on-failure

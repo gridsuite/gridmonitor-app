@@ -8,7 +8,6 @@
 import { useEffect, useState } from 'react';
 import {
     fetchAppsMetadata,
-    LIGHT_THEME,
     logout,
     Metadata,
     PARAM_LANGUAGE,
@@ -25,6 +24,7 @@ import { AuthenticationState } from 'features/authentication/store/authenticatio
 import { fetchVersion } from 'shared/config/version';
 import { getServersInfos } from '../api/get-servers-infos';
 import AppPackage from '../../../../package.json';
+import { SettingsTabs } from './AppNavBar';
 
 export type AppTopBarProps = {
     user?: AuthenticationState['user'];
@@ -54,13 +54,7 @@ function AppTopBar({ user, userManager }: Readonly<AppTopBarProps>) {
         <TopBar
             appName={APP_NAME}
             appColor="grey"
-            appLogo={
-                themeLocal === LIGHT_THEME ? (
-                    <PowsyblLogo /> // GridXXXLogoLight
-                ) : (
-                    <PowsyblLogo /> // GridXXXLogoDark
-                )
-            }
+            appLogo={<PowsyblLogo />}
             appVersion={AppPackage.version}
             appLicense={AppPackage.license}
             onLogoutClick={() => logout(dispatch, userManager.instance)}
@@ -73,7 +67,9 @@ function AppTopBar({ user, userManager }: Readonly<AppTopBarProps>) {
             theme={themeLocal}
             onLanguageClick={handleChangeLanguage}
             language={languageLocal}
-        />
+        >
+            <SettingsTabs />
+        </TopBar>
     );
 }
 export default AppTopBar;

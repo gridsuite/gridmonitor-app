@@ -73,7 +73,14 @@ const prettierConfig = [
 const projectConfig = [
     {
         name: 'project/ignores',
-        ignores: ['dist', 'build', 'coverage'],
+        ignores: [
+            'dist',
+            'build',
+            'coverage',
+            // generated files
+            '**/*.generated.ts',
+            'codegen',
+        ],
     },
     // Settings
     {
@@ -134,30 +141,6 @@ const projectConfig = [
                 },
             ],
 
-            // MUI deep imports restriction
-            'no-restricted-imports': [
-                'warn',
-                {
-                    patterns: [
-                        {
-                            group: [
-                                '@mui/*/*',
-                                '!@mui/material/colors',
-                                '!@mui/material/locale',
-                                '!@mui/icons-material/*',
-                            ],
-                            message:
-                                'Deep imports from MUI libraries are forbidden. Import only from the library root.',
-                        },
-                        {
-                            group: ['@mui/icons-material/*'],
-                            message:
-                                "Deep imports from MUI icons are forbidden. Use `import { IconName } from '@mui/icons-material'` instead.",
-                        },
-                    ],
-                },
-            ],
-
             // Disable strict type-aware rules that weren't in old config
             '@typescript-eslint/no-unsafe-enum-comparison': 'off',
             '@typescript-eslint/consistent-type-definitions': 'off',
@@ -181,6 +164,40 @@ const projectConfig = [
                 {
                     props: true,
                     ignorePropertyModificationsFor: ['state', 'draft'],
+                },
+            ],
+        },
+    },
+    {
+        files: ['src/**/*.{ts,tsx}'],
+        ignores: ['src/shared/api/**'],
+        rules: {
+            'no-restricted-imports': [
+                'error',
+                {
+                    patterns: [
+                        // MUI deep imports restriction
+                        {
+                            group: [
+                                '@mui/*/*',
+                                '!@mui/material/colors',
+                                '!@mui/material/locale',
+                                '!@mui/icons-material/*',
+                            ],
+                            message:
+                                'Deep imports from MUI libraries are forbidden. Import only from the library root.',
+                        },
+                        {
+                            group: ['@mui/icons-material/*'],
+                            message:
+                                "Deep imports from MUI icons are forbidden. Use `import { IconName } from '@mui/icons-material'` instead.",
+                        },
+                        // Generated RTK Query API should not be imported directly, otherwise all enhancements are ignored
+                        {
+                            group: ['*.generated', '**/*.generated'],
+                            message: 'Do not import generated APIs directly. Use the enhanced API instead.',
+                        },
+                    ],
                 },
             ],
         },

@@ -8,8 +8,6 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useMatch, useNavigate } from 'react-router';
 import { AuthenticationRouter, CardErrorBoundary, initializeAuthenticationProd } from '@gridsuite/commons-ui';
-import { AppRouter } from 'app/router/AppRouter';
-import AppTopBar, { AppTopBarProps } from 'features/top-bar/components/app-top-bar';
 import {
     selectAuthenticationRouterError,
     selectShowAuthenticationRouterLogin,
@@ -19,7 +17,10 @@ import {
 import { getErrorMessage } from 'shared/lib/error';
 import { fetchIdpSettings } from 'shared/config/idp-settings';
 import { useAppParametersInvalidationListener } from 'features/app-parameters/hooks/use-app-parameters-invalidation-listener';
+import { useProcessInvalidationsListener } from 'features/process-config/hooks/use-process-invalidation-listener';
+import AppTopBar, { AppTopBarProps } from 'features/top-bar/components/AppTopBar';
 import { useAppDispatch, useAppSelector } from './store/store';
+import { AppRouter } from './router/AppRouter';
 
 function App() {
     const user = useAppSelector(selectUser);
@@ -71,7 +72,8 @@ function App() {
         // Note: dispatch and initialMatchSilentRenewCallbackUrl won't change
     }, [initialMatchSigninCallbackUrl, initialMatchSilentRenewCallbackUrl, dispatch]);
 
-    useAppParametersInvalidationListener();
+    useAppParametersInvalidationListener({ isAuthenticated: user !== null });
+    useProcessInvalidationsListener({ isAuthenticated: user !== null });
 
     return (
         <>
