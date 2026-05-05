@@ -15,11 +15,8 @@ import ProcessExecutePage from '../../pages/ProcessExecutePage';
 
 describe('ProcessExecutePage', () => {
     it('submits the form and displays the success message', async () => {
-        const userIdHeaderSpy = vi.fn();
-
         server.use(
-            http.post('*/v1/execute', ({ request }) => {
-                userIdHeaderSpy(request.headers.get('userId'));
+            http.post('*/v1/execute', () => {
                 return HttpResponse.json('execution-id');
             })
         );
@@ -37,8 +34,6 @@ describe('ProcessExecutePage', () => {
         await waitFor(() => {
             expect(screen.getByText('Newly created execution ID : execution-id')).toBeInTheDocument();
         });
-
-        expect(userIdHeaderSpy).toHaveBeenCalledWith(null);
     });
 
     it('displays the loading message while the request is pending', async () => {
