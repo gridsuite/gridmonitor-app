@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { monitorApi } from 'shared/api/monitor-api';
 import { studyApi } from 'shared/api/study-api';
 import { configApi } from 'shared/api/config-api';
+import { setCommonStore } from '@gridsuite/commons-ui';
 import { reducer } from './reducer';
 import { errorMiddleware } from './rtk-query-error-middleware';
 
@@ -28,6 +29,9 @@ export const setupStore = (preloadedState?: PreloadedState) =>
     });
 
 export const store = setupStore();
+setCommonStore({
+    getState: () => store.getState().authentication,
+});
 
 export type PreloadedState = Parameters<typeof reducer>[0];
 export type RootState = ReturnType<typeof reducer>;
