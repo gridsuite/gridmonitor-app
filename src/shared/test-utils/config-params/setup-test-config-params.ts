@@ -4,11 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { configureParams } from '../config/config-params';
 
-export function createTestConfigParams(): void {
-    configureParams({
-        appName: 'testAppName',
-        tokenSelector: () => 'test-token',
-    });
-}
+import { createTestConfigParams } from './create-test-config-params';
+// side-effect module to import before run test
+// It gives the same guarantee as importing app/config/app-config.ts in AppProvider.tsx before store/providers created
+createTestConfigParams();

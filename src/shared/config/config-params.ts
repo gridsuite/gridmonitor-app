@@ -43,8 +43,13 @@ export function getTokenSelector(): TokenSelector {
     return getConfigParams().tokenSelector;
 }
 
-export function getToken() {
-    return getConfigParams().tokenSelector(getConfigParams().store?.getState());
+export function getToken(): string | undefined {
+    const params = getConfigParams();
+    const state = params.store?.getState();
+    if (!state) {
+        return undefined;
+    }
+    return params.tokenSelector(state);
 }
 
 export function getAppName() {

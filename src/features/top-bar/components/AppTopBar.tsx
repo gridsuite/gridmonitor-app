@@ -28,7 +28,7 @@ import AppPackage from '../../../../package.json';
 import { SettingsTabs } from './AppNavBar';
 
 export type AppTopBarProps = {
-    user?: AuthenticationState['user'];
+    user: AuthenticationState['user'] | null;
     userManager: UserManagerState;
 };
 

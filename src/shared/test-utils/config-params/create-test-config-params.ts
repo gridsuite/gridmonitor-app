@@ -4,11 +4,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { GsLang, GsTheme } from '@gridsuite/commons-ui';
+import { configureParams } from '../../config/config-params';
 
-export type AppParameters = {
-    language: GsLang;
-    theme: GsTheme;
-};
-
-export type AppParametersKey = keyof AppParameters;
+export function createTestConfigParams(): void {
+    configureParams({
+        appName: 'testAppName',
+        tokenSelector: () => 'test-token',
+    });
+}
