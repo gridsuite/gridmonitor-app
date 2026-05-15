@@ -5,10 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useAppDispatch } from 'app/store/store';
+import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-import { connectConfigNotificationsWs } from 'shared/api/ws/config-ws';
 import { invalidateConfigQueries } from 'shared/api/config-api';
+import { connectConfigNotificationsWs } from 'shared/api/ws/config-ws';
+import type { AnyAppDispatch } from 'shared/store/state.type';
 
 type ConfigNotificationData = {
     headers?: {
@@ -16,8 +17,14 @@ type ConfigNotificationData = {
     };
 };
 
-export const useAppParametersInvalidationListener = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
-    const dispatch = useAppDispatch();
+type UseAppParametersInvalidationListenerProps = {
+    isAuthenticated: boolean;
+};
+
+export const useAppParametersInvalidationListener = ({
+    isAuthenticated,
+}: UseAppParametersInvalidationListenerProps) => {
+    const dispatch = useDispatch<AnyAppDispatch>();
 
     useEffect(() => {
         if (!isAuthenticated) {

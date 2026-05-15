@@ -6,9 +6,10 @@
  */
 
 import { useEffect } from 'react';
-import { useAppDispatch } from 'app/store/store';
+import { useDispatch } from 'react-redux';
 import { connectMonitorNotificationsWs } from 'shared/api/ws/monitor-ws';
 import { invalidateProcessExecutionsLists } from 'shared/api/monitor-api';
+import type { AnyAppDispatch } from 'shared/store/state.type';
 
 type MonitorNotificationData = {
     headers?: {
@@ -18,8 +19,12 @@ type MonitorNotificationData = {
     };
 };
 
-export const useProcessInvalidationsListener = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
-    const dispatch = useAppDispatch();
+type UseProcessInvalidationListenerProps = {
+    isAuthenticated: boolean;
+};
+
+export const useProcessInvalidationListener = ({ isAuthenticated }: UseProcessInvalidationListenerProps) => {
+    const dispatch = useDispatch<AnyAppDispatch>();
 
     useEffect(() => {
         if (!isAuthenticated) {

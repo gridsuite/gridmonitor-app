@@ -12,3 +12,8 @@ export type AuthenticationState = CommonStoreState & {
     authenticationRouterError: AuthenticationRouterErrorState | null;
     showAuthenticationRouterLogin: boolean;
 };
+
+// Liskov Substitution Principle (LSP) implemented in using the structural subtyping
+// The base type for state of authentication feature is StateWithAuthentication
+// The root state is a subtype that is usable in every selector of the authentication feature
+export type StateWithAuthentication = { authentication: AuthenticationState };

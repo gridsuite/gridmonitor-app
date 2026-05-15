@@ -7,7 +7,7 @@
 
 import { monitorGeneratedApi } from './monitor.generated';
 import { MonitorTags } from './monitor-base-api';
-import type { AppDispatch } from '../../../app/store/store';
+import { AnyAppDispatch } from '../../store/state.type';
 
 export const monitorApi = monitorGeneratedApi.enhanceEndpoints({
     endpoints: {
@@ -17,5 +17,5 @@ export const monitorApi = monitorGeneratedApi.enhanceEndpoints({
     },
 });
 
-export const invalidateProcessExecutionsLists = (dispatch: AppDispatch) =>
+export const invalidateProcessExecutionsLists = (dispatch: AnyAppDispatch) =>
     dispatch(monitorApi.util.invalidateTags([{ type: MonitorTags.ProcessExecutions, id: 'LIST' }]));

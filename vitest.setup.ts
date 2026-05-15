@@ -7,7 +7,12 @@
 
 import { vi } from 'vitest';
 import '@testing-library/jest-dom';
-import './src/test-utils/msw/setup-msw';
+import './src/shared/test-utils/msw/setup-msw';
+import { createTestConfigParams } from './src/shared/test-utils/create-test-config-params';
+
+// ConfigParams is a module-level singleton, so we need to create it only once here before any module side-effect
+// It gives the same guarantee as importing app/config/app-config.ts in AppProvider.tsx before store/providers created
+createTestConfigParams();
 
 // TODO: Temporary workaround for Vitest + MUI v6 incompatibilities in tests.
 // Avoids loading MUI during test execution.

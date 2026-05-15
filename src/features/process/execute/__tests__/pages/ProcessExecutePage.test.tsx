@@ -9,20 +9,16 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
-import { createTestContext } from 'test-utils/create-test-context';
-import { server } from 'test-utils/msw/server';
+import { server } from 'shared/test-utils/msw/server';
+import { createBaseContext } from '../../../../test-utils/create-base-context';
 import ProcessExecutePage from '../../pages/ProcessExecutePage';
 
 describe('ProcessExecutePage', () => {
     it('submits the form and displays the success message', async () => {
-        server.use(
-            http.post('*/v1/execute', () => {
-                return HttpResponse.json('execution-id');
-            })
-        );
+        server.use(http.post('*/v1/execute', () => HttpResponse.json('execution-id')));
 
         const user = userEvent.setup();
-        const { wrapper } = createTestContext();
+        const { wrapper } = createBaseContext();
 
         render(<ProcessExecutePage />, { wrapper });
 
@@ -48,7 +44,7 @@ describe('ProcessExecutePage', () => {
         );
 
         const user = userEvent.setup();
-        const { wrapper } = createTestContext();
+        const { wrapper } = createBaseContext();
 
         render(<ProcessExecutePage />, { wrapper });
 
@@ -64,7 +60,7 @@ describe('ProcessExecutePage', () => {
         server.use(http.post('*/v1/execute', () => HttpResponse.error()));
 
         const user = userEvent.setup();
-        const { wrapper } = createTestContext();
+        const { wrapper } = createBaseContext();
 
         render(<ProcessExecutePage />, { wrapper });
 
@@ -85,7 +81,7 @@ describe('ProcessExecutePage', () => {
 
         const user = userEvent.setup();
         render(<ProcessExecutePage />, {
-            wrapper: createTestContext().wrapper,
+            wrapper: createBaseContext().wrapper,
         });
 
         await user.click(screen.getByRole('button', { name: 'Execute process' }));
