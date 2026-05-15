@@ -9,7 +9,7 @@ import { ProcessConfigList } from '../components/ProcessConfigList';
 import { ProcessConfigListResult } from '../components/ProcessConfigListResult';
 import { useProcessConfigList } from '../hooks/use-process-config-list';
 
-export function ProcessConfigListPage() {
+function ProcessConfigListPage() {
     const { configs, expandedItems, isEmpty, isError, isLoading, onToggleExpanded } = useProcessConfigList();
 
     return (
@@ -25,3 +25,5 @@ export function ProcessConfigListPage() {
         </>
     );
 }
+
+export default ProcessConfigListPage;

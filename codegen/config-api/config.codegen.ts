@@ -9,13 +9,14 @@ import type { ConfigFile } from '@rtk-query/codegen-openapi';
 import { gatewayManagedHeaderOverrides } from '../gateway-managed-header-overrides';
 
 const config: ConfigFile = {
-    schemaFile: 'codegen/monitor-api/api-docs.json',
-    apiFile: 'shared/api/monitor-api/monitor-base-api.ts',
-    apiImport: 'monitorBaseApi',
-    outputFile: 'src/shared/api/monitor-api/monitor.generated.ts',
-    exportName: 'monitorGeneratedApi',
+    schemaFile: 'codegen/config-api/api-docs.json',
+    apiFile: 'shared/api/config-api/config-base-api.ts',
+    apiImport: 'configBaseApi',
+    outputFile: 'src/shared/api/config-api/config.generated.ts',
+    exportName: 'configGeneratedApi',
     hooks: true,
     useEnumType: true,
+    filterEndpoints: ['getParameter', 'updateParameter'],
     endpointOverrides: gatewayManagedHeaderOverrides,
 };
 

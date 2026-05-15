@@ -11,7 +11,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { server } from 'shared/test-utils/msw/server';
 import { createBaseContext } from '../../../../test-utils/create-base-context';
-import { ProcessExecutePage } from '../../pages/ProcessExecutePage';
+import ProcessExecutePage from '../../pages/ProcessExecutePage';
 
 describe('ProcessExecutePage', () => {
     it('submits the form and displays the success message', async () => {
@@ -24,7 +24,6 @@ describe('ProcessExecutePage', () => {
 
         await user.type(screen.getByLabelText('Case UUID'), 'case-uuid');
         await user.type(screen.getByLabelText('Process Config UUID'), 'process-config-uuid');
-        await user.type(screen.getByLabelText('User ID'), 'user-id');
 
         await user.click(screen.getByRole('button', { name: 'Execute process' }));
 
@@ -51,7 +50,6 @@ describe('ProcessExecutePage', () => {
 
         await user.type(screen.getByLabelText('Case UUID'), 'case-uuid');
         await user.type(screen.getByLabelText('Process Config UUID'), 'process-config-uuid');
-        await user.type(screen.getByLabelText('User ID'), 'user-id');
 
         await user.click(screen.getByRole('button', { name: 'Execute process' }));
 
@@ -68,7 +66,6 @@ describe('ProcessExecutePage', () => {
 
         await user.type(screen.getByLabelText('Case UUID'), 'case-uuid');
         await user.type(screen.getByLabelText('Process Config UUID'), 'process-config-uuid');
-        await user.type(screen.getByLabelText('User ID'), 'user-id');
 
         await user.click(screen.getByRole('button', { name: 'Execute process' }));
 
@@ -90,7 +87,7 @@ describe('ProcessExecutePage', () => {
         await user.click(screen.getByRole('button', { name: 'Execute process' }));
 
         const invalidFields = document.querySelectorAll('[aria-invalid="true"]');
-        expect(invalidFields.length).toBe(3);
+        expect(invalidFields.length).toBe(2);
 
         expect(spy).not.toHaveBeenCalled();
     });

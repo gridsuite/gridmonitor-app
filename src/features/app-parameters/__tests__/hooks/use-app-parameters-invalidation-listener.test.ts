@@ -10,7 +10,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import * as configWs from 'shared/api/ws/config-ws';
 import { connectConfigNotificationsWs } from 'shared/api/ws/config-ws';
 import { createBaseContext } from 'features/test-utils/create-base-context';
-import * as configApiModule from 'shared/api/config-api/config-api';
+import * as configApiModule from 'shared/api/config-api';
 import { useAppParametersInvalidationListener } from 'features/app-parameters/hooks/use-app-parameters-invalidation-listener';
 
 vi.spyOn(configWs, 'connectConfigNotificationsWs').mockImplementation(vi.fn());
@@ -39,6 +39,14 @@ describe('useAppParametersInvalidationListener', () => {
         renderHook(() => useAppParametersInvalidationListener({ isAuthenticated: true }), { wrapper });
 
         expect(connectConfigNotificationsWs).toHaveBeenCalled();
+    });
+
+    it('does not connect websocket when user is not authenticated', () => {
+        const { wrapper } = createBaseContext();
+
+        renderHook(() => useAppParametersInvalidationListener({ isAuthenticated: false }), { wrapper });
+
+        expect(connectConfigNotificationsWs).not.toHaveBeenCalled();
     });
 
     it('invalidates config when receiving a message', () => {

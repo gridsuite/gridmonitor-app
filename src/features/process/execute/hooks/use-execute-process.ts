@@ -13,7 +13,6 @@ import { useExecuteProcessMutation } from 'shared/api/monitor-api';
 const executeProcessSchema = z.object({
     caseUuid: z.string().trim().min(1, 'Case UUID is required'),
     processConfigUuid: z.string().trim().min(1, 'Process config UUID is required'),
-    userId: z.string().trim().min(1, 'User ID is required'),
     isDebug: z.boolean().optional(),
 });
 
@@ -22,7 +21,6 @@ export type ExecuteProcessFormValues = z.infer<typeof executeProcessSchema>;
 const defaultValues = {
     caseUuid: '',
     processConfigUuid: '',
-    userId: '',
     isDebug: false,
 } satisfies ExecuteProcessFormValues;
 

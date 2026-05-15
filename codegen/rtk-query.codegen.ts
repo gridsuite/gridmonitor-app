@@ -7,9 +7,15 @@
 
 import { generateEndpoints } from '@rtk-query/codegen-openapi';
 import monitorConfig from './monitor-api/monitor.codegen';
+import configConfig from './config-api/config.codegen';
+import studyConfig from './study-api/study.codegen';
+
+const configFile = [monitorConfig, studyConfig, configConfig];
 
 async function run() {
-    await generateEndpoints(monitorConfig);
+    for (const config of configFile) {
+        await generateEndpoints(config);
+    }
 }
 
 run().catch((err) => {

@@ -10,7 +10,7 @@ import { ProcessResultsAlert } from '../components/ProcessResultsAlert';
 import { ProcessResultsList } from '../components/ProcessResultsList';
 import { useProcessResults } from '../hooks/use-process-results';
 
-export function ProcessResultsPage() {
+function ProcessResultsPage() {
     const { executions, isEmpty, isError, isLoading } = useProcessResults();
 
     return (
@@ -27,3 +27,5 @@ export function ProcessResultsPage() {
         </>
     );
 }
+
+export default ProcessResultsPage;

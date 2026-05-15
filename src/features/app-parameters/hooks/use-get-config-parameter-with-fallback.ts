@@ -5,7 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useGetConfigParameterQuery } from 'shared/api/config-api/config-api';
+import { getAppName as getAppNameCommons } from '@gridsuite/commons-ui';
+import { useGetParameterQuery } from 'shared/api/config-api';
+import { getAppName } from 'shared/config/config-params';
 import { getInitialAppParametersState } from '../store/app-parameters.default';
 import { AppParameters, AppParametersKey } from '../store/app-parameters.type';
 
@@ -14,22 +16,25 @@ type UseGetConfigParameterWithFallbackProps<K extends AppParametersKey> = {
     isAuthenticated: boolean;
 };
 /**
- * This data is fetched from AppTopBar, which is displayed before user is authenticated
- * If user is not authenticated, or before the fetch request has responded, we use data from initialAppParametersState
+ * This data is fetched from AppTopBar, which is displayed before the user is authenticated,
+ * If the user is not authenticated, or before the fetch request has responded, we use data from initialAppParametersState
  */
 export const useGetConfigParameterWithFallback = <K extends AppParametersKey>({
     paramName,
     isAuthenticated,
 }: UseGetConfigParameterWithFallbackProps<K>) => {
-    return useGetConfigParameterQuery(paramName, {
-        skip: !isAuthenticated,
-        selectFromResult: (result) => {
-            const data = result.data?.value ?? getInitialAppParametersState()[paramName];
+    return useGetParameterQuery(
+        { name: paramName, appName: getAppNameCommons(getAppName(), paramName) },
+        {
+            skip: !isAuthenticated,
+            selectFromResult: (result) => {
+                const data = result.data?.value ?? getInitialAppParametersState()[paramName];
 
-            return {
-                ...result,
-                data: data as AppParameters[K],
-            };
-        },
-    });
+                return {
+                    ...result,
+                    data: data as AppParameters[K],
+                };
+            },
+        }
+    );
 };

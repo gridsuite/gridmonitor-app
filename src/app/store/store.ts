@@ -9,8 +9,8 @@ import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
 import { errorMiddleware } from 'shared/store/rtk-query-error-middleware';
 import { monitorApi } from 'shared/api/monitor-api';
-import { studyApi } from 'shared/api/study-api/study-api';
-import { configApi } from 'shared/api/config-api/config-api';
+import { studyApi } from 'shared/api/study-api';
+import { configApi } from 'shared/api/config-api';
 import { updateConfigParams } from 'shared/config/config-params';
 import { reducer } from './reducer';
 

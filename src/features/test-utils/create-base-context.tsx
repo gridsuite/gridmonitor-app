@@ -9,8 +9,8 @@ import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import { errorMiddleware } from 'shared/store/rtk-query-error-middleware';
 import { monitorApi } from 'shared/api/monitor-api';
-import { studyApi } from 'shared/api/study-api/study-api';
-import { configApi } from 'shared/api/config-api/config-api';
+import { studyApi } from 'shared/api/study-api';
+import { configApi } from 'shared/api/config-api';
 
 export const createBaseContext = () => {
     const store = configureStore({

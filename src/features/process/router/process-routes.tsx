@@ -5,10 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { lazy } from 'react';
 import { Navigate, Route } from 'react-router';
-import { ProcessExecutePage } from '../execute/pages/ProcessExecutePage';
-import { ProcessResultsPage } from '../results/pages/ProcessResultsPage';
-import { ProcessStepInfosPage } from '../results/pages/ProcessStepInfosPage';
+
+const ProcessExecutePage = lazy(() => import('../execute/pages/ProcessExecutePage'));
+const ProcessResultsPage = lazy(() => import('../results/pages/ProcessResultsPage'));
+const ProcessStepInfosPage = lazy(() => import('../results/pages/ProcessStepInfosPage'));
 
 export const processRoutes = (
     <Route path="process">

@@ -7,7 +7,7 @@
 
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-import { invalidateConfigQueries } from 'shared/api/config-api/config-api';
+import { invalidateConfigQueries } from 'shared/api/config-api';
 import { connectConfigNotificationsWs } from 'shared/api/ws/config-ws';
 import type { AnyAppDispatch } from 'shared/store/state.type';
 
