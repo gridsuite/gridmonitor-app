@@ -47,19 +47,19 @@ describe('useNotificationsUrlGenerator', () => {
     it('builds a secure websocket URL from an https base URI', () => {
         const { result } = renderHook(() => useNotificationsUrlGenerator());
 
-        const expecteConfigUrl = new URL(
+        const expectedConfigUrl = new URL(
             `wss://gridapp.test/${PREFIX_CONFIG_NOTIFICATION_WS}/notify?appName=${APP_NAME}`
         );
-        expecteConfigUrl.searchParams.set('access_token', 'token-123');
+        expectedConfigUrl.searchParams.set('access_token', 'token-123');
 
-        const expecteMonitorUrl = new URL(
+        const expectedMonitorUrl = new URL(
             `wss://gridapp.test/${PREFIX_MONITOR_NOTIFICATION_WS}/notify?appName=${APP_NAME}`
         );
-        expecteMonitorUrl.searchParams.set('access_token', 'token-123');
+        expectedMonitorUrl.searchParams.set('access_token', 'token-123');
 
         expect(result.current).toEqual({
-            [NotificationsUrlKeys.CONFIG]: expecteConfigUrl.toString(),
-            [NotificationsUrlKeys.MONITOR]: expecteMonitorUrl.toString(),
+            [NotificationsUrlKeys.CONFIG]: expectedConfigUrl.toString(),
+            [NotificationsUrlKeys.MONITOR]: expectedMonitorUrl.toString(),
         });
     });
 });
