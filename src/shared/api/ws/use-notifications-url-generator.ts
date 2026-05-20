@@ -12,6 +12,7 @@ import {
 import { APP_NAME } from 'app/config/app-config';
 import { selectUser } from 'features/authentication/store/authentication.selectors';
 import { useAppSelector } from 'app/store/store';
+import { useMemo } from 'react';
 
 const getUrlWithToken = (baseUrl: string, tokenId?: string) => {
     if (!tokenId) {
@@ -29,18 +30,21 @@ export const useNotificationsUrlGenerator = (): Partial<Record<NotificationsUrlK
 
     // return a mapColumns with NOTIFICATIONS_URL_KEYS and undefined value if URL is not yet buildable (tokenId)
     // it will be used to register listeners as soon as possible.
-    return {
-        [NotificationsUrlKeys.CONFIG]: getUrlWithToken(
-            `${webSocketBaseUrl}${PREFIX_CONFIG_NOTIFICATION_WS}/notify?${new URLSearchParams({
-                appName: APP_NAME,
-            })}`,
-            tokenId
-        ),
-        [NotificationsUrlKeys.MONITOR]: getUrlWithToken(
-            `${webSocketBaseUrl}${PREFIX_MONITOR_NOTIFICATION_WS}/notify?${new URLSearchParams({
-                appName: APP_NAME,
-            })}`,
-            tokenId
-        ),
-    };
+    return useMemo(
+        () => ({
+            [NotificationsUrlKeys.CONFIG]: getUrlWithToken(
+                `${webSocketBaseUrl}${PREFIX_CONFIG_NOTIFICATION_WS}/notify?${new URLSearchParams({
+                    appName: APP_NAME,
+                })}`,
+                tokenId
+            ),
+            [NotificationsUrlKeys.MONITOR]: getUrlWithToken(
+                `${webSocketBaseUrl}${PREFIX_MONITOR_NOTIFICATION_WS}/notify?${new URLSearchParams({
+                    appName: APP_NAME,
+                })}`,
+                tokenId
+            ),
+        }),
+        [tokenId, webSocketBaseUrl]
+    );
 };
