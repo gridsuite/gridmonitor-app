@@ -5,25 +5,28 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { getAppName } from '@gridsuite/commons-ui';
-import { APP_NAME } from 'app/config/app-config';
-import { useAppSelector } from 'app/store/store';
-import { selectUser } from 'features/authentication/store/authentication.selectors';
+import { getAppName as getAppNameCommons } from '@gridsuite/commons-ui';
 import { useGetParameterQuery } from 'shared/api/config-api';
+import { getAppName } from 'shared/config/config-params';
 import { getInitialAppParametersState } from '../store/app-parameters.default';
 import { AppParameters, AppParametersKey } from '../store/app-parameters.type';
 
+type UseGetConfigParameterWithFallbackProps<K extends AppParametersKey> = {
+    paramName: K;
+    isAuthenticated: boolean;
+};
 /**
- * This data is fetched from AppTopBar, which is displayed before user is authenticated
- * If user is not authenticated, or before the fetch request has responded, we use data from initialAppParametersState
+ * This data is fetched from AppTopBar, which is displayed before the user is authenticated,
+ * If the user is not authenticated, or before the fetch request has responded, we use data from initialAppParametersState
  */
-export const useGetConfigParameterWithFallback = <K extends AppParametersKey>(paramName: K) => {
-    const user = useAppSelector(selectUser);
-
+export const useGetConfigParameterWithFallback = <K extends AppParametersKey>({
+    paramName,
+    isAuthenticated,
+}: UseGetConfigParameterWithFallbackProps<K>) => {
     return useGetParameterQuery(
-        { name: paramName, appName: getAppName(APP_NAME, paramName) },
+        { name: paramName, appName: getAppNameCommons(getAppName(), paramName) },
         {
-            skip: !user,
+            skip: !isAuthenticated,
             selectFromResult: (result) => {
                 const data = result.data?.value ?? getInitialAppParametersState()[paramName];
 

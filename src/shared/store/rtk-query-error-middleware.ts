@@ -5,9 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Middleware, isRejectedWithValue } from '@reduxjs/toolkit';
-import { getErrorMessage } from 'shared/lib/error';
-import { snackRef } from 'shared/lib/snack-ref';
+import { isRejectedWithValue, Middleware } from '@reduxjs/toolkit';
+import { getErrorMessage } from '../lib/error';
+import { snackRef } from '../lib/snack-ref';
 
 type RtkQueryRejectedMetadataArgs = {
     endpointName?: string;

@@ -6,7 +6,8 @@
  */
 
 import ReconnectingWebSocket from 'reconnecting-websocket';
-import { buildWebSocketBaseUrl, getToken } from './ws.utils';
+import { buildWebSocketBaseUrl } from './ws.utils';
+import { getToken } from '../../config/config-params';
 
 export type CreateWsOptions = {
     path: string;

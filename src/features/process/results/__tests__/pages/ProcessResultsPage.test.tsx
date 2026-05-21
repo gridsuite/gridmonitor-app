@@ -9,8 +9,8 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import { describe, expect, it } from 'vitest';
 import { http, HttpResponse } from 'msw';
-import { createTestContext } from 'test-utils/create-test-context';
-import { server } from 'test-utils/msw/server';
+import { createBaseContext } from 'features/test-utils/create-base-context';
+import { server } from 'shared/test-utils/msw/server';
 import ProcessResultsPage from '../../pages/ProcessResultsPage';
 import { PROCESS_PATHS } from '../../../router/process-paths';
 
@@ -28,7 +28,7 @@ describe('ProcessResultsPage', () => {
             )
         );
 
-        const { wrapper } = createTestContext();
+        const { wrapper } = createBaseContext();
 
         render(
             <MemoryRouter>
@@ -61,7 +61,7 @@ describe('ProcessResultsPage', () => {
             })
         );
 
-        const { wrapper } = createTestContext();
+        const { wrapper } = createBaseContext();
 
         render(
             <MemoryRouter>
@@ -76,7 +76,7 @@ describe('ProcessResultsPage', () => {
     it('displays the error state', async () => {
         server.use(http.get('*/v1/executions', () => HttpResponse.error()));
 
-        const { wrapper } = createTestContext();
+        const { wrapper } = createBaseContext();
 
         render(
             <MemoryRouter>

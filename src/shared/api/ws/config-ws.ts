@@ -5,8 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { APP_NAME } from 'app/config/app-config';
 import { createReconnectingWebSocket } from './ws-client';
+import { getAppName } from '../../config/config-params';
 
 const PREFIX_CONFIG_NOTIFICATION_WS = `${import.meta.env.VITE_WS_GATEWAY}/config-notification`;
 
@@ -14,7 +14,7 @@ export function connectConfigNotificationsWs() {
     return createReconnectingWebSocket({
         path: `${PREFIX_CONFIG_NOTIFICATION_WS}/notify`,
         queryParams: {
-            appName: APP_NAME,
+            appName: getAppName(),
         },
         name: 'config-notifications',
     });

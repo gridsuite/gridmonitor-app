@@ -4,15 +4,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import { useMemo } from 'react';
 import {
     NotificationsUrlKeys,
     PREFIX_CONFIG_NOTIFICATION_WS,
     PREFIX_MONITOR_NOTIFICATION_WS,
 } from '@gridsuite/commons-ui';
-import { APP_NAME } from 'app/config/app-config';
-import { selectUser } from 'features/authentication/store/authentication.selectors';
-import { useAppSelector } from 'app/store/store';
-import { useMemo } from 'react';
+import { getAppName, getToken } from '../../config/config-params';
+import { buildWebSocketBaseUrl } from './ws.utils';
 
 const getUrlWithToken = (baseUrl: string, tokenId?: string) => {
     if (!tokenId) {
@@ -25,8 +24,8 @@ const getUrlWithToken = (baseUrl: string, tokenId?: string) => {
 
 export const useNotificationsUrlGenerator = (): Partial<Record<NotificationsUrlKeys, string | undefined>> => {
     // The websocket API doesn't allow relative urls
-    const webSocketBaseUrl = document.baseURI.replace(/^http:\/\//, 'ws://').replace(/^https:\/\//, 'wss://');
-    const tokenId = useAppSelector(selectUser)?.id_token;
+    const webSocketBaseUrl = buildWebSocketBaseUrl();
+    const tokenId = getToken();
 
     // return a mapColumns with NOTIFICATIONS_URL_KEYS and undefined value if URL is not yet buildable (tokenId)
     // it will be used to register listeners as soon as possible.
@@ -34,13 +33,13 @@ export const useNotificationsUrlGenerator = (): Partial<Record<NotificationsUrlK
         () => ({
             [NotificationsUrlKeys.CONFIG]: getUrlWithToken(
                 `${webSocketBaseUrl}${PREFIX_CONFIG_NOTIFICATION_WS}/notify?${new URLSearchParams({
-                    appName: APP_NAME,
+                    appName: getAppName(),
                 })}`,
                 tokenId
             ),
             [NotificationsUrlKeys.MONITOR]: getUrlWithToken(
                 `${webSocketBaseUrl}${PREFIX_MONITOR_NOTIFICATION_WS}/notify?${new URLSearchParams({
-                    appName: APP_NAME,
+                    appName: getAppName(),
                 })}`,
                 tokenId
             ),

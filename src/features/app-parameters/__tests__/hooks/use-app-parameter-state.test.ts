@@ -5,20 +5,20 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { renderHook, act, waitFor } from '@testing-library/react';
-import { describe, it, expect, beforeEach } from 'vitest';
+import { act, renderHook, waitFor } from '@testing-library/react';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { http, HttpResponse } from 'msw';
-import { server } from 'test-utils/msw/server';
-import { createTestContext } from 'test-utils/create-test-context';
+import { DARK_THEME, LIGHT_THEME, PARAM_THEME } from '@gridsuite/commons-ui';
+import { server } from 'shared/test-utils/msw/server';
+import { createBaseContext } from 'features/test-utils/create-base-context';
 import { useAppParameterState } from 'features/app-parameters/hooks/use-app-parameter-state';
-import { DARK_THEME, LIGHT_THEME } from '@gridsuite/commons-ui';
 
 describe('useAppParameterState', () => {
     beforeEach(() => {
         server.use(
             http.get('*/config/v1/applications/*/parameters/theme', () =>
                 HttpResponse.json({
-                    name: 'theme',
+                    name: PARAM_THEME,
                     value: DARK_THEME,
                 })
             )
@@ -34,8 +34,10 @@ describe('useAppParameterState', () => {
                 return HttpResponse.json({});
             })
         );
-        const { wrapper } = createTestContext();
-        const { result } = renderHook(() => useAppParameterState('theme'), { wrapper });
+        const { wrapper } = createBaseContext();
+        const { result } = renderHook(() => useAppParameterState({ paramName: PARAM_THEME, isAuthenticated: true }), {
+            wrapper,
+        });
 
         // check state before updating
         await waitFor(() => {
@@ -74,8 +76,10 @@ describe('useAppParameterState', () => {
             })
         );
 
-        const { wrapper } = createTestContext();
-        const { result } = renderHook(() => useAppParameterState('theme'), { wrapper });
+        const { wrapper } = createBaseContext();
+        const { result } = renderHook(() => useAppParameterState({ paramName: PARAM_THEME, isAuthenticated: true }), {
+            wrapper,
+        });
 
         // check state before updating
         await waitFor(() => {

@@ -4,5 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import { configureParams, TokenSelector } from 'shared/config/config-params';
+import { selectToken } from 'features/authentication/store/authentication.selectors';
 
-export const APP_NAME = 'monitor';
+const APP_NAME = 'monitor';
+configureParams({ appName: APP_NAME, tokenSelector: selectToken as TokenSelector });
