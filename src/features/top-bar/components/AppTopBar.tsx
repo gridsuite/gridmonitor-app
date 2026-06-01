@@ -20,18 +20,18 @@ import { APP_NAME } from 'app/config/app-config';
 import PowsyblLogo from 'assets/images/powsybl_logo.svg?react';
 import { useAppParameterState } from 'features/app-parameters/hooks/use-app-parameter-state';
 import { useAppDispatch } from 'app/store/store';
-import { AuthenticationState } from 'features/authentication/store/authentication.type';
 import { fetchVersion } from 'shared/config/version';
+import type { UserProfile } from 'oidc-client-ts';
 import { getServersInfos } from '../api/get-servers-infos';
 import AppPackage from '../../../../package.json';
 import { SettingsTabs } from './AppNavBar';
 
 export type AppTopBarProps = {
-    user?: AuthenticationState['user'];
+    userProfile?: UserProfile;
     userManager: UserManagerState;
 };
 
-function AppTopBar({ user, userManager }: Readonly<AppTopBarProps>) {
+function AppTopBar({ userProfile, userManager }: Readonly<AppTopBarProps>) {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const [appsAndUrls, setAppsAndUrls] = useState<Metadata[]>([]);
@@ -39,7 +39,7 @@ function AppTopBar({ user, userManager }: Readonly<AppTopBarProps>) {
     const [languageLocal, handleChangeLanguage] = useAppParameterState(PARAM_LANGUAGE);
 
     useEffect(() => {
-        if (user !== null) {
+        if (userProfile !== null) {
             fetchAppsMetadata()
                 .then((metadata) => {
                     setAppsAndUrls(metadata);
@@ -48,7 +48,7 @@ function AppTopBar({ user, userManager }: Readonly<AppTopBarProps>) {
                     console.error(error);
                 });
         }
-    }, [user]);
+    }, [userProfile]);
 
     return (
         <TopBar
@@ -59,7 +59,7 @@ function AppTopBar({ user, userManager }: Readonly<AppTopBarProps>) {
             appLicense={AppPackage.license}
             onLogoutClick={() => logout(dispatch, userManager.instance)}
             onLogoClick={() => navigate('/', { replace: true })}
-            user={user ?? undefined}
+            userProfile={userProfile ?? undefined}
             appsAndUrls={appsAndUrls}
             globalVersionPromise={() => fetchVersion().then((res) => res?.deployVersion ?? 'unknown')}
             additionalModulesPromise={getServersInfos}
