@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { getAppName } from '@gridsuite/commons-ui';
+import { PARAM_DEVELOPER_MODE, getAppName } from '@gridsuite/commons-ui';
 import { APP_NAME } from 'app/config/app-config';
 import { useAppSelector } from 'app/store/store';
 import { selectUser } from 'features/authentication/store/authentication.selectors';
@@ -25,11 +25,16 @@ export const useGetConfigParameterWithFallback = <K extends AppParametersKey>(pa
         {
             skip: !user,
             selectFromResult: (result) => {
-                const data = result.data?.value ?? getInitialAppParametersState()[paramName];
+                const rawData = result.data?.value ?? getInitialAppParametersState()[paramName];
+                let data: AppParameters[K] = rawData as AppParameters[K];
+
+                if (paramName === PARAM_DEVELOPER_MODE && typeof rawData === 'string') {
+                    data = (rawData === 'true') as AppParameters[K];
+                }
 
                 return {
                     ...result,
-                    data: data as AppParameters[K],
+                    data,
                 };
             },
         }

@@ -10,6 +10,7 @@ import { APP_NAME } from 'app/config/app-config';
 
 export const LOCAL_STORAGE_THEME_KEY = `${APP_NAME}_THEME`.toUpperCase();
 const LOCAL_STORAGE_LANGUAGE_KEY = `${APP_NAME}_LANGUAGE`.toUpperCase();
+const LOCAL_STORAGE_DEVELOPER_MODE_KEY = `${APP_NAME}_DEVELOPER_MODE`.toUpperCase();
 
 export function getLocalStorageTheme() {
     return (localStorage.getItem(LOCAL_STORAGE_THEME_KEY) as GsTheme) || DARK_THEME;
@@ -25,4 +26,12 @@ export function getLocalStorageLanguage() {
 
 export function saveLocalStorageLanguage(language: GsLang): void {
     localStorage.setItem(LOCAL_STORAGE_LANGUAGE_KEY, language);
+}
+
+export function getLocalStorageDeveloperMode(): boolean {
+    return localStorage.getItem(LOCAL_STORAGE_DEVELOPER_MODE_KEY) === 'true';
+}
+
+export function saveLocalStorageDeveloperMode(isDeveloperMode: boolean): void {
+    localStorage.setItem(LOCAL_STORAGE_DEVELOPER_MODE_KEY, String(isDeveloperMode));
 }

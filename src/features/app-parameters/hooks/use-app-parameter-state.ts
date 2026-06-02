@@ -6,7 +6,7 @@
  */
 
 import { AppParameters, AppParametersKey } from 'features/app-parameters/store/app-parameters.type';
-import { getAppName } from '@gridsuite/commons-ui';
+import { PARAM_DEVELOPER_MODE, getAppName } from '@gridsuite/commons-ui';
 import { useUpdateParameterMutation } from 'shared/api/config-api';
 import { useGetConfigParameterWithFallback } from './use-get-config-parameter-with-fallback';
 import { APP_NAME } from '../../../app/config/app-config';
@@ -19,7 +19,7 @@ export function useAppParameterState<K extends AppParametersKey>(paramName: K) {
         await updateConfigParameter({
             appName: getAppName(APP_NAME, paramName),
             name: paramName,
-            value: newValue,
+            value: paramName === PARAM_DEVELOPER_MODE ? String(newValue) : (newValue as string),
         }).unwrap();
     };
 

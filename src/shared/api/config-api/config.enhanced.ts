@@ -5,9 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { GsLang, GsTheme, PARAM_LANGUAGE, PARAM_THEME } from '@gridsuite/commons-ui';
+import { GsLang, GsTheme, PARAM_LANGUAGE, PARAM_THEME, PARAM_DEVELOPER_MODE } from '@gridsuite/commons-ui';
 import type { AppDispatch } from 'app/store/store';
 import {
+    saveLocalStorageDeveloperMode,
     saveLocalStorageLanguage,
     saveLocalStorageTheme,
 } from 'features/app-parameters/store/app-parameters.local-storage';
@@ -28,6 +29,9 @@ export const configApi = configGeneratedApi.enhanceEndpoints({
                             break;
                         case PARAM_THEME:
                             saveLocalStorageTheme(data.value as GsTheme); // TODO: fix with actual check ?
+                            break;
+                        case PARAM_DEVELOPER_MODE:
+                            saveLocalStorageDeveloperMode(data.value === 'true');
                             break;
                         default:
                             // should not happen
