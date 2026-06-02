@@ -27,7 +27,7 @@ import AppPackage from '../../../../package.json';
 import { SettingsTabs } from './AppNavBar';
 
 export type AppTopBarProps = {
-    userProfile?: UserProfile;
+    userProfile: UserProfile | null;
     userManager: UserManagerState;
 };
 
