@@ -37,7 +37,7 @@ describe('useNotificationsUrlGenerator', () => {
         });
     });
 
-    it('builds a secure websocket URL from an https base URI', () => {
+    it('builds non-secure websocket URL from an https base URI', () => {
         Object.defineProperty(document, 'baseURI', {
             configurable: true,
             value: 'http://gridapp.test/',

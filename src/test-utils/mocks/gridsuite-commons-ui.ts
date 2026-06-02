@@ -29,6 +29,7 @@ export const USER_VALIDATION_ERROR = 'USER_VALIDATION_ERROR';
 export const RESET_AUTHENTICATION_ROUTER_ERROR = 'RESET_AUTHENTICATION_ROUTER_ERROR';
 export const SHOW_AUTH_INFO_LOGIN = 'SHOW_AUTH_INFO_LOGIN';
 export const useNotificationsListener = vi.fn();
+export const setCommonStore = vi.fn();
 
 export enum NotificationsUrlKeys {
     CONFIG = 'CONFIG',
