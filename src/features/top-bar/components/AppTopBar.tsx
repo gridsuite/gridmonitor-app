@@ -72,7 +72,7 @@ function AppTopBar({ user, userManager }: Readonly<AppTopBarProps>) {
             onLanguageClick={handleChangeLanguage}
             language={languageLocal}
         >
-            {user !== null && <SettingsTabs />}
+            {user != null && <SettingsTabs />}
         </TopBar>
     );
 }
