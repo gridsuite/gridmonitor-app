@@ -12,16 +12,11 @@ import {
 } from '@gridsuite/commons-ui';
 import { renderHook } from '@testing-library/react';
 import { APP_NAME } from 'app/config/app-config';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { useNotificationsUrlGenerator } from 'shared/api/ws/use-notifications-url-generator';
-
-vi.mock('app/store/store', () => ({
-    useAppSelector: vi.fn(),
-}));
 
 describe('useNotificationsUrlGenerator', () => {
     beforeEach(() => {
-        vi.clearAllMocks();
         Object.defineProperty(document, 'baseURI', {
             configurable: true,
             value: 'https://gridapp.test/',
@@ -31,19 +26,19 @@ describe('useNotificationsUrlGenerator', () => {
     it('builds a secure websocket URL from an https base URI', () => {
         const { result } = renderHook(() => useNotificationsUrlGenerator());
         const params = new URLSearchParams({ appName: APP_NAME });
+
         expect(result.current).toEqual({
             [NotificationsUrlKeys.CONFIG]: `wss://gridapp.test/${PREFIX_CONFIG_NOTIFICATION_WS}/notify?${params}`,
             [NotificationsUrlKeys.MONITOR]: `wss://gridapp.test/${PREFIX_MONITOR_NOTIFICATION_WS}/notify?${params}`,
         });
     });
 
-    it('builds non-secure websocket URL from an https base URI', () => {
+    it('builds a non-secure websocket URL from an http base URI', () => {
         Object.defineProperty(document, 'baseURI', {
             configurable: true,
             value: 'http://gridapp.test/',
         });
         const { result } = renderHook(() => useNotificationsUrlGenerator());
-
         const params = new URLSearchParams({ appName: APP_NAME });
 
         expect(result.current).toEqual({
