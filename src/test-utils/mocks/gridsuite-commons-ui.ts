@@ -37,3 +37,23 @@ export enum NotificationsUrlKeys {
 }
 export const PREFIX_CONFIG_NOTIFICATION_WS = `${import.meta.env.VITE_WS_GATEWAY}/config-notification`;
 export const PREFIX_MONITOR_NOTIFICATION_WS = `${import.meta.env.VITE_WS_GATEWAY}/monitor-notification`;
+
+type CommonStoreState = {
+    user?: {
+        id_token?: string | null;
+    } | null;
+};
+
+type CommonStore = {
+    getState(): CommonStoreState;
+};
+
+let commonStore: CommonStore | undefined;
+
+export function setCommonStore(store: CommonStore): void {
+    commonStore = store;
+}
+
+export function getUserToken() {
+    return commonStore?.getState().user?.id_token;
+}
