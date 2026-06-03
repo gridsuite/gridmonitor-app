@@ -29,7 +29,6 @@ export const USER_VALIDATION_ERROR = 'USER_VALIDATION_ERROR';
 export const RESET_AUTHENTICATION_ROUTER_ERROR = 'RESET_AUTHENTICATION_ROUTER_ERROR';
 export const SHOW_AUTH_INFO_LOGIN = 'SHOW_AUTH_INFO_LOGIN';
 export const useNotificationsListener = vi.fn();
-export const setCommonStore = vi.fn();
 
 export enum NotificationsUrlKeys {
     CONFIG = 'CONFIG',
@@ -38,14 +37,8 @@ export enum NotificationsUrlKeys {
 export const PREFIX_CONFIG_NOTIFICATION_WS = `${import.meta.env.VITE_WS_GATEWAY}/config-notification`;
 export const PREFIX_MONITOR_NOTIFICATION_WS = `${import.meta.env.VITE_WS_GATEWAY}/monitor-notification`;
 
-type CommonStoreState = {
-    user?: {
-        id_token?: string | null;
-    } | null;
-};
-
 type CommonStore = {
-    getState(): CommonStoreState;
+    getState: () => { user?: { id_token?: string } | null };
 };
 
 let commonStore: CommonStore | undefined;
@@ -54,6 +47,6 @@ export function setCommonStore(store: CommonStore): void {
     commonStore = store;
 }
 
-export function getUserToken() {
+export function getUserToken(): string | undefined {
     return commonStore?.getState().user?.id_token;
 }
