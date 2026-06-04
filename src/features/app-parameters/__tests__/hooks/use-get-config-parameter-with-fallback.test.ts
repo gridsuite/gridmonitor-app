@@ -12,10 +12,7 @@ import { http, HttpResponse } from 'msw';
 import { useGetConfigParameterWithFallback } from 'features/app-parameters/hooks/use-get-config-parameter-with-fallback';
 import { server } from 'test-utils/msw/server';
 import { createTestContext } from 'test-utils/create-test-context';
-import {
-    saveLocalStorageDeveloperMode,
-    saveLocalStorageTheme,
-} from 'features/app-parameters/store/app-parameters.local-storage';
+import { saveLocalStorageTheme } from 'features/app-parameters/store/app-parameters.local-storage';
 
 beforeEach(() => localStorage.clear());
 
@@ -69,7 +66,7 @@ describe('useGetConfigParameterWithFallbackForDeveloperMode', () => {
             http.get('*/config/v1/applications/monitor/parameters/isDeveloperMode', () =>
                 HttpResponse.json({
                     name: PARAM_DEVELOPER_MODE,
-                    value: true,
+                    value: 'true',
                 })
             )
         );
@@ -80,17 +77,6 @@ describe('useGetConfigParameterWithFallbackForDeveloperMode', () => {
 
         await waitFor(() => {
             expect(result.current.isSuccess).toBe(true);
-        });
-
-        expect(result.current.data).toBe(true);
-    });
-
-    it('hook returns localstorage if no user in store', async () => {
-        const { wrapper } = createTestContext({ authentication: { user: null } });
-        saveLocalStorageDeveloperMode(true);
-
-        const { result } = renderHook(() => useGetConfigParameterWithFallback(PARAM_DEVELOPER_MODE), {
-            wrapper,
         });
 
         expect(result.current.data).toBe(true);

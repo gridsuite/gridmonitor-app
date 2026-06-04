@@ -8,18 +8,18 @@
 import { GsLang, GsTheme, PARAM_LANGUAGE, PARAM_THEME, PARAM_DEVELOPER_MODE } from '@gridsuite/commons-ui';
 import type { AppDispatch } from 'app/store/store';
 import {
-    saveLocalStorageDeveloperMode,
     saveLocalStorageLanguage,
     saveLocalStorageTheme,
 } from 'features/app-parameters/store/app-parameters.local-storage';
 import { ConfigTags } from './config-base-api';
 import { configGeneratedApi } from './config.generated';
+import { setDeveloperMode } from '../../../features/app-parameters/store/app-parameters.slice';
 
 export const configApi = configGeneratedApi.enhanceEndpoints({
     endpoints: {
         getParameter: {
             providesTags: (result, error, params) => [{ type: ConfigTags.Parameters, id: params.name }],
-            async onQueryStarted(arg, { queryFulfilled }) {
+            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
                 try {
                     const { data } = await queryFulfilled;
 
@@ -31,7 +31,7 @@ export const configApi = configGeneratedApi.enhanceEndpoints({
                             saveLocalStorageTheme(data.value as GsTheme); // TODO: fix with actual check ?
                             break;
                         case PARAM_DEVELOPER_MODE:
-                            saveLocalStorageDeveloperMode(data.value === 'true');
+                            dispatch(setDeveloperMode(data.value === 'true'));
                             break;
                         default:
                             // should not happen

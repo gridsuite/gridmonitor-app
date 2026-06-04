@@ -19,13 +19,17 @@ import { AppParameters, AppParametersKey } from '../store/app-parameters.type';
  */
 export const useGetConfigParameterWithFallback = <K extends AppParametersKey>(paramName: K) => {
     const user = useAppSelector(selectUser);
+    const isDeveloperMode = useAppSelector((state) => state.appParameters.isDeveloperMode);
 
     return useGetParameterQuery(
         { name: paramName, appName: getAppName(APP_NAME, paramName) },
         {
             skip: !user,
             selectFromResult: (result) => {
-                const rawData = result.data?.value ?? getInitialAppParametersState()[paramName];
+                const fallback =
+                    paramName === PARAM_DEVELOPER_MODE ? isDeveloperMode : getInitialAppParametersState()[paramName];
+
+                const rawData = result.data?.value ?? fallback;
                 let data: AppParameters[K] = rawData as AppParameters[K];
 
                 if (paramName === PARAM_DEVELOPER_MODE && typeof rawData === 'string') {
