@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { GsLang, GsTheme, PARAM_LANGUAGE, PARAM_THEME, PARAM_DEVELOPER_MODE } from '@gridsuite/commons-ui';
+import { GsLang, GsTheme, PARAM_LANGUAGE, PARAM_THEME } from '@gridsuite/commons-ui';
 import type { AppDispatch } from 'app/store/store';
 import {
     saveLocalStorageLanguage,
@@ -13,13 +13,12 @@ import {
 } from 'features/app-parameters/store/app-parameters.local-storage';
 import { ConfigTags } from './config-base-api';
 import { configGeneratedApi } from './config.generated';
-import { setDeveloperMode } from '../../../features/app-parameters/store/app-parameters.slice';
 
 export const configApi = configGeneratedApi.enhanceEndpoints({
     endpoints: {
         getParameter: {
             providesTags: (result, error, params) => [{ type: ConfigTags.Parameters, id: params.name }],
-            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+            async onQueryStarted(arg, { queryFulfilled }) {
                 try {
                     const { data } = await queryFulfilled;
 
@@ -29,9 +28,6 @@ export const configApi = configGeneratedApi.enhanceEndpoints({
                             break;
                         case PARAM_THEME:
                             saveLocalStorageTheme(data.value as GsTheme); // TODO: fix with actual check ?
-                            break;
-                        case PARAM_DEVELOPER_MODE:
-                            dispatch(setDeveloperMode(data.value === 'true'));
                             break;
                         default:
                             // should not happen

@@ -82,7 +82,7 @@ describe('useGetConfigParameterWithFallbackForDeveloperMode', () => {
         expect(result.current.data).toBe(true);
     });
 
-    it('hook returns fallback if no user in store and nothing in local storage', async () => {
+    it('hook returns defaults if no user in store', async () => {
         const { wrapper } = createTestContext({ authentication: { user: null } });
 
         const { result } = renderHook(() => useGetConfigParameterWithFallback(PARAM_DEVELOPER_MODE), {
