@@ -5,13 +5,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { PARAM_DEVELOPER_MODE, getAppName } from '@gridsuite/commons-ui';
+import { getAppName } from '@gridsuite/commons-ui';
 import { APP_NAME } from 'app/config/app-config';
 import { useAppSelector } from 'app/store/store';
 import { selectUser } from 'features/authentication/store/authentication.selectors';
 import { useGetParameterQuery } from 'shared/api/config-api';
 import { getInitialAppParametersState } from '../store/app-parameters.default';
 import { AppParameters, AppParametersKey } from '../store/app-parameters.type';
+import { mapRawParamValue } from '../../../shared/api/config-api/config.mapping';
 
 /**
  * This data is fetched from AppTopBar, which is displayed before user is authenticated
@@ -26,11 +27,7 @@ export const useGetConfigParameterWithFallback = <K extends AppParametersKey>(pa
             skip: !user,
             selectFromResult: (result) => {
                 const rawData = result.data?.value ?? getInitialAppParametersState()[paramName];
-                let data: AppParameters[K] = rawData as AppParameters[K];
-
-                if (paramName === PARAM_DEVELOPER_MODE && typeof rawData === 'string') {
-                    data = (rawData === 'true') as AppParameters[K];
-                }
+                const data: AppParameters[K] = mapRawParamValue(paramName, rawData);
 
                 return {
                     ...result,
