@@ -21,13 +21,13 @@ import PowsyblLogo from 'assets/images/powsybl_logo.svg?react';
 import { useAppParameterState } from 'features/app-parameters/hooks/use-app-parameter-state';
 import { useAppDispatch } from 'app/store/store';
 import { fetchVersion } from 'shared/config/version';
-import type { UserProfile } from 'oidc-client-ts';
 import { getServersInfos } from '../api/get-servers-infos';
 import AppPackage from '../../../../package.json';
 import { SettingsTabs } from './AppNavBar';
+import { AuthenticationState } from '../../authentication/store/authentication.type';
 
 export type AppTopBarProps = {
-    userProfile: UserProfile | null;
+    userProfile: NonNullable<AuthenticationState['user']>['profile'] | null;
     userManager: UserManagerState;
 };
 
