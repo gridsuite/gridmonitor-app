@@ -6,7 +6,7 @@
  */
 
 import { Alert, Stack } from '@mui/material';
-import type { ExecuteProcessApiResponse } from '../../../../shared/api/monitor-api';
+import type { ExecuteProcessApiResponse } from 'shared/api/monitor-api';
 
 type ExecuteProcessResultProps = {
     isLoading?: boolean;

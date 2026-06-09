@@ -5,4 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export type { AppParameters, AppParametersKey } from 'shared/api/config-api/config-api.type';
+import { createTestConfigParams } from './create-test-config-params';
+// side-effect module to import before run test
+// It gives the same guarantee as importing app/config/app-config.ts in AppProvider.tsx before store/providers created
+createTestConfigParams();

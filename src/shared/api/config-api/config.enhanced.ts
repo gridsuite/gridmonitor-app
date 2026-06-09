@@ -6,12 +6,9 @@
  */
 
 import { GsLang, GsTheme, PARAM_LANGUAGE, PARAM_THEME } from '@gridsuite/commons-ui';
-import type { AppDispatch } from 'app/store/store';
-import {
-    saveLocalStorageLanguage,
-    saveLocalStorageTheme,
-} from 'features/app-parameters/store/app-parameters.local-storage';
+import { saveLocalStorageLanguage, saveLocalStorageTheme } from './config-api.local-storage';
 import { ConfigTags } from './config-base-api';
+import { AnyAppDispatch } from '../../store/state.type';
 import { configGeneratedApi } from './config.generated';
 
 export const configApi = configGeneratedApi.enhanceEndpoints({
@@ -62,7 +59,7 @@ export const configApi = configGeneratedApi.enhanceEndpoints({
     },
 });
 
-export const invalidateConfigQueries = (dispatch: AppDispatch, paramName: string) => {
+export const invalidateConfigQueries = (dispatch: AnyAppDispatch, paramName: string) => {
     dispatch(configApi.util.invalidateTags([{ type: ConfigTags.Parameters, id: paramName }]));
 };
 

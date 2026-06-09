@@ -5,19 +5,27 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { getAppName as getAppNameCommons } from '@gridsuite/commons-ui';
 import { AppParameters, AppParametersKey } from 'features/app-parameters/store/app-parameters.type';
-import { getAppName } from '@gridsuite/commons-ui';
+import { getAppName } from 'shared/config/config-params';
 import { useUpdateParameterMutation } from 'shared/api/config-api';
 import { useGetConfigParameterWithFallback } from './use-get-config-parameter-with-fallback';
-import { APP_NAME } from '../../../app/config/app-config';
 
-export function useAppParameterState<K extends AppParametersKey>(paramName: K) {
-    const { data: paramValue } = useGetConfigParameterWithFallback(paramName);
+type UseAppParameterStateProps<K extends AppParametersKey> = {
+    paramName: K;
+    isAuthenticated: boolean;
+};
+
+export function useAppParameterState<K extends AppParametersKey>({
+    paramName,
+    isAuthenticated,
+}: UseAppParameterStateProps<K>) {
+    const { data: paramValue } = useGetConfigParameterWithFallback({ paramName, isAuthenticated });
     const [updateConfigParameter] = useUpdateParameterMutation();
 
     const setValue = async (newValue: AppParameters[K]) => {
         await updateConfigParameter({
-            appName: getAppName(APP_NAME, paramName),
+            appName: getAppNameCommons(getAppName(), paramName),
             name: paramName,
             value: newValue,
         }).unwrap();

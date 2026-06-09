@@ -9,8 +9,8 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 import { http, HttpResponse } from 'msw';
-import { createTestContext } from 'test-utils/create-test-context';
-import { server } from 'test-utils/msw/server';
+import { server } from 'shared/test-utils/msw/server';
+import { createBaseContext } from '../../../test-utils/create-base-context';
 import ProcessConfigListPage from '../../pages/ProcessConfigListPage';
 
 describe('ProcessConfigListPage', () => {
@@ -41,7 +41,7 @@ describe('ProcessConfigListPage', () => {
         );
 
         const user = userEvent.setup();
-        const { wrapper } = createTestContext();
+        const { wrapper } = createBaseContext();
 
         render(<ProcessConfigListPage />, { wrapper });
 
@@ -69,7 +69,7 @@ describe('ProcessConfigListPage', () => {
             })
         );
 
-        const { wrapper } = createTestContext();
+        const { wrapper } = createBaseContext();
 
         render(<ProcessConfigListPage />, { wrapper });
 
@@ -79,7 +79,7 @@ describe('ProcessConfigListPage', () => {
     it('displays the error state', async () => {
         server.use(http.get('*/v1/process-configs', () => HttpResponse.error()));
 
-        const { wrapper } = createTestContext();
+        const { wrapper } = createBaseContext();
 
         render(<ProcessConfigListPage />, { wrapper });
 

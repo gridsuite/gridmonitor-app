@@ -5,9 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Tabs, Tab } from '@mui/material';
+import { Tab, Tabs } from '@mui/material';
 import { NavLink, useLocation } from 'react-router';
-import { PlayCircleFilled, TableView, SettingsInputComponent } from '@mui/icons-material';
+import { PlayCircleFilled, SettingsInputComponent, TableView } from '@mui/icons-material';
 import type { ReactNode } from 'react';
 import { PROCESS_PATHS } from '../../process/router/process-paths';
 import { PROCESS_CONFIG_PATHS } from '../../process-config/router/process-config-paths';

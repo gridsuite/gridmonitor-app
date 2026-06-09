@@ -5,11 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { store } from 'app/store/store';
+import { GridSuiteModule } from '@gridsuite/commons-ui';
 import { rtkQueryToPromise } from 'shared/api/rtk-query/rtk-query-to-promise';
 import { getErrorMessage } from 'shared/lib/error';
+import { AnyAppDispatch } from 'shared/store/state.type';
 import { AboutInfo, studyApi, Type } from 'shared/api/study-api';
-import { GridSuiteModule } from '@gridsuite/commons-ui';
 
 // TODO: remove this function once the backend is fixed with actual types
 const toGridSuiteModule = (aboutInfos: AboutInfo[]): GridSuiteModule[] => {
@@ -21,9 +21,9 @@ const toGridSuiteModule = (aboutInfos: AboutInfo[]): GridSuiteModule[] => {
     }));
 };
 
-export const getServersInfos = async () => {
+export const getServersInfos = (dispatch: AnyAppDispatch): Promise<GridSuiteModule[]> => {
     const serverInfos = rtkQueryToPromise(
-        store.dispatch(
+        dispatch(
             studyApi.endpoints.getSuiteAboutInformation.initiate(
                 {},
                 {

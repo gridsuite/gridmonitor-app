@@ -11,30 +11,30 @@ import {
     PREFIX_MONITOR_NOTIFICATION_WS,
 } from '@gridsuite/commons-ui';
 import { renderHook } from '@testing-library/react';
-import { APP_NAME } from 'app/config/app-config';
-import { useAppSelector } from 'app/store/store';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { useNotificationsUrlGenerator } from 'shared/api/ws/use-notifications-url-generator';
+import { useNotificationsUrlGenerator } from '../use-notifications-url-generator';
+import * as configParams from '../../../config/config-params';
 
-vi.mock('app/store/store', () => ({
-    useAppSelector: vi.fn(),
+const APP_NAME = 'gridmonitor';
+const TOKEN = 'token-123';
+
+vi.mock('../../../config/config-params', () => ({
+    getToken: vi.fn(),
+    getAppName: vi.fn(),
 }));
 
 describe('useNotificationsUrlGenerator', () => {
-    let mockedUser: { id_token?: string } | null;
-
     beforeEach(() => {
-        vi.clearAllMocks();
-        mockedUser = { id_token: 'token-123' };
         Object.defineProperty(document, 'baseURI', {
             configurable: true,
             value: 'https://gridapp.test/',
         });
-        vi.mocked(useAppSelector).mockImplementation(() => mockedUser);
+        vi.mocked(configParams.getToken).mockImplementation(() => TOKEN);
+        vi.mocked(configParams.getAppName).mockImplementation(() => APP_NAME);
     });
 
     it('returns an undefined config URL when the token is missing', () => {
-        mockedUser = null;
+        vi.mocked(configParams.getToken).mockImplementation(() => undefined);
 
         const { result } = renderHook(() => useNotificationsUrlGenerator());
 
@@ -50,12 +50,12 @@ describe('useNotificationsUrlGenerator', () => {
         const expectedConfigUrl = new URL(
             `wss://gridapp.test/${PREFIX_CONFIG_NOTIFICATION_WS}/notify?appName=${APP_NAME}`
         );
-        expectedConfigUrl.searchParams.set('access_token', 'token-123');
+        expectedConfigUrl.searchParams.set('access_token', TOKEN);
 
         const expectedMonitorUrl = new URL(
             `wss://gridapp.test/${PREFIX_MONITOR_NOTIFICATION_WS}/notify?appName=${APP_NAME}`
         );
-        expectedMonitorUrl.searchParams.set('access_token', 'token-123');
+        expectedMonitorUrl.searchParams.set('access_token', TOKEN);
 
         expect(result.current).toEqual({
             [NotificationsUrlKeys.CONFIG]: expectedConfigUrl.toString(),

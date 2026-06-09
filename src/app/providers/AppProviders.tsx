@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { StyledEngineProvider, ThemeProvider, CssBaseline } from '@mui/material';
+import { CssBaseline, StyledEngineProvider, ThemeProvider } from '@mui/material';
 import {
     CardErrorBoundary,
     getComputedLanguage,
@@ -17,20 +17,29 @@ import {
 import { IntlProvider } from 'react-intl';
 import { BrowserRouter } from 'react-router';
 import { Provider } from 'react-redux';
-import { store } from 'app/store/store';
+import 'app/config/app-config'; // side-effect import: configure params, ex. appName, must before all other side-effect imports, such as configureStore
+import { store, useAppSelector } from 'app/store/store';
 import App from 'app/App';
 import { appMessages } from 'app/config/app-messages';
 import { getAppTheme } from 'app/config/app-theme';
 import { useGetConfigParameterWithFallback } from 'features/app-parameters/hooks/use-get-config-parameter-with-fallback';
 import { useNotificationsUrlGenerator } from 'shared/api/ws/use-notifications-url-generator';
+import { selectUser } from 'features/authentication/store/authentication.selectors';
 import { SnackRefRegisterer } from './SnackRefRegisterer';
 
 const basename = new URL(document.querySelector('base')?.href ?? '').pathname;
 
 function AppProvidersWithStore() {
-    const { data: language } = useGetConfigParameterWithFallback(PARAM_LANGUAGE);
+    const user = useAppSelector(selectUser);
+    const { data: language } = useGetConfigParameterWithFallback({
+        paramName: PARAM_LANGUAGE,
+        isAuthenticated: user !== null,
+    });
     const computedLanguage = getComputedLanguage(language);
-    const { data: theme } = useGetConfigParameterWithFallback(PARAM_THEME);
+    const { data: theme } = useGetConfigParameterWithFallback({
+        paramName: PARAM_THEME,
+        isAuthenticated: user !== null,
+    });
 
     const urlMapper = useNotificationsUrlGenerator();
 

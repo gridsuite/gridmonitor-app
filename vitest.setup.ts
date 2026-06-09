@@ -7,7 +7,9 @@
 
 import { vi } from 'vitest';
 import '@testing-library/jest-dom';
-import './src/test-utils/msw/setup-msw';
+// Config params are initialized in side-effect module before other setup imports.
+import './src/shared/test-utils/config-params/setup-test-config-params';
+import './src/shared/test-utils/msw/setup-msw';
 
 // TODO: Temporary workaround for Vitest + MUI v6 incompatibilities in tests.
 // Avoids loading MUI during test execution.
