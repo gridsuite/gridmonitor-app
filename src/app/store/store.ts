@@ -7,6 +7,7 @@
 
 import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
+import { setCommonStore } from '@gridsuite/commons-ui';
 import { errorMiddleware } from 'shared/store/rtk-query-error-middleware';
 import { monitorApi } from 'shared/api/monitor-api';
 import { studyApi } from 'shared/api/study-api';
@@ -29,6 +30,9 @@ export const setupStore = (preloadedState?: PreloadedState) =>
     });
 
 export const store = setupStore();
+setCommonStore({
+    getState: () => store.getState().authentication,
+});
 // push store to configParams to be able to access it in the token selector at low-level module
 updateConfigParams({ store });
 
