@@ -11,7 +11,7 @@ import { useAppSelector } from 'app/store/store';
 import { selectUser } from 'features/authentication/store/authentication.selectors';
 import { useGetParameterQuery } from 'shared/api/config-api';
 import { getInitialAppParametersState } from '../store/app-parameters.default';
-import { AppParameters, AppParametersKey } from '../store/app-parameters.type';
+import { AppParametersKey } from '../store/app-parameters.type';
 import { mapRawParamValue } from '../../../shared/api/config-api/config.mapping';
 
 /**
@@ -26,8 +26,8 @@ export const useGetConfigParameterWithFallback = <K extends AppParametersKey>(pa
         {
             skip: !user,
             selectFromResult: (result) => {
-                const rawData = result.data?.value ?? getInitialAppParametersState()[paramName];
-                const data: AppParameters[K] = mapRawParamValue(paramName, rawData);
+                const rawData = result.data?.value;
+                const data = rawData ? mapRawParamValue(paramName, rawData) : getInitialAppParametersState()[paramName];
 
                 return {
                     ...result,

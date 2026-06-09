@@ -8,8 +8,8 @@
 import { PARAM_DEVELOPER_MODE } from '@gridsuite/commons-ui';
 import { AppParameters, AppParametersKey } from 'features/app-parameters/store/app-parameters.type';
 
-export function mapRawParamValue<K extends AppParametersKey>(paramName: K, rawValue: unknown): AppParameters[K] {
-    if (paramName === PARAM_DEVELOPER_MODE && typeof rawValue === 'string') {
+export function mapRawParamValue<K extends AppParametersKey>(paramName: K, rawValue: string): AppParameters[K] {
+    if (paramName === PARAM_DEVELOPER_MODE) {
         return (rawValue === 'true') as AppParameters[K];
     }
     return rawValue as AppParameters[K];
