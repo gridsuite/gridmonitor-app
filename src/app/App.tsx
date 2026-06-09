@@ -23,7 +23,11 @@ import { useAppDispatch, useAppSelector } from './store/store';
 import { AppRouter } from './router/AppRouter';
 
 function App() {
-    const userProfile = useAppSelector(selectUserProfile);
+    const userProfile = useAppSelector(
+        selectUserProfile,
+        (a, b) =>
+            a === b || (a?.sub === b?.sub && a?.name === b?.name && a?.email === b?.email && a?.profile === b?.profile)
+    );
     const signInCallbackError = useAppSelector(selectSignInCallbackError);
     const authenticationRouterError = useAppSelector(selectAuthenticationRouterError);
     const showAuthenticationRouterLogin = useAppSelector(selectShowAuthenticationRouterLogin);

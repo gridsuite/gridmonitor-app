@@ -18,12 +18,16 @@ import { AppParameters, AppParametersKey } from '../store/app-parameters.type';
  * If user is not authenticated, or before the fetch request has responded, we use data from initialAppParametersState
  */
 export const useGetConfigParameterWithFallback = <K extends AppParametersKey>(paramName: K) => {
-    const user = useAppSelector(selectUserProfile);
+    const userProfile = useAppSelector(
+        selectUserProfile,
+        (a, b) =>
+            a === b || (a?.sub === b?.sub && a?.name === b?.name && a?.email === b?.email && a?.profile === b?.profile)
+    );
 
     return useGetParameterQuery(
         { name: paramName, appName: getAppName(APP_NAME, paramName) },
         {
-            skip: !user,
+            skip: !userProfile,
             selectFromResult: (result) => {
                 const data = result.data?.value ?? getInitialAppParametersState()[paramName];
 
