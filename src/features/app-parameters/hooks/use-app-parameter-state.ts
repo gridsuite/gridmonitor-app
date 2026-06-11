@@ -19,7 +19,7 @@ export function useAppParameterState<K extends AppParametersKey>(paramName: K) {
         await updateConfigParameter({
             appName: getAppName(APP_NAME, paramName),
             name: paramName,
-            value: newValue,
+            value: String(newValue),
         }).unwrap();
     };
 

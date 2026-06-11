@@ -12,5 +12,6 @@ export function getInitialAppParametersState(): AppParameters {
     return {
         language: getLocalStorageLanguage(),
         theme: getLocalStorageTheme(),
+        isDeveloperMode: false,
     };
 }
