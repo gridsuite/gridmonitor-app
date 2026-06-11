@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { DARK_THEME, LIGHT_THEME, PARAM_THEME } from '@gridsuite/commons-ui';
+import { DARK_THEME, LIGHT_THEME, PARAM_THEME, PARAM_DEVELOPER_MODE } from '@gridsuite/commons-ui';
 import { renderHook, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { http, HttpResponse } from 'msw';
@@ -57,5 +57,38 @@ describe('useGetConfigParameterWithFallback', () => {
         });
 
         expect(result.current.data).toBe(DARK_THEME);
+    });
+});
+
+describe('useGetConfigParameterWithFallbackForDeveloperMode', () => {
+    it('hook returns value from backend', async () => {
+        server.use(
+            http.get('*/config/v1/applications/monitor/parameters/isDeveloperMode', () =>
+                HttpResponse.json({
+                    name: PARAM_DEVELOPER_MODE,
+                    value: 'true',
+                })
+            )
+        );
+
+        const { wrapper } = createTestContext();
+
+        const { result } = renderHook(() => useGetConfigParameterWithFallback(PARAM_DEVELOPER_MODE), { wrapper });
+
+        await waitFor(() => {
+            expect(result.current.isSuccess).toBe(true);
+        });
+
+        expect(result.current.data).toBe(true);
+    });
+
+    it('hook returns defaults if no user in store', async () => {
+        const { wrapper } = createTestContext({ authentication: { user: null } });
+
+        const { result } = renderHook(() => useGetConfigParameterWithFallback(PARAM_DEVELOPER_MODE), {
+            wrapper,
+        });
+
+        expect(result.current.data).toBe(false);
     });
 });

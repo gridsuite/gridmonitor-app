@@ -15,6 +15,7 @@ export const LIGHT_THEME = 'light';
 export const LANG_SYSTEM = 'system';
 export const PARAM_THEME = 'theme';
 export const PARAM_LANGUAGE = 'language';
+export const PARAM_DEVELOPER_MODE = 'isDeveloperMode';
 
 const COMMON_CONFIG_PARAMS_NAMES = new Set([PARAM_THEME, PARAM_LANGUAGE]);
 
