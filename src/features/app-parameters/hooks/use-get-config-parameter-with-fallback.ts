@@ -11,7 +11,8 @@ import { useAppSelector } from 'app/store/store';
 import { selectUser } from 'features/authentication/store/authentication.selectors';
 import { useGetParameterQuery } from 'shared/api/config-api';
 import { getInitialAppParametersState } from '../store/app-parameters.default';
-import { AppParameters, AppParametersKey } from '../store/app-parameters.type';
+import { AppParametersKey } from '../store/app-parameters.type';
+import { mapRawParamValue } from '../../../shared/api/config-api/config.mapping';
 
 /**
  * This data is fetched from AppTopBar, which is displayed before user is authenticated
@@ -25,11 +26,12 @@ export const useGetConfigParameterWithFallback = <K extends AppParametersKey>(pa
         {
             skip: !user,
             selectFromResult: (result) => {
-                const data = result.data?.value ?? getInitialAppParametersState()[paramName];
+                const rawData = result.data?.value;
+                const data = rawData ? mapRawParamValue(paramName, rawData) : getInitialAppParametersState()[paramName];
 
                 return {
                     ...result,
-                    data: data as AppParameters[K],
+                    data,
                 };
             },
         }

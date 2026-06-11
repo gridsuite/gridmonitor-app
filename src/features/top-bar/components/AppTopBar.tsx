@@ -12,6 +12,7 @@ import {
     Metadata,
     PARAM_LANGUAGE,
     PARAM_THEME,
+    PARAM_DEVELOPER_MODE,
     TopBar,
     UserManagerState,
 } from '@gridsuite/commons-ui';
@@ -37,6 +38,7 @@ function AppTopBar({ user, userManager }: Readonly<AppTopBarProps>) {
     const [appsAndUrls, setAppsAndUrls] = useState<Metadata[]>([]);
     const [themeLocal, handleChangeTheme] = useAppParameterState(PARAM_THEME);
     const [languageLocal, handleChangeLanguage] = useAppParameterState(PARAM_LANGUAGE);
+    const [isDeveloperMode, handleChangeDeveloperMode] = useAppParameterState(PARAM_DEVELOPER_MODE);
 
     useEffect(() => {
         if (user !== null) {
@@ -64,11 +66,13 @@ function AppTopBar({ user, userManager }: Readonly<AppTopBarProps>) {
             globalVersionPromise={() => fetchVersion().then((res) => res?.deployVersion ?? 'unknown')}
             additionalModulesPromise={getServersInfos}
             onThemeClick={handleChangeTheme}
+            onDeveloperModeClick={handleChangeDeveloperMode}
+            developerMode={isDeveloperMode}
             theme={themeLocal}
             onLanguageClick={handleChangeLanguage}
             language={languageLocal}
         >
-            <SettingsTabs />
+            {user != null && <SettingsTabs />}
         </TopBar>
     );
 }
