@@ -52,11 +52,8 @@ const injectedRtkApi = api.injectEndpoints({
       DuplicateProcessConfigApiArg
     >({
       query: (queryArg) => ({
-        url: `/v1/process-configs/duplication`,
+        url: `/v1/process-configs/${queryArg.uuid}/duplicate`,
         method: "POST",
-        params: {
-          duplicateFrom: queryArg.duplicateFrom,
-        },
       }),
     }),
     executeProcess: build.mutation<
@@ -178,7 +175,7 @@ export type DuplicateProcessConfigApiResponse =
   /** status 200 process config was duplicated */ string;
 export type DuplicateProcessConfigApiArg = {
   /** UUID of the process config to duplicate */
-  duplicateFrom: string;
+  uuid: string;
 };
 export type ExecuteProcessApiResponse =
   /** status 200 The process execution has been started */ string;
@@ -221,7 +218,7 @@ export type GetExecutionResultsApiArg = {
   executionId: string;
 };
 export type GetExecutionReportsApiResponse =
-  /** status 200 The execution reports */ ReportPage[];
+  /** status 200 The execution reports */ ReportPage;
 export type GetExecutionReportsApiArg = {
   /** Execution UUID */
   executionId: string;
@@ -282,6 +279,7 @@ export type ProcessExecution = {
   scheduledAt?: string;
   startedAt?: string;
   completedAt?: string;
+  reportId?: string;
   userId: string;
 };
 export type ProcessExecutionStep = {
@@ -291,7 +289,6 @@ export type ProcessExecutionStep = {
   status: StepStatus;
   resultId?: string;
   resultType?: ResultType;
-  reportId?: string;
   startedAt?: string;
   completedAt?: string;
 };
