@@ -11,7 +11,7 @@ import { setupStore } from 'app/store/store';
 import { AuthenticationState } from 'features/authentication/store/authentication.type';
 
 export const defaultAuthTestState: AuthenticationState = {
-    user: { id_token: 'test-token' } as AuthenticationState['user'],
+    user: { id_token: 'test-token', profile: { sub: 'test-sub' } } as AuthenticationState['user'],
     signInCallbackError: null,
     authenticationRouterError: null,
     showAuthenticationRouterLogin: false,

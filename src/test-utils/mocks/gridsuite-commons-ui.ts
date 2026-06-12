@@ -38,8 +38,14 @@ export enum NotificationsUrlKeys {
 export const PREFIX_CONFIG_NOTIFICATION_WS = `${import.meta.env.VITE_WS_GATEWAY}/config-notification`;
 export const PREFIX_MONITOR_NOTIFICATION_WS = `${import.meta.env.VITE_WS_GATEWAY}/monitor-notification`;
 
+type CommonStoreState = {
+    user?: {
+        id_token?: string;
+    } | null;
+};
+
 type CommonStore = {
-    getState: () => { user?: { id_token?: string } | null };
+    getState(): CommonStoreState;
 };
 
 let commonStore: CommonStore | undefined;
