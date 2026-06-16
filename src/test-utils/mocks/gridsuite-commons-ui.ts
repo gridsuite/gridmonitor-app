@@ -5,6 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { vi } from 'vitest';
+import { createElement, type PropsWithChildren, type ReactNode } from 'react';
 
 // TODO: Temporary workaround for Vitest + MUI v6 incompatibilities in tests.
 // Avoids loading MUI during test execution.
@@ -37,7 +38,15 @@ export enum NotificationsUrlKeys {
 }
 export const PREFIX_CONFIG_NOTIFICATION_WS = `${import.meta.env.VITE_WS_GATEWAY}/config-notification`;
 export const PREFIX_MONITOR_NOTIFICATION_WS = `${import.meta.env.VITE_WS_GATEWAY}/monitor-notification`;
-
+export const SnackbarProvider = ({ children }: PropsWithChildren): ReactNode => children;
+export const CardErrorBoundary = ({ children }: PropsWithChildren): ReactNode => children;
+export function AuthenticationRouter() {
+    return null;
+}
+export const initializeAuthenticationProd = () => Promise.resolve(null);
+export function TopBar({ appName, children }: PropsWithChildren<{ appName?: ReactNode }>): ReactNode {
+    return createElement('div', { 'data-testid': 'top-bar' }, appName, children);
+}
 type CommonStoreState = {
     user?: {
         id_token?: string;
