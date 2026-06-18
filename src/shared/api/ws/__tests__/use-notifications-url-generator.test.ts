@@ -12,54 +12,38 @@ import {
 } from '@gridsuite/commons-ui';
 import { renderHook } from '@testing-library/react';
 import { APP_NAME } from 'app/config/app-config';
-import { useAppSelector } from 'app/store/store';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { useNotificationsUrlGenerator } from 'shared/api/ws/use-notifications-url-generator';
 
-vi.mock('app/store/store', () => ({
-    useAppSelector: vi.fn(),
-}));
-
 describe('useNotificationsUrlGenerator', () => {
-    let mockedUser: { id_token?: string } | null;
-
     beforeEach(() => {
-        vi.clearAllMocks();
-        mockedUser = { id_token: 'token-123' };
         Object.defineProperty(document, 'baseURI', {
             configurable: true,
             value: 'https://gridapp.test/',
-        });
-        vi.mocked(useAppSelector).mockImplementation(() => mockedUser);
-    });
-
-    it('returns an undefined config URL when the token is missing', () => {
-        mockedUser = null;
-
-        const { result } = renderHook(() => useNotificationsUrlGenerator());
-
-        expect(result.current).toEqual({
-            [NotificationsUrlKeys.CONFIG]: undefined,
-            [NotificationsUrlKeys.MONITOR]: undefined,
         });
     });
 
     it('builds a secure websocket URL from an https base URI', () => {
         const { result } = renderHook(() => useNotificationsUrlGenerator());
-
-        const expectedConfigUrl = new URL(
-            `wss://gridapp.test/${PREFIX_CONFIG_NOTIFICATION_WS}/notify?appName=${APP_NAME}`
-        );
-        expectedConfigUrl.searchParams.set('access_token', 'token-123');
-
-        const expectedMonitorUrl = new URL(
-            `wss://gridapp.test/${PREFIX_MONITOR_NOTIFICATION_WS}/notify?appName=${APP_NAME}`
-        );
-        expectedMonitorUrl.searchParams.set('access_token', 'token-123');
+        const params = new URLSearchParams({ appName: APP_NAME });
 
         expect(result.current).toEqual({
-            [NotificationsUrlKeys.CONFIG]: expectedConfigUrl.toString(),
-            [NotificationsUrlKeys.MONITOR]: expectedMonitorUrl.toString(),
+            [NotificationsUrlKeys.CONFIG]: `wss://gridapp.test/${PREFIX_CONFIG_NOTIFICATION_WS}/notify?${params}`,
+            [NotificationsUrlKeys.MONITOR]: `wss://gridapp.test/${PREFIX_MONITOR_NOTIFICATION_WS}/notify?${params}`,
+        });
+    });
+
+    it('builds a non-secure websocket URL from an http base URI', () => {
+        Object.defineProperty(document, 'baseURI', {
+            configurable: true,
+            value: 'http://gridapp.test/',
+        });
+        const { result } = renderHook(() => useNotificationsUrlGenerator());
+        const params = new URLSearchParams({ appName: APP_NAME });
+
+        expect(result.current).toEqual({
+            [NotificationsUrlKeys.CONFIG]: `ws://gridapp.test/${PREFIX_CONFIG_NOTIFICATION_WS}/notify?${params}`,
+            [NotificationsUrlKeys.MONITOR]: `ws://gridapp.test/${PREFIX_MONITOR_NOTIFICATION_WS}/notify?${params}`,
         });
     });
 });

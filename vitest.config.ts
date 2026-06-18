@@ -20,6 +20,8 @@ export default mergeConfig(
                 deps: {
                     inline: [
                         '@gridsuite/commons-ui',
+                        '@mui',
+                        '@emotion',
                         '@mui/material',
                         '@mui/icons-material',
                         '@mui/x-tree-view',
