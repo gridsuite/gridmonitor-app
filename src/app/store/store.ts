@@ -34,7 +34,7 @@ export type PreloadedState = Parameters<typeof reducer>[0];
 export type RootState = ReturnType<typeof reducer>;
 export type AppDispatch = typeof store.dispatch;
 setCommonStore({
-    subscribe: (listener: () => void) => store.subscribe(listener),
+    subscribe: (listener) => store.subscribe(listener),
     getState: () => store.getState().authentication,
 });
 export const useAppDispatch = useDispatch.withTypes<AppDispatch>();

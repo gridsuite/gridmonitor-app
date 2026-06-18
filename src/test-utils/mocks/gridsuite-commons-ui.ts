@@ -63,6 +63,6 @@ export function setCommonStore(store: CommonStore): void {
     commonStore = store;
 }
 
-export function getUserToken(): string | undefined {
+export function getUserToken() {
     return commonStore?.getState().user?.id_token;
 }

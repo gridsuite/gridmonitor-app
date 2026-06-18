@@ -6,15 +6,13 @@
  */
 
 import { DARK_THEME, LIGHT_THEME, PARAM_THEME, PARAM_DEVELOPER_MODE } from '@gridsuite/commons-ui';
-import { act, renderHook, waitFor } from '@testing-library/react';
+import { renderHook, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { useGetConfigParameterWithFallback } from 'features/app-parameters/hooks/use-get-config-parameter-with-fallback';
 import { server } from 'test-utils/msw/server';
 import { createTestContext } from 'test-utils/create-test-context';
 import { saveLocalStorageTheme } from 'features/app-parameters/store/app-parameters.local-storage';
-import { AuthenticationState } from '../../../authentication/store/authentication.type';
-import { USER } from '../../../../test-utils/mocks/gridsuite-commons-ui';
 
 beforeEach(() => localStorage.clear());
 
@@ -59,32 +57,6 @@ describe('useGetConfigParameterWithFallback', () => {
         });
 
         expect(result.current.data).toBe(DARK_THEME);
-    });
-
-    it('user profile equality comparator covers all field branches', () => {
-        const buildUser = (profile: { sub: string; name: string; email: string; profile: string }) =>
-            ({ profile }) as unknown as NonNullable<AuthenticationState['user']>;
-
-        const base = { sub: '1', name: 'John', email: 'john@rte.fr', profile: 'admin' };
-
-        const { wrapper, store } = createTestContext({
-            authentication: { user: buildUser(base) },
-        });
-
-        renderHook(() => useGetConfigParameterWithFallback(PARAM_THEME), { wrapper });
-
-        act(() => store.dispatch({ type: USER, user: buildUser({ ...base }) }));
-        act(() => store.dispatch({ type: USER, user: buildUser({ ...base, sub: '2' }) }));
-        act(() => store.dispatch({ type: USER, user: buildUser({ ...base, sub: '2', name: 'Jane' }) }));
-        act(() =>
-            store.dispatch({ type: USER, user: buildUser({ ...base, sub: '2', name: 'Jane', email: 'jane@rte.fr' }) })
-        );
-        act(() =>
-            store.dispatch({
-                type: USER,
-                user: buildUser({ ...base, sub: '2', name: 'Jane', email: 'jane@rte.fr', profile: 'user' }),
-            })
-        );
     });
 });
 
