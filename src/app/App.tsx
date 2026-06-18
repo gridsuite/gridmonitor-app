@@ -12,7 +12,6 @@ import {
     selectAuthenticationRouterError,
     selectShowAuthenticationRouterLogin,
     selectSignInCallbackError,
-    selectUserProfile,
 } from 'features/authentication/store/authentication.selectors';
 import { getErrorMessage } from 'shared/lib/error';
 import { fetchIdpSettings } from 'shared/config/idp-settings';
@@ -21,13 +20,10 @@ import { useAppParametersInvalidationListener } from './notifications/use-app-pa
 import { useProcessInvalidationsListener } from './notifications/use-process-invalidation-listener';
 import { useAppDispatch, useAppSelector } from './store/store';
 import { AppRouter } from './router/AppRouter';
+import { useStableUserProfile } from '../features/authentication/hooks/use-stable-user-profile';
 
 function App() {
-    const userProfile = useAppSelector(
-        selectUserProfile,
-        (a, b) =>
-            a === b || (a?.sub === b?.sub && a?.name === b?.name && a?.email === b?.email && a?.profile === b?.profile)
-    );
+    const userProfile = useStableUserProfile();
     const signInCallbackError = useAppSelector(selectSignInCallbackError);
     const authenticationRouterError = useAppSelector(selectAuthenticationRouterError);
     const showAuthenticationRouterLogin = useAppSelector(selectShowAuthenticationRouterLogin);

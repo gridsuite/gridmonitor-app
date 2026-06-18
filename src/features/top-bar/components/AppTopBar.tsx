@@ -25,10 +25,10 @@ import { fetchVersion } from 'shared/config/version';
 import { getServersInfos } from '../api/get-servers-infos';
 import AppPackage from '../../../../package.json';
 import { SettingsTabs } from './AppNavBar';
-import { AuthenticationState } from '../../authentication/store/authentication.type';
+import { UserProfile } from '../../authentication/store/authentication.type';
 
 export type AppTopBarProps = {
-    userProfile: NonNullable<AuthenticationState['user']>['profile'] | null;
+    userProfile: UserProfile | null;
     userManager: UserManagerState;
 };
 

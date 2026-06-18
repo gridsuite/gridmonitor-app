@@ -8,7 +8,6 @@
 import { RootState } from 'app/store/store';
 
 export const selectAuthentication = (state: RootState) => state.authentication;
-export const selectUserProfile = (state: RootState) => selectAuthentication(state).user?.profile ?? null;
 export const selectSignInCallbackError = (state: RootState) => selectAuthentication(state).signInCallbackError;
 
 export const selectAuthenticationRouterError = (state: RootState) =>
