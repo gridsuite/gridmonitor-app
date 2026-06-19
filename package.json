@@ -40,6 +40,7 @@
     },
     "scripts": {
         "start": "vite",
+        "start:checks": "VITE_CHECKER_ENABLED=true vite",
         "start:open": "vite --open",
         "generate:api": "tsx codegen/rtk-query.codegen.ts",
         "build": "vite build",
