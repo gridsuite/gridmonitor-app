@@ -21,18 +21,18 @@ import { APP_NAME } from 'app/config/app-config';
 import PowsyblLogo from 'assets/images/powsybl_logo.svg?react';
 import { useAppParameterState } from 'features/app-parameters/hooks/use-app-parameter-state';
 import { useAppDispatch } from 'app/store/store';
-import { AuthenticationState } from 'features/authentication/store/authentication.type';
 import { fetchVersion } from 'shared/config/version';
 import { getServersInfos } from '../api/get-servers-infos';
 import AppPackage from '../../../../package.json';
 import { SettingsTabs } from './AppNavBar';
+import { UserProfile } from '../../authentication/store/authentication.type';
 
 export type AppTopBarProps = {
-    user?: AuthenticationState['user'];
+    userProfile: UserProfile | null;
     userManager: UserManagerState;
 };
 
-function AppTopBar({ user, userManager }: Readonly<AppTopBarProps>) {
+function AppTopBar({ userProfile, userManager }: Readonly<AppTopBarProps>) {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const [appsAndUrls, setAppsAndUrls] = useState<Metadata[]>([]);
@@ -41,7 +41,7 @@ function AppTopBar({ user, userManager }: Readonly<AppTopBarProps>) {
     const [isDeveloperMode, handleChangeDeveloperMode] = useAppParameterState(PARAM_DEVELOPER_MODE);
 
     useEffect(() => {
-        if (user !== null) {
+        if (userProfile !== null) {
             fetchAppsMetadata()
                 .then((metadata) => {
                     setAppsAndUrls(metadata);
@@ -50,7 +50,7 @@ function AppTopBar({ user, userManager }: Readonly<AppTopBarProps>) {
                     console.error(error);
                 });
         }
-    }, [user]);
+    }, [userProfile]);
 
     return (
         <TopBar
@@ -61,7 +61,7 @@ function AppTopBar({ user, userManager }: Readonly<AppTopBarProps>) {
             appLicense={AppPackage.license}
             onLogoutClick={() => logout(dispatch, userManager.instance)}
             onLogoClick={() => navigate('/', { replace: true })}
-            user={user ?? undefined}
+            userProfile={userProfile ?? undefined}
             appsAndUrls={appsAndUrls}
             globalVersionPromise={() => fetchVersion().then((res) => res?.deployVersion ?? 'unknown')}
             additionalModulesPromise={getServersInfos}
@@ -72,7 +72,7 @@ function AppTopBar({ user, userManager }: Readonly<AppTopBarProps>) {
             onLanguageClick={handleChangeLanguage}
             language={languageLocal}
         >
-            {user != null && <SettingsTabs />}
+            {userProfile != null && <SettingsTabs />}
         </TopBar>
     );
 }
