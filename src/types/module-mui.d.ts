@@ -8,7 +8,7 @@
 // https://mui.com/material-ui/customization/theming/#typescript
 import { Theme as MuiTheme, ThemeOptions as MuiThemeOptions, CSSObject } from '@mui/material';
 
-declare module '@mui/material/styles/createTheme' {
+declare module '@mui/material/styles' {
     type ThemeExtension = {
         arrow: CSSObject;
         arrow_hover: CSSObject;
