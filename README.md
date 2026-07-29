@@ -1,7 +1,5 @@
 # Gridmonitor-App
 
-## Presentation
-
 Frontend application developed with React.
 
 User interface used to:
