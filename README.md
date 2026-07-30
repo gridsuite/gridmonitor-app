@@ -1,5 +1,7 @@
 # GridMonitor
 
+## Description
+
 Frontend application developed with React.
 
 This app uses the `@gridsuite/commons-ui` library released in npm packages.
@@ -28,7 +30,7 @@ If you are a developer and you want to update or enhance components used from th
 
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
-## Technologies
+## Technical Stack
 
 - React
 - React Compiler
