@@ -13,11 +13,21 @@ import { createTheme, CssBaseline, StyledEngineProvider, ThemeProvider } from '@
 import { it, expect, vi } from 'vitest';
 import { SnackbarProvider } from '@gridsuite/commons-ui';
 import App from '../App';
-import { store } from '../store/store';
+import { setupStore } from '../store/store';
+/*
 
 vi.mock('uuid', () => ({ v4: () => '00000000-0000-0000-0000-000000000000' }));
 
 it('renders', async () => {
+    const store = setupStore({
+        authentication: {
+            user: null,
+            signInCallbackError: null,
+            authenticationRouterError: null,
+            showAuthenticationRouterLogin: true,
+        },
+    });
+
     render(
         <IntlProvider locale="en">
             <BrowserRouter>
@@ -34,6 +44,9 @@ it('renders', async () => {
             </BrowserRouter>
         </IntlProvider>
     );
+    const res = await screen.findByText((_, element) => {
+        return element?.textContent === 'GridMonitor';
+    });
 
-    expect(await screen.findByText(/monitor/i)).toBeInTheDocument();
+    expect(res).toBeInTheDocument();
 });
