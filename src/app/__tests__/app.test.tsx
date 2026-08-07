@@ -11,21 +11,27 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router';
 import { createTheme, CssBaseline, StyledEngineProvider, ThemeProvider } from '@mui/material';
 import { it, expect, vi } from 'vitest';
+import { http, HttpResponse } from 'msw';
 import { SnackbarProvider } from '@gridsuite/commons-ui';
+import { server } from 'test-utils/msw/server';
 import App from '../App';
-import { setupStore } from '../store/store';
+import { store } from '../store/store';
 
 vi.mock('uuid', () => ({ v4: () => '00000000-0000-0000-0000-000000000000' }));
 
 it('renders', async () => {
-    const store = setupStore({
-        authentication: {
-            user: null,
-            signInCallbackError: null,
-            authenticationRouterError: null,
-            showAuthenticationRouterLogin: true,
-        },
-    });
+    server.use(
+        http.get('*/env.json', () =>
+            HttpResponse.json({
+                appsMetadataServerUrl: 'http://localhost:8070',
+            })
+        ),
+        http.get('http://localhost:8070/version.json', () =>
+            HttpResponse.json({
+                deployVersion: 'test-version',
+            })
+        )
+    );
 
     render(
         <IntlProvider locale="en">
