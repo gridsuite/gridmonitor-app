@@ -8,12 +8,13 @@
 import { getPreLoginPath } from '@gridsuite/commons-ui';
 import { Box, Typography } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { Routes, Route, Navigate } from 'react-router';
+import { Routes, Route, Navigate, Outlet } from 'react-router';
 import { Loader } from 'shared/ui/Loader';
 import { Suspense } from 'react';
 import { APP_PATHS } from './app-paths';
 import { processRoutes } from '../../features/process/router/process-routes';
 import { processConfigRoutes } from '../../features/process-config/router/process-config-routes';
+import { PROCESS_PATHS } from '../../features/process/router/process-paths';
 
 export function AppRouter() {
     return (
@@ -35,8 +36,17 @@ export function AppRouter() {
                     element={<h1>Error: logout failed; you are still logged in.</h1>}
                 />
 
-                {processRoutes}
-                {processConfigRoutes}
+                <Route path="gridmonitor">
+                    {/* Toggle OFF — empty page */}
+                    <Route index element={<Box />} />
+                    {/* Toggle ON — redirect to first tab */}
+                    <Route path="configuration" element={<Navigate to={PROCESS_PATHS.execute} replace />} />
+                    {/* Configuration content routes — full width */}
+                    <Route element={<Outlet />}>
+                        {processRoutes}
+                        {processConfigRoutes}
+                    </Route>
+                </Route>
 
                 <Route
                     path={APP_PATHS.notFound}

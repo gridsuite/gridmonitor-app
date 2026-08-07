@@ -2,5 +2,9 @@
     "close": "Fermer",
     "parameters": "Paramètres",
     "paramsChangingError": "Une erreur est survenue lors de la modification des paramètres",
-    "paramsRetrievingError": "Une erreur est survenue lors de la récupération des paramètres"
+    "paramsRetrievingError": "Une erreur est survenue lors de la récupération des paramètres",
+    "configurationMode": "Mode configuration",
+    "nav.executeProcess": "Lancer un calcul",
+    "nav.launchHistory": "Historique d'exécution",
+    "nav.configuration": "Configuration"
 }

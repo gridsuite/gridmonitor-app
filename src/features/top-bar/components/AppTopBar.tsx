@@ -22,9 +22,11 @@ import PowsyblLogo from 'assets/images/powsybl_logo.svg?react';
 import { useAppParameterState } from 'features/app-parameters/hooks/use-app-parameter-state';
 import { useAppDispatch } from 'app/store/store';
 import { fetchVersion } from 'shared/config/version';
+import { Grid2 } from '@mui/material';
 import { getServersInfos } from '../api/get-servers-infos';
 import AppPackage from '../../../../package.json';
-import { SettingsTabs } from './AppNavBar';
+import { SettingsTabs, ExecuteButton } from './AppNavBar';
+import { ConfigurationModeToggle } from './ConfigurationModeToggle';
 import { UserProfile } from '../../authentication/store/authentication.type';
 
 export type AppTopBarProps = {
@@ -61,7 +63,6 @@ function AppTopBar({ userProfile, userManager }: Readonly<AppTopBarProps>) {
             appLicense={AppPackage.license}
             onLogoutClick={() => logout(dispatch, userManager.instance)}
             onLogoClick={() => navigate('/', { replace: true })}
-            userProfile={userProfile ?? undefined}
             appsAndUrls={appsAndUrls}
             globalVersionPromise={() => fetchVersion().then((res) => res?.deployVersion ?? 'unknown')}
             additionalModulesPromise={getServersInfos}
@@ -72,7 +73,20 @@ function AppTopBar({ userProfile, userManager }: Readonly<AppTopBarProps>) {
             onLanguageClick={handleChangeLanguage}
             language={languageLocal}
         >
-            {userProfile != null && <SettingsTabs />}
+            {userProfile != null && (
+                <Grid2 container columns={12} sx={{ width: '100%', alignItems: 'center' }}>
+                    <Grid2 size={{ xs: 12, sm: 6 }} sx={{ display: 'flex', alignItems: 'center' }}>
+                        <SettingsTabs />
+                    </Grid2>
+                    <Grid2
+                        size={{ xs: 12, sm: 6 }}
+                        sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}
+                    >
+                        <ExecuteButton />
+                        <ConfigurationModeToggle />
+                    </Grid2>
+                </Grid2>
+            )}
         </TopBar>
     );
 }

@@ -2,5 +2,9 @@
     "close": "Close",
     "parameters": "Parameters",
     "paramsChangingError": "An error occured when changing the parameters",
-    "paramsRetrievingError": "An error occurred while retrieving the parameters"
+    "paramsRetrievingError": "An error occurred while retrieving the parameters",
+    "configurationMode": "Configuration mode",
+    "nav.executeProcess": "Execute process",
+    "nav.launchHistory": "Launch history",
+    "nav.configuration": "Configuration"
 }
