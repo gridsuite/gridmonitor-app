@@ -14,7 +14,6 @@ import { it, expect, vi } from 'vitest';
 import { SnackbarProvider } from '@gridsuite/commons-ui';
 import App from '../App';
 import { setupStore } from '../store/store';
-/*
 
 vi.mock('uuid', () => ({ v4: () => '00000000-0000-0000-0000-000000000000' }));
 
