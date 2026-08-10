@@ -63,7 +63,7 @@ describe('useGetConfigParameterWithFallback', () => {
 describe('useGetConfigParameterWithFallbackForDeveloperMode', () => {
     it('hook returns value from backend', async () => {
         server.use(
-            http.get('*/config/v1/applications/monitor/parameters/isDeveloperMode', () =>
+            http.get('*/config/v1/applications/common/parameters/isDeveloperMode', () =>
                 HttpResponse.json({
                     name: PARAM_DEVELOPER_MODE,
                     value: 'true',
