@@ -77,7 +77,7 @@ function App() {
 
     return (
         <>
-            <AppTopBar userProfile={userProfile} userManager={userManager} />
+            <AppTopBar userManager={userManager} />
             <CardErrorBoundary>
                 {userProfile !== null ? (
                     <AppRouter />

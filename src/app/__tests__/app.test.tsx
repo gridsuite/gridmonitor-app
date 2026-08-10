@@ -16,6 +16,7 @@ import { SnackbarProvider } from '@gridsuite/commons-ui';
 import { server } from 'test-utils/msw/server';
 import App from '../App';
 import { store } from '../store/store';
+import { appMessages } from '../config/app-messages';
 
 vi.mock('uuid', () => ({ v4: () => '00000000-0000-0000-0000-000000000000' }));
 
@@ -34,7 +35,7 @@ it('renders', async () => {
     );
 
     render(
-        <IntlProvider locale="en">
+        <IntlProvider locale="en" messages={appMessages.en}>
             <BrowserRouter>
                 <Provider store={store}>
                     <StyledEngineProvider injectFirst>
@@ -49,9 +50,9 @@ it('renders', async () => {
             </BrowserRouter>
         </IntlProvider>
     );
-    const res = await screen.findByText((_, element) => {
-        return element?.textContent === 'GridMonitor';
-    });
+    const res = screen.getAllByText((_, element) => {
+        return element?.textContent === 'Configuration mode';
+    })[0] as HTMLElement;
 
     expect(res).toBeInTheDocument();
 });

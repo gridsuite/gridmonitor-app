@@ -7,7 +7,7 @@
 
 import { Tabs, Tab, Box, Button } from '@mui/material';
 import { NavLink, useLocation } from 'react-router';
-import { PlayCircleFilled, TableView, SettingsInputComponent } from '@mui/icons-material';
+import { PlayCircleFilled, Settings, TextSnippetOutlined } from '@mui/icons-material';
 import type { ReactNode } from 'react';
 import { useIntl } from 'react-intl';
 import { isConfigurationPath } from 'app/router/app-paths';
@@ -21,8 +21,8 @@ interface NavBarTab {
 }
 
 const leftTabs: NavBarTab[] = [
-    { icon: <SettingsInputComponent />, labelId: 'nav.configuration', path: PROCESS_CONFIG_PATHS.root },
-    { icon: <TableView />, labelId: 'nav.launchHistory', path: PROCESS_PATHS.results },
+    { icon: <Settings />, labelId: 'nav.configuration', path: PROCESS_CONFIG_PATHS.root },
+    { icon: <TextSnippetOutlined />, labelId: 'nav.launchHistory', path: PROCESS_PATHS.results },
 ];
 
 const executeTab: NavBarTab = {
@@ -48,7 +48,7 @@ export function SettingsTabs() {
         return null;
     }
 
-    const currentTab = [...leftTabs, executeTab].find((t) => location.pathname.startsWith(t.path))?.path ?? false;
+    const currentTab = leftTabs.find((t) => location.pathname.startsWith(t.path))?.path ?? false;
 
     return (
         <Tabs value={currentTab}>
@@ -74,16 +74,14 @@ export function ExecuteButton() {
         return null;
     }
 
-    const isSelected = location.pathname.startsWith(executeTab.path);
-
     return (
         <Button
             component={NavLink}
             to={executeTab.path}
-            color="inherit"
-            variant={isSelected ? 'outlined' : 'text'}
+            color="primary"
+            variant="contained"
             startIcon={executeTab.icon}
-            sx={{ textTransform: 'none', mr: 1 }}
+            sx={{ textTransform: 'none' }}
         >
             {intl.formatMessage({ id: executeTab.labelId })}
         </Button>

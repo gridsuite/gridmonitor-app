@@ -33,7 +33,7 @@ const lightTheme: Theme = createTheme({
     },
     mapboxStyle: 'mapbox://styles/mapbox/light-v9',
     breakpoints: {
-     values: { xs: 0, sm: 768, md: 900, lg: 1200, xl: 1536 },
+        values: { xs: 0, sm: 768, md: 900, lg: 1200, xl: 1536 },
     },
 });
 

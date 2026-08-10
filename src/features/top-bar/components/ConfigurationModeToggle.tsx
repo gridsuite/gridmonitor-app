@@ -32,7 +32,7 @@ export function ConfigurationModeToggle() {
             control={<Switch checked={isConfigurationMode} onChange={handleToggle} color="default" />}
             label={intl.formatMessage({ id: 'configurationMode' })}
             labelPlacement="start"
-            sx={{ mr: 1, color: 'inherit' }}
+            sx={{ color: 'inherit' }}
         />
     );
 }
