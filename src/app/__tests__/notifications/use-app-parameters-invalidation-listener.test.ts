@@ -21,6 +21,15 @@ vi.mock('shared/api/config-api', async (importOriginal) => {
     };
 });
 
+vi.mock('@gridsuite/commons-ui', async (importOriginal) => {
+    const actual = await importOriginal<typeof import('@gridsuite/commons-ui')>();
+
+    return {
+        ...actual,
+        useNotificationsListener: vi.fn(),
+    };
+});
+
 describe('useAppParametersInvalidationListener', () => {
     let listenerCallbackMessage: ((event: MessageEvent) => void) | undefined;
 

@@ -18,16 +18,7 @@ export default mergeConfig(
             css: true,
             server: {
                 deps: {
-                    inline: [
-                        '@gridsuite/commons-ui',
-                        '@mui',
-                        '@emotion',
-                        '@mui/material',
-                        '@mui/icons-material',
-                        '@mui/x-tree-view',
-                        '@emotion/react',
-                        '@emotion/styled',
-                    ],
+                    inline: ['@gridsuite/commons-ui'],
                 },
             },
             coverage: {
