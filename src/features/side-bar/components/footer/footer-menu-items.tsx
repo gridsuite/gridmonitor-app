@@ -1,24 +1,42 @@
 import { AccountBox, Apps, DisplaySettings, Logout } from '@mui/icons-material';
 import React, { ReactElement, ReactNode } from 'react';
+import { Icon } from '@mui/material';
+import { DarkModeToggle } from './sub-menus/DarkModeToggle';
 
-export interface MenuItemType {
+interface BaseMenuItemType {
     id: string;
-    subMenus?: MenuItemType[];
+}
+
+export interface StandardSubMenuItem extends BaseMenuItemType {
+    type?: 'standard';
     label: string;
+    Icon?: React.ElementType;
+    subMenus?: MenuItem[];
 }
 
-export interface SideBarMenuItem extends MenuItemType {
-    Icon: React.ElementType;
+export interface CustomSubMenuItem extends BaseMenuItemType {
+    type: 'custom';
+    render: React.ReactNode;
 }
 
-export const applicationSubMenuItems: MenuItemType[] = [
+export type MenuItem = StandardSubMenuItem | CustomSubMenuItem;
+
+export const applicationSubMenuItems: MenuItem[] = [
     {
         id: 'gridexplore',
         label: 'GridExplore',
     },
 ];
 
-export const sideBarMenuItems: SideBarMenuItem[] = [
+export const settingsSubMenuItems: MenuItem[] = [
+    {
+        type: 'custom',
+        id: 'themeMode',
+        render: <DarkModeToggle />,
+    },
+];
+
+export const sideBarMenuItems: MenuItem[] = [
     {
         id: 'myApp',
         label: 'Mes applications',
@@ -33,6 +51,7 @@ export const sideBarMenuItems: SideBarMenuItem[] = [
     {
         id: 'settings',
         label: 'Réglages',
+        subMenus: settingsSubMenuItems,
         Icon: DisplaySettings,
     },
     {

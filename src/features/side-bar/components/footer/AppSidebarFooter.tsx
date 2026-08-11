@@ -2,11 +2,24 @@ import { Divider, ListItemIcon, ListItemText, MenuList, Stack, Typography, useTh
 import { KeyboardDoubleArrowLeft, KeyboardDoubleArrowRight } from '@mui/icons-material';
 import { CustomMenuItem, CustomNestedMenuItem } from '@gridsuite/commons-ui';
 import { sideBarMenuItems } from './footer-menu-items';
+import { SideBarSubMenuItem } from './SideBarSubMenuItem';
 
 interface AppSidebarFooterProps {
     isMinimized: boolean;
     onToggle: () => void;
 }
+
+const styles = {
+    subMenu: {
+        '.MuiMenuItem-root, .MuiTypography-root': {
+            px: 1.5, // customize padding for text
+        },
+        // '.MuiMenuItem-root, .MuiSvgIcon-root': {
+        //     marginTop: '2px', // customize margin for icon
+        // },
+        px: 1.5, // customize padding for the whole menu item
+    },
+};
 
 export function AppSidebarFooter({ isMinimized, onToggle }: Readonly<AppSidebarFooterProps>) {
     const theme = useTheme();
@@ -38,18 +51,10 @@ export function AppSidebarFooter({ isMinimized, onToggle }: Readonly<AppSidebarF
                             leftIcon={<Icon />}
                             key={id}
                             // sx={{ px: 1.5 }}
-                            sx={{
-                                '.MuiMenuItem-root, .MuiTypography-root': {
-                                    px: 1.5, // customize padding for text
-                                },
-                                // '.MuiMenuItem-root, .MuiSvgIcon-root': {
-                                //     marginTop: '2px', // customize margin for icon
-                                // },
-                                px: 1.5, // customize padding for the whole menu item
-                            }}
+                            sx={styles.subMenu}
                         >
                             {subMenus?.map((subMenu) => (
-                                <CustomNestedMenuItem label={subMenu.label} key={subMenu.id} />
+                                <SideBarSubMenuItem subMenuItem={subMenu} key={subMenu.id} />
                             ))}
                         </CustomNestedMenuItem>
                     );
