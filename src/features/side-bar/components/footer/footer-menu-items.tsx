@@ -53,9 +53,13 @@ export const settingsSubMenuItems: MenuItem[] = [
     },
 ];
 
-export const sideBarMenuItems: MenuItem[] = [
+interface SideBarMenuItemsArgs {
+    onProfileClick: () => void;
+}
+
+export const sideBarMenuItems = ({ onProfileClick }: SideBarMenuItemsArgs): MenuItem[] => [
     {
-        id: 'myApp',
+        id: 'myApps',
         label: 'Mes applications',
         subMenus: applicationSubMenuItems,
         Icon: Apps,
@@ -64,6 +68,7 @@ export const sideBarMenuItems: MenuItem[] = [
         id: 'profile',
         label: 'Profil',
         Icon: AccountBox, // TODO: change to actual icon
+        onClick: onProfileClick,
     },
     {
         id: 'settings',
