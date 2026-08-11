@@ -6,9 +6,10 @@ import { InvertedThemeProvider } from './InvertedThemeProvider';
 type SidebarProps = {
     isMinimized: boolean;
     onToggle: () => void;
+    onLogoutClick?: () => void;
 };
 
-export function AppSideBar({ isMinimized, onToggle }: Readonly<SidebarProps>) {
+export function AppSideBar({ isMinimized, onToggle, onLogoutClick }: Readonly<SidebarProps>) {
     return (
         <InvertedThemeProvider>
             <Stack
@@ -33,7 +34,7 @@ export function AppSideBar({ isMinimized, onToggle }: Readonly<SidebarProps>) {
                     }}
                 />
 
-                <AppSidebarFooter isMinimized={isMinimized} onToggle={onToggle} />
+                <AppSidebarFooter isMinimized={isMinimized} onToggle={onToggle} onLogoutClick={onLogoutClick} />
             </Stack>
         </InvertedThemeProvider>
     );

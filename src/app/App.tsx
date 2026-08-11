@@ -7,7 +7,7 @@
 
 import { useEffect, useState } from 'react';
 import { useLocation, useMatch, useNavigate } from 'react-router';
-import { AuthenticationRouter, CardErrorBoundary, initializeAuthenticationProd } from '@gridsuite/commons-ui';
+import { AuthenticationRouter, CardErrorBoundary, initializeAuthenticationProd, logout } from '@gridsuite/commons-ui';
 import {
     selectAuthenticationRouterError,
     selectShowAuthenticationRouterLogin,
@@ -78,8 +78,10 @@ function App() {
     useAppParametersInvalidationListener();
     useProcessInvalidationsListener();
 
+    const onLogoutClick = () => logout(dispatch, userManager.instance)?.catch((err) => console.error(err)); // TODO: improve code
+
     return (
-        <AppLayout>
+        <AppLayout onLogoutClick={onLogoutClick}>
             <AppTopBar userProfile={userProfile} userManager={userManager} />
             <CardErrorBoundary>
                 {userProfile !== null ? (

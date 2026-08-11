@@ -1,5 +1,5 @@
 import { Divider, ListItemIcon, ListItemText, MenuList, Stack, Typography, useTheme } from '@mui/material';
-import { KeyboardDoubleArrowLeft, KeyboardDoubleArrowRight } from '@mui/icons-material';
+import { KeyboardDoubleArrowLeft, KeyboardDoubleArrowRight, Logout } from '@mui/icons-material';
 import { CustomMenuItem, CustomNestedMenuItem } from '@gridsuite/commons-ui';
 import { sideBarMenuItems } from './footer-menu-items';
 import { SideBarSubMenuItem } from './SideBarSubMenuItem';
@@ -7,6 +7,7 @@ import { SideBarSubMenuItem } from './SideBarSubMenuItem';
 interface AppSidebarFooterProps {
     isMinimized: boolean;
     onToggle: () => void;
+    onLogoutClick?: () => void;
 }
 
 const styles = {
@@ -14,14 +15,11 @@ const styles = {
         '.MuiMenuItem-root, .MuiTypography-root': {
             px: 1.5, // customize padding for text
         },
-        // '.MuiMenuItem-root, .MuiSvgIcon-root': {
-        //     marginTop: '2px', // customize margin for icon
-        // },
         px: 1.5, // customize padding for the whole menu item
     },
 };
 
-export function AppSidebarFooter({ isMinimized, onToggle }: Readonly<AppSidebarFooterProps>) {
+export function AppSidebarFooter({ isMinimized, onToggle, onLogoutClick }: Readonly<AppSidebarFooterProps>) {
     const theme = useTheme();
     console.log('THEME', theme);
     return (
@@ -34,13 +32,18 @@ export function AppSidebarFooter({ isMinimized, onToggle }: Readonly<AppSidebarF
         >
             <MenuList disablePadding>
                 {sideBarMenuItems.map((item) => {
+                    if (item.type === 'custom') {
+                        return 'TO CHANGE';
+                    }
                     const { id, label, subMenus, Icon } = item;
                     if (!subMenus) {
                         return (
                             <CustomMenuItem key={id} sx={{ px: 1.5 }}>
-                                <ListItemIcon>
-                                    <Icon />
-                                </ListItemIcon>
+                                {Icon && (
+                                    <ListItemIcon>
+                                        <Icon />
+                                    </ListItemIcon>
+                                )}
                                 <ListItemText primary={!isMinimized ? label : ''} />
                             </CustomMenuItem>
                         );
@@ -48,7 +51,7 @@ export function AppSidebarFooter({ isMinimized, onToggle }: Readonly<AppSidebarF
                     return (
                         <CustomNestedMenuItem
                             label={!isMinimized ? label : ''}
-                            leftIcon={<Icon />}
+                            leftIcon={Icon && <Icon />}
                             key={id}
                             // sx={{ px: 1.5 }}
                             sx={styles.subMenu}
@@ -59,6 +62,12 @@ export function AppSidebarFooter({ isMinimized, onToggle }: Readonly<AppSidebarF
                         </CustomNestedMenuItem>
                     );
                 })}
+                <CustomMenuItem sx={{ px: 1.5 }} onClick={onLogoutClick}>
+                    <ListItemIcon>
+                        <Logout />
+                    </ListItemIcon>
+                    <ListItemText primary={!isMinimized ? 'Se déconnecter' : ''} />
+                </CustomMenuItem>
                 <Divider />
 
                 <CustomMenuItem onClick={onToggle}>

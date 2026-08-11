@@ -1,7 +1,8 @@
 import { AccountBox, Apps, DisplaySettings, Logout } from '@mui/icons-material';
-import React, { ReactElement, ReactNode } from 'react';
-import { Icon } from '@mui/material';
+import React from 'react';
 import { DarkModeToggle } from './sub-menus/DarkModeToggle';
+import { GsLang } from '@gridsuite/commons-ui';
+import { LanguageSelection } from './sub-menus/LanguageSelection';
 
 interface BaseMenuItemType {
     id: string;
@@ -11,6 +12,7 @@ export interface StandardSubMenuItem extends BaseMenuItemType {
     type?: 'standard';
     label: string;
     Icon?: React.ElementType;
+    onClick?: () => void;
     subMenus?: MenuItem[];
 }
 
@@ -28,11 +30,26 @@ export const applicationSubMenuItems: MenuItem[] = [
     },
 ];
 
+export const LANG_SYSTEM = 'sys';
+export const LANG_ENGLISH = 'en';
+export const LANG_FRENCH = 'fr';
+
+const availableLanguages: GsLang[] = [LANG_SYSTEM, LANG_FRENCH, LANG_ENGLISH];
+const languageSubMenuItems: MenuItem[] = availableLanguages.map((language) => ({
+    type: 'custom',
+    id: language,
+    render: <LanguageSelection language={language} />,
+}));
 export const settingsSubMenuItems: MenuItem[] = [
     {
         type: 'custom',
         id: 'themeMode',
         render: <DarkModeToggle />,
+    },
+    {
+        id: 'selectLanguage',
+        label: 'Langue',
+        subMenus: languageSubMenuItems,
     },
 ];
 
@@ -53,10 +70,5 @@ export const sideBarMenuItems: MenuItem[] = [
         label: 'Réglages',
         subMenus: settingsSubMenuItems,
         Icon: DisplaySettings,
-    },
-    {
-        id: 'logout',
-        label: 'Se déconnecter',
-        Icon: Logout,
     },
 ];
