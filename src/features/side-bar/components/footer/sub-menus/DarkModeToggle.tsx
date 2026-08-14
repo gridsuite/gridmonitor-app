@@ -1,5 +1,5 @@
-import { DARK_THEME, LIGHT_THEME, PARAM_THEME } from '@gridsuite/commons-ui';
-import { MenuItem, Switch } from '@mui/material';
+import { CustomMenuItem, DARK_THEME, LIGHT_THEME, PARAM_THEME } from '@gridsuite/commons-ui';
+import { MenuItem, Stack, Switch, Typography } from '@mui/material';
 import { ChangeEvent } from 'react';
 import { useAppParameterState } from '../../../../app-parameters/hooks/use-app-parameter-state';
 
@@ -13,8 +13,11 @@ export function DarkModeToggle() {
             .catch((err) => console.error(err));
     };
     return (
-        <MenuItem>
-            Mode sombre <Switch value={isDarkMode} onChange={toggleMode} />
-        </MenuItem>
+        <CustomMenuItem sx={{ px: 2 }}>
+            <Stack width="100%" direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+                <Typography>Mode sombre</Typography>
+                <Switch value={isDarkMode} onChange={toggleMode} />
+            </Stack>
+        </CustomMenuItem>
     );
 }

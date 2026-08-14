@@ -1,8 +1,10 @@
 import { AccountBox, Apps, DisplaySettings, Logout } from '@mui/icons-material';
 import React from 'react';
-import { DarkModeToggle } from './sub-menus/DarkModeToggle';
 import { GsLang } from '@gridsuite/commons-ui';
+import { DarkModeToggle } from './sub-menus/DarkModeToggle';
 import { LanguageSelection } from './sub-menus/LanguageSelection';
+import { OtherAppRedirection } from './sub-menus/OtherAppRedirection';
+import GridexploreLogo from 'assets/images/gridexplore_logo.svg?react';
 
 interface BaseMenuItemType {
     id: string;
@@ -25,8 +27,9 @@ export type MenuItem = StandardSubMenuItem | CustomSubMenuItem;
 
 export const applicationSubMenuItems: MenuItem[] = [
     {
+        type: 'custom',
         id: 'gridexplore',
-        label: 'GridExplore',
+        render: <OtherAppRedirection AppLogo={GridexploreLogo} appName="GridExplore" />,
     },
 ];
 

@@ -1,18 +1,17 @@
-import { CustomMenuItem, CustomNestedMenuItem } from '@gridsuite/commons-ui';
+import { CustomMenuItem, CustomNestedMenuItem, MuiStyles } from '@gridsuite/commons-ui';
 import { ListItemText } from '@mui/material';
 import { MenuItem } from './footer-menu-items';
-import { render } from '@testing-library/react';
 
 interface SideBarSubMenuItemProps {
     subMenuItem: MenuItem;
 }
 
-const styles = {
+const styles: MuiStyles = {
     subMenu: {
         '.MuiMenuItem-root, .MuiTypography-root': {
             px: 1.5, // customize padding for text
         },
-        px: 1.5, // customize padding for the whole menu item
+        // px: 1.5, // customize padding for the whole menu item
     },
 };
 
@@ -30,12 +29,7 @@ export function SideBarSubMenuItem({ subMenuItem }: Readonly<SideBarSubMenuItemP
         );
     }
     return (
-        <CustomNestedMenuItem
-            label={label}
-            key={id}
-            // sx={{ px: 1.5 }}
-            sx={styles.subMenu}
-        >
+        <CustomNestedMenuItem label={label} key={id} sx={styles.subMenu}>
             {subMenus?.map((subMenu) => (
                 <SideBarSubMenuItem subMenuItem={subMenu} key={subMenu.id} />
             ))}

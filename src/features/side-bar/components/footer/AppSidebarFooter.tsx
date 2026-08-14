@@ -1,9 +1,9 @@
-import { Divider, ListItemIcon, ListItemText, MenuList, Stack, Typography, useTheme } from '@mui/material';
+import { Divider, ListItemIcon, ListItemText, ListSubheader, MenuList, Stack, useTheme } from '@mui/material';
 import { KeyboardDoubleArrowLeft, KeyboardDoubleArrowRight, Logout } from '@mui/icons-material';
-import { CustomMenuItem, CustomNestedMenuItem, UserInformationDialog } from '@gridsuite/commons-ui';
+import { CustomMenuItem, CustomNestedMenuItem, MuiStyles, UserInformationDialog } from '@gridsuite/commons-ui';
+import { useState } from 'react';
 import { sideBarMenuItems } from './footer-menu-items';
 import { SideBarSubMenuItem } from './SideBarSubMenuItem';
-import { useState } from 'react';
 import { useStableUserProfile } from '../../../authentication/hooks/use-stable-user-profile';
 
 interface AppSidebarFooterProps {
@@ -12,7 +12,7 @@ interface AppSidebarFooterProps {
     onLogoutClick?: () => void;
 }
 
-const styles = {
+const styles: MuiStyles = {
     subMenu: {
         '.MuiMenuItem-root, .MuiTypography-root': {
             px: 1.5, // customize padding for text
@@ -40,10 +40,10 @@ export function AppSidebarFooter({ isMinimized, onToggle, onLogoutClick }: Reado
                         if (item.type === 'custom') {
                             return 'TO CHANGE';
                         }
-                        const { id, label, subMenus, Icon } = item;
+                        const { id, label, subMenus, Icon, onClick } = item;
                         if (!subMenus) {
                             return (
-                                <CustomMenuItem key={id} sx={{ px: 1.5 }}>
+                                <CustomMenuItem onClick={onClick} key={id} sx={{ px: 1.5 }}>
                                     {Icon && (
                                         <ListItemIcon>
                                             <Icon />
@@ -61,6 +61,19 @@ export function AppSidebarFooter({ isMinimized, onToggle, onLogoutClick }: Reado
                                 // sx={{ px: 1.5 }}
                                 sx={styles.subMenu}
                             >
+                                {isMinimized && (
+                                    <ListSubheader
+                                        sx={{
+                                            backgroundImage: 'var(--Paper-overlay)',
+                                            '.MuiMenuItem-root, .MuiTypography-root': {
+                                                px: 1.5, // customize padding for text
+                                            },
+                                            px: 1.5, // customize padding for the whole menu item
+                                        }}
+                                    >
+                                        {label}
+                                    </ListSubheader>
+                                )}
                                 {subMenus?.map((subMenu) => (
                                     <SideBarSubMenuItem subMenuItem={subMenu} key={subMenu.id} />
                                 ))}
@@ -75,7 +88,7 @@ export function AppSidebarFooter({ isMinimized, onToggle, onLogoutClick }: Reado
                     </CustomMenuItem>
                     <Divider />
 
-                    <CustomMenuItem onClick={onToggle}>
+                    <CustomMenuItem sx={{ px: 1.5 }} onClick={onToggle}>
                         <ListItemIcon>
                             {isMinimized ? <KeyboardDoubleArrowRight /> : <KeyboardDoubleArrowLeft />}
                         </ListItemIcon>

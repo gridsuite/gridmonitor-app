@@ -1,9 +1,12 @@
-import { Box, Divider, Stack, Typography } from '@mui/material';
+import { Box, Divider, Stack, Typography, IconButton } from '@mui/material';
 import { Info } from '@mui/icons-material';
 import { AboutDialog } from '@gridsuite/commons-ui';
 import { useState } from 'react';
-import { IconButton } from '@mui/material';
+import GridmonitorLogo from 'assets/images/gridmonitor_logo.svg?react';
 import { APP_NAME } from '../../../app/config/app-config';
+import AppPackage from '../../../../package.json';
+import { getServersInfos } from '../../top-bar/api/get-servers-infos';
+import { fetchVersion } from '../../../shared/config/version';
 
 export function AppSidebarHeader({ isMinimized }: Readonly<{ isMinimized: boolean }>) {
     const [isAboutDialogOpen, setIsAboutDialogOpen] = useState(false);
@@ -13,45 +16,56 @@ export function AppSidebarHeader({ isMinimized }: Readonly<{ isMinimized: boolea
                 sx={{
                     px: isMinimized ? 1 : 2,
                     pt: 3,
-                    flexShrink: 0,
                 }}
             >
-                <Box
+                <Stack
+                    direction="row"
                     sx={{
                         height: 40,
                         display: 'flex',
                         alignItems: 'center',
-                        whiteSpace: 'nowrap',
+                        justifyContent: 'center',
                     }}
+                    spacing={1}
                 >
+                    <GridmonitorLogo />
                     {!isMinimized && (
                         <Typography variant="h6">
                             Grid
-                            <Box component="span" sx={{ color: 'primary.main' }}>
+                            <Box component="span" sx={{ color: '#7e57c2' }}>
                                 Monitor
                             </Box>
                         </Typography>
                     )}
-                </Box>
+                </Stack>
 
                 <Stack
-                    width={'100%'}
-                    direction={'row'}
+                    width="100%"
+                    direction="row"
                     sx={{
                         alignSelf: 'flex-end',
                         mb: 0.5,
                     }}
+                    alignItems="center"
                     justifyContent={isMinimized ? 'center' : 'end'}
                     spacing={1}
                 >
-                    {!isMinimized && <Typography variant="caption">V2.0.8</Typography>}
-                    <IconButton onClick={() => setIsAboutDialogOpen(true)}>
-                        <Info fontSize={'small'} />
+                    {!isMinimized && <Typography variant="caption">V{AppPackage.version}</Typography>}
+                    <IconButton sx={{ paddingX: 0 }} onClick={() => setIsAboutDialogOpen(true)}>
+                        <Info fontSize="small" />
                     </IconButton>
                 </Stack>
                 <Divider />
             </Stack>
-            <AboutDialog open={isAboutDialogOpen} onClose={() => setIsAboutDialogOpen(false)} appName={APP_NAME} />
+            <AboutDialog
+                appLicense={AppPackage.license}
+                appVersion={AppPackage.version}
+                open={isAboutDialogOpen}
+                onClose={() => setIsAboutDialogOpen(false)}
+                additionalModulesPromise={getServersInfos}
+                globalVersionPromise={() => fetchVersion().then((res) => res?.deployVersion ?? 'unknown')}
+                appName={APP_NAME}
+            />
         </>
     );
 }
