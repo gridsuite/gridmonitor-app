@@ -7,7 +7,7 @@
 
 export const APP_PATHS = {
     home: '/',
-    gridmonitor: '/gridmonitor',
+    gridmonitor: '',
     gridmonitorConfigBase: '/gridmonitor/process',
     gridmonitorConfigProcessConfig: '/gridmonitor/process-config',
     signInCallback: '/sign-in-callback',
