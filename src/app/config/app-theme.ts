@@ -61,6 +61,9 @@ const darkTheme: Theme = createTheme({
         color: 'green',
     },
     mapboxStyle: 'mapbox://styles/mapbox/dark-v9',
+    breakpoints: {
+        values: { xs: 0, sm: 768, md: 900, lg: 1200, xl: 1536 },
+    },
 });
 
 export const getAppTheme = (theme: string): Theme => (theme === LIGHT_THEME ? lightTheme : darkTheme);

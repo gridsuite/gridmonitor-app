@@ -37,11 +37,8 @@ export function AppRouter() {
                 />
 
                 <Route path="gridmonitor">
-                    {/* Toggle OFF — empty page */}
                     <Route index element={<Box />} />
-                    {/* Toggle ON — redirect to first tab */}
                     <Route path="configuration" element={<Navigate to={PROCESS_PATHS.execute} replace />} />
-                    {/* Configuration content routes — full width */}
                     <Route element={<Outlet />}>
                         {processRoutes}
                         {processConfigRoutes}
