@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Tabs, Tab, Box, Button, Typography } from '@mui/material';
+import { Tabs, Tab, Box, Button, Typography, Tooltip, useMediaQuery, useTheme } from '@mui/material';
 import { NavLink, useLocation } from 'react-router';
 import { PlayArrow, Settings, TextSnippetOutlined } from '@mui/icons-material';
 import type { ReactNode } from 'react';
@@ -32,13 +32,18 @@ const executeTab: NavBarTab = {
 };
 
 function TabLabel({ icon, label }: { icon: ReactNode; label: string }) {
+    const theme = useTheme();
+    const isXs = useMediaQuery(theme.breakpoints.only('xs'));
+
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1 }}>
-            {icon}
-            <Typography sx={{ display: { xs: 'none', sm: 'inline' } }}>
-                <span>{label}</span>
-            </Typography>
-        </Box>
+        <Tooltip title={label} disableHoverListener={!isXs} disableFocusListener={!isXs} disableTouchListener={!isXs}>
+            <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1 }}>
+                {icon}
+                <Typography sx={{ display: { xs: 'none', sm: 'inline' } }}>
+                    <span>{label}</span>
+                </Typography>
+            </Box>
+        </Tooltip>
     );
 }
 
