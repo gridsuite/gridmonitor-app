@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Tabs, Tab, Box, Button } from '@mui/material';
+import { Tabs, Tab, Box, Button, Typography } from '@mui/material';
 import { NavLink, useLocation } from 'react-router';
 import { PlayCircleFilled, Settings, TextSnippetOutlined } from '@mui/icons-material';
 import type { ReactNode } from 'react';
@@ -35,7 +35,9 @@ function TabLabel({ icon, label }: { icon: ReactNode; label: string }) {
     return (
         <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1 }}>
             {icon}
-            <span>{label}</span>
+            <Typography sx={{ display: { xs: 'none', sm: 'inline' } }}>
+                <span>{label}</span>
+            </Typography>
         </Box>
     );
 }
