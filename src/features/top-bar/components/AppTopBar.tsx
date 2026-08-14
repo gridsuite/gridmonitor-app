@@ -5,16 +5,21 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { AppBar, Grid, Toolbar } from '@mui/material';
+import { AppBar, Divider, Grid, Toolbar } from '@mui/material';
 import { UserManagerState } from '@gridsuite/commons-ui';
+import { useLocation } from 'react-router';
 import { SettingsTabs, ExecuteButton } from './AppNavBar';
 import { ConfigurationModeToggle } from './ConfigurationModeToggle';
+import { isConfigurationPath } from '../../../app/router/app-paths';
 
 export type AppTopBarProps = {
     userManager: UserManagerState;
 };
 
 function AppTopBar({ userManager: _userManager }: Readonly<AppTopBarProps>) {
+    const location = useLocation();
+    const isConfigurationMode = isConfigurationPath(location.pathname);
+
     return (
         <AppBar position="static" color="default">
             <Toolbar sx={{ height: '56px', px: '24px', alignItems: 'center' }}>
@@ -32,6 +37,7 @@ function AppTopBar({ userManager: _userManager }: Readonly<AppTopBarProps>) {
                         sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}
                     >
                         <ExecuteButton />
+                        {isConfigurationMode && <Divider orientation="vertical" sx={{ mx: 2, height: 50 }} />}
                         <ConfigurationModeToggle />
                     </Grid>
                 </Grid>

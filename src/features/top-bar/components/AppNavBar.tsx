@@ -7,7 +7,7 @@
 
 import { Tabs, Tab, Box, Button, Typography } from '@mui/material';
 import { NavLink, useLocation } from 'react-router';
-import { PlayCircleFilled, Settings, TextSnippetOutlined } from '@mui/icons-material';
+import { PlayArrow, Settings, TextSnippetOutlined } from '@mui/icons-material';
 import type { ReactNode } from 'react';
 import { useIntl } from 'react-intl';
 import { isConfigurationPath } from 'app/router/app-paths';
@@ -26,7 +26,7 @@ const leftTabs: NavBarTab[] = [
 ];
 
 const executeTab: NavBarTab = {
-    icon: <PlayCircleFilled />,
+    icon: <PlayArrow />,
     labelId: 'nav.executeProcess',
     path: PROCESS_PATHS.execute,
 };
