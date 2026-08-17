@@ -1,18 +1,9 @@
-import { Divider, ListItemIcon, ListItemText, ListSubheader, MenuList, Stack } from '@mui/material';
+import { Divider, MenuList, Stack } from '@mui/material';
 import { KeyboardDoubleArrowLeft, KeyboardDoubleArrowRight, Logout } from '@mui/icons-material';
-import {
-    CustomMenuItem,
-    CustomNestedMenuItem,
-    MuiStyles,
-    PARAM_DEVELOPER_MODE,
-    UserInformationDialog,
-    UserSettingsDialog,
-} from '@gridsuite/commons-ui';
-import { useState } from 'react';
-import { sideBarMenuItems } from './footer-menu-items';
-import { SideBarSubMenuItem } from './SideBarSubMenuItem';
-import { useStableUserProfile } from '../../../authentication/hooks/use-stable-user-profile';
-import { useAppParameterState } from '../../../app-parameters/hooks/use-app-parameter-state';
+import { ApplicationMenu } from './applications/ApplicationMenu';
+import { SidebarMenuItem } from './utils/SideBarMenuItem';
+import { ProfileMenu } from './profile/ProfileMenu';
+import { SettingsMenu } from './settings/SettingsMenu';
 
 interface AppSidebarFooterProps {
     isMinimized: boolean;
@@ -20,106 +11,34 @@ interface AppSidebarFooterProps {
     onLogoutClick?: () => void;
 }
 
-const styles: MuiStyles = {
-    subMenu: {
-        '.MuiMenuItem-root, .MuiTypography-root': {
-            px: 1.5, // customize padding for text
-        },
-        px: 1.5, // customize padding for the whole menu item
-    },
-};
-
 export function AppSidebarFooter({ isMinimized, onToggle, onLogoutClick }: Readonly<AppSidebarFooterProps>) {
-    const [isProfileDialogOpen, setIsProfileDialogOpen] = useState(false);
-    const [isProfileSettingsDialogOpen, setIsProfileSettingsDialogOpen] = useState(false);
-    const [isDeveloperMode, handleChangeDeveloperMode] = useAppParameterState(PARAM_DEVELOPER_MODE);
-
-    const userProfile = useStableUserProfile() ?? undefined;
-    const openProfileDialog = () => setIsProfileDialogOpen(true);
-    const openProfileSettingsDialog = () => setIsProfileSettingsDialogOpen(true);
-
     return (
-        <>
-            <Stack
-                sx={{
-                    px: 1,
-                    pb: 1,
-                    flexShrink: 0,
-                }}
-            >
-                <MenuList disablePadding>
-                    {sideBarMenuItems({
-                        onProfileClick: openProfileDialog,
-                        onProfileSettingsClick: openProfileSettingsDialog,
-                        userProfile,
-                    }).map((item) => {
-                        if (item.type === 'custom') {
-                            return 'TO CHANGE';
-                        }
-                        const { id, label, subMenus, Icon, onClick } = item;
-                        if (!subMenus) {
-                            return (
-                                <CustomMenuItem onClick={onClick} key={id} sx={{ px: 1.5 }}>
-                                    {Icon && <ListItemIcon>{Icon}</ListItemIcon>}
-                                    <ListItemText primary={!isMinimized ? label : ''} />
-                                </CustomMenuItem>
-                            );
-                        }
+        <Stack
+            sx={{
+                px: 1,
+                pb: 1,
+                flexShrink: 0,
+            }}
+        >
+            <MenuList disablePadding>
+                <ApplicationMenu isMinimized={isMinimized} />
+                <ProfileMenu isMinimized={isMinimized} />
+                <SettingsMenu isMinimized={isMinimized} />
+                <SidebarMenuItem
+                    label="Se déconnecter"
+                    icon={<Logout />}
+                    onClick={onLogoutClick}
+                    showLabel={!isMinimized}
+                />
+                <Divider />
 
-                        return (
-                            <CustomNestedMenuItem
-                                label={!isMinimized ? label : ''}
-                                leftIcon={Icon}
-                                key={id}
-                                // sx={{ px: 1.5 }}
-                                sx={styles.subMenu}
-                            >
-                                {isMinimized && (
-                                    <ListSubheader
-                                        sx={{
-                                            backgroundImage: 'var(--Paper-overlay)',
-                                            '.MuiMenuItem-root, .MuiTypography-root': {
-                                                px: 1.5, // customize padding for text
-                                            },
-                                            px: 1.5, // customize padding for the whole menu item
-                                        }}
-                                    >
-                                        {label}
-                                    </ListSubheader>
-                                )}
-                                {subMenus?.map((subMenu) => (
-                                    <SideBarSubMenuItem subMenuItem={subMenu} key={subMenu.id} />
-                                ))}
-                            </CustomNestedMenuItem>
-                        );
-                    })}
-                    <CustomMenuItem sx={{ px: 1.5 }} onClick={onLogoutClick}>
-                        <ListItemIcon>
-                            <Logout />
-                        </ListItemIcon>
-                        <ListItemText primary={!isMinimized ? 'Se déconnecter' : ''} />
-                    </CustomMenuItem>
-                    <Divider />
-
-                    <CustomMenuItem sx={{ px: 1.5 }} onClick={onToggle}>
-                        <ListItemIcon>
-                            {isMinimized ? <KeyboardDoubleArrowRight /> : <KeyboardDoubleArrowLeft />}
-                        </ListItemIcon>
-                        {!isMinimized && 'Réduire le menu'}
-                    </CustomMenuItem>
-                </MenuList>
-            </Stack>
-            <UserInformationDialog
-                openDialog={isProfileDialogOpen}
-                onClose={() => setIsProfileDialogOpen(false)}
-                userProfile={userProfile ?? undefined}
-            />
-            <UserSettingsDialog
-                openDialog={isProfileSettingsDialogOpen}
-                onClose={() => setIsProfileSettingsDialogOpen(false)}
-                developerMode={isDeveloperMode}
-                onDeveloperModeClick={handleChangeDeveloperMode}
-            />
-        </>
+                <SidebarMenuItem
+                    label="Réduire le menu"
+                    icon={isMinimized ? <KeyboardDoubleArrowRight /> : <KeyboardDoubleArrowLeft />}
+                    onClick={onToggle}
+                    showLabel={!isMinimized}
+                />
+            </MenuList>
+        </Stack>
     );
 }

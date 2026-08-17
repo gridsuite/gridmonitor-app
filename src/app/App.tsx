@@ -16,13 +16,11 @@ import {
 import { getErrorMessage } from 'shared/lib/error';
 import { fetchIdpSettings } from 'shared/config/idp-settings';
 import AppTopBar, { AppTopBarProps } from 'features/top-bar/components/AppTopBar';
-import { Box, Drawer, Stack } from '@mui/material';
 import { useAppParametersInvalidationListener } from './notifications/use-app-parameters-invalidation-listener';
 import { useProcessInvalidationsListener } from './notifications/use-process-invalidation-listener';
 import { useAppDispatch, useAppSelector } from './store/store';
 import { AppRouter } from './router/AppRouter';
 import { useStableUserProfile } from '../features/authentication/hooks/use-stable-user-profile';
-import { AppSideBar } from '../features/side-bar/components/AppSideBar';
 import { AppLayout } from './layout/AppLayout';
 
 function App() {

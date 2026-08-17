@@ -49,9 +49,9 @@ it('renders', async () => {
             </BrowserRouter>
         </IntlProvider>
     );
-    const res = await screen.findByText((_, element) => {
+    const res = await screen.findAllByText((_, element) => {
         return element?.textContent === 'GridMonitor';
     });
 
-    expect(res).toBeInTheDocument();
+    expect(res.length).toBeGreaterThan(0);
 });

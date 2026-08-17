@@ -1,4 +1,4 @@
-import { MenuItem, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { CustomMenuItem, GsLang, PARAM_LANGUAGE } from '@gridsuite/commons-ui';
 import { Done } from '@mui/icons-material';
 import { useAppParameterState } from '../../../../app-parameters/hooks/use-app-parameter-state';

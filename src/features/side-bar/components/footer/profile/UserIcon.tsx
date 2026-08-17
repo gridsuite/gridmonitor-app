@@ -1,4 +1,3 @@
-import { mergeSx } from '@gridsuite/commons-ui';
 import { Avatar, Tooltip } from '@mui/material';
 
 function getAbbreviationFromUserName(name: string) {
