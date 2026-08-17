@@ -7,7 +7,12 @@
 
 import { useEffect, useState } from 'react';
 import { useLocation, useMatch, useNavigate } from 'react-router';
-import { AuthenticationRouter, CardErrorBoundary, initializeAuthenticationProd } from '@gridsuite/commons-ui';
+import {
+    AuthenticationRouter,
+    CardErrorBoundary,
+    initializeAuthenticationProd,
+    UserManagerState,
+} from '@gridsuite/commons-ui';
 import {
     selectAuthenticationRouterError,
     selectShowAuthenticationRouterLogin,
@@ -15,7 +20,7 @@ import {
 } from 'features/authentication/store/authentication.selectors';
 import { getErrorMessage } from 'shared/lib/error';
 import { fetchIdpSettings } from 'shared/config/idp-settings';
-import AppTopBar, { AppTopBarProps } from 'features/top-bar/components/AppTopBar';
+import AppTopBar from 'features/top-bar/components/AppTopBar';
 import { useAppParametersInvalidationListener } from './notifications/use-app-parameters-invalidation-listener';
 import { useProcessInvalidationsListener } from './notifications/use-process-invalidation-listener';
 import { useAppDispatch, useAppSelector } from './store/store';
@@ -28,7 +33,7 @@ function App() {
     const authenticationRouterError = useAppSelector(selectAuthenticationRouterError);
     const showAuthenticationRouterLogin = useAppSelector(selectShowAuthenticationRouterLogin);
 
-    const [userManager, setUserManager] = useState<AppTopBarProps['userManager']>({ instance: null, error: null });
+    const [userManager, setUserManager] = useState<UserManagerState>({ instance: null, error: null });
 
     const navigate = useNavigate();
 
@@ -77,7 +82,7 @@ function App() {
 
     return (
         <>
-            <AppTopBar userManager={userManager} />
+            <AppTopBar userProfile={userProfile} />
             <CardErrorBoundary>
                 {userProfile !== null ? (
                     <AppRouter />
