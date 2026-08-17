@@ -1,10 +1,18 @@
-import { Divider, ListItemIcon, ListItemText, ListSubheader, MenuList, Stack, useTheme } from '@mui/material';
+import { Divider, ListItemIcon, ListItemText, ListSubheader, MenuList, Stack } from '@mui/material';
 import { KeyboardDoubleArrowLeft, KeyboardDoubleArrowRight, Logout } from '@mui/icons-material';
-import { CustomMenuItem, CustomNestedMenuItem, MuiStyles, UserInformationDialog } from '@gridsuite/commons-ui';
+import {
+    CustomMenuItem,
+    CustomNestedMenuItem,
+    MuiStyles,
+    PARAM_DEVELOPER_MODE,
+    UserInformationDialog,
+    UserSettingsDialog,
+} from '@gridsuite/commons-ui';
 import { useState } from 'react';
 import { sideBarMenuItems } from './footer-menu-items';
 import { SideBarSubMenuItem } from './SideBarSubMenuItem';
 import { useStableUserProfile } from '../../../authentication/hooks/use-stable-user-profile';
+import { useAppParameterState } from '../../../app-parameters/hooks/use-app-parameter-state';
 
 interface AppSidebarFooterProps {
     isMinimized: boolean;
@@ -23,9 +31,13 @@ const styles: MuiStyles = {
 
 export function AppSidebarFooter({ isMinimized, onToggle, onLogoutClick }: Readonly<AppSidebarFooterProps>) {
     const [isProfileDialogOpen, setIsProfileDialogOpen] = useState(false);
-    const userProfile = useStableUserProfile();
+    const [isProfileSettingsDialogOpen, setIsProfileSettingsDialogOpen] = useState(false);
+    const [isDeveloperMode, handleChangeDeveloperMode] = useAppParameterState(PARAM_DEVELOPER_MODE);
 
+    const userProfile = useStableUserProfile() ?? undefined;
     const openProfileDialog = () => setIsProfileDialogOpen(true);
+    const openProfileSettingsDialog = () => setIsProfileSettingsDialogOpen(true);
+
     return (
         <>
             <Stack
@@ -36,7 +48,11 @@ export function AppSidebarFooter({ isMinimized, onToggle, onLogoutClick }: Reado
                 }}
             >
                 <MenuList disablePadding>
-                    {sideBarMenuItems({ onProfileClick: openProfileDialog }).map((item) => {
+                    {sideBarMenuItems({
+                        onProfileClick: openProfileDialog,
+                        onProfileSettingsClick: openProfileSettingsDialog,
+                        userProfile,
+                    }).map((item) => {
                         if (item.type === 'custom') {
                             return 'TO CHANGE';
                         }
@@ -44,19 +60,16 @@ export function AppSidebarFooter({ isMinimized, onToggle, onLogoutClick }: Reado
                         if (!subMenus) {
                             return (
                                 <CustomMenuItem onClick={onClick} key={id} sx={{ px: 1.5 }}>
-                                    {Icon && (
-                                        <ListItemIcon>
-                                            <Icon />
-                                        </ListItemIcon>
-                                    )}
+                                    {Icon && <ListItemIcon>{Icon}</ListItemIcon>}
                                     <ListItemText primary={!isMinimized ? label : ''} />
                                 </CustomMenuItem>
                             );
                         }
+
                         return (
                             <CustomNestedMenuItem
                                 label={!isMinimized ? label : ''}
-                                leftIcon={Icon && <Icon />}
+                                leftIcon={Icon}
                                 key={id}
                                 // sx={{ px: 1.5 }}
                                 sx={styles.subMenu}
@@ -100,6 +113,12 @@ export function AppSidebarFooter({ isMinimized, onToggle, onLogoutClick }: Reado
                 openDialog={isProfileDialogOpen}
                 onClose={() => setIsProfileDialogOpen(false)}
                 userProfile={userProfile ?? undefined}
+            />
+            <UserSettingsDialog
+                openDialog={isProfileSettingsDialogOpen}
+                onClose={() => setIsProfileSettingsDialogOpen(false)}
+                developerMode={isDeveloperMode}
+                onDeveloperModeClick={handleChangeDeveloperMode}
             />
         </>
     );

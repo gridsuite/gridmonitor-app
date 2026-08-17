@@ -1,5 +1,5 @@
 import { CustomMenuItem, CustomNestedMenuItem, MuiStyles } from '@gridsuite/commons-ui';
-import { ListItemText } from '@mui/material';
+import { ListItemIcon, ListItemText } from '@mui/material';
 import { MenuItem } from './footer-menu-items';
 
 interface SideBarSubMenuItemProps {
@@ -20,10 +20,11 @@ export function SideBarSubMenuItem({ subMenuItem }: Readonly<SideBarSubMenuItemP
         return subMenuItem.render;
     }
 
-    const { label, subMenus, id } = subMenuItem;
+    const { label, Icon, subMenus, id, onClick } = subMenuItem;
     if (!subMenus) {
         return (
-            <CustomMenuItem key={id} sx={{ px: 1.5 }}>
+            <CustomMenuItem onClick={onClick} key={id} sx={{ px: 1.5 }}>
+                <ListItemIcon>{Icon && <ListItemIcon>{Icon}</ListItemIcon>}</ListItemIcon>
                 <ListItemText primary={label} />
             </CustomMenuItem>
         );

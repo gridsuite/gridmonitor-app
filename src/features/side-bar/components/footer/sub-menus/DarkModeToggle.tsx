@@ -1,5 +1,5 @@
 import { CustomMenuItem, DARK_THEME, LIGHT_THEME, PARAM_THEME } from '@gridsuite/commons-ui';
-import { MenuItem, Stack, Switch, Typography } from '@mui/material';
+import { Stack, Switch, Typography } from '@mui/material';
 import { ChangeEvent } from 'react';
 import { useAppParameterState } from '../../../../app-parameters/hooks/use-app-parameter-state';
 

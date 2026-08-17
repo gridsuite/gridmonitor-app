@@ -1,10 +1,14 @@
-import { AccountBox, Apps, DisplaySettings, Logout } from '@mui/icons-material';
+import { AccountBox, Apps, DisplaySettings, ManageAccounts, Badge } from '@mui/icons-material';
 import React from 'react';
 import { GsLang } from '@gridsuite/commons-ui';
+import GridexploreLogo from 'assets/images/gridexplore_logo.svg?react';
+import { MenuItem } from '@mui/material';
 import { DarkModeToggle } from './sub-menus/DarkModeToggle';
 import { LanguageSelection } from './sub-menus/LanguageSelection';
 import { OtherAppRedirection } from './sub-menus/OtherAppRedirection';
-import GridexploreLogo from 'assets/images/gridexplore_logo.svg?react';
+import { ProfileInfos } from './sub-menus/ProfileInfos';
+import { UserProfile } from '../../../authentication/store/authentication.type';
+import { UserAvatarIcon } from './icon/UserIcon';
 
 interface BaseMenuItemType {
     id: string;
@@ -13,7 +17,7 @@ interface BaseMenuItemType {
 export interface StandardSubMenuItem extends BaseMenuItemType {
     type?: 'standard';
     label: string;
-    Icon?: React.ElementType;
+    Icon?: React.ReactNode;
     onClick?: () => void;
     subMenus?: MenuItem[];
 }
@@ -56,27 +60,63 @@ export const settingsSubMenuItems: MenuItem[] = [
     },
 ];
 
-interface SideBarMenuItemsArgs {
+interface ProfileSubMenuItemsArgs {
     onProfileClick: () => void;
+    onProfileSettingsClick: () => void;
+    userProfile?: UserProfile;
 }
 
-export const sideBarMenuItems = ({ onProfileClick }: SideBarMenuItemsArgs): MenuItem[] => [
+export const profileSubMenuItems = ({
+    onProfileClick,
+    onProfileSettingsClick,
+    userProfile,
+}: ProfileSubMenuItemsArgs): MenuItem[] => [
+    {
+        type: 'custom',
+        id: 'profileInfos',
+        render: <ProfileInfos userProfile={userProfile} />,
+    },
+    {
+        id: 'userInfos',
+        label: 'Informations utilisateur',
+        Icon: <Badge />,
+        onClick: onProfileClick,
+    },
+    {
+        id: 'userParams',
+        label: 'Paramètres utilisateurs',
+        Icon: <ManageAccounts />,
+        onClick: onProfileSettingsClick,
+    },
+];
+
+interface SideBarMenuItemsArgs {
+    onProfileClick: () => void;
+    onProfileSettingsClick: () => void;
+    userProfile?: UserProfile;
+}
+
+export const sideBarMenuItems = ({
+    onProfileClick,
+    onProfileSettingsClick,
+    userProfile,
+}: SideBarMenuItemsArgs): MenuItem[] => [
     {
         id: 'myApps',
         label: 'Mes applications',
         subMenus: applicationSubMenuItems,
-        Icon: Apps,
+        Icon: <Apps />,
     },
     {
         id: 'profile',
         label: 'Profil',
-        Icon: AccountBox, // TODO: change to actual icon
-        onClick: onProfileClick,
+        Icon: <UserAvatarIcon label={userProfile?.name ?? ''} />, // TODO: change to actual icon
+        subMenus: profileSubMenuItems({ onProfileClick, onProfileSettingsClick, userProfile }),
     },
     {
         id: 'settings',
         label: 'Réglages',
         subMenus: settingsSubMenuItems,
-        Icon: DisplaySettings,
+        Icon: <DisplaySettings />,
     },
 ];

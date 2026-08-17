@@ -18,9 +18,9 @@ interface NavBarTab {
 }
 
 const tabs: NavBarTab[] = [
-    { Icon: <PlayCircleFilled />, path: PROCESS_PATHS.execute },
-    { Icon: <TableView />, path: PROCESS_PATHS.results },
-    { Icon: <SettingsInputComponent />, path: PROCESS_CONFIG_PATHS.root },
+    { icon: <PlayCircleFilled />, path: PROCESS_PATHS.execute },
+    { icon: <TableView />, path: PROCESS_PATHS.results },
+    { icon: <SettingsInputComponent />, path: PROCESS_CONFIG_PATHS.root },
 ];
 
 export function SettingsTabs() {
