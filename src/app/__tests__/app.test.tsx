@@ -50,9 +50,9 @@ it('renders', async () => {
             </BrowserRouter>
         </IntlProvider>
     );
-    const res = screen.getAllByText((_, element) => {
-        return element?.textContent === 'Configuration mode';
-    })[0] as HTMLElement;
+    const res = await screen.findByText((_, element) => {
+        return element?.textContent === 'GridSuite';
+    });
 
     expect(res).toBeInTheDocument();
 });
