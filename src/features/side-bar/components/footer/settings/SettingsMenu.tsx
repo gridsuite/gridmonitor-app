@@ -1,9 +1,9 @@
 import { CustomNestedMenuItem, GsLang, MuiStyles } from '@gridsuite/commons-ui';
 import { DisplaySettings } from '@mui/icons-material';
-import { MinimizedSubMenuHeader } from '../utils/MinimizedSubMenuHeader';
+import { MinimizedSubMenuHeader } from '../common/MinimizedSubMenuHeader';
 import { DarkModeToggle } from './DarkModeToggle';
 import { LanguageSelection } from './LanguageSelection';
-import { submenuFooterStyle } from '../utils/submenuFooterStyle';
+import { submenuFooterStyle } from '../common/submenuFooterStyle';
 
 export function SettingsMenu({ isMinimized }: { isMinimized: boolean }) {
     const settingsLabel = 'Réglages';

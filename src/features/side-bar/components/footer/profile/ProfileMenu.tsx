@@ -1,20 +1,19 @@
 import {
     CustomNestedMenuItem,
-    MuiStyles,
     PARAM_DEVELOPER_MODE,
     UserInformationDialog,
     UserSettingsDialog,
 } from '@gridsuite/commons-ui';
 import { Badge, ManageAccounts } from '@mui/icons-material';
 import { useState } from 'react';
-import { MinimizedSubMenuHeader } from '../utils/MinimizedSubMenuHeader';
+import { MinimizedSubMenuHeader } from '../common/MinimizedSubMenuHeader';
 import { ProfileInfos } from './ProfileInfos';
 import { UserProfile } from '../../../../authentication/store/authentication.type';
 import { UserAvatarIcon } from './UserIcon';
-import { SidebarMenuItem } from '../utils/SideBarMenuItem';
+import { SidebarMenuItem } from '../common/SideBarMenuItem';
 import { useAppParameterState } from '../../../../app-parameters/hooks/use-app-parameter-state';
 import { useStableUserProfile } from '../../../../authentication/hooks/use-stable-user-profile';
-import { submenuFooterStyle } from '../utils/submenuFooterStyle';
+import { submenuFooterStyle } from '../common/submenuFooterStyle';
 
 interface ProfileMenuProps {
     isMinimized: boolean;

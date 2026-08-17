@@ -5,8 +5,8 @@ import { useAppParameterState } from '../../../../app-parameters/hooks/use-app-p
 
 export function DarkModeToggle() {
     const [mode, setMode] = useAppParameterState(PARAM_THEME);
-
     const isDarkMode = mode === DARK_THEME;
+
     const toggleMode = (event: ChangeEvent<HTMLInputElement>) => {
         const targetModeValue = event.target.checked ? DARK_THEME : LIGHT_THEME;
         setMode(targetModeValue) // TODO: improve error handling
@@ -16,7 +16,7 @@ export function DarkModeToggle() {
         <CustomMenuItem sx={{ px: 2 }}>
             <Stack width="100%" direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
                 <Typography>Mode sombre</Typography>
-                <Switch value={isDarkMode} onChange={toggleMode} />
+                <Switch checked={isDarkMode} onChange={toggleMode} />
             </Stack>
         </CustomMenuItem>
     );

@@ -14,19 +14,17 @@ export function AppSidebarHeader({ isMinimized }: Readonly<{ isMinimized: boolea
         <>
             <Stack
                 sx={{
-                    px: isMinimized ? 1 : 2,
+                    px: 1.5,
                     pt: 3,
                 }}
             >
                 <Stack
                     direction="row"
                     sx={{
-                        height: 40,
                         display: 'flex',
                         alignItems: 'center',
-                        justifyContent: 'center',
+                        justifyContent: isMinimized ? 'center' : 'normal',
                     }}
-                    spacing={1}
                 >
                     <GridmonitorLogo />
                     {!isMinimized && (
@@ -44,7 +42,6 @@ export function AppSidebarHeader({ isMinimized }: Readonly<{ isMinimized: boolea
                     direction="row"
                     sx={{
                         alignSelf: 'flex-end',
-                        mb: 0.5,
                     }}
                     alignItems="center"
                     justifyContent={isMinimized ? 'center' : 'end'}
