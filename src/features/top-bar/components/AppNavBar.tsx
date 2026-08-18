@@ -31,7 +31,7 @@ const executeTab: NavBarTab = {
     path: PROCESS_PATHS.execute,
 };
 
-function TabLabel({ icon, label }: { icon: ReactNode; label: string }) {
+function TabLabel({ icon, label }: { readonly icon: ReactNode; readonly label: string }) {
     const theme = useTheme();
     const isXs = useMediaQuery(theme.breakpoints.only('xs'));
 
