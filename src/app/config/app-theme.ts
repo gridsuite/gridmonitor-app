@@ -8,6 +8,10 @@
 import { LIGHT_THEME } from '@gridsuite/commons-ui';
 import { createTheme, Theme } from '@mui/material';
 
+function breakPoints(): { values: { xs: number; sm: number; md: number; lg: number; xl: number } } {
+    return { values: { xs: 0, sm: 768, md: 900, lg: 1200, xl: 1536 } };
+}
+
 const lightTheme: Theme = createTheme({
     palette: {
         mode: 'light',
@@ -32,9 +36,7 @@ const lightTheme: Theme = createTheme({
         color: 'blue',
     },
     mapboxStyle: 'mapbox://styles/mapbox/light-v9',
-    breakpoints: {
-        values: { xs: 0, sm: 768, md: 900, lg: 1200, xl: 1536 },
-    },
+    breakpoints: breakPoints(),
 });
 
 const darkTheme: Theme = createTheme({
@@ -61,9 +63,7 @@ const darkTheme: Theme = createTheme({
         color: 'green',
     },
     mapboxStyle: 'mapbox://styles/mapbox/dark-v9',
-    breakpoints: {
-        values: { xs: 0, sm: 768, md: 900, lg: 1200, xl: 1536 },
-    },
+    breakpoints: breakPoints(),
 });
 
 export const getAppTheme = (theme: string): Theme => (theme === LIGHT_THEME ? lightTheme : darkTheme);
