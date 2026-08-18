@@ -88,7 +88,7 @@ export function ExecuteButton() {
             color="primary"
             variant="contained"
             startIcon={executeTab.icon}
-            sx={{ textTransform: 'none' }}
+            sx={{ textTransform: 'none', maxHeight: '48px', minWidth: '90px' }}
         >
             {intl.formatMessage({ id: executeTab.labelId })}
         </Button>
