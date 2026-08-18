@@ -21,7 +21,7 @@ function AppTopBar({ userProfile }: Readonly<AppTopBarProps>) {
     const isConfigurationMode = isConfigurationPath(location.pathname);
 
     return (
-        <AppBar position="static" color="default" elevation={0}>
+        <AppBar position="sticky" color="default" elevation={0}>
             {userProfile !== null && (
                 <Toolbar sx={{ height: '56px', px: '24px', alignItems: 'center' }}>
                     <Grid
