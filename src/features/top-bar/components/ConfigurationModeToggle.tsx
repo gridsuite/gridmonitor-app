@@ -20,7 +20,7 @@ export function ConfigurationModeToggle() {
     const isConfigurationMode = isConfigurationPath(location.pathname);
 
     const handleToggle = (_event: ChangeEvent<HTMLInputElement>, checked: boolean) => {
-        navigate(checked ? PROCESS_PATHS.execute : APP_PATHS.gridmonitor, { replace: true });
+        navigate(checked ? PROCESS_PATHS.execute : APP_PATHS.home, { replace: true });
     };
 
     return (
