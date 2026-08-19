@@ -1,9 +1,12 @@
 import {
     AppSideBar as CommonAppSideBar,
+    fetchAppsMetadata,
+    Metadata,
     PARAM_DEVELOPER_MODE,
     PARAM_LANGUAGE,
     PARAM_THEME,
 } from '@gridsuite/commons-ui';
+import { useEffect, useState } from 'react';
 import { InvertedThemeProvider } from './InvertedThemeProvider';
 import { useAppParameterState } from '../../app-parameters/hooks/use-app-parameter-state';
 import { APP_NAME } from '../../../app/config/app-config';
@@ -21,6 +24,20 @@ export function AppSideBar({ onLogoutClick }: Readonly<SidebarProps>) {
     const [selectedLanguage, setSelectedLanguage] = useAppParameterState(PARAM_LANGUAGE);
     const [isDeveloperMode, handleChangeDeveloperMode] = useAppParameterState(PARAM_DEVELOPER_MODE);
     const userProfile = useStableUserProfile() ?? undefined;
+    const [appsAndUrls, setAppsAndUrls] = useState<Metadata[]>([]);
+
+    useEffect(() => {
+        if (userProfile !== null) {
+            fetchAppsMetadata()
+                .then((metadata) => {
+                    setAppsAndUrls(metadata);
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
+    }, [userProfile]);
+
     return (
         <InvertedThemeProvider>
             <CommonAppSideBar
@@ -35,6 +52,7 @@ export function AppSideBar({ onLogoutClick }: Readonly<SidebarProps>) {
                 globalVersionPromise={() => fetchVersion().then((res) => res?.deployVersion ?? 'unknown')}
                 additionalModulesPromise={getServersInfos}
                 onLogoutClick={onLogoutClick}
+                appsAndUrls={appsAndUrls}
                 appVersion={AppPackage.version}
                 appLicense={AppPackage.license}
             />
