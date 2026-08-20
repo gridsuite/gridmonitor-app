@@ -7,6 +7,7 @@ import {
     PARAM_THEME,
 } from '@gridsuite/commons-ui';
 import { useEffect, useState } from 'react';
+import GridmonitorLogo from 'assets/images/gridmonitor_logo.svg?react';
 import { InvertedThemeProvider } from './InvertedThemeProvider';
 import { useAppParameterState } from '../../app-parameters/hooks/use-app-parameter-state';
 import { APP_NAME } from '../../../app/config/app-config';
@@ -29,7 +30,7 @@ export function AppSideBar({ onLogoutClick }: Readonly<SidebarProps>) {
     const SMALL_SCREEN_BREAKPOINT = 768;
 
     useEffect(() => {
-        if (userProfile !== null) {
+        if (!userProfile) {
             fetchAppsMetadata()
                 .then((metadata) => {
                     setAppsAndUrls(metadata);
@@ -51,6 +52,7 @@ export function AppSideBar({ onLogoutClick }: Readonly<SidebarProps>) {
                 selectedLanguage={selectedLanguage}
                 setSelectedLanguage={setSelectedLanguage}
                 appName={APP_NAME}
+                appLogo={<GridmonitorLogo />}
                 userProfile={userProfile}
                 globalVersionPromise={() => fetchVersion().then((res) => res?.deployVersion ?? 'unknown')}
                 additionalModulesPromise={getServersInfos}
