@@ -7,7 +7,7 @@
 
 import { Tabs, Tab, Box, Button, Typography, Tooltip, useMediaQuery, useTheme } from '@mui/material';
 import { NavLink, useLocation } from 'react-router';
-import { PlayArrow, Settings, TextSnippetOutlined } from '@mui/icons-material';
+import { PlayArrow, MiscellaneousServices, ListAlt } from '@mui/icons-material';
 import type { ReactNode } from 'react';
 import { useIntl } from 'react-intl';
 import { isConfigurationPath } from 'app/router/app-paths';
@@ -21,8 +21,8 @@ interface NavBarTab {
 }
 
 const leftTabs: NavBarTab[] = [
-    { icon: <Settings />, labelId: 'nav.configuration', path: PROCESS_CONFIG_PATHS.root },
-    { icon: <TextSnippetOutlined />, labelId: 'nav.launchHistory', path: PROCESS_PATHS.results },
+    { icon: <MiscellaneousServices />, labelId: 'nav.configuration', path: PROCESS_CONFIG_PATHS.root },
+    { icon: <ListAlt />, labelId: 'nav.launchHistory', path: PROCESS_PATHS.results },
 ];
 
 const executeTab: NavBarTab = {
