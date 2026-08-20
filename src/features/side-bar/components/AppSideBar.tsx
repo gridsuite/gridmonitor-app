@@ -26,6 +26,8 @@ export function AppSideBar({ onLogoutClick }: Readonly<SidebarProps>) {
     const userProfile = useStableUserProfile() ?? undefined;
     const [appsAndUrls, setAppsAndUrls] = useState<Metadata[]>([]);
 
+    const SMALL_SCREEN_BREAKPOINT = 768;
+
     useEffect(() => {
         if (userProfile !== null) {
             fetchAppsMetadata()
@@ -42,6 +44,7 @@ export function AppSideBar({ onLogoutClick }: Readonly<SidebarProps>) {
         <InvertedThemeProvider>
             <CommonAppSideBar
                 isDeveloperMode={isDeveloperMode}
+                smallScreenBreakpoint={SMALL_SCREEN_BREAKPOINT}
                 handleChangeDeveloperMode={handleChangeDeveloperMode}
                 currentTheme={theme}
                 setTheme={setTheme}
