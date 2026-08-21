@@ -7,7 +7,7 @@
 
 import { AppBar, Divider, Grid, Toolbar } from '@mui/material';
 import { useLocation } from 'react-router';
-import { SettingsTabs, ExecuteButton } from './AppNavBar';
+import { ExecuteButton, SettingsTabs } from './AppNavBar';
 import { ConfigurationModeToggle } from './ConfigurationModeToggle';
 import { isConfigurationPath } from '../../../app/router/app-paths';
 import { UserProfile } from '../../authentication/store/authentication.type';
@@ -23,23 +23,30 @@ function AppTopBar({ userProfile }: Readonly<AppTopBarProps>) {
     return (
         <AppBar position="sticky" color="default" elevation={0}>
             {userProfile !== null && (
-                <Toolbar sx={{ height: '56px', px: '24px', alignItems: 'center' }}>
+                <Toolbar sx={{ height: '56px', px: '24px' }}>
                     <Grid
                         container
-                        columns={{ xs: 6, sm: 12 }}
-                        columnSpacing={{ xs: '12px', sm: '16px' }}
-                        sx={{ width: '100%', height: '100%', alignItems: 'center' }}
+                        justifyContent="space-between"
+                        alignItems="center"
+                        width="100%"
+                        wrap="nowrap"
+                        spacing={2}
                     >
-                        <Grid size={{ xs: 3, sm: 6 }} sx={{ display: 'flex', alignItems: 'center' }}>
+                        <Grid>
                             <SettingsTabs />
                         </Grid>
-                        <Grid
-                            size={{ xs: 3, sm: 6 }}
-                            sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}
-                        >
-                            <ExecuteButton />
-                            {isConfigurationMode && <Divider orientation="vertical" sx={{ mx: 2, height: 50 }} />}
-                            <ConfigurationModeToggle />
+                        <Grid container spacing={2} alignItems="center" wrap="nowrap">
+                            <Grid>
+                                <ExecuteButton />
+                            </Grid>
+                            {isConfigurationMode && (
+                                <Grid>
+                                    <Divider orientation="vertical" sx={{ height: 50 }} />
+                                </Grid>
+                            )}
+                            <Grid>
+                                <ConfigurationModeToggle />
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Toolbar>

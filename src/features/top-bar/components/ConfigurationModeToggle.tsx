@@ -25,10 +25,10 @@ export function ConfigurationModeToggle() {
 
     return (
         <FormControlLabel
-            control={<Switch checked={isConfigurationMode} onChange={handleToggle} color="default" />}
+            control={<Switch checked={isConfigurationMode} onChange={handleToggle} />}
             label={intl.formatMessage({ id: 'configurationMode' })}
             labelPlacement="start"
-            sx={{ color: 'inherit' }}
+            sx={{ mx: 0, flexShrink: 0, whiteSpace: 'nowrap' }}
         />
     );
 }
