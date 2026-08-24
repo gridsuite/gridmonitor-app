@@ -8,16 +8,13 @@
 import { FormControlLabel, Switch } from '@mui/material';
 import type { ChangeEvent } from 'react';
 import { useIntl } from 'react-intl';
-import { useLocation, useNavigate } from 'react-router';
-import { APP_PATHS, isConfigurationPath } from 'app/router/app-paths';
+import { useNavigate } from 'react-router';
+import { APP_PATHS } from 'app/router/app-paths';
 import { PROCESS_PATHS } from 'features/process/router/process-paths';
 
-export function ConfigurationModeToggle() {
+export function ConfigurationModeToggle({ isConfigurationMode }: { readonly isConfigurationMode: boolean }) {
     const intl = useIntl();
-    const location = useLocation();
     const navigate = useNavigate();
-
-    const isConfigurationMode = isConfigurationPath(location.pathname);
 
     const handleToggle = (_event: ChangeEvent<HTMLInputElement>, checked: boolean) => {
         navigate(checked ? PROCESS_PATHS.execute : APP_PATHS.home, { replace: true });

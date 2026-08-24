@@ -32,20 +32,24 @@ function AppTopBar({ userProfile }: Readonly<AppTopBarProps>) {
                         wrap="nowrap"
                         spacing={2}
                     >
-                        <Grid>
-                            <SettingsTabs />
-                        </Grid>
-                        <Grid container spacing={2} alignItems="center" wrap="nowrap">
+                        {isConfigurationMode && (
                             <Grid>
-                                <ExecuteButton />
+                                <SettingsTabs />
                             </Grid>
+                        )}
+                        <Grid container spacing={2} alignItems="center" wrap="nowrap" sx={{ ml: 'auto' }}>
+                            {isConfigurationMode && (
+                                <Grid>
+                                    <ExecuteButton />
+                                </Grid>
+                            )}
                             {isConfigurationMode && (
                                 <Grid>
                                     <Divider orientation="vertical" sx={{ height: 50 }} />
                                 </Grid>
                             )}
                             <Grid>
-                                <ConfigurationModeToggle />
+                                <ConfigurationModeToggle isConfigurationMode={isConfigurationMode} />
                             </Grid>
                         </Grid>
                     </Grid>

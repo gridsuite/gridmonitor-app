@@ -11,7 +11,6 @@ import { MemoryRouter, Route, Routes } from 'react-router';
 import { describe, expect, it, vi, afterEach } from 'vitest';
 import { PROCESS_PATHS } from 'features/process/router/process-paths';
 import { PROCESS_CONFIG_PATHS } from 'features/process-config/router/process-config-paths';
-import { APP_PATHS } from 'app/router/app-paths';
 import messagesEn from 'shared/translations/en/common.json';
 import { SettingsTabs, ExecuteButton } from '../AppNavBar';
 
@@ -46,12 +45,6 @@ afterEach(() => {
 // SettingsTabs
 // ---------------------------------------------------------------------------
 describe('SettingsTabs', () => {
-    it('renders nothing when the current path is not a configuration path', () => {
-        const { container } = renderWithRouter(<SettingsTabs />, APP_PATHS.gridmonitor);
-
-        expect(container).toBeEmptyDOMElement();
-    });
-
     it('renders the Configuration and Launch history tabs on a configuration path', () => {
         renderWithRouter(<SettingsTabs />, PROCESS_CONFIG_PATHS.root);
 
@@ -116,12 +109,6 @@ describe('SettingsTabs', () => {
 // ExecuteButton
 // ---------------------------------------------------------------------------
 describe('ExecuteButton', () => {
-    it('renders nothing when the current path is not a configuration path', () => {
-        const { container } = renderWithRouter(<ExecuteButton />, APP_PATHS.gridmonitor);
-
-        expect(container).toBeEmptyDOMElement();
-    });
-
     it('renders an "Execute process" button on a configuration path', () => {
         renderWithRouter(<ExecuteButton />, PROCESS_CONFIG_PATHS.root);
 
@@ -144,12 +131,6 @@ describe('ExecuteButton', () => {
         renderWithRouter(<ExecuteButton />, PROCESS_PATHS.results);
 
         expect(screen.getByRole('link', { name: /Execute process/i })).toBeInTheDocument();
-    });
-
-    it('renders nothing when the current path is the home path', () => {
-        const { container } = renderWithRouter(<ExecuteButton />, APP_PATHS.home);
-
-        expect(container).toBeEmptyDOMElement();
     });
 
     it('renders the execute button with tooltip listeners enabled on xs viewport', () => {

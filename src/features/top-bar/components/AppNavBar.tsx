@@ -10,7 +10,6 @@ import { NavLink, useLocation } from 'react-router';
 import { PlayArrow, MiscellaneousServices, ListAlt } from '@mui/icons-material';
 import type { ReactNode } from 'react';
 import { useIntl } from 'react-intl';
-import { isConfigurationPath } from 'app/router/app-paths';
 import { PROCESS_PATHS } from '../../process/router/process-paths';
 import { PROCESS_CONFIG_PATHS } from '../../process-config/router/process-config-paths';
 
@@ -51,10 +50,6 @@ export function SettingsTabs() {
     const location = useLocation();
     const intl = useIntl();
 
-    if (!isConfigurationPath(location.pathname)) {
-        return null;
-    }
-
     const currentTab = leftTabs.find((t) => location.pathname.startsWith(t.path))?.path ?? false;
 
     return (
@@ -74,12 +69,7 @@ export function SettingsTabs() {
 }
 
 export function ExecuteButton() {
-    const location = useLocation();
     const intl = useIntl();
-
-    if (!isConfigurationPath(location.pathname)) {
-        return null;
-    }
 
     return (
         <Button
