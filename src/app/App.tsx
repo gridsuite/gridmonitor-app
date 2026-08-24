@@ -76,7 +76,7 @@ function App() {
     useAppParametersInvalidationListener();
     useProcessInvalidationsListener();
 
-    const onLogoutClick = () => logout(dispatch, userManager.instance)?.catch((err) => console.error(err)); // TODO: improve code
+    const onLogoutClick = () => logout(dispatch, userManager.instance)?.catch((err) => console.error(err));
 
     return (
         <AppLayout onLogoutClick={onLogoutClick}>

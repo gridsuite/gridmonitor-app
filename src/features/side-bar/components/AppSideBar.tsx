@@ -17,7 +17,7 @@ import {
     AppSideBarThemeProvider,
 } from '@gridsuite/commons-ui';
 import { createTheme } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import GridmonitorLogo from 'assets/images/gridmonitor_logo.svg?react';
 import { useAppParameterState } from '../../app-parameters/hooks/use-app-parameter-state';
 import { APP_NAME } from '../../../app/config/app-config';
@@ -37,12 +37,13 @@ export function AppSideBar({ onLogoutClick }: Readonly<SideBarProps>) {
     const [isDeveloperMode, handleChangeDeveloperMode] = useAppParameterState(PARAM_DEVELOPER_MODE);
     const userProfile = useStableUserProfile() ?? undefined;
     const [appsAndUrls, setAppsAndUrls] = useState<Metadata[]>([]);
-    const theme = getAppTheme(currentTheme);
+    const theme = useMemo(() => getAppTheme(currentTheme), [currentTheme]);
     const invertedThemeId = currentTheme === LIGHT_THEME ? DARK_THEME : LIGHT_THEME;
-    const invertedTheme = getAppTheme(invertedThemeId);
-    const overriddenInvertedTheme =
-        invertedThemeId === DARK_THEME
-            ? createTheme(invertedTheme, {
+    const invertedTheme = useMemo(() => {
+        const baseTheme = getAppTheme(invertedThemeId);
+
+        return invertedThemeId === DARK_THEME
+            ? createTheme(baseTheme, {
                   palette: {
                       background: {
                           paper: '#263238',
@@ -50,7 +51,8 @@ export function AppSideBar({ onLogoutClick }: Readonly<SideBarProps>) {
                       },
                   },
               })
-            : invertedTheme;
+            : baseTheme;
+    }, [invertedThemeId]);
 
     const SMALL_SCREEN_BREAKPOINT = 768;
 
@@ -67,7 +69,7 @@ export function AppSideBar({ onLogoutClick }: Readonly<SideBarProps>) {
     }, [userProfile]);
 
     return (
-        <AppSideBarThemeProvider theme={theme} invertedTheme={overriddenInvertedTheme}>
+        <AppSideBarThemeProvider theme={theme} invertedTheme={invertedTheme}>
             <CommonAppSideBar
                 isDeveloperMode={isDeveloperMode}
                 smallScreenBreakpoint={SMALL_SCREEN_BREAKPOINT}
