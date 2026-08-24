@@ -7,17 +7,21 @@
 
 import {
     AppSideBar as CommonAppSideBar,
+    DARK_THEME,
     fetchAppsMetadata,
+    LIGHT_THEME,
     Metadata,
     PARAM_DEVELOPER_MODE,
     PARAM_LANGUAGE,
     PARAM_THEME,
+    AppSideBarThemeProvider,
 } from '@gridsuite/commons-ui';
+import { createTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
 import GridmonitorLogo from 'assets/images/gridmonitor_logo.svg?react';
-import { InvertedThemeProvider } from './InvertedThemeProvider';
 import { useAppParameterState } from '../../app-parameters/hooks/use-app-parameter-state';
 import { APP_NAME } from '../../../app/config/app-config';
+import { getAppTheme } from '../../../app/config/app-theme';
 import { useStableUserProfile } from '../../authentication/hooks/use-stable-user-profile';
 import { fetchVersion } from '../../../shared/config/version';
 import { getServersInfos } from '../../top-bar/api/get-servers-infos';
@@ -28,11 +32,25 @@ type SideBarProps = {
 };
 
 export function AppSideBar({ onLogoutClick }: Readonly<SideBarProps>) {
-    const [theme, setTheme] = useAppParameterState(PARAM_THEME);
+    const [currentTheme, setTheme] = useAppParameterState(PARAM_THEME);
     const [selectedLanguage, setSelectedLanguage] = useAppParameterState(PARAM_LANGUAGE);
     const [isDeveloperMode, handleChangeDeveloperMode] = useAppParameterState(PARAM_DEVELOPER_MODE);
     const userProfile = useStableUserProfile() ?? undefined;
     const [appsAndUrls, setAppsAndUrls] = useState<Metadata[]>([]);
+    const theme = getAppTheme(currentTheme);
+    const invertedThemeId = currentTheme === LIGHT_THEME ? DARK_THEME : LIGHT_THEME;
+    const invertedTheme = getAppTheme(invertedThemeId);
+    const overriddenInvertedTheme =
+        invertedThemeId === DARK_THEME
+            ? createTheme(invertedTheme, {
+                  palette: {
+                      background: {
+                          paper: '#263238',
+                          default: '#263238',
+                      },
+                  },
+              })
+            : invertedTheme;
 
     const SMALL_SCREEN_BREAKPOINT = 768;
 
@@ -49,12 +67,12 @@ export function AppSideBar({ onLogoutClick }: Readonly<SideBarProps>) {
     }, [userProfile]);
 
     return (
-        <InvertedThemeProvider>
+        <AppSideBarThemeProvider theme={theme} invertedTheme={overriddenInvertedTheme}>
             <CommonAppSideBar
                 isDeveloperMode={isDeveloperMode}
                 smallScreenBreakpoint={SMALL_SCREEN_BREAKPOINT}
                 handleChangeDeveloperMode={handleChangeDeveloperMode}
-                currentTheme={theme}
+                currentTheme={currentTheme}
                 setTheme={setTheme}
                 selectedLanguage={selectedLanguage}
                 setSelectedLanguage={setSelectedLanguage}
@@ -69,6 +87,6 @@ export function AppSideBar({ onLogoutClick }: Readonly<SideBarProps>) {
                 appVersion={AppPackage.version}
                 appLicense={AppPackage.license}
             />
-        </InvertedThemeProvider>
+        </AppSideBarThemeProvider>
     );
 }
