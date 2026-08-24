@@ -23,11 +23,11 @@ import { fetchVersion } from '../../../shared/config/version';
 import { getServersInfos } from '../../top-bar/api/get-servers-infos';
 import AppPackage from '../../../../package.json';
 
-type SidebarProps = {
+type SideBarProps = {
     onLogoutClick?: () => void;
 };
 
-export function AppSideBar({ onLogoutClick }: Readonly<SidebarProps>) {
+export function AppSideBar({ onLogoutClick }: Readonly<SideBarProps>) {
     const [theme, setTheme] = useAppParameterState(PARAM_THEME);
     const [selectedLanguage, setSelectedLanguage] = useAppParameterState(PARAM_LANGUAGE);
     const [isDeveloperMode, handleChangeDeveloperMode] = useAppParameterState(PARAM_DEVELOPER_MODE);
@@ -59,6 +59,7 @@ export function AppSideBar({ onLogoutClick }: Readonly<SidebarProps>) {
                 selectedLanguage={selectedLanguage}
                 setSelectedLanguage={setSelectedLanguage}
                 appName={APP_NAME}
+                appNameColor="#7e57c2"
                 appLogo={<GridmonitorLogo />}
                 userProfile={userProfile}
                 globalVersionPromise={() => fetchVersion().then((res) => res?.deployVersion ?? 'unknown')}
