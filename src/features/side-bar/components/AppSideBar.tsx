@@ -14,7 +14,6 @@ import {
     PARAM_DEVELOPER_MODE,
     PARAM_LANGUAGE,
     PARAM_THEME,
-    AppSideBarThemeProvider,
 } from '@gridsuite/commons-ui';
 import { createTheme } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
@@ -37,7 +36,6 @@ export function AppSideBar({ onLogoutClick }: Readonly<SideBarProps>) {
     const [isDeveloperMode, handleChangeDeveloperMode] = useAppParameterState(PARAM_DEVELOPER_MODE);
     const userProfile = useStableUserProfile() ?? undefined;
     const [appsAndUrls, setAppsAndUrls] = useState<Metadata[]>([]);
-    const theme = useMemo(() => getAppTheme(currentTheme), [currentTheme]);
     const invertedThemeId = currentTheme === LIGHT_THEME ? DARK_THEME : LIGHT_THEME;
     const invertedTheme = useMemo(() => {
         const baseTheme = getAppTheme(invertedThemeId);
@@ -69,26 +67,25 @@ export function AppSideBar({ onLogoutClick }: Readonly<SideBarProps>) {
     }, [userProfile]);
 
     return (
-        <AppSideBarThemeProvider theme={theme} invertedTheme={invertedTheme}>
-            <CommonAppSideBar
-                isDeveloperMode={isDeveloperMode}
-                smallScreenBreakpoint={SMALL_SCREEN_BREAKPOINT}
-                handleChangeDeveloperMode={handleChangeDeveloperMode}
-                currentTheme={currentTheme}
-                setTheme={setTheme}
-                selectedLanguage={selectedLanguage}
-                setSelectedLanguage={setSelectedLanguage}
-                appName={APP_NAME}
-                appNameColor="#7e57c2"
-                appLogo={<GridmonitorLogo />}
-                userProfile={userProfile}
-                globalVersionPromise={() => fetchVersion().then((res) => res?.deployVersion ?? 'unknown')}
-                additionalModulesPromise={getServersInfos}
-                onLogoutClick={onLogoutClick}
-                appsAndUrls={appsAndUrls}
-                appVersion={AppPackage.version}
-                appLicense={AppPackage.license}
-            />
-        </AppSideBarThemeProvider>
+        <CommonAppSideBar
+            invertedTheme={invertedTheme}
+            isDeveloperMode={isDeveloperMode}
+            smallScreenBreakpoint={SMALL_SCREEN_BREAKPOINT}
+            handleChangeDeveloperMode={handleChangeDeveloperMode}
+            currentTheme={currentTheme}
+            setTheme={setTheme}
+            selectedLanguage={selectedLanguage}
+            setSelectedLanguage={setSelectedLanguage}
+            appName={APP_NAME}
+            appNameColor="#7e57c2"
+            appLogo={<GridmonitorLogo />}
+            userProfile={userProfile}
+            globalVersionPromise={() => fetchVersion().then((res) => res?.deployVersion ?? 'unknown')}
+            additionalModulesPromise={getServersInfos}
+            onLogoutClick={onLogoutClick}
+            appsAndUrls={appsAndUrls}
+            appVersion={AppPackage.version}
+            appLicense={AppPackage.license}
+        />
     );
 }
