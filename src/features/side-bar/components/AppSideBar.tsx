@@ -68,7 +68,7 @@ export function AppSideBar({ onLogoutClick }: Readonly<SideBarProps>) {
 
     return (
         <CommonAppSideBar
-            invertedTheme={invertedTheme}
+            sideBarTheme={invertedTheme}
             isDeveloperMode={isDeveloperMode}
             smallScreenBreakpoint={SMALL_SCREEN_BREAKPOINT}
             handleChangeDeveloperMode={handleChangeDeveloperMode}
