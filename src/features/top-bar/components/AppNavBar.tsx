@@ -81,6 +81,7 @@ export function ExecuteButton() {
             sx={{
                 flexShrink: 0,
                 whiteSpace: 'nowrap',
+                textTransform: 'none',
             }}
         >
             {intl.formatMessage({ id: executeTab.labelId })}
