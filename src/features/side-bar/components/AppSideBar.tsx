@@ -55,7 +55,7 @@ export function AppSideBar({ onLogoutClick }: Readonly<SideBarProps>) {
     const SMALL_SCREEN_BREAKPOINT = 768;
 
     useEffect(() => {
-        if (!userProfile) {
+        if (userProfile) {
             fetchAppsMetadata()
                 .then((metadata) => {
                     setAppsAndUrls(metadata);
