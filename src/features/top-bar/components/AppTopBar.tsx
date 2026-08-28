@@ -18,7 +18,7 @@ import {
 } from '@gridsuite/commons-ui';
 import { useNavigate } from 'react-router';
 import { APP_NAME } from 'app/config/app-config';
-import GridmonitorLogo from 'assets/images/gridmonitor_logo.svg?react';
+import PowsyblLogo from 'assets/images/powsybl_logo.svg?react';
 import { useAppParameterState } from 'features/app-parameters/hooks/use-app-parameter-state';
 import { useAppDispatch } from 'app/store/store';
 import { fetchVersion } from 'shared/config/version';
@@ -56,7 +56,7 @@ function AppTopBar({ userProfile, userManager }: Readonly<AppTopBarProps>) {
         <TopBar
             appName={APP_NAME}
             appColor="grey"
-            appLogo={<GridmonitorLogo />}
+            appLogo={<PowsyblLogo />}
             appVersion={AppPackage.version}
             appLicense={AppPackage.license}
             onLogoutClick={() => logout(dispatch, userManager.instance)}
