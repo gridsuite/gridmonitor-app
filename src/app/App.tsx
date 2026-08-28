@@ -12,6 +12,7 @@ import {
     CardErrorBoundary,
     initializeAuthenticationProd,
     UserManagerState,
+    logout
 } from '@gridsuite/commons-ui';
 import {
     selectAuthenticationRouterError,
@@ -26,6 +27,7 @@ import { useProcessInvalidationsListener } from './notifications/use-process-inv
 import { useAppDispatch, useAppSelector } from './store/store';
 import { AppRouter } from './router/AppRouter';
 import { useStableUserProfile } from '../features/authentication/hooks/use-stable-user-profile';
+import { AppLayout } from './layout/AppLayout';
 
 function App() {
     const userProfile = useStableUserProfile();
@@ -80,8 +82,10 @@ function App() {
     useAppParametersInvalidationListener();
     useProcessInvalidationsListener();
 
+    const onLogoutClick = () => logout(dispatch, userManager.instance)?.catch((err) => console.error(err));
+
     return (
-        <>
+        <AppLayout onLogoutClick={onLogoutClick}>
             <AppTopBar userProfile={userProfile} />
             <CardErrorBoundary>
                 {userProfile !== null ? (
@@ -98,7 +102,7 @@ function App() {
                     />
                 )}
             </CardErrorBoundary>
-        </>
+        </AppLayout>
     );
 }
 export default App;

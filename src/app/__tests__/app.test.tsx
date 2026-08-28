@@ -19,6 +19,9 @@ import { store } from '../store/store';
 import { appMessages } from '../config/app-messages';
 
 vi.mock('uuid', () => ({ v4: () => '00000000-0000-0000-0000-000000000000' }));
+vi.mock('features/side-bar/components/AppSideBar', () => ({
+    AppSideBar: () => <div>GridMonitor</div>,
+}));
 
 it('renders', async () => {
     server.use(
@@ -50,9 +53,16 @@ it('renders', async () => {
             </BrowserRouter>
         </IntlProvider>
     );
-    const res = screen.queryAllByAltText((_, element) => {
+
+    const res1 = await screen.findAllByText((_, element) => {
+        return element?.textContent === 'GridMonitor';
+    });
+
+    expect(res1.length).toBeGreaterThan(0);
+
+    const res2 = screen.queryAllByAltText((_, element) => {
         return element?.textContent === 'Configuration mode';
     });
 
-    expect(res).toHaveLength(0);
+    expect(res2).toHaveLength(0);
 });
