@@ -12,7 +12,7 @@ import {
     CardErrorBoundary,
     initializeAuthenticationProd,
     UserManagerState,
-    logout
+    logout,
 } from '@gridsuite/commons-ui';
 import {
     selectAuthenticationRouterError,
