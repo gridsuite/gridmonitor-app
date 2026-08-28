@@ -6,5 +6,5 @@
  */
 
 export const PROCESS_CONFIG_PATHS = {
-    root: '/process-config',
+    root: '/gridmonitor/process-config',
 } as const;

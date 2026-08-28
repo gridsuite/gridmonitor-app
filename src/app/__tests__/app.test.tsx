@@ -16,8 +16,12 @@ import { SnackbarProvider } from '@gridsuite/commons-ui';
 import { server } from 'test-utils/msw/server';
 import App from '../App';
 import { store } from '../store/store';
+import { appMessages } from '../config/app-messages';
 
 vi.mock('uuid', () => ({ v4: () => '00000000-0000-0000-0000-000000000000' }));
+vi.mock('features/side-bar/components/AppSideBar', () => ({
+    AppSideBar: () => <div>GridMonitor</div>,
+}));
 
 it('renders', async () => {
     server.use(
@@ -34,7 +38,7 @@ it('renders', async () => {
     );
 
     render(
-        <IntlProvider locale="en">
+        <IntlProvider locale="en" messages={appMessages.en}>
             <BrowserRouter>
                 <Provider store={store}>
                     <StyledEngineProvider injectFirst>
@@ -49,9 +53,16 @@ it('renders', async () => {
             </BrowserRouter>
         </IntlProvider>
     );
-    const res = await screen.findAllByText((_, element) => {
+
+    const res1 = await screen.findAllByText((_, element) => {
         return element?.textContent === 'GridMonitor';
     });
 
-    expect(res.length).toBeGreaterThan(0);
+    expect(res1.length).toBeGreaterThan(0);
+
+    const res2 = screen.queryAllByAltText((_, element) => {
+        return element?.textContent === 'Configuration mode';
+    });
+
+    expect(res2).toHaveLength(0);
 });

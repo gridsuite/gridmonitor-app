@@ -5,33 +5,85 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Tabs, Tab } from '@mui/material';
+import { Tabs, Tab, Box, Button, Typography, Tooltip, useMediaQuery, useTheme } from '@mui/material';
 import { NavLink, useLocation } from 'react-router';
-import { PlayCircleFilled, TableView, SettingsInputComponent } from '@mui/icons-material';
+import { PlayArrow, MiscellaneousServices, ListAlt } from '@mui/icons-material';
 import type { ReactNode } from 'react';
+import { useIntl } from 'react-intl';
 import { PROCESS_PATHS } from '../../process/router/process-paths';
 import { PROCESS_CONFIG_PATHS } from '../../process-config/router/process-config-paths';
 
 interface NavBarTab {
     icon: ReactNode;
+    labelId: string;
     path: string;
 }
 
-const tabs: NavBarTab[] = [
-    { icon: <PlayCircleFilled />, path: PROCESS_PATHS.execute },
-    { icon: <TableView />, path: PROCESS_PATHS.results },
-    { icon: <SettingsInputComponent />, path: PROCESS_CONFIG_PATHS.root },
+const leftTabs: NavBarTab[] = [
+    { icon: <MiscellaneousServices />, labelId: 'nav.configuration', path: PROCESS_CONFIG_PATHS.root },
+    { icon: <ListAlt />, labelId: 'nav.launchHistory', path: PROCESS_PATHS.results },
 ];
+
+const executeTab: NavBarTab = {
+    icon: <PlayArrow />,
+    labelId: 'nav.executeProcess',
+    path: PROCESS_PATHS.execute,
+};
+
+function TabLabel({ icon, label }: { readonly icon: ReactNode; readonly label: string }) {
+    const theme = useTheme();
+    const isXs = useMediaQuery(theme.breakpoints.only('xs'));
+
+    return (
+        <Tooltip title={label} disableHoverListener={!isXs} disableFocusListener={!isXs} disableTouchListener={!isXs}>
+            <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1 }}>
+                {icon}
+                <Typography sx={{ display: { xs: 'none', sm: 'inline' } }}>
+                    <span>{label}</span>
+                </Typography>
+            </Box>
+        </Tooltip>
+    );
+}
 
 export function SettingsTabs() {
     const location = useLocation();
-    const currentTab = tabs.find((t) => location.pathname.startsWith(t.path))?.path ?? false;
+    const intl = useIntl();
+
+    const currentTab = leftTabs.find((t) => location.pathname.startsWith(t.path))?.path ?? false;
 
     return (
         <Tabs value={currentTab}>
-            {tabs.map((tab) => (
-                <Tab key={tab.path} label={tab.icon} value={tab.path} component={NavLink} to={tab.path} />
+            {leftTabs.map((tab) => (
+                <Tab
+                    key={tab.path}
+                    value={tab.path}
+                    component={NavLink}
+                    to={tab.path}
+                    label={<TabLabel icon={tab.icon} label={intl.formatMessage({ id: tab.labelId })} />}
+                    sx={{ textTransform: 'none' }}
+                />
             ))}
         </Tabs>
+    );
+}
+
+export function ExecuteButton() {
+    const intl = useIntl();
+
+    return (
+        <Button
+            component={NavLink}
+            to={executeTab.path}
+            color="primary"
+            variant="contained"
+            startIcon={executeTab.icon}
+            sx={{
+                flexShrink: 0,
+                whiteSpace: 'nowrap',
+            }}
+        >
+            {intl.formatMessage({ id: executeTab.labelId })}
+        </Button>
     );
 }
