@@ -80,7 +80,7 @@ export function AppSideBar({ onLogoutClick }: Readonly<SideBarProps>) {
             appNameColor="#7e57c2"
             appLogo={<GridmonitorLogo />}
             userProfile={userProfile}
-            globalVersionPromise={() => fetchVersion().then((res) => res?.deployVersion ?? 'unknown')}
+            globalVersionPromise={() => fetchVersion().then((res) => res.deployVersion ?? 'unknown')}
             additionalModulesPromise={getServersInfos}
             onLogoutClick={onLogoutClick}
             appsAndUrls={appsAndUrls}
