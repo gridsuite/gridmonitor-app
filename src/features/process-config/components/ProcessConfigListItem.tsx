@@ -37,7 +37,7 @@ function FieldRow({ label, value }: Readonly<{ label: string; value: unknown }>)
     );
 }
 
-function ArraySection({ label, values }: Readonly<{ label: string; values: string[] }>) {
+function ArraySection({ label, values }: Readonly<{ label: string; values: (string | undefined)[] }>) {
     if (values.length === 0) {
         return null;
     }
@@ -85,7 +85,7 @@ export function ProcessConfigListItem({
         return null;
     }
 
-    const modificationUuids = config.modificationUuids ?? [];
+    const modifications = config.modifications ?? [];
 
     return (
         <Card key={item.id} variant="outlined">
@@ -131,7 +131,10 @@ export function ProcessConfigListItem({
                         </Box>
                     </Stack>
 
-                    <ArraySection label="Modification UUIDs" values={modificationUuids} />
+                    <ArraySection
+                        label="Modification UUIDs"
+                        values={modifications.map((modification) => modification.modificationUuid)}
+                    />
 
                     <Stack direction="row" justifyContent="flex-end">
                         <Button size="small" onClick={() => onToggleExpanded(index)}>

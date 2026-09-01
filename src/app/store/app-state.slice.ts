@@ -1,0 +1,54 @@
+/**
+ * Copyright (c) 2026, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+import { createSlice } from '@reduxjs/toolkit';
+import { FilterConfig, SortConfig, SortWay, TableType } from '@gridsuite/commons-ui';
+import {
+    PROCESS_LAUNCH_HISTORY_SORT_STORE,
+    TABLE_SORT_STORE,
+} from '@gridsuite/commons-ui/utils/store-sort-filter-fields';
+import { AppState } from './app-state.type';
+import { TABLE_SORT, TableSortAction, UPDATE_COLUMN_FILTERS, UpdateColumnFiltersAction } from './actions';
+
+const initialSortState: Record<string, SortConfig[]> = {
+    [PROCESS_LAUNCH_HISTORY_SORT_STORE]: [{ colId: 'processScheduledAt', sort: SortWay.DESC }],
+};
+
+const initialFilterState: Record<string, FilterConfig[]> = {
+    [PROCESS_LAUNCH_HISTORY_SORT_STORE]: [],
+};
+
+const initialState: AppState = {
+    // @ts-ignore
+    [TABLE_SORT_STORE]: {
+        [PROCESS_LAUNCH_HISTORY_SORT_STORE]: initialSortState,
+    },
+    tableFilters: {
+        columnsFilters: {
+            [TableType.ProcessLaunchHistory]: { ...initialFilterState },
+        },
+    },
+};
+
+const appStateSlice = createSlice({
+    name: 'app',
+    initialState,
+    reducers: {},
+    extraReducers: (builder) => {
+        builder.addCase(TABLE_SORT, (state, action: TableSortAction) => {
+            state.tableSort[action.table][action.tab] = action.sort;
+        });
+
+        builder.addCase(UPDATE_COLUMN_FILTERS, (state, action: UpdateColumnFiltersAction) => {
+            const { filterType, filterSubType, filters } = action;
+            state.tableFilters.columnsFilters[filterType] ??= {};
+            state.tableFilters.columnsFilters[filterType][filterSubType] = filters;
+        });
+    },
+});
+
+export const appStateReducer = appStateSlice.reducer;

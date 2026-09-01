@@ -52,11 +52,8 @@ const injectedRtkApi = api.injectEndpoints({
       DuplicateProcessConfigApiArg
     >({
       query: (queryArg) => ({
-        url: `/v1/process-configs/duplication`,
+        url: `/v1/process-configs/${queryArg.uuid}/duplicate`,
         method: "POST",
-        params: {
-          duplicateFrom: queryArg.duplicateFrom,
-        },
       }),
     }),
     executeProcess: build.mutation<
@@ -107,6 +104,18 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
+    getExecution: build.query<GetExecutionApiResponse, GetExecutionApiArg>({
+      query: (queryArg) => ({ url: `/v1/executions/${queryArg.executionId}` }),
+    }),
+    deleteExecution: build.mutation<
+      DeleteExecutionApiResponse,
+      DeleteExecutionApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/v1/executions/${queryArg.executionId}`,
+        method: "DELETE",
+      }),
+    }),
     getStepsInfos: build.query<GetStepsInfosApiResponse, GetStepsInfosApiArg>({
       query: (queryArg) => ({
         url: `/v1/executions/${queryArg.executionId}/step-infos`,
@@ -133,15 +142,6 @@ const injectedRtkApi = api.injectEndpoints({
         url: `/v1/executions/${queryArg.executionId}/debug-infos`,
       }),
     }),
-    deleteExecution: build.mutation<
-      DeleteExecutionApiResponse,
-      DeleteExecutionApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/v1/executions/${queryArg.executionId}`,
-        method: "DELETE",
-      }),
-    }),
   }),
   overrideExisting: false,
 });
@@ -156,7 +156,7 @@ export type UpdateProcessConfigApiResponse = unknown;
 export type UpdateProcessConfigApiArg = {
   /** process config UUID */
   uuid: string;
-  body: LoadFlowConfig | SecurityAnalysisConfig;
+  body: LoadFlowConfig | SecurityAnalysisConfig | ShortCircuitConfig;
 };
 export type DeleteProcessConfigApiResponse = unknown;
 export type DeleteProcessConfigApiArg = {
@@ -172,13 +172,13 @@ export type GetProcessConfigsApiArg = {
 export type CreateProcessConfigApiResponse =
   /** status 200 process config was created */ string;
 export type CreateProcessConfigApiArg = {
-  body: LoadFlowConfig | SecurityAnalysisConfig;
+  body: LoadFlowConfig | SecurityAnalysisConfig | ShortCircuitConfig;
 };
 export type DuplicateProcessConfigApiResponse =
   /** status 200 process config was duplicated */ string;
 export type DuplicateProcessConfigApiArg = {
   /** UUID of the process config to duplicate */
-  duplicateFrom: string;
+  uuid: string;
 };
 export type ExecuteProcessApiResponse =
   /** status 200 The process execution has been started */ string;
@@ -206,7 +206,17 @@ export type GetLaunchedProcessesApiResponse =
   /** status 200 The launched processes */ ProcessExecution[];
 export type GetLaunchedProcessesApiArg = {
   /** Process type */
-  processType: ProcessType;
+  processType?: ProcessType;
+};
+export type GetExecutionApiResponse =
+  /** status 200 The process execution */ ProcessExecution;
+export type GetExecutionApiArg = {
+  /** Execution UUID */
+  executionId: string;
+};
+export type DeleteExecutionApiResponse = unknown;
+export type DeleteExecutionApiArg = {
+  executionId: string;
 };
 export type GetStepsInfosApiResponse =
   /** status 200 The execution steps statuses */ ProcessExecutionStep[];
@@ -221,7 +231,7 @@ export type GetExecutionResultsApiArg = {
   executionId: string;
 };
 export type GetExecutionReportsApiResponse =
-  /** status 200 The execution reports */ ReportPage[];
+  /** status 200 The execution reports */ ReportPage;
 export type GetExecutionReportsApiArg = {
   /** Execution UUID */
   executionId: string;
@@ -232,29 +242,36 @@ export type GetDebugInfosApiArg = {
   /** Execution UUID */
   executionId: string;
 };
-export type DeleteExecutionApiResponse = unknown;
-export type DeleteExecutionApiArg = {
-  executionId: string;
-};
 export type ProcessConfigBase = {
   processType: string;
+};
+export type ModificationInfo = {
+  modificationUuid?: string;
+  description?: string;
+  active?: boolean;
 };
 export type LoadFlowConfig = {
   processType: "LoadFlowConfig";
 } & ProcessConfigBase & {
     loadflowParametersUuid: string;
-    modificationUuids: string[];
+    modifications: ModificationInfo[];
   };
 export type SecurityAnalysisConfig = {
   processType: "SecurityAnalysisConfig";
 } & ProcessConfigBase & {
     securityAnalysisParametersUuid: string;
-    modificationUuids: string[];
+    modifications: ModificationInfo[];
     loadflowParametersUuid: string;
+  };
+export type ShortCircuitConfig = {
+  processType: "ShortCircuitConfig";
+} & ProcessConfigBase & {
+    shortCircuitParametersUuid: string;
+    modifications: ModificationInfo[];
   };
 export type PersistedProcessConfig = {
   id?: string;
-  processConfig?: LoadFlowConfig | SecurityAnalysisConfig;
+  processConfig?: LoadFlowConfig | SecurityAnalysisConfig | ShortCircuitConfig;
 };
 export type MetadataInfos = {
   id?: string;
@@ -282,6 +299,7 @@ export type ProcessExecution = {
   scheduledAt?: string;
   startedAt?: string;
   completedAt?: string;
+  reportId?: string;
   userId: string;
 };
 export type ProcessExecutionStep = {
@@ -291,7 +309,6 @@ export type ProcessExecutionStep = {
   status: StepStatus;
   resultId?: string;
   resultType?: ResultType;
-  reportId?: string;
   startedAt?: string;
   completedAt?: string;
 };
@@ -310,6 +327,7 @@ export type ReportPage = {
 export enum ProcessType {
   SecurityAnalysis = "SECURITY_ANALYSIS",
   Loadflow = "LOADFLOW",
+  ShortCircuit = "SHORT_CIRCUIT",
 }
 export enum ProcessStatus {
   Scheduled = "SCHEDULED",
@@ -327,6 +345,7 @@ export enum StepStatus {
 export enum ResultType {
   SecurityAnalysis = "SECURITY_ANALYSIS",
   Loadflow = "LOADFLOW",
+  ShortCircuit = "SHORT_CIRCUIT",
 }
 export enum Severity {
   Unknown = "UNKNOWN",
@@ -349,9 +368,10 @@ export const {
   useGetProcessConfigsMetadataQuery,
   useCompareProcessConfigsQuery,
   useGetLaunchedProcessesQuery,
+  useGetExecutionQuery,
+  useDeleteExecutionMutation,
   useGetStepsInfosQuery,
   useGetExecutionResultsQuery,
   useGetExecutionReportsQuery,
   useGetDebugInfosQuery,
-  useDeleteExecutionMutation,
 } = injectedRtkApi;

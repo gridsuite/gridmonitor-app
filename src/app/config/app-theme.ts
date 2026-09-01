@@ -37,6 +37,13 @@ const lightTheme: Theme = createTheme({
     },
     mapboxStyle: 'mapbox://styles/mapbox/light-v9',
     breakpoints: breakPoints(),
+    row: {
+        color: 'black',
+    },
+    aggrid: {
+        theme: 'ag-theme-alpine',
+        highlightColor: '#E8F5E9',
+    },
 });
 
 const darkTheme: Theme = createTheme({
@@ -64,6 +71,13 @@ const darkTheme: Theme = createTheme({
     },
     mapboxStyle: 'mapbox://styles/mapbox/dark-v9',
     breakpoints: breakPoints(),
+    row: {
+        color: 'white',
+    },
+    aggrid: {
+        theme: 'ag-theme-alpine-dark',
+        highlightColor: '#1B5E20',
+    },
 });
 
 export const getAppTheme = (theme: string): Theme => (theme === LIGHT_THEME ? lightTheme : darkTheme);

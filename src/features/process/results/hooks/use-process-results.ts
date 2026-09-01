@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { ProcessExecution, ProcessType, useGetLaunchedProcessesQuery } from 'shared/api/monitor-api';
+import { ProcessExecution, useGetLaunchedProcessesQuery } from 'shared/api/monitor-api';
 import { ProcessExecutionInfos } from '../models/process-result';
 
 export const mapStepsInfos = (api: ProcessExecution): ProcessExecutionInfos => ({
@@ -21,8 +21,9 @@ export function useProcessResults() {
         isError,
         isLoading,
         isSuccess,
+        refetch,
     } = useGetLaunchedProcessesQuery({
-        processType: ProcessType.SecurityAnalysis,
+        processType: undefined,
     });
 
     const mappedData = data.map(mapStepsInfos);
@@ -33,5 +34,6 @@ export function useProcessResults() {
         isError,
         isLoading,
         isSuccess,
+        refresh: refetch,
     };
 }

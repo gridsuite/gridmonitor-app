@@ -6,5 +6,36 @@
     "configurationMode": "Mode configuration",
     "nav.executeProcess": "Lancer une analyse",
     "nav.launchHistory": "Historique d'exécution",
-    "nav.configuration": "Configuration"
+    "nav.configuration": "Configuration",
+
+    "filter.filterOoo": "Filtrer...",
+    "filter.startsWith": "Commence par",
+    "filter.contains": "Contient",
+    "filter.blank": "Est vide",
+    "filter.notBlank": "N'est pas vide",
+
+    "ProcessType": "Type",
+    "ProcessStatus": "Status",
+    "ProcessLaunchedBy": "Lancé par",
+    "ProcessScheduledAt": "Programmé",
+    "ProcessStartedAt": "Commencé",
+    "ProcessCompletedAt": "Terminé",
+    "ProcessShowDetails": " ",
+
+    "SECURITY_ANALYSIS": "Analyse de sécurité",
+    "LOADFLOW": "Calcul de répartition",
+    "SHORT_CIRCUIT": "Calcul de court-circuit",
+
+    "ScheduledStatus": "Programmé",
+    "RunningStatus": "En cours",
+    "FailedStatus": "Echec",
+    "CompletedStatus": "Terminé",
+
+    "SCHEDULED": "Programmé",
+    "RUNNING": "En cours",
+    "COMPLETED": "Terminé",
+    "FAILED": "Echec",
+
+    "ProcessLaunchHistory": "Historique d'exécution des chaînes",
+    "Refresh": "Rafraîchir"
 }
