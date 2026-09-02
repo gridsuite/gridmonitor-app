@@ -15,6 +15,10 @@ const mocks = vi.hoisted(() => ({
     appSideBar: vi.fn(),
 }));
 
+vi.mock('features/top-bar/components/AppTopBar', () => ({
+    default: () => <div>topbar</div>,
+}));
+
 vi.mock('@gridsuite/commons-ui', async (importOriginal) => {
     const original = await importOriginal<typeof import('@gridsuite/commons-ui')>();
 

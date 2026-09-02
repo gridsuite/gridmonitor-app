@@ -21,7 +21,6 @@ import {
 } from 'features/authentication/store/authentication.selectors';
 import { getErrorMessage } from 'shared/lib/error';
 import { fetchIdpSettings } from 'shared/config/idp-settings';
-import AppTopBar from 'features/top-bar/components/AppTopBar';
 import { useAppParametersInvalidationListener } from './notifications/use-app-parameters-invalidation-listener';
 import { useProcessInvalidationsListener } from './notifications/use-process-invalidation-listener';
 import { useAppDispatch, useAppSelector } from './store/store';
@@ -86,7 +85,6 @@ function App() {
 
     return (
         <AppLayout onLogoutClick={onLogoutClick}>
-            <AppTopBar userProfile={userProfile} />
             <CardErrorBoundary>
                 {userProfile !== null ? (
                     <AppRouter />
