@@ -130,11 +130,10 @@ export const processResultsColumnsDefinition = (
                 filterComponent: CustomAggridComparatorFilter,
                 filterComponentParams: {
                     filterParams: {
-                        type: TableType.ProcessLaunchHistory,
-                        tab: TableType.ProcessLaunchHistory,
                         dataType: FilterDataTypes.TEXT,
                         comparators: [FilterTextComparators.STARTS_WITH, FilterTextComparators.CONTAINS],
                         debounceMs: 500,
+                        ...filterParams,
                     },
                 },
             },
