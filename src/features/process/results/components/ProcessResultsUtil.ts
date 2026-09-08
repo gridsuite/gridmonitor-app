@@ -13,7 +13,6 @@ import {
     SortParams,
     FilterDataTypes,
     TableType,
-    CustomAggridTextFilter,
     UserCellRenderer,
     CustomAggridComparatorFilter,
     FilterTextComparators,
@@ -152,13 +151,6 @@ export const processResultsColumnsDefinition = (
             flex: 1,
             context: {
                 sortParams,
-                filterComponent: CustomAggridTextFilter,
-                filterComponentParams: {
-                    filterParams: {
-                        dataType: FilterDataTypes.TEXT,
-                        ...filterParams,
-                    },
-                },
             },
             valueGetter: (params) => params.data.scheduledAt,
         }),
@@ -173,13 +165,6 @@ export const processResultsColumnsDefinition = (
             flex: 1,
             context: {
                 sortParams,
-                filterComponent: CustomAggridTextFilter,
-                filterComponentParams: {
-                    filterParams: {
-                        dataType: FilterDataTypes.TEXT,
-                        ...filterParams,
-                    },
-                },
             },
             valueGetter: (params) => params.data.startedAt,
         }),
@@ -194,13 +179,6 @@ export const processResultsColumnsDefinition = (
             flex: 1,
             context: {
                 sortParams,
-                filterComponent: CustomAggridTextFilter,
-                filterComponentParams: {
-                    filterParams: {
-                        dataType: FilterDataTypes.TEXT,
-                        ...filterParams,
-                    },
-                },
             },
             valueGetter: (params) => params.data.completedAt,
         }),
