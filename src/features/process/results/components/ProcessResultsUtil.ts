@@ -188,6 +188,7 @@ export const processResultsColumnsDefinition = (
             colId: 'ProcessShowDetails',
             field: 'ProcessShowDetails',
             cellRenderer: ProcessDetailCellRenderer,
+            valueGetter: (params) => params.data.id,
         }),
     ];
 };

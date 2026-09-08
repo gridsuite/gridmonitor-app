@@ -7,10 +7,19 @@
 
 import { IconButton } from '@mui/material';
 import { ArrowForwardIos as ArrowForwardIosIcon } from '@mui/icons-material';
+import { Link } from 'react-router';
+import { PROCESS_PATHS } from '../../../router/process-paths';
 
-export function ProcessDetailCellRenderer() {
+export type ProcessDetailCellRendererProps = { value: string };
+
+export function ProcessDetailCellRenderer({ value }: Readonly<ProcessDetailCellRendererProps>) {
     return (
-        <IconButton className="row-action-button" size="small">
+        <IconButton
+            component={Link}
+            className="row-action-button"
+            size="small"
+            to={PROCESS_PATHS.stepInfos(value ?? '')}
+        >
             <ArrowForwardIosIcon fontSize="small" />
         </IconButton>
     );
