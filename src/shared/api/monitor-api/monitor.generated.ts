@@ -111,6 +111,18 @@ const injectedRtkApi = api.injectEndpoints({
         method: "DELETE",
       }),
     }),
+    getExecution: build.query<GetExecutionApiResponse, GetExecutionApiArg>({
+      query: (queryArg) => ({ url: `/v1/executions/${queryArg.executionId}` }),
+    }),
+    deleteExecution: build.mutation<
+      DeleteExecutionApiResponse,
+      DeleteExecutionApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/v1/executions/${queryArg.executionId}`,
+        method: "DELETE",
+      }),
+    }),
     getStepsInfos: build.query<GetStepsInfosApiResponse, GetStepsInfosApiArg>({
       query: (queryArg) => ({
         url: `/v1/executions/${queryArg.executionId}/step-infos`,
@@ -200,6 +212,16 @@ export type CompareProcessConfigsApiArg = {
 export type GetProcessExecutionsApiResponse =
   /** status 200 The process executions */ ProcessExecution[];
 export type GetProcessExecutionsApiArg = void;
+export type GetExecutionApiResponse =
+  /** status 200 The process execution */ ProcessExecution;
+export type GetExecutionApiArg = {
+  /** Execution UUID */
+  executionId: string;
+};
+export type DeleteExecutionApiResponse = unknown;
+export type DeleteExecutionApiArg = {
+  executionId: string;
+};
 export type GetExecutionApiResponse =
   /** status 200 The process execution */ ProcessExecution;
 export type GetExecutionApiArg = {
@@ -351,6 +373,7 @@ export enum Severity {
 }
 export const {
   useGetProcessConfigQuery,
+  useLazyGetProcessConfigQuery,
   useUpdateProcessConfigMutation,
   useDeleteProcessConfigMutation,
   useGetProcessConfigsQuery,
