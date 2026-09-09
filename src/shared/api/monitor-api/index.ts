@@ -8,6 +8,8 @@
 export * from './monitor.enhanced';
 export {
     useGetProcessConfigsQuery,
+    useGetProcessConfigQuery,
+    useLazyGetProcessConfigQuery,
     useGetStepsInfosQuery,
     useGetLaunchedProcessesQuery,
     useExecuteProcessMutation,

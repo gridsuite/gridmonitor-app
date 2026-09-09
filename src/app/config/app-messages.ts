@@ -8,6 +8,14 @@
 import {
     cardErrorBoundaryEn,
     cardErrorBoundaryFr,
+    descriptionEn,
+    descriptionFr,
+    genericValidationEn,
+    genericValidationFr,
+    processConfigEn,
+    processConfigFr,
+    treeviewFinderEn,
+    treeviewFinderFr,
     GsLangUser,
     loginEn,
     loginFr,
@@ -26,6 +34,10 @@ export const appMessages: Record<GsLangUser, IntlConfig['messages']> = {
         ...loginEn,
         ...topBarEn,
         ...cardErrorBoundaryEn,
+        ...descriptionEn,
+        ...genericValidationEn,
+        ...processConfigEn,
+        ...treeviewFinderEn,
         ...pluginMessagesEn, // keep it at the end to allow translation overwriting
     },
     fr: {
@@ -33,6 +45,10 @@ export const appMessages: Record<GsLangUser, IntlConfig['messages']> = {
         ...loginFr,
         ...topBarFr,
         ...cardErrorBoundaryFr,
+        ...descriptionFr,
+        ...genericValidationFr,
+        ...processConfigFr,
+        ...treeviewFinderFr,
         ...pluginMessagesFr, // keep it at the end to allow translation overwriting
     },
 };

@@ -5,7 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Paper } from '@mui/material';
+import { Box, Button, Paper, Stack } from '@mui/material';
+import { Add } from '@mui/icons-material';
+import { useState } from 'react';
+import { FormattedMessage } from 'react-intl';
+import { CreateProcessConfigDialog } from '../components/CreateProcessConfigForm';
 import { ProcessConfigList } from '../components/ProcessConfigList';
 import { ProcessConfigListResult } from '../components/ProcessConfigListResult';
 import { useProcessConfigList } from '../hooks/use-process-config-list';
@@ -13,17 +17,31 @@ import { useProcessConfigList } from '../hooks/use-process-config-list';
 function ProcessConfigListPage() {
     const { configs, expandedItems, isEmpty, isError, isLoading, onToggleExpanded } = useProcessConfigList();
 
+    const [dialogOpen, setDialogOpen] = useState(false);
+
     return (
         <Box>
             <Paper sx={{ p: 3 }}>
-                <ProcessConfigListResult isEmpty={isEmpty} isError={isError} isLoading={isLoading} />
-                {!isLoading && !isError && !isEmpty && (
-                    <ProcessConfigList
-                        configs={configs}
-                        expandedItems={expandedItems}
-                        onToggleExpanded={onToggleExpanded}
-                    />
-                )}
+                <Stack>
+                    <Button
+                        variant="contained"
+                        onClick={() => setDialogOpen(true)}
+                        sx={{ alignSelf: 'flex-end', textTransform: 'none' }}
+                        startIcon={<Add />}
+                    >
+                        <FormattedMessage id="createConfig" />
+                    </Button>
+
+                    <ProcessConfigListResult isEmpty={isEmpty} isError={isError} isLoading={isLoading} />
+                    {!isLoading && !isError && !isEmpty && (
+                        <ProcessConfigList
+                            configs={configs}
+                            expandedItems={expandedItems}
+                            onToggleExpanded={onToggleExpanded}
+                        />
+                    )}
+                    <CreateProcessConfigDialog open={dialogOpen} onClose={() => setDialogOpen(false)} />
+                </Stack>
             </Paper>
         </Box>
     );
