@@ -9,7 +9,7 @@ import { Box, Button, Paper, Stack } from '@mui/material';
 import { Add } from '@mui/icons-material';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { CreateProcessConfigDialog } from '../components/CreateProcessConfigForm';
+import { CreateProcessConfigDialog } from '../components/CreateProcessConfigDialog';
 import { ProcessConfigList } from '../components/ProcessConfigList';
 import { ProcessConfigListResult } from '../components/ProcessConfigListResult';
 import { useProcessConfigList } from '../hooks/use-process-config-list';
