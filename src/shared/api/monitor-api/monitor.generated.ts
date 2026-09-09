@@ -97,12 +97,7 @@ const injectedRtkApi = api.injectEndpoints({
       GetLaunchedProcessesApiResponse,
       GetLaunchedProcessesApiArg
     >({
-      query: (queryArg) => ({
-        url: `/v1/executions`,
-        params: {
-          processType: queryArg.processType,
-        },
-      }),
+      query: () => ({ url: `/v1/executions` }),
     }),
     getExecution: build.query<GetExecutionApiResponse, GetExecutionApiArg>({
       query: (queryArg) => ({ url: `/v1/executions/${queryArg.executionId}` }),
@@ -204,10 +199,7 @@ export type CompareProcessConfigsApiArg = {
 };
 export type GetLaunchedProcessesApiResponse =
   /** status 200 The launched processes */ ProcessExecution[];
-export type GetLaunchedProcessesApiArg = {
-  /** Process type */
-  processType?: ProcessType;
-};
+export type GetLaunchedProcessesApiArg = void;
 export type GetExecutionApiResponse =
   /** status 200 The process execution */ ProcessExecution;
 export type GetExecutionApiArg = {
