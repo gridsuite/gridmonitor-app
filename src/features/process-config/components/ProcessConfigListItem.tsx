@@ -85,7 +85,9 @@ export function ProcessConfigListItem({
         return null;
     }
 
-    const modificationUuids = config.modificationUuids ?? [];
+    const modificationUuids = (config.modifications ?? [])
+        .map((modification) => modification.modificationUuid)
+        .filter((uuid): uuid is string => Boolean(uuid));
 
     return (
         <Card key={item.id} variant="outlined">
