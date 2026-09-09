@@ -11,6 +11,14 @@ import { FormattedMessage } from 'react-intl';
 import { FormSubSection } from 'shared/ui/FormSubSection';
 import type { CreateProcessConfigFormValues } from '../types/processConfig.types';
 
+const commonDirectoryItemsInputProps = {
+    allowMultiSelect: false,
+    hideErrorMessage: false,
+    labelGridSize: 4,
+    inputGridSize: 8,
+    showPlaceHolder: true,
+};
+
 export function NetworkParametersSubSection({ control }: { control: Control<CreateProcessConfigFormValues> }) {
     const selectedProcessType = useWatch({ control, name: 'processType' });
 
@@ -25,8 +33,7 @@ export function NetworkParametersSubSection({ control }: { control: Control<Crea
                     label="process_config/loadflow"
                     elementType={ElementType.LOADFLOW_PARAMETERS}
                     name={FieldConstants.LOADFLOW_PARAMETERS}
-                    allowMultiSelect={false}
-                    hideErrorMessage={false}
+                    {...commonDirectoryItemsInputProps}
                 />
             )}
 
@@ -35,8 +42,7 @@ export function NetworkParametersSubSection({ control }: { control: Control<Crea
                     label="process_config/securityAnalysis"
                     elementType={ElementType.SECURITY_ANALYSIS_PARAMETERS}
                     name={FieldConstants.SECURITY_ANALYSIS_PARAMETERS}
-                    allowMultiSelect={false}
-                    hideErrorMessage={false}
+                    {...commonDirectoryItemsInputProps}
                 />
             )}
 
@@ -45,8 +51,7 @@ export function NetworkParametersSubSection({ control }: { control: Control<Crea
                     label="process_config/shortcircuit"
                     elementType={ElementType.SHORT_CIRCUIT_PARAMETERS}
                     name={FieldConstants.SHORTCIRCUIT_PARAMETERS}
-                    allowMultiSelect={false}
-                    hideErrorMessage={false}
+                    {...commonDirectoryItemsInputProps}
                 />
             )}
         </FormSubSection>

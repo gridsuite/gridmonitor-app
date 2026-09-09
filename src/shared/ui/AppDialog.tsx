@@ -6,7 +6,7 @@
  */
 
 import { SyntheticEvent, useId, ReactNode } from 'react';
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Typography } from '@mui/material';
 import { ChevronLeft as ChevronLeftIcon, Close as CloseIcon } from '@mui/icons-material';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -76,13 +76,16 @@ export function AppDialog({
                 }}
             >
                 <Box component="span" id={titleId}>
-                    {title}
+                    <Typography variant="h5">{title}</Typography>
                 </Box>
                 <IconButton
                     aria-label={intl.formatMessage({ id: 'close' })}
                     onClick={() => onClose()}
                     size="small"
                     edge="end"
+                    sx={{
+                        color: (theme) => (theme.palette.mode === 'dark' ? 'white' : 'black'),
+                    }}
                 >
                     <CloseIcon />
                 </IconButton>

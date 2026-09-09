@@ -22,12 +22,13 @@
     "processConfigModifications": "Modifications",
     "processConfigNetworkParameters": "Network parameters",
     "processConfigPrefill": "Prefill",
-    "processConfigProcessTypeChangeTitle": "Change process type?",
+    "processConfigProcessTypeChangeTitle": "Change process type",
     "processConfigProcessTypeChangeWarning": "Changing the process type will reset the form.",
     "processConfigCreated": "Process configuration created in \"{folder}\".",
     "processConfigCreateError": "Configuration save failed.",
     "NoFolder": "No folder",
     "AddOptionalDescription": "Add a Description (optional)",
     "edit": "Update the folder",
-    "Select": "Select a folder"
+    "Select": "Select a folder",
+    "importElements" : "Import"
 }

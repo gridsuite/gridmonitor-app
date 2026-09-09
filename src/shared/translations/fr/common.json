@@ -22,12 +22,13 @@
     "processConfigModifications": "Modifications",
     "processConfigNetworkParameters": "Paramètres de réseau",
     "processConfigPrefill": "Préremplir",
-    "processConfigProcessTypeChangeTitle": "Changer de type d'analyse ?",
+    "processConfigProcessTypeChangeTitle": "Changer de type d'analyse",
     "processConfigProcessTypeChangeWarning": "Le type d'analyse sera modifié et la configuration actuelle sera perdue.",
     "processConfigCreated": "Création d'une configuration d'analyse dans \"{folder}\".",
     "processConfigCreateError": "L'enregistrement de la configuration a échoué.",
     "NoFolder": "Aucun dossier",
     "AddOptionalDescription": "Ajouter une description (optionel)",
     "edit": "Modifier le dossier",
-    "Select": "Choisir un dossier"
+    "Select": "Choisir un dossier",
+    "importElements" : "Importer"
 }
