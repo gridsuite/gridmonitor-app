@@ -19,7 +19,6 @@ declare module '@mui/material/styles' {
         row: CSSObject;
         aggrid: {
             theme: 'ag-theme-alpine' | 'ag-theme-alpine-dark';
-            highlightColor: Property.Color;
         };
         agGridBackground: CSSObject;
     };

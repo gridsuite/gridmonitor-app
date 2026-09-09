@@ -42,7 +42,6 @@ const lightTheme: Theme = createTheme({
     },
     aggrid: {
         theme: 'ag-theme-alpine',
-        highlightColor: '#E8F5E9',
     },
 });
 
@@ -76,7 +75,6 @@ const darkTheme: Theme = createTheme({
     },
     aggrid: {
         theme: 'ag-theme-alpine-dark',
-        highlightColor: '#1B5E20',
     },
 });
 

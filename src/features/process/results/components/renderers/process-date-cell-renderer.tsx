@@ -6,14 +6,18 @@
  */
 import { useIntl } from 'react-intl';
 import { Box, Tooltip } from '@mui/material';
+import { Link } from 'react-router';
+import { PROCESS_PATHS } from '../../../router/process-paths';
 
-export type ProcessDateCellRendererProps = { value: string };
+export type ProcessDateCellRendererProps = { value: string; id: string };
 
-export function ProcessDateCellRenderer({ value }: Readonly<ProcessDateCellRendererProps>) {
+export function ProcessDateCellRenderer({ value, id }: Readonly<ProcessDateCellRendererProps>) {
     const intl = useIntl();
 
     const todayStart = new Date().setHours(0, 0, 0, 0);
     const dateValue = new Date(value);
+    let cellText = '-';
+    let fullDate = '';
     if (!Number.isNaN(dateValue.getDate())) {
         const cellMidnight = new Date(value).setHours(0, 0, 0, 0);
 
@@ -23,19 +27,27 @@ export function ProcessDateCellRenderer({ value }: Readonly<ProcessDateCellRende
         }).format(dateValue);
         const displayedDate =
             intl.locale === 'en' ? dateValue.toISOString().substring(0, 10) : dateValue.toLocaleDateString(intl.locale);
-        const cellText = todayStart === cellMidnight ? time : `${displayedDate} ${time}`;
-        const fullDate = new Intl.DateTimeFormat(intl.locale, {
+        cellText = todayStart === cellMidnight ? time : `${displayedDate} - ${time}`;
+        fullDate = new Intl.DateTimeFormat(intl.locale, {
             dateStyle: 'long',
             timeStyle: 'long',
             hour12: false,
         }).format(dateValue);
-
-        return (
-            <Box>
-                <Tooltip title={fullDate}>
-                    <span>{cellText}</span>
-                </Tooltip>
-            </Box>
-        );
     }
+    return (
+        <Box>
+            <Tooltip title={fullDate}>
+                <Link
+                    to={PROCESS_PATHS.stepInfos(id)}
+                    onClick={(event) => event.stopPropagation()}
+                    style={{
+                        color: 'inherit',
+                        textDecoration: 'none',
+                    }}
+                >
+                    {cellText}
+                </Link>
+            </Tooltip>
+        </Box>
+    );
 }

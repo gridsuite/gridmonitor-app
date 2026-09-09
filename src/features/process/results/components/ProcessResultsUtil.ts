@@ -13,7 +13,6 @@ import {
     SortParams,
     FilterDataTypes,
     TableType,
-    UserCellRenderer,
     CustomAggridComparatorFilter,
     FilterTextComparators,
 } from '@gridsuite/commons-ui';
@@ -22,6 +21,8 @@ import { PROCESS_LAUNCH_HISTORY_SORT_STORE } from '@gridsuite/commons-ui/utils/s
 import { ProcessStatusCellRenderer } from './renderers/process-status-cell-renderer';
 import { ProcessDetailCellRenderer } from './renderers/process-detail-cell-renderer';
 import { ProcessDateCellRenderer } from './renderers/process-date-cell-renderer';
+import { ProcessTypeCellRenderer } from './renderers/process-type-cell-renderer';
+import { ProcessUserCellRenderer } from './renderers/process-user-cell-renderer';
 
 interface TableParams {
     sortParams: SortParams;
@@ -77,6 +78,14 @@ export const processResultsColumnsDefinition = (
             headerName: intl.formatMessage({ id: 'ProcessType' }),
             colId: 'processType',
             field: 'type',
+            pinned: 'left',
+            suppressMovable: true,
+            lockPosition: true,
+            resizable: false,
+            cellRenderer: ProcessTypeCellRenderer,
+            cellRendererParams: (params: any) => ({
+                id: params.data.id,
+            }),
             filterParams: createEnumFilterParams(),
             context: {
                 filterComponent: CustomAggridAutocompleteFilter,
@@ -99,7 +108,12 @@ export const processResultsColumnsDefinition = (
             headerName: intl.formatMessage({ id: 'ProcessStatus' }),
             colId: 'processStatus',
             field: 'status',
+            width: 174,
+            resizable: false,
             cellRenderer: ProcessStatusCellRenderer,
+            cellRendererParams: (params: any) => ({
+                id: params.data.id,
+            }),
             filterParams: createEnumFilterParams(),
             context: {
                 filterComponent: CustomAggridAutocompleteFilter,
@@ -122,9 +136,13 @@ export const processResultsColumnsDefinition = (
             headerName: intl.formatMessage({ id: 'ProcessLaunchedBy' }),
             colId: 'processLaunchedBy',
             field: 'userId',
-            cellRenderer: UserCellRenderer,
-            minWidth: 110,
-            flex: 1,
+            width: 174,
+            resizable: false,
+            cellRenderer: ProcessUserCellRenderer,
+            cellRendererParams: (params: any) => ({
+                backgroundColor: 'text.secondary',
+                id: params.data.id,
+            }),
             context: {
                 sortParams,
                 filterComponent: CustomAggridComparatorFilter,
@@ -145,9 +163,12 @@ export const processResultsColumnsDefinition = (
             headerName: intl.formatMessage({ id: 'ProcessScheduledAt' }),
             colId: 'processScheduledAt',
             field: 'scheduledAt',
+            width: 183,
+            resizable: false,
             cellRenderer: ProcessDateCellRenderer,
-            minWidth: 110,
-            flex: 1,
+            cellRendererParams: (params: any) => ({
+                id: params.data.id,
+            }),
             context: {
                 sortParams,
             },
@@ -159,9 +180,12 @@ export const processResultsColumnsDefinition = (
             headerName: intl.formatMessage({ id: 'ProcessStartedAt' }),
             colId: 'processStartedAt',
             field: 'startedAt',
+            width: 183,
+            resizable: false,
             cellRenderer: ProcessDateCellRenderer,
-            minWidth: 110,
-            flex: 1,
+            cellRendererParams: (params: any) => ({
+                id: params.data.id,
+            }),
             context: {
                 sortParams,
             },
@@ -173,9 +197,12 @@ export const processResultsColumnsDefinition = (
             headerName: intl.formatMessage({ id: 'ProcessCompletedAt' }),
             colId: 'processCompletedAt',
             field: 'completedAt',
+            width: 183,
+            resizable: false,
             cellRenderer: ProcessDateCellRenderer,
-            minWidth: 110,
-            flex: 1,
+            cellRendererParams: (params: any) => ({
+                id: params.data.id,
+            }),
             context: {
                 sortParams,
             },
@@ -187,6 +214,8 @@ export const processResultsColumnsDefinition = (
             headerName: intl.formatMessage({ id: 'ProcessShowDetails' }),
             colId: 'ProcessShowDetails',
             field: 'ProcessShowDetails',
+            width: 60,
+            resizable: false,
             cellRenderer: ProcessDetailCellRenderer,
             valueGetter: (params) => params.data.id,
         }),

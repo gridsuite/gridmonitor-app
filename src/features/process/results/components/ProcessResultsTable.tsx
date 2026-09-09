@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import { useIntl } from 'react-intl';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useSelector } from 'react-redux';
@@ -14,7 +14,7 @@ import { CustomAGGrid, DefaultCellRenderer, FilterConfig, TableSort, TableType }
 import { AGGRID_LOCALES } from '@gridsuite/commons-ui/translations/not-intl/aggrid-locales';
 import { AgGridReact } from 'ag-grid-react';
 import { PROCESS_LAUNCH_HISTORY_SORT_STORE } from '@gridsuite/commons-ui/utils/store-sort-filter-fields';
-import { GridApi } from 'ag-grid-community';
+import { GridApi, RowStyle } from 'ag-grid-community';
 import { ProcessExecutionInfos } from '../models/process-result';
 import { processResultsColumnsDefinition } from './ProcessResultsUtil';
 import { PROCESS_PATHS } from '../../router/process-paths';
@@ -31,6 +31,7 @@ export const ProcessResultsEnumsType = {
 };
 
 export function ProcessResultsTable({ executions }: Readonly<ProcessResultsListProps>) {
+    const theme = useTheme();
     const gridRef = useRef<AgGridReact>(null);
     const intl = useIntl();
     const navigate = useNavigate();
@@ -98,6 +99,16 @@ export function ProcessResultsTable({ executions }: Readonly<ProcessResultsListP
         return processResultsColumnsDefinition(intl, ProcessResultsEnumsType, getEnumLabel);
     }, [intl, getEnumLabel]);
 
+    const getCustomRowStyle = useCallback(
+        (cellData: any) => {
+            const style: RowStyle = { background: theme.palette.background.default, highlightColor: 'yellow' };
+            return {
+                ...style,
+            };
+        },
+        [theme]
+    );
+
     return (
         <Box
             sx={{
@@ -132,6 +143,7 @@ export function ProcessResultsTable({ executions }: Readonly<ProcessResultsListP
                         api.showNoRowsOverlay();
                     }
                 }}
+                getRowStyle={getCustomRowStyle}
             />
         </Box>
     );

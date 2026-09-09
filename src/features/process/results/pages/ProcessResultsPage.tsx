@@ -21,18 +21,16 @@ function ProcessResultsPage() {
         <CustomAggridReduxProvider>
             <ProcessResultsAlert isEmpty={isEmpty} isError={isError} isLoading={isLoading} />
             {!isError && (
-                <>
+                <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', px: '24px' }}>
                     <Box
                         sx={{
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'space-between',
-                            mb: 1,
                             ml: 1,
-                            mr: 1,
                         }}
                     >
-                        <Typography variant="h6">
+                        <Typography variant="h5" sx={{ mt: '24px', mb: '24px' }}>
                             <FormattedMessage id="ProcessLaunchHistory" />
                         </Typography>
 
@@ -41,13 +39,13 @@ function ProcessResultsPage() {
                             onClick={refresh}
                             variant="outlined"
                             color="primary"
-                            sx={{ textTransform: 'none', mt: 1 }}
+                            sx={{ textTransform: 'none' }}
                         >
                             {intl.formatMessage({ id: 'Refresh' })}
                         </Button>
                     </Box>
                     <ProcessResultsTable executions={executions} />
-                </>
+                </Box>
             )}
         </CustomAggridReduxProvider>
     );
