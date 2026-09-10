@@ -6,7 +6,6 @@
  */
 
 import { Option, SelectInput } from '@gridsuite/commons-ui';
-import { useIntl } from 'react-intl';
 import { PROCESS_CONFIG_TYPES } from '../constants/processConfig.constants';
 
 type ProcessTypeSelectProps = {
@@ -14,12 +13,10 @@ type ProcessTypeSelectProps = {
 };
 
 export function ProcessTypeSelect({ onCheckNewValue }: ProcessTypeSelectProps) {
-    const intl = useIntl();
-
     return (
         <SelectInput
             name="processType"
-            label={intl.formatMessage({ id: 'processType' })}
+            label="processType"
             options={Object.values(PROCESS_CONFIG_TYPES)}
             onCheckNewValue={onCheckNewValue}
             fullWidth

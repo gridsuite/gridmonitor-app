@@ -31,7 +31,11 @@ export function GeneralInformationSection({ directoryId }: GeneralInformationSec
                         autoFocus
                         formProps={{ size: 'small' }}
                     />
-                    <DescriptionField buttonLabel="AddOptionalDescription" buttonSx={{ textTransform: 'none' }} />
+                    <DescriptionField
+                        buttonLabel="AddOptionalDescription"
+                        expandingTextSx={{ marginTop: 1 }}
+                        buttonSx={{ textTransform: 'none' }}
+                    />
                 </Grid>
 
                 <Grid size={{ xs: 12, sm: 12 }}>
