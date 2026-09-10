@@ -14,6 +14,12 @@ import {
     genericValidationFr,
     processConfigEn,
     processConfigFr,
+    parametersEn,
+    parametersFr,
+    networkModificationsEn,
+    networkModificationsFr,
+    filterEn,
+    filterFr,
     treeviewFinderEn,
     treeviewFinderFr,
     GsLangUser,
@@ -38,6 +44,9 @@ export const appMessages: Record<GsLangUser, IntlConfig['messages']> = {
         ...genericValidationEn,
         ...processConfigEn,
         ...treeviewFinderEn,
+        ...parametersEn,
+        ...networkModificationsEn,
+        ...filterEn,
         ...pluginMessagesEn, // keep it at the end to allow translation overwriting
     },
     fr: {
@@ -49,6 +58,9 @@ export const appMessages: Record<GsLangUser, IntlConfig['messages']> = {
         ...genericValidationFr,
         ...processConfigFr,
         ...treeviewFinderFr,
+        ...parametersFr,
+        ...networkModificationsFr,
+        ...filterFr,
         ...pluginMessagesFr, // keep it at the end to allow translation overwriting
     },
 };
