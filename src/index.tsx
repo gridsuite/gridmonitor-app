@@ -10,6 +10,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import './app/styles/index.css';
 import AppWrapper from './app/providers/AppProviders';
+import './configure-yup-init';
 
 const container = document.getElementById('root');
 if (container) {

@@ -9,6 +9,7 @@ import {
     LoadFlowConfig as RawLoadFlowConfig,
     ProcessType,
     SecurityAnalysisConfig as RawSecurityAnalysisConfig,
+    ShortCircuitConfig as RawShortCircuitConfig,
 } from './monitor.generated';
 
 export type LoadFlowConfig = Omit<RawLoadFlowConfig, 'processType'> & {
@@ -19,7 +20,11 @@ export type SecurityAnalysisConfig = Omit<RawSecurityAnalysisConfig, 'processTyp
     processType: ProcessType.SecurityAnalysis;
 };
 
-export type ProcessConfig = LoadFlowConfig | SecurityAnalysisConfig;
+export type ShortCircuitConfig = Omit<RawShortCircuitConfig, 'processType'> & {
+    processType: ProcessType.ShortCircuit;
+};
+
+export type ProcessConfig = LoadFlowConfig | SecurityAnalysisConfig | ShortCircuitConfig;
 
 export type PersistedProcessConfig = {
     id?: string;

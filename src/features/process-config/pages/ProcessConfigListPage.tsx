@@ -5,26 +5,33 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Paper } from '@mui/material';
-import { ProcessConfigList } from '../components/ProcessConfigList';
-import { ProcessConfigListResult } from '../components/ProcessConfigListResult';
-import { useProcessConfigList } from '../hooks/use-process-config-list';
+import { Box, Button, Grid, Stack, Typography } from '@mui/material';
+import { Add } from '@mui/icons-material';
+import { useState } from 'react';
+import { FormattedMessage } from 'react-intl';
+import { CreateProcessConfigDialog } from '../components/CreateProcessConfigDialog';
 
 function ProcessConfigListPage() {
-    const { configs, expandedItems, isEmpty, isError, isLoading, onToggleExpanded } = useProcessConfigList();
+    const [dialogOpen, setDialogOpen] = useState(false);
 
     return (
-        <Box>
-            <Paper sx={{ p: 3 }}>
-                <ProcessConfigListResult isEmpty={isEmpty} isError={isError} isLoading={isLoading} />
-                {!isLoading && !isError && !isEmpty && (
-                    <ProcessConfigList
-                        configs={configs}
-                        expandedItems={expandedItems}
-                        onToggleExpanded={onToggleExpanded}
-                    />
-                )}
-            </Paper>
+        <Box sx={{ p: 3 }}>
+            <Stack>
+                <Grid container alignItems="center" justifyContent="space-between">
+                    <Typography variant="h5">
+                        <FormattedMessage id="referenceConfigs" />
+                    </Typography>
+                    <Button
+                        variant="contained"
+                        onClick={() => setDialogOpen(true)}
+                        sx={{ textTransform: 'none' }}
+                        startIcon={<Add />}
+                    >
+                        <FormattedMessage id="createConfig" />
+                    </Button>
+                </Grid>
+                <CreateProcessConfigDialog open={dialogOpen} onClose={() => setDialogOpen(false)} />
+            </Stack>
         </Box>
     );
 }
