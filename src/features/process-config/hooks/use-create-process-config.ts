@@ -9,7 +9,7 @@ import { useCallback } from 'react';
 import { FieldConstants, getNamedProcessConfigFormData } from '@gridsuite/commons-ui';
 import { ProcessType, type ProcessConfig, useLazyGetProcessConfigQuery } from 'shared/api/monitor-api';
 import { useCreateProcessConfigMutation, type CreateProcessConfigApiArg } from 'shared/api/explore-api';
-import type { CreateProcessConfigFormValues, ProcessConfigPrefillValues } from '../components/CreateProcessConfigForm';
+import { CreateProcessConfigFormValues, ProcessConfigPrefillValues } from '../types/processConfig.types';
 
 function mapProcessConfig(values: CreateProcessConfigFormValues): ProcessConfig {
     const modifications = values.modifications.flatMap((modificationGroup) =>
