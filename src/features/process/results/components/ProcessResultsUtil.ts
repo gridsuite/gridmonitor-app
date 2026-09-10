@@ -81,6 +81,8 @@ export const processResultsColumnsDefinition = (
             pinned: 'left',
             suppressMovable: true,
             lockPosition: true,
+            flex: 1,
+            minWidth: 210,
             resizable: false,
             cellRenderer: ProcessTypeCellRenderer,
             cellRendererParams: (params: any) => ({
@@ -214,7 +216,7 @@ export const processResultsColumnsDefinition = (
             headerName: intl.formatMessage({ id: 'ProcessShowDetails' }),
             colId: 'ProcessShowDetails',
             field: 'ProcessShowDetails',
-            width: 60,
+            width: 72,
             resizable: false,
             cellRenderer: ProcessDetailCellRenderer,
             valueGetter: (params) => params.data.id,

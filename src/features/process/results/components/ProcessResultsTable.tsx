@@ -53,6 +53,7 @@ export function ProcessResultsTable({ executions }: Readonly<ProcessResultsListP
             const filters =
                 tableFilters.columnsFilters?.[TableType.ProcessLaunchHistory]?.[PROCESS_LAUNCH_HISTORY_SORT_STORE];
             updateAgGridFilters(api, filters);
+            api.sizeColumnsToFit();
         },
         [tableSort, tableFilters]
     );
