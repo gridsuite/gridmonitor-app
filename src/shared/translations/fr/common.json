@@ -16,8 +16,6 @@
     "processConfigName": "Nom de la configuration",
     "processConfigSaveDirectory": "Dossier d'enregistrement",
     "processConfigSpecificInformation": "Informations spécifiques",
-    "processConfigModifications": "Modifications",
-    "processConfigNetworkParameters": "Paramètres de réseau",
     "processConfigPrefill": "Préremplir",
     "processConfigProcessTypeChangeTitle": "Changer de type d'analyse",
     "processConfigProcessTypeChangeWarning": "Le type d'analyse sera modifié et la configuration actuelle sera perdue.",

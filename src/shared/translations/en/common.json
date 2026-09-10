@@ -16,8 +16,6 @@
     "processConfigName": "Configuration name",
     "processConfigSaveDirectory": "Save directory",
     "processConfigSpecificInformation": "Specific informations",
-    "processConfigModifications": "Modifications",
-    "processConfigNetworkParameters": "Network parameters",
     "processConfigPrefill": "Prefill",
     "processConfigProcessTypeChangeTitle": "Change process type",
     "processConfigProcessTypeChangeWarning": "Changing the process type will reset the form.",

@@ -10,7 +10,7 @@ import { FormattedMessage } from 'react-intl';
 import { FormSection } from 'shared/ui/FormSection';
 import { Control } from 'react-hook-form';
 import { ModificationsSubSection } from './ModificationsSubSection';
-import { NetworkParametersSubSection } from './NetworkParametersSubSection';
+import { ProvidersParametersSubSection } from './ProvidersParametersSubSection';
 import { CreateProcessConfigFormValues } from '../types/processConfig.types';
 
 type SpecificInformationSectionProps = {
@@ -34,7 +34,7 @@ export function SpecificInformationSection({ onPrefill, control }: SpecificInfor
             }
         >
             <ModificationsSubSection />
-            <NetworkParametersSubSection control={control} />
+            <ProvidersParametersSubSection control={control} />
         </FormSection>
     );
 }

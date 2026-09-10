@@ -19,13 +19,13 @@ const commonDirectoryItemsInputProps = {
     showPlaceHolder: true,
 };
 
-export function NetworkParametersSubSection({ control }: { control: Control<CreateProcessConfigFormValues> }) {
+export function ProvidersParametersSubSection({ control }: { control: Control<CreateProcessConfigFormValues> }) {
     const selectedProcessType = useWatch({ control, name: 'processType' });
 
     return (
         <FormSubSection
             id="network-parameters-heading"
-            title={<FormattedMessage id="processConfigNetworkParameters" />}
+            title={<FormattedMessage id="process_config/providersParameters" />}
         >
             {(selectedProcessType === ProcessType.SECURITY_ANALYSIS ||
                 selectedProcessType === ProcessType.LOADFLOW) && (

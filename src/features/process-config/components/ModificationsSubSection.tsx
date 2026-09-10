@@ -11,7 +11,7 @@ import { FormSubSection } from 'shared/ui/FormSubSection';
 
 export function ModificationsSubSection() {
     return (
-        <FormSubSection id="modifications-heading" title={<FormattedMessage id="processConfigModifications" />}>
+        <FormSubSection id="modifications-heading" title={<FormattedMessage id="process_config/modifications" />}>
             <ProcessConfigModificationsEdition name={FieldConstants.MODIFICATIONS} />
         </FormSubSection>
     );
