@@ -11,9 +11,6 @@
     "nav.configuration": "Configuration",
     "createConfig": "Créer une configuration",
     "processType": "Type d'analyse",
-    "SecurityAnalysis": "Analyse de sécurité",
-    "formShortCircuit": "Short circuit",
-    "Loadflow": "calcul de répartition",
     "processConfigCreateTitle": "Créer une configuration",
     "processConfigGeneralInformation": "Informations générales",
     "processConfigName": "Nom de la configuration",
@@ -27,7 +24,7 @@
     "processConfigCreated": "Création d'une configuration d'analyse dans \"{folder}\".",
     "processConfigCreateError": "L'enregistrement de la configuration a échoué.",
     "NoFolder": "Aucun dossier",
-    "AddOptionalDescription": "Ajouter une description (optionel)",
+    "AddOptionalDescription": "Ajouter une description (optionnel)",
     "edit": "Modifier le dossier",
     "Select": "Choisir un dossier",
     "importElements" : "Importer"
