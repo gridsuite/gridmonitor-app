@@ -25,5 +25,6 @@
     "AddOptionalDescription": "Add a description (optional)",
     "edit": "Update the folder",
     "Select": "Select a folder",
-    "importElements" : "Import"
+    "importElements" : "Import",
+    "referenceConfigs": "Reference Configurations"
 }
