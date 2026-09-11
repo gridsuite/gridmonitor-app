@@ -5,26 +5,49 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
+import { Refresh as RefreshIcon } from '@mui/icons-material';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { ProcessResultsAlert } from '../components/ProcessResultsAlert';
-import { ProcessResultsList } from '../components/ProcessResultsList';
+import { ProcessResultsTable } from '../components/ProcessResultsTable';
 import { useProcessResults } from '../hooks/use-process-results';
+import { CustomAggridReduxProvider } from '../components/custom-aggrid-redux-provider';
 
 function ProcessResultsPage() {
-    const { executions, isEmpty, isError, isLoading } = useProcessResults();
+    const intl = useIntl();
+    const { executions, isEmpty, isError, isLoading, refresh } = useProcessResults();
 
     return (
-        <>
+        <CustomAggridReduxProvider>
             <ProcessResultsAlert isEmpty={isEmpty} isError={isError} isLoading={isLoading} />
-            {!isLoading && !isError && !isEmpty && (
-                <>
-                    <Typography variant="h5" gutterBottom>
-                        Process executions ids
-                    </Typography>
-                    <ProcessResultsList executions={executions} />
-                </>
+            {!isError && (
+                <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', px: '24px' }}>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            ml: 1,
+                        }}
+                    >
+                        <Typography variant="h5" sx={{ mt: '24px', mb: '24px' }}>
+                            <FormattedMessage id="ProcessExecutionHistory" />
+                        </Typography>
+
+                        <Button
+                            startIcon={<RefreshIcon />}
+                            onClick={refresh}
+                            variant="outlined"
+                            color="primary"
+                            sx={{ textTransform: 'none' }}
+                        >
+                            {intl.formatMessage({ id: 'Refresh' })}
+                        </Button>
+                    </Box>
+                    <ProcessResultsTable executions={executions} />
+                </Box>
             )}
-        </>
+        </CustomAggridReduxProvider>
     );
 }
 
