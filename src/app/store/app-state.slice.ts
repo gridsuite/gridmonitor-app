@@ -9,24 +9,24 @@ import { createSlice } from '@reduxjs/toolkit';
 import { FilterConfig, SortConfig, SortWay, TableType } from '@gridsuite/commons-ui';
 import { AppState } from './app-state.type';
 import { TABLE_SORT, TableSortAction, UPDATE_COLUMN_FILTERS, UpdateColumnFiltersAction } from './actions';
-import { PROCESS_LAUNCH_HISTORY_SORT_STORE, TABLE_SORT_STORE } from './store-sort-filter-fields';
+import { PROCESS_EXECUTION_HISTORY_SORT_STORE, TABLE_SORT_STORE } from './store-sort-filter-fields';
 
 const initialSortState: Record<string, SortConfig[]> = {
-    [PROCESS_LAUNCH_HISTORY_SORT_STORE]: [{ colId: 'processScheduledAt', sort: SortWay.DESC }],
+    [PROCESS_EXECUTION_HISTORY_SORT_STORE]: [{ colId: 'processScheduledAt', sort: SortWay.DESC }],
 };
 
 const initialFilterState: Record<string, FilterConfig[]> = {
-    [PROCESS_LAUNCH_HISTORY_SORT_STORE]: [],
+    [PROCESS_EXECUTION_HISTORY_SORT_STORE]: [],
 };
 
 const initialState: AppState = {
     // @ts-ignore
     [TABLE_SORT_STORE]: {
-        [PROCESS_LAUNCH_HISTORY_SORT_STORE]: initialSortState,
+        [PROCESS_EXECUTION_HISTORY_SORT_STORE]: initialSortState,
     },
     tableFilters: {
         columnsFilters: {
-            [TableType.ProcessLaunchHistory]: { ...initialFilterState },
+            [TableType.ProcessExecutionHistory]: { ...initialFilterState },
         },
     },
 };

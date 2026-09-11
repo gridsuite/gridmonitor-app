@@ -18,7 +18,7 @@ import { processResultsColumnsDefinition } from './ProcessResultsUtil';
 import { PROCESS_PATHS } from '../../router/process-paths';
 import { updateAgGridFilters } from '../custom-aggrid/custom-aggrid-filters/utils/aggrid-filters-utils';
 import { TableFiltersState } from '../../../../app/store/app-state.type';
-import { PROCESS_LAUNCH_HISTORY_SORT_STORE } from '../../../../app/store/store-sort-filter-fields';
+import { PROCESS_EXECUTION_HISTORY_SORT_STORE } from '../../../../app/store/store-sort-filter-fields';
 import { AGGRID_LOCALES } from '../../../../shared/translations/not-intl/aggrid-locales';
 
 type ProcessResultsListProps = {
@@ -44,14 +44,14 @@ export function ProcessResultsTable({ executions }: Readonly<ProcessResultsListP
 
     const applyTableState = useCallback(
         (api: GridApi) => {
-            const sortState = tableSort[PROCESS_LAUNCH_HISTORY_SORT_STORE]?.[PROCESS_LAUNCH_HISTORY_SORT_STORE];
+            const sortState = tableSort[PROCESS_EXECUTION_HISTORY_SORT_STORE]?.[PROCESS_EXECUTION_HISTORY_SORT_STORE];
             api.applyColumnState({
                 state: sortState ?? [],
                 defaultState: { sort: null },
             });
 
             const filters =
-                tableFilters.columnsFilters?.[TableType.ProcessLaunchHistory]?.[PROCESS_LAUNCH_HISTORY_SORT_STORE];
+                tableFilters.columnsFilters?.[TableType.ProcessExecutionHistory]?.[PROCESS_EXECUTION_HISTORY_SORT_STORE];
             updateAgGridFilters(api, filters);
             api.sizeColumnsToFit();
         },
@@ -59,7 +59,7 @@ export function ProcessResultsTable({ executions }: Readonly<ProcessResultsListP
     );
 
     useEffect(() => {
-        const sortState = tableSort[PROCESS_LAUNCH_HISTORY_SORT_STORE]?.[PROCESS_LAUNCH_HISTORY_SORT_STORE];
+        const sortState = tableSort[PROCESS_EXECUTION_HISTORY_SORT_STORE]?.[PROCESS_EXECUTION_HISTORY_SORT_STORE];
         gridRef.current?.api?.applyColumnState({
             state: sortState ?? [],
             defaultState: { sort: null },
@@ -68,7 +68,7 @@ export function ProcessResultsTable({ executions }: Readonly<ProcessResultsListP
 
     useEffect(() => {
         const filters: FilterConfig[] =
-            tableFilters.columnsFilters?.[TableType.ProcessLaunchHistory]?.[PROCESS_LAUNCH_HISTORY_SORT_STORE];
+            tableFilters.columnsFilters?.[TableType.ProcessExecutionHistory]?.[PROCESS_EXECUTION_HISTORY_SORT_STORE];
         updateAgGridFilters(gridRef.current?.api, filters);
     }, [tableFilters]);
 

@@ -5,7 +5,7 @@
     "paramsRetrievingError": "An error occurred while retrieving the parameters",
     "configurationMode": "Configuration mode",
     "nav.executeProcess": "Execute process",
-    "nav.launchHistory": "Launch history",
+    "nav.executionHistory": "Execution history",
     "nav.configuration": "Configuration",
 
     "filter.filterOoo": "Filter...",
@@ -36,6 +36,6 @@
     "COMPLETED": "Terminated",
     "FAILED": "Failed",
 
-    "ProcessLaunchHistory": "Launched process history",
+    "ProcessExecutionHistory": "Process execution history",
     "Refresh": "Refresh"
 }

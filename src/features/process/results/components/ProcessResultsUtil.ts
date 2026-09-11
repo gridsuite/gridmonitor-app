@@ -22,7 +22,7 @@ import { ProcessDetailCellRenderer } from './renderers/process-detail-cell-rende
 import { ProcessDateCellRenderer } from './renderers/process-date-cell-renderer';
 import { ProcessTypeCellRenderer } from './renderers/process-type-cell-renderer';
 import { ProcessUserCellRenderer } from './renderers/process-user-cell-renderer';
-import { PROCESS_LAUNCH_HISTORY_SORT_STORE } from '../../../../app/store/store-sort-filter-fields';
+import { PROCESS_EXECUTION_HISTORY_SORT_STORE } from '../../../../app/store/store-sort-filter-fields';
 
 interface TableParams {
     sortParams: SortParams;
@@ -35,12 +35,12 @@ interface TableParams {
 const createTableParams = (): TableParams => {
     return {
         sortParams: {
-            table: PROCESS_LAUNCH_HISTORY_SORT_STORE,
-            tab: PROCESS_LAUNCH_HISTORY_SORT_STORE,
+            table: PROCESS_EXECUTION_HISTORY_SORT_STORE,
+            tab: PROCESS_EXECUTION_HISTORY_SORT_STORE,
         },
         filterParams: {
-            type: TableType.ProcessLaunchHistory,
-            tab: PROCESS_LAUNCH_HISTORY_SORT_STORE,
+            type: TableType.ProcessExecutionHistory,
+            tab: PROCESS_EXECUTION_HISTORY_SORT_STORE,
         },
     };
 };

@@ -93,9 +93,9 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    getLaunchedProcesses: build.query<
-      GetLaunchedProcessesApiResponse,
-      GetLaunchedProcessesApiArg
+    getProcessExecutions: build.query<
+      GetProcessExecutionsApiResponse,
+      GetProcessExecutionsApiArg
     >({
       query: () => ({ url: `/v1/executions` }),
     }),
@@ -197,9 +197,9 @@ export type CompareProcessConfigsApiArg = {
   /** Second process config UUID */
   uuid2: string;
 };
-export type GetLaunchedProcessesApiResponse =
-  /** status 200 The launched processes */ ProcessExecution[];
-export type GetLaunchedProcessesApiArg = void;
+export type GetProcessExecutionsApiResponse =
+  /** status 200 The process executions */ ProcessExecution[];
+export type GetProcessExecutionsApiArg = void;
 export type GetExecutionApiResponse =
   /** status 200 The process execution */ ProcessExecution;
 export type GetExecutionApiArg = {
@@ -359,7 +359,7 @@ export const {
   useExecuteProcessMutation,
   useGetProcessConfigsMetadataQuery,
   useCompareProcessConfigsQuery,
-  useGetLaunchedProcessesQuery,
+  useGetProcessExecutionsQuery,
   useGetExecutionQuery,
   useDeleteExecutionMutation,
   useGetStepsInfosQuery,

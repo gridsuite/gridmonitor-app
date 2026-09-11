@@ -9,7 +9,7 @@ export * from './monitor.enhanced';
 export {
     useGetProcessConfigsQuery,
     useGetStepsInfosQuery,
-    useGetLaunchedProcessesQuery,
+    useGetProcessExecutionsQuery,
     useExecuteProcessMutation,
     ProcessType,
 } from './monitor.generated';

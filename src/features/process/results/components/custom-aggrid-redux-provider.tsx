@@ -70,8 +70,8 @@ function CustomAggridFilterReduxProvider({ children }: PropsWithChildren) {
         ) => {
             const { type, tab } = filterParams;
 
-            if (type === TableType.ProcessLaunchHistory) {
-                dispatch(updateColumnFiltersAction(TableType.ProcessLaunchHistory, tab, updatedFilters));
+            if (type === TableType.ProcessExecutionHistory) {
+                dispatch(updateColumnFiltersAction(TableType.ProcessExecutionHistory, tab, updatedFilters));
             }
         },
         [dispatch]

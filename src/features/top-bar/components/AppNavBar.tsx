@@ -21,7 +21,7 @@ interface NavBarTab {
 
 const leftTabs: NavBarTab[] = [
     { icon: <MiscellaneousServices />, labelId: 'nav.configuration', path: PROCESS_CONFIG_PATHS.root },
-    { icon: <ListAlt />, labelId: 'nav.launchHistory', path: PROCESS_PATHS.results },
+    { icon: <ListAlt />, labelId: 'nav.executionHistory', path: PROCESS_PATHS.results },
 ];
 
 const executeTab: NavBarTab = {

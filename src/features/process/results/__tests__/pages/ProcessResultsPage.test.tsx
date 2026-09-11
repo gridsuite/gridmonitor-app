@@ -51,7 +51,7 @@ describe('ProcessResultsPage', () => {
         );
 
         await waitFor(() => {
-            expect(screen.getByText('Launched process history')).toBeInTheDocument();
+            expect(screen.getByText('Process execution history')).toBeInTheDocument();
         });
 
         expect(screen.getByText('Refresh')).toBeInTheDocument();

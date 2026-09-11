@@ -6,4 +6,4 @@
  */
 
 export const TABLE_SORT_STORE = 'tableSort';
-export const PROCESS_LAUNCH_HISTORY_SORT_STORE = 'processLaunchHistory';
+export const PROCESS_EXECUTION_HISTORY_SORT_STORE = 'processExecutionHistory';

@@ -31,7 +31,7 @@ function ProcessResultsPage() {
                         }}
                     >
                         <Typography variant="h5" sx={{ mt: '24px', mb: '24px' }}>
-                            <FormattedMessage id="ProcessLaunchHistory" />
+                            <FormattedMessage id="ProcessExecutionHistory" />
                         </Typography>
 
                         <Button
