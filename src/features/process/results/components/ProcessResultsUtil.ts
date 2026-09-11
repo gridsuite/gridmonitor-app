@@ -17,12 +17,12 @@ import {
     FilterTextComparators,
 } from '@gridsuite/commons-ui';
 import { IntlShape } from 'react-intl';
-import { PROCESS_LAUNCH_HISTORY_SORT_STORE } from '@gridsuite/commons-ui/utils/store-sort-filter-fields';
 import { ProcessStatusCellRenderer } from './renderers/process-status-cell-renderer';
 import { ProcessDetailCellRenderer } from './renderers/process-detail-cell-renderer';
 import { ProcessDateCellRenderer } from './renderers/process-date-cell-renderer';
 import { ProcessTypeCellRenderer } from './renderers/process-type-cell-renderer';
 import { ProcessUserCellRenderer } from './renderers/process-user-cell-renderer';
+import { PROCESS_LAUNCH_HISTORY_SORT_STORE } from '../../../../app/store/store-sort-filter-fields';
 
 interface TableParams {
     sortParams: SortParams;

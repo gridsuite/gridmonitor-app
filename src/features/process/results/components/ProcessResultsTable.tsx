@@ -11,15 +11,15 @@ import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { CustomAGGrid, DefaultCellRenderer, FilterConfig, TableSort, TableType } from '@gridsuite/commons-ui';
-import { AGGRID_LOCALES } from '@gridsuite/commons-ui/translations/not-intl/aggrid-locales';
 import { AgGridReact } from 'ag-grid-react';
-import { PROCESS_LAUNCH_HISTORY_SORT_STORE } from '@gridsuite/commons-ui/utils/store-sort-filter-fields';
 import { GridApi, RowStyle } from 'ag-grid-community';
 import { ProcessExecutionInfos } from '../models/process-result';
 import { processResultsColumnsDefinition } from './ProcessResultsUtil';
 import { PROCESS_PATHS } from '../../router/process-paths';
 import { updateAgGridFilters } from '../custom-aggrid/custom-aggrid-filters/utils/aggrid-filters-utils';
 import { TableFiltersState } from '../../../../app/store/app-state.type';
+import { PROCESS_LAUNCH_HISTORY_SORT_STORE } from '../../../../app/store/store-sort-filter-fields';
+import { AGGRID_LOCALES } from '../../../../shared/translations/not-intl/aggrid-locales';
 
 type ProcessResultsListProps = {
     executions: ProcessExecutionInfos[];

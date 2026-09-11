@@ -7,12 +7,9 @@
 
 import { createSlice } from '@reduxjs/toolkit';
 import { FilterConfig, SortConfig, SortWay, TableType } from '@gridsuite/commons-ui';
-import {
-    PROCESS_LAUNCH_HISTORY_SORT_STORE,
-    TABLE_SORT_STORE,
-} from '@gridsuite/commons-ui/utils/store-sort-filter-fields';
 import { AppState } from './app-state.type';
 import { TABLE_SORT, TableSortAction, UPDATE_COLUMN_FILTERS, UpdateColumnFiltersAction } from './actions';
+import { PROCESS_LAUNCH_HISTORY_SORT_STORE, TABLE_SORT_STORE } from './store-sort-filter-fields';
 
 const initialSortState: Record<string, SortConfig[]> = {
     [PROCESS_LAUNCH_HISTORY_SORT_STORE]: [{ colId: 'processScheduledAt', sort: SortWay.DESC }],
