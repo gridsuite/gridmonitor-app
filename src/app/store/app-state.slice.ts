@@ -29,6 +29,7 @@ const initialState: AppState = {
             [TableType.ProcessExecutionHistory]: { ...initialFilterState },
         },
     },
+    tables: { uuid: null },
 };
 
 const appStateSlice = createSlice({

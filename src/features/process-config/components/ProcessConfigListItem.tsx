@@ -133,7 +133,9 @@ export function ProcessConfigListItem({
 
                     <ArraySection
                         label="Modification UUIDs"
-                        values={modifications.map((modification) => modification.modificationUuid)}
+                        values={modifications.flatMap(({ modificationUuid }) =>
+                            modificationUuid ? [modificationUuid] : []
+                        )}
                     />
 
                     <Stack direction="row" justifyContent="flex-end">

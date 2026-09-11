@@ -10,7 +10,7 @@ import { useIntl } from 'react-intl';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { CustomAGGrid, DefaultCellRenderer, FilterConfig, TableSort, TableType } from '@gridsuite/commons-ui';
+import { CustomAGGrid, DefaultCellRenderer, TableSort, TableType } from '@gridsuite/commons-ui';
 import { AgGridReact } from 'ag-grid-react';
 import { GridApi, RowStyle } from 'ag-grid-community';
 import { ProcessExecutionInfos } from '../models/process-result';
@@ -51,7 +51,9 @@ export function ProcessResultsTable({ executions }: Readonly<ProcessResultsListP
             });
 
             const filters =
-                tableFilters.columnsFilters?.[TableType.ProcessExecutionHistory]?.[PROCESS_EXECUTION_HISTORY_SORT_STORE];
+                tableFilters.columnsFilters?.[TableType.ProcessExecutionHistory]?.[
+                    PROCESS_EXECUTION_HISTORY_SORT_STORE
+                ];
             updateAgGridFilters(api, filters);
             api.sizeColumnsToFit();
         },
@@ -67,7 +69,7 @@ export function ProcessResultsTable({ executions }: Readonly<ProcessResultsListP
     }, [tableSort]);
 
     useEffect(() => {
-        const filters: FilterConfig[] =
+        const filters =
             tableFilters.columnsFilters?.[TableType.ProcessExecutionHistory]?.[PROCESS_EXECUTION_HISTORY_SORT_STORE];
         updateAgGridFilters(gridRef.current?.api, filters);
     }, [tableFilters]);

@@ -15,7 +15,7 @@
     "filter.notBlank": "N'est pas vide",
 
     "ProcessType": "Type",
-    "ProcessStatus": "Status",
+    "ProcessStatus": "Statut",
     "ProcessLaunchedBy": "Lancé par",
     "ProcessScheduledAt": "Programmé",
     "ProcessStartedAt": "Commencé",
