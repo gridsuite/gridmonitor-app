@@ -8,10 +8,12 @@
 import { Tabs, Tab, Box, Button, Typography, Tooltip, useMediaQuery, useTheme } from '@mui/material';
 import { NavLink, useLocation } from 'react-router';
 import { PlayArrow, MiscellaneousServices, ListAlt } from '@mui/icons-material';
-import type { ReactNode } from 'react';
-import { useIntl } from 'react-intl';
+import { useState, type ReactNode } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { PROCESS_PATHS } from '../../process/router/process-paths';
 import { PROCESS_CONFIG_PATHS } from '../../process-config/router/process-config-paths';
+import { LaunchSuccessDialog } from '../../process/execute/components/LaunchSuccessDialog';
+import { ExecuteProcessConfigDialog } from '../../process/execute/components/ExecuteProcessConfigDialog';
 
 interface NavBarTab {
     icon: ReactNode;
@@ -23,12 +25,6 @@ const leftTabs: NavBarTab[] = [
     { icon: <MiscellaneousServices />, labelId: 'nav.configuration', path: PROCESS_CONFIG_PATHS.root },
     { icon: <ListAlt />, labelId: 'nav.launchHistory', path: PROCESS_PATHS.results },
 ];
-
-const executeTab: NavBarTab = {
-    icon: <PlayArrow />,
-    labelId: 'nav.executeProcess',
-    path: PROCESS_PATHS.execute,
-};
 
 function TabLabel({ icon, label }: { readonly icon: ReactNode; readonly label: string }) {
     const theme = useTheme();
@@ -69,22 +65,37 @@ export function SettingsTabs() {
 }
 
 export function ExecuteButton() {
-    const intl = useIntl();
+    const [wizardOpen, setWizardOpen] = useState(false);
+    const [successOpen, setSuccessOpen] = useState(false);
+    const [executionId, setExecutionId] = useState('');
 
     return (
-        <Button
-            component={NavLink}
-            to={executeTab.path}
-            color="primary"
-            variant="contained"
-            startIcon={executeTab.icon}
-            sx={{
-                flexShrink: 0,
-                whiteSpace: 'nowrap',
-                textTransform: 'none',
-            }}
-        >
-            {intl.formatMessage({ id: executeTab.labelId })}
-        </Button>
+        <>
+            <Button
+                color="primary"
+                variant="contained"
+                startIcon={<PlayArrow />}
+                onClick={() => setWizardOpen(true)}
+                sx={{
+                    flexShrink: 0,
+                    whiteSpace: 'nowrap',
+                    textTransform: 'none',
+                }}
+            >
+                <FormattedMessage id="nav.executeProcess" />
+            </Button>
+
+            <ExecuteProcessConfigDialog
+                open={wizardOpen}
+                onClose={() => setWizardOpen(false)}
+                onLaunch={(data) => {
+                    setExecutionId(data);
+                    setWizardOpen(false);
+                    setSuccessOpen(true);
+                }}
+            />
+
+            <LaunchSuccessDialog executionId={executionId} open={successOpen} onClose={() => setSuccessOpen(false)} />
+        </>
     );
 }

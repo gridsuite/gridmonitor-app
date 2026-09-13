@@ -3,6 +3,8 @@
     "cancel": "Cancel",
     "validate": "Validate",
     "back": "Back",
+    "next": "Next",
+    "launch": "Run",
     "modifier": "Modify",
     "parameters": "Parameters",
     "configurationMode": "Configuration mode",
@@ -26,5 +28,16 @@
     "edit": "Update the folder",
     "Select": "Select a folder",
     "importElements" : "Import",
-    "referenceConfigs": "Reference Configurations"
+    "referenceConfigs": "Reference Configurations",
+    "case": "case",
+    "activateDebugMode": "Debug mode",
+    "debugMode": "Debug mode activated",
+    "runAnalysisTitle": "Run analysis",
+    "selectConfiguration": "Select a configuration",
+    "selectSituation": "Select a case",
+    "referenceConfigurations": "Reference configurations",
+    "autoGenCase": "Case from automatic process",
+    "gridExploreCase": "Case from GridExplore",
+    "followExecution": "Follow execution",
+    "analysisLaunched": "Analysis started successfully"
 }

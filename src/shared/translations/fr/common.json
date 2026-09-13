@@ -3,6 +3,8 @@
     "cancel": "Annuler",
     "validate": "Valider",
     "back": "Retour",
+    "next": "Suivant",
+    "launch": "Lancer",
     "modifier": "Modifier",
     "parameters": "Paramètres",
     "configurationMode": "Mode configuration",
@@ -26,5 +28,16 @@
     "edit": "Modifier le dossier",
     "Select": "Choisir un dossier",
     "importElements" : "Importer",
-    "referenceConfigs": "Configurations de référence"
+    "referenceConfigs": "Configurations de référence",
+    "case": "Situation",
+    "activateDebugMode": "Lancer en mode débug",
+    "debugMode": "Mode Debug activé",
+    "runAnalysisTitle": "Lancer une analyse",
+    "selectConfiguration": "Sélectionner une configuration",
+    "selectSituation": "Select a situation",
+    "referenceConfigurations": "Configurations de références",
+    "autoGenCase": "Situation générée par un processus automatique",
+    "gridExploreCase": "Situation de GridExplore",
+    "followExecution": "Suivre l'éxecution",
+    "analysisLaunched": "L'analyse a été lancée avec succès"
 }

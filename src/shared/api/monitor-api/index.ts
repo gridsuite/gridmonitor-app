@@ -16,6 +16,11 @@ export {
     ProcessType,
 } from './monitor.generated';
 
-export type { ExecuteProcessApiResponse, ProcessExecution, ProcessExecutionStep } from './monitor.generated';
+export type {
+    ExecuteProcessApiResponse,
+    ProcessExecution,
+    ProcessExecutionStep,
+    ExecuteProcessApiArg,
+} from './monitor.generated';
 
 export type { PersistedProcessConfig, ProcessConfig } from './monitor.type';

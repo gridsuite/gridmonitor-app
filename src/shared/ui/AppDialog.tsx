@@ -6,7 +6,17 @@
  */
 
 import { SyntheticEvent, useId, ReactNode } from 'react';
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Typography } from '@mui/material';
+import {
+    Box,
+    Button,
+    Chip,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    IconButton,
+    Typography,
+} from '@mui/material';
 import { ChevronLeft as ChevronLeftIcon, Close as CloseIcon } from '@mui/icons-material';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -21,7 +31,6 @@ export type AppDialogProps = {
     onClose: () => void;
     title: ReactNode;
     children: ReactNode;
-    description?: ReactNode;
     onBack?: () => void;
     backLabel?: ReactNode;
     onCancel?: () => void;
@@ -29,6 +38,7 @@ export type AppDialogProps = {
     onConfirm?: () => void;
     confirmLabel?: ReactNode;
     confirmDisabled?: boolean;
+    chipLabel?: string;
 };
 
 export function AppDialog({
@@ -36,7 +46,6 @@ export function AppDialog({
     onClose,
     title,
     children,
-    description,
     onBack,
     backLabel,
     onCancel,
@@ -44,10 +53,10 @@ export function AppDialog({
     onConfirm,
     confirmLabel,
     confirmDisabled = false,
+    chipLabel,
 }: AppDialogProps) {
     const intl = useIntl();
     const titleId = useId();
-    const descriptionId = useId();
 
     const handleClose = (_event: SyntheticEvent, reason: 'backdropClick' | 'escapeKeyDown') => {
         if (reason === 'backdropClick') {
@@ -62,7 +71,6 @@ export function AppDialog({
             onClose={handleClose}
             disableEscapeKeyDown
             aria-labelledby={titleId}
-            aria-describedby={description != null ? descriptionId : undefined}
             slotProps={{ paper: { sx: paperSx } }}
         >
             <DialogTitle
@@ -75,8 +83,22 @@ export function AppDialog({
                     pr: 2,
                 }}
             >
-                <Box component="span" id={titleId}>
-                    <Typography variant="h5">{title}</Typography>
+                <Box
+                    component="span"
+                    id={titleId}
+                    sx={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 1,
+                    }}
+                >
+                    <Typography variant="h5" component="span">
+                        {title}
+                    </Typography>
+
+                    {chipLabel && (
+                        <Chip label={intl.formatMessage({ id: chipLabel })} color="primary" variant="outlined" />
+                    )}
                 </Box>
                 <IconButton
                     aria-label={intl.formatMessage({ id: 'close' })}
@@ -90,14 +112,7 @@ export function AppDialog({
                     <CloseIcon />
                 </IconButton>
             </DialogTitle>
-            <DialogContent>
-                {description != null && (
-                    <Box component="span" id={descriptionId}>
-                        {description}
-                    </Box>
-                )}
-                {children}
-            </DialogContent>
+            <DialogContent>{children}</DialogContent>
             <DialogActions
                 sx={{
                     justifyContent: 'space-between',
@@ -106,7 +121,12 @@ export function AppDialog({
                 }}
             >
                 {onBack && (
-                    <Button variant="outlined" startIcon={<ChevronLeftIcon />} onClick={() => onBack()}>
+                    <Button
+                        variant="outlined"
+                        sx={{ textTransform: 'none' }}
+                        startIcon={<ChevronLeftIcon />}
+                        onClick={() => onBack()}
+                    >
                         {backLabel ?? <FormattedMessage id="back" />}
                     </Button>
                 )}
