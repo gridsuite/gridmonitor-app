@@ -5,37 +5,40 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { CustomFormProvider } from '@gridsuite/commons-ui';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+import {
+    CustomFormProvider,
+    isDisabledValidationButton,
+    ProcessConfigForm,
+    useProcessConfigForm,
+} from '@gridsuite/commons-ui';
 import { FormattedMessage } from 'react-intl';
 import { AppDialog } from 'shared/ui/AppDialog';
 import { useCreateProcessConfig, useProcessConfigPrefill } from '../hooks/use-create-process-config';
-import { formSchema } from '../schemas/createProcessConfig.schema';
-import { createProcessConfigFormDefaultValues } from '../constants/processConfig.constants';
 import { useCreateProcessConfigSubmit } from '../hooks/useCreateProcessConfigSubmit';
-import { CreateProcessConfigForm } from './CreateProcessConfigForm';
-import { CreateProcessConfigDialogProps, CreateProcessConfigFormValues } from '../types/processConfig.types';
+
+type CreateProcessConfigDialogProps = {
+    open: boolean;
+    onClose: () => void;
+};
 
 export function CreateProcessConfigDialog({ open, onClose }: CreateProcessConfigDialogProps) {
-    const form = useForm<CreateProcessConfigFormValues>({
-        resolver: yupResolver(formSchema),
-        mode: 'onSubmit',
-        defaultValues: createProcessConfigFormDefaultValues,
-    });
+    const { formMethods, formSchema, defaultValues } = useProcessConfigForm({ mode: 'create' });
 
-    const { createProcessConfig } = useCreateProcessConfig();
+    const { createProcessConfig, isCreating } = useCreateProcessConfig();
     const fetchProcessConfigPrefill = useProcessConfigPrefill();
 
-    const { reset, formState } = form;
+    const {
+        reset,
+        formState: { errors },
+    } = formMethods;
 
     const handleClose = () => {
-        reset(createProcessConfigFormDefaultValues);
+        reset(defaultValues);
         onClose();
     };
 
     const { submit, isSubmitting } = useCreateProcessConfigSubmit({
-        form,
+        form: formMethods,
         createProcessConfig,
         onClose: handleClose,
     });
@@ -45,11 +48,11 @@ export function CreateProcessConfigDialog({ open, onClose }: CreateProcessConfig
             open={open}
             onClose={handleClose}
             onConfirm={submit}
-            confirmDisabled={!formState.isValid || isSubmitting}
+            confirmDisabled={isDisabledValidationButton(errors) || isSubmitting || isCreating}
             title={<FormattedMessage id="processConfigCreateTitle" />}
         >
-            <CustomFormProvider {...form} validationSchema={formSchema}>
-                <CreateProcessConfigForm form={form} onFetchProcessConfig={fetchProcessConfigPrefill} />
+            <CustomFormProvider {...formMethods} validationSchema={formSchema}>
+                <ProcessConfigForm form={formMethods} mode="create" onFetchProcessConfig={fetchProcessConfigPrefill} />
             </CustomFormProvider>
         </AppDialog>
     );
