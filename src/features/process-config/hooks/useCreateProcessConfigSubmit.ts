@@ -5,15 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { FieldConstants, useSnackMessage } from '@gridsuite/commons-ui';
+import { FieldConstants, useSnackMessage, type ProcessConfigFormValues } from '@gridsuite/commons-ui';
 import { useCallback, useState } from 'react';
 import type { UseFormReturn } from 'react-hook-form';
-import { createProcessConfigFormDefaultValues } from '../constants/processConfig.constants';
-import type { CreateProcessConfigFormValues } from '../types/processConfig.types';
 
 type UseCreateProcessConfigSubmitParams = {
-    form: UseFormReturn<CreateProcessConfigFormValues>;
-    createProcessConfig: (values: CreateProcessConfigFormValues) => Promise<unknown>;
+    form: UseFormReturn<ProcessConfigFormValues>;
+    createProcessConfig: (values: ProcessConfigFormValues) => Promise<unknown>;
     onClose: () => void;
 };
 
@@ -33,10 +31,9 @@ export function useCreateProcessConfigSubmit({
                 snackSuccess({
                     messageId: 'processConfigCreated',
                     messageValues: {
-                        folder: values[FieldConstants.DIRECTORY].directoryItemFullPath,
+                        folder: values[FieldConstants.DIRECTORY]?.directoryItemFullPath,
                     },
                 });
-                form.reset(createProcessConfigFormDefaultValues);
                 onClose();
             })();
         } catch {
