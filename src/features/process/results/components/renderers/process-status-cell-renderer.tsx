@@ -6,7 +6,7 @@
  */
 
 import { Done, AccessTime, Autorenew, ErrorOutline } from '@mui/icons-material';
-import { Box, Chip, Stack } from '@mui/material';
+import { Box, Chip, Stack, useTheme } from '@mui/material';
 import { useIntl } from 'react-intl';
 import { ReactNode } from 'react';
 import { Link } from 'react-router';
@@ -18,21 +18,22 @@ export type ProcessStatusCellRendererProps = { value: ProcessStatus; id: string 
 
 export function ProcessStatusCellRenderer({ value, id }: Readonly<ProcessStatusCellRendererProps>) {
     const intl = useIntl();
+    const theme = useTheme();
 
     let colorVal: string = '';
     let iconVal: ReactNode;
 
     switch (value) {
         case ProcessStatus.Failed:
-            colorVal = 'error.main';
+            colorVal = theme.palette.mode === 'light' ? '#D32F2F' : '#EF5350';
             iconVal = <ErrorOutline />;
             break;
         case ProcessStatus.Running:
-            colorVal = 'purple';
+            colorVal = theme.palette.mode === 'light' ? '#A0F' : '#EA80FC';
             iconVal = <Autorenew />;
             break;
         case ProcessStatus.Scheduled:
-            colorVal = 'warning.main';
+            colorVal = theme.palette.mode === 'light' ? '#00838F' : '#4DD0E1';
             iconVal = <AccessTime />;
             break;
         default:
