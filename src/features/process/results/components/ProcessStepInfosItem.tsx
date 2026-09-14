@@ -33,8 +33,11 @@ function FieldRow({ label, value }: Readonly<{ label: string; value?: string | n
         <Stack spacing={0.5}>
             <Typography
                 variant="caption"
-                color="text.secondary"
-                sx={{ textTransform: 'uppercase', letterSpacing: 0.6 }}
+                sx={{
+                    color: 'text.secondary',
+                    textTransform: 'uppercase',
+                    letterSpacing: 0.6,
+                }}
             >
                 {label}
             </Typography>
@@ -60,12 +63,19 @@ export function ProcessStepInfosItem({ index, step }: Readonly<ProcessStepInfosI
                     <Stack
                         direction={{ xs: 'column', sm: 'row' }}
                         spacing={1.5}
-                        justifyContent="space-between"
-                        alignItems={{ xs: 'flex-start', sm: 'center' }}
+                        sx={{
+                            justifyContent: 'space-between',
+                            alignItems: { xs: 'flex-start', sm: 'center' },
+                        }}
                     >
                         <Stack spacing={0.5}>
                             <Typography variant="h6">Step {step.stepOrder ?? index + 1}</Typography>
-                            <Typography variant="body2" color="text.secondary">
+                            <Typography
+                                variant="body2"
+                                sx={{
+                                    color: 'text.secondary',
+                                }}
+                            >
                                 {step.stepType}
                             </Typography>
                         </Stack>
@@ -97,7 +107,12 @@ export function ProcessStepInfosItem({ index, step }: Readonly<ProcessStepInfosI
                         </Box>
                     </Stack>
 
-                    <Stack direction="row" justifyContent="flex-end">
+                    <Stack
+                        direction="row"
+                        sx={{
+                            justifyContent: 'flex-end',
+                        }}
+                    >
                         <Button size="small" onClick={() => setExpanded((previous) => !previous)}>
                             {expanded ? 'Hide raw data' : 'Show raw data'}
                         </Button>

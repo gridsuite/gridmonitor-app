@@ -20,7 +20,12 @@ export function ProcessResultsItem({ execution }: Readonly<ProcessResultsItemPro
             <ListItem>
                 <ListItemText
                     primary={
-                        <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between">
+                        <Stack
+                            direction={{ xs: 'column', sm: 'row' }}
+                            sx={{
+                                justifyContent: 'space-between',
+                            }}
+                        >
                             <Box>
                                 Id : <Link to={PROCESS_PATHS.stepInfos(execution.id ?? '')}>{execution.id}</Link>
                             </Box>

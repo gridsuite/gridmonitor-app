@@ -27,7 +27,12 @@ export function ProcessStepInfosAlert({
     if (isLoading) {
         return (
             <Paper sx={{ p: 3 }}>
-                <Typography variant="body1" color="text.secondary">
+                <Typography
+                    variant="body1"
+                    sx={{
+                        color: 'text.secondary',
+                    }}
+                >
                     Loading process step information...
                 </Typography>
             </Paper>

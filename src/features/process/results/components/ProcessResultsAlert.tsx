@@ -17,7 +17,12 @@ export function ProcessResultsAlert({ isEmpty, isError, isLoading }: Readonly<Pr
     if (isLoading) {
         return (
             <Paper sx={{ p: 3 }}>
-                <Typography variant="body1" color="text.secondary">
+                <Typography
+                    variant="body1"
+                    sx={{
+                        color: 'text.secondary',
+                    }}
+                >
                     Loading process executions...
                 </Typography>
             </Paper>
