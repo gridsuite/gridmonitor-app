@@ -22,7 +22,12 @@ export function ProcessConfigList({ configs, expandedItems, onToggleExpanded }: 
                 <Typography variant="h5" gutterBottom>
                     Security Analysis Configurations
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography
+                    variant="body2"
+                    sx={{
+                        color: 'text.secondary',
+                    }}
+                >
                     {configs.length} configuration{configs.length === 1 ? '' : 's'} returned by the API.
                 </Typography>
             </Box>

@@ -17,7 +17,12 @@ export function ProcessConfigListResult({ isEmpty, isError, isLoading }: Readonl
     if (isLoading) {
         return (
             <Paper sx={{ p: 3 }}>
-                <Typography variant="body1" color="text.secondary">
+                <Typography
+                    variant="body1"
+                    sx={{
+                        color: 'text.secondary',
+                    }}
+                >
                     Loading security analysis configurations...
                 </Typography>
             </Paper>

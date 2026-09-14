@@ -25,8 +25,11 @@ function FieldRow({ label, value }: Readonly<{ label: string; value: unknown }>)
         <Stack spacing={0.5}>
             <Typography
                 variant="caption"
-                color="text.secondary"
-                sx={{ textTransform: 'uppercase', letterSpacing: 0.6 }}
+                sx={{
+                    color: 'text.secondary',
+                    textTransform: 'uppercase',
+                    letterSpacing: 0.6,
+                }}
             >
                 {label}
             </Typography>
@@ -46,12 +49,22 @@ function ArraySection({ label, values }: Readonly<{ label: string; values: strin
         <Stack spacing={1}>
             <Typography
                 variant="caption"
-                color="text.secondary"
-                sx={{ textTransform: 'uppercase', letterSpacing: 0.6 }}
+                sx={{
+                    color: 'text.secondary',
+                    textTransform: 'uppercase',
+                    letterSpacing: 0.6,
+                }}
             >
                 {label}
             </Typography>
-            <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">
+            <Stack
+                direction="row"
+                spacing={1}
+                useFlexGap
+                sx={{
+                    flexWrap: 'wrap',
+                }}
+            >
                 {values.map((value) => (
                     <Chip
                         key={value}
@@ -94,8 +107,10 @@ export function ProcessConfigListItem({
                     <Stack
                         direction={{ xs: 'column', sm: 'row' }}
                         spacing={1.5}
-                        justifyContent="space-between"
-                        alignItems={{ xs: 'flex-start', sm: 'center' }}
+                        sx={{
+                            justifyContent: 'space-between',
+                            alignItems: { xs: 'flex-start', sm: 'center' },
+                        }}
                     >
                         <Stack spacing={0.5}>
                             <Typography variant="h6">Config #{index + 1}</Typography>
@@ -133,7 +148,12 @@ export function ProcessConfigListItem({
 
                     <ArraySection label="Modification UUIDs" values={modificationUuids} />
 
-                    <Stack direction="row" justifyContent="flex-end">
+                    <Stack
+                        direction="row"
+                        sx={{
+                            justifyContent: 'flex-end',
+                        }}
+                    >
                         <Button size="small" onClick={() => onToggleExpanded(index)}>
                             {expanded ? 'Hide raw JSON' : 'Show raw JSON'}
                         </Button>

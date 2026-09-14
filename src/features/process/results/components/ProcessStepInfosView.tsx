@@ -21,7 +21,12 @@ export function ProcessStepInfosView({ executionId, steps }: Readonly<ProcessSte
                 <Typography variant="h5" gutterBottom>
                     Process Step Information
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography
+                    variant="body2"
+                    sx={{
+                        color: 'text.secondary',
+                    }}
+                >
                     {steps.length} step{steps.length === 1 ? '' : 's'} for execution {executionId}.
                 </Typography>
             </Box>
