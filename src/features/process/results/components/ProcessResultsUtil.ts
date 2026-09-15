@@ -15,6 +15,7 @@ import {
     TableType,
     CustomAggridComparatorFilter,
     FilterTextComparators,
+    CustomAggridAutocompleteFilterParams,
 } from '@gridsuite/commons-ui';
 import { IntlShape } from 'react-intl';
 import { ProcessStatusCellRenderer } from './renderers/process-status-cell-renderer';
@@ -74,7 +75,7 @@ export const processResultsColumnsDefinition = (
 
     return [
         // Process type
-        makeAgGridCustomHeaderColumn({
+        makeAgGridCustomHeaderColumn<CustomAggridAutocompleteFilterParams>({
             headerName: intl.formatMessage({ id: 'ProcessType' }),
             colId: 'processType',
             field: 'type',
@@ -96,7 +97,6 @@ export const processResultsColumnsDefinition = (
                         dataType: FilterDataTypes.TEXT,
                         ...filterParams,
                     },
-                    // @ts-ignore
                     options: filterEnums.processType ?? [],
                     getOptionLabel: getEnumLabel,
                 },
@@ -106,7 +106,7 @@ export const processResultsColumnsDefinition = (
         }),
 
         // Process status
-        makeAgGridCustomHeaderColumn({
+        makeAgGridCustomHeaderColumn<CustomAggridAutocompleteFilterParams>({
             headerName: intl.formatMessage({ id: 'ProcessStatus' }),
             colId: 'processStatus',
             field: 'status',
@@ -124,7 +124,6 @@ export const processResultsColumnsDefinition = (
                         dataType: FilterDataTypes.TEXT,
                         ...filterParams,
                     },
-                    // @ts-ignore
                     options: filterEnums.processStatus ?? [],
                     getOptionLabel: getEnumLabel,
                 },
