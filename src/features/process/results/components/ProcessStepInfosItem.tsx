@@ -92,7 +92,6 @@ export function ProcessStepInfosItem({ index, step }: Readonly<ProcessStepInfosI
                         <Box sx={{ flex: 1 }}>
                             <Stack spacing={2}>
                                 <FieldRow label="Result ID" value={step.resultId} />
-                                <FieldRow label="Report ID" value={step.reportId} />
                             </Stack>
                         </Box>
                     </Stack>

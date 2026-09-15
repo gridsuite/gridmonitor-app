@@ -10,10 +10,12 @@ import { authenticationReducer } from 'features/authentication/store/authenticat
 import { configApi } from 'shared/api/config-api';
 import { studyApi } from 'shared/api/study-api';
 import { monitorApi } from 'shared/api/monitor-api';
+import { appStateReducer } from './app-state.slice';
 
 export const reducer = combineReducers({
     authentication: authenticationReducer,
     [monitorApi.reducerPath]: monitorApi.reducer,
     [configApi.reducerPath]: configApi.reducer,
     [studyApi.reducerPath]: studyApi.reducer,
+    appState: appStateReducer,
 });

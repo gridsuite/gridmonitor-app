@@ -11,7 +11,7 @@ import type { AppDispatch } from '../../../app/store/store';
 
 export const monitorApi = monitorGeneratedApi.enhanceEndpoints({
     endpoints: {
-        getLaunchedProcesses: {
+        getProcessExecutions: {
             providesTags: [{ type: MonitorTags.ProcessExecutions, id: 'LIST' }],
         },
     },

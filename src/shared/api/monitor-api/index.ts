@@ -9,9 +9,10 @@ export * from './monitor.enhanced';
 export {
     useGetProcessConfigsQuery,
     useGetStepsInfosQuery,
-    useGetLaunchedProcessesQuery,
+    useGetProcessExecutionsQuery,
     useExecuteProcessMutation,
     ProcessType,
+    ProcessStatus,
 } from './monitor.generated';
 
 export type { ExecuteProcessApiResponse, ProcessExecution, ProcessExecutionStep } from './monitor.generated';

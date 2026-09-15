@@ -5,6 +5,37 @@
     "paramsRetrievingError": "An error occurred while retrieving the parameters",
     "configurationMode": "Configuration mode",
     "nav.executeProcess": "Execute process",
-    "nav.launchHistory": "Launch history",
-    "nav.configuration": "Configuration"
+    "nav.executionHistory": "Execution history",
+    "nav.configuration": "Configuration",
+
+    "filter.filterOoo": "Filter...",
+    "filter.startsWith": "Starts with",
+    "filter.contains": "Contains",
+    "filter.blank": "Is empty",
+    "filter.notBlank": "Is not empty",
+
+    "ProcessType": "Type",
+    "ProcessStatus": "Status",
+    "ProcessLaunchedBy": "Launched by",
+    "ProcessScheduledAt": "Scheduled",
+    "ProcessStartedAt": "Started",
+    "ProcessCompletedAt": "Terminated",
+    "ProcessShowDetails": " ",
+
+    "SECURITY_ANALYSIS": "Security analysis",
+    "LOADFLOW": "LoadFlow",
+    "SHORT_CIRCUIT": "Short-Circuit analysis",
+
+    "ScheduledStatus": "Scheduled",
+    "RunningStatus": "Running",
+    "FailedStatus": "Failed",
+    "CompletedStatus": "Terminated",
+
+    "SCHEDULED": "Scheduled",
+    "RUNNING": "Running",
+    "COMPLETED": "Terminated",
+    "FAILED": "Failed",
+
+    "ProcessExecutionHistory": "Process execution history",
+    "Refresh": "Refresh"
 }

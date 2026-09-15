@@ -45,11 +45,11 @@ afterEach(() => {
 // SettingsTabs
 // ---------------------------------------------------------------------------
 describe('SettingsTabs', () => {
-    it('renders the Configuration and Launch history tabs on a configuration path', () => {
+    it('renders the Configuration and Execution history tabs on a configuration path', () => {
         renderWithRouter(<SettingsTabs />, PROCESS_CONFIG_PATHS.root);
 
         expect(screen.getByRole('tab', { name: /Configuration/i })).toBeInTheDocument();
-        expect(screen.getByRole('tab', { name: /Launch history/i })).toBeInTheDocument();
+        expect(screen.getByRole('tab', { name: /Execution history/i })).toBeInTheDocument();
     });
 
     it('marks the Configuration tab as selected when on the process-config path', () => {
@@ -59,10 +59,10 @@ describe('SettingsTabs', () => {
         expect(configTab).toHaveAttribute('aria-selected', 'true');
     });
 
-    it('marks the Launch history tab as selected when on the results path', () => {
+    it('marks the Execution history tab as selected when on the results path', () => {
         renderWithRouter(<SettingsTabs />, PROCESS_PATHS.results);
 
-        const historyTab = screen.getByRole('tab', { name: /Launch history/i });
+        const historyTab = screen.getByRole('tab', { name: /Execution history/i });
         expect(historyTab).toHaveAttribute('aria-selected', 'true');
     });
 
@@ -70,7 +70,7 @@ describe('SettingsTabs', () => {
         renderWithRouter(<SettingsTabs />, PROCESS_CONFIG_PATHS.root);
 
         expect(screen.getByRole('tab', { name: /Configuration/i })).toHaveAttribute('href', PROCESS_CONFIG_PATHS.root);
-        expect(screen.getByRole('tab', { name: /Launch history/i })).toHaveAttribute('href', PROCESS_PATHS.results);
+        expect(screen.getByRole('tab', { name: /Execution history/i })).toHaveAttribute('href', PROCESS_PATHS.results);
     });
 
     it('renders no tab as selected when the path does not match any tab', () => {
@@ -86,14 +86,14 @@ describe('SettingsTabs', () => {
         renderWithRouter(<SettingsTabs />, PROCESS_CONFIG_PATHS.root);
 
         expect(screen.getByRole('tab', { name: /Configuration/i })).toBeInTheDocument();
-        expect(screen.getByRole('tab', { name: /Launch history/i })).toBeInTheDocument();
+        expect(screen.getByRole('tab', { name: /Execution history/i })).toBeInTheDocument();
     });
 
     it('renders tabs when on the gridmonitor process base path (first branch of isConfigurationPath)', () => {
         renderWithRouter(<SettingsTabs />, PROCESS_PATHS.root);
 
         expect(screen.getByRole('tab', { name: /Configuration/i })).toBeInTheDocument();
-        expect(screen.getByRole('tab', { name: /Launch history/i })).toBeInTheDocument();
+        expect(screen.getByRole('tab', { name: /Execution history/i })).toBeInTheDocument();
     });
 
     it('renders tabs with tooltip listeners enabled on xs viewport (isXs = true)', () => {
@@ -101,7 +101,7 @@ describe('SettingsTabs', () => {
         renderWithRouter(<SettingsTabs />, PROCESS_CONFIG_PATHS.root);
 
         expect(screen.getByRole('tab', { name: /Configuration/i })).toBeInTheDocument();
-        expect(screen.getByRole('tab', { name: /Launch history/i })).toBeInTheDocument();
+        expect(screen.getByRole('tab', { name: /Execution history/i })).toBeInTheDocument();
     });
 });
 
