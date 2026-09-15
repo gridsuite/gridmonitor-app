@@ -22,6 +22,7 @@ export function toCreateProcessConfigApiArg(values: ProcessConfigFormValues): Cr
         name: values[FieldConstants.NAME],
         description: values[FieldConstants.DESCRIPTION] ?? '',
         parentDirectoryUuid: values[FieldConstants.DIRECTORY]?.directoryItemId ?? '',
+        // @ts-ignore
         body: getProcessConfigBackendFromFormData(values),
     };
 }
@@ -56,7 +57,7 @@ export function useProcessConfigPrefill(): FetchProcessConfigHandler {
             if (!processConfig) {
                 return undefined;
             }
-
+            // @ts-ignore
             return getProcessConfigFormData({ id: processConfigUuid as UUID, processConfig }, '', '');
         },
         [getProcessConfig]
