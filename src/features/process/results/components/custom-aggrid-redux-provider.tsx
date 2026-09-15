@@ -19,7 +19,7 @@ import {
 } from '@gridsuite/commons-ui';
 import { setTableSort, updateColumnFiltersAction } from '../../../../app/store/actions';
 
-function CustomAggridSortReduxProvider({ children }: PropsWithChildren) {
+function CustomAggridSortReduxProvider({ children }: Readonly<PropsWithChildren>) {
     const dispatch = useDispatch();
     const tableSort = useSelector((state: any) => {
         return state.appState.tableSort;
@@ -50,7 +50,7 @@ function CustomAggridSortReduxProvider({ children }: PropsWithChildren) {
     return <CustomAggridSortContext.Provider value={value}>{children}</CustomAggridSortContext.Provider>;
 }
 
-function CustomAggridFilterReduxProvider({ children }: PropsWithChildren) {
+function CustomAggridFilterReduxProvider({ children }: Readonly<PropsWithChildren>) {
     const dispatch = useDispatch();
     const tableFilters = useSelector((state: any) => state.appState.tableFilters);
 
@@ -80,7 +80,7 @@ function CustomAggridFilterReduxProvider({ children }: PropsWithChildren) {
     return <CustomAggridFilterContext.Provider value={value}>{children}</CustomAggridFilterContext.Provider>;
 }
 
-export function CustomAggridReduxProvider({ children }: PropsWithChildren) {
+export function CustomAggridReduxProvider({ children }: Readonly<PropsWithChildren>) {
     return (
         <CustomAggridSortReduxProvider>
             <CustomAggridFilterReduxProvider>{children}</CustomAggridFilterReduxProvider>
