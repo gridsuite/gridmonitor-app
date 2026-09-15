@@ -5,7 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import React, { PropsWithChildren, useCallback, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import {
     CustomAggridFilterContext,
     type CustomAggridFilterContextValue,
@@ -17,13 +16,15 @@ import {
     SortParams,
     TableType,
 } from '@gridsuite/commons-ui';
-import { setTableSort, updateColumnFiltersAction } from '../../../../app/store/actions';
+import { useAppDispatch, useAppSelector } from 'app/store/store';
+import {
+    setProcessExecutionHistoryTableFilters,
+    setProcessExecutionHistoryTableSort,
+} from '../store/process-results.slice';
 
 function CustomAggridSortReduxProvider({ children }: Readonly<PropsWithChildren>) {
-    const dispatch = useDispatch();
-    const tableSort = useSelector((state: any) => {
-        return state.appState.tableSort;
-    });
+    const dispatch = useAppDispatch();
+    const tableSort = useAppSelector((state) => state.processResults.tableSort);
 
     const getSortConfig = useCallback(
         (sortParams: SortParams | undefined): SortConfig[] | undefined => {
@@ -37,7 +38,13 @@ function CustomAggridSortReduxProvider({ children }: Readonly<PropsWithChildren>
 
     const setSortConfig = useCallback(
         (sortParams: SortParams, updatedSortConfig: SortConfig[]) => {
-            dispatch(setTableSort(sortParams.table, sortParams.tab, updatedSortConfig));
+            dispatch(
+                setProcessExecutionHistoryTableSort({
+                    table: sortParams.table,
+                    tab: sortParams.tab,
+                    sort: updatedSortConfig,
+                })
+            );
         },
         [dispatch]
     );
@@ -51,8 +58,8 @@ function CustomAggridSortReduxProvider({ children }: Readonly<PropsWithChildren>
 }
 
 function CustomAggridFilterReduxProvider({ children }: Readonly<PropsWithChildren>) {
-    const dispatch = useDispatch();
-    const tableFilters = useSelector((state: any) => state.appState.tableFilters);
+    const dispatch = useAppDispatch();
+    const tableFilters = useAppSelector((state) => state.processResults.tableFilters);
 
     const getFilters = useCallback(
         ({ type, tab }: Pick<FilterParams, 'type' | 'tab'>): FilterConfig[] => {
@@ -66,7 +73,13 @@ function CustomAggridFilterReduxProvider({ children }: Readonly<PropsWithChildre
             const { type, tab } = filterParams;
 
             if (type === TableType.ProcessExecutionHistory) {
-                dispatch(updateColumnFiltersAction(TableType.ProcessExecutionHistory, tab, updatedFilters));
+                dispatch(
+                    setProcessExecutionHistoryTableFilters({
+                        filterType: TableType.ProcessExecutionHistory,
+                        filterSubType: tab,
+                        filters: updatedFilters,
+                    })
+                );
             }
         },
         [dispatch]

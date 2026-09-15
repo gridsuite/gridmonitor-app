@@ -5,5 +5,4 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export const TABLE_SORT_STORE = 'tableSort';
 export const PROCESS_EXECUTION_HISTORY_SORT_STORE = 'processExecutionHistory';
