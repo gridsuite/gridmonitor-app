@@ -6,12 +6,11 @@
  */
 
 import { Done, AccessTime, Autorenew, ErrorOutline } from '@mui/icons-material';
-import { Box, Chip, Stack, useTheme } from '@mui/material';
+import { Box, Chip, Icon, Stack, useTheme } from '@mui/material';
 import { useIntl } from 'react-intl';
 import { ReactNode } from 'react';
 import { Link } from 'react-router';
-// eslint-disable-next-line no-restricted-imports
-import { ProcessStatus } from '../../../../../shared/api/monitor-api/monitor.generated';
+import { ProcessStatus } from 'shared/api/monitor-api';
 import { PROCESS_PATHS } from '../../../router/process-paths';
 
 export type ProcessStatusCellRendererProps = { value: ProcessStatus; id: string };
@@ -21,7 +20,7 @@ export function ProcessStatusCellRenderer({ value, id }: Readonly<ProcessStatusC
     const theme = useTheme();
 
     let colorVal: string = '';
-    let iconVal: ReactNode;
+    let iconVal: ReactNode = <Icon />;
 
     switch (value) {
         case ProcessStatus.Failed:
@@ -49,7 +48,6 @@ export function ProcessStatusCellRenderer({ value, id }: Readonly<ProcessStatusC
             <Link to={PROCESS_PATHS.stepInfos(id ?? '')} onClick={(event) => event.stopPropagation()} style={linkStyle}>
                 <Box sx={{ display: 'inline-flex', verticalAlign: 'middle' }}>
                     <Chip
-                        // @ts-ignore
                         icon={iconVal}
                         label={intl.formatMessage({
                             id: value,
