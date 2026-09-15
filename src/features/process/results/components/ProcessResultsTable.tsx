@@ -103,7 +103,7 @@ export function ProcessResultsTable({ executions }: Readonly<ProcessResultsListP
     }, [intl, getEnumLabel]);
 
     const getCustomRowStyle = useCallback(
-        (cellData: any) => {
+        (_cellData: any) => {
             const style: RowStyle = { background: theme.palette.background.default, highlightColor: 'yellow' };
             return {
                 ...style,
