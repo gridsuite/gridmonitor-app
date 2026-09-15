@@ -6,12 +6,12 @@
  */
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { FilterConfig, SortConfig, SortWay, TableSortKeysType, TableType } from '@gridsuite/commons-ui';
+import { FilterConfig, SortConfig, SortWay, TableSortConfig, TableType } from '@gridsuite/commons-ui';
 import { PROCESS_EXECUTION_HISTORY_SORT_STORE } from './process-results.constants';
 import { ProcessResultsState } from './process-results.type';
 
 type SetProcessExecutionHistoryTableSortPayload = {
-    table: TableSortKeysType;
+    table: string;
     tab: string;
     sort: SortConfig[];
 };
@@ -22,7 +22,7 @@ type SetProcessExecutionHistoryTableFiltersPayload = {
     filters: FilterConfig[];
 };
 
-const initialSortState: Record<string, SortConfig[]> = {
+const initialSortState: TableSortConfig = {
     [PROCESS_EXECUTION_HISTORY_SORT_STORE]: [{ colId: 'processScheduledAt', sort: SortWay.DESC }],
 };
 
