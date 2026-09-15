@@ -7,7 +7,7 @@
 
 import { render, screen, waitFor } from '@testing-library/react';
 import { IntlProvider } from 'react-intl';
-import { MemoryRouter } from 'react-router';
+import { MemoryRouter, Route, Routes } from 'react-router';
 import { describe, expect, it } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { createTestContext } from 'test-utils/create-test-context';
@@ -42,7 +42,9 @@ describe('ProcessResultsPage', () => {
                 <StyledEngineProvider injectFirst>
                     <ThemeProvider theme={getAppTheme(DARK_THEME)}>
                         <MemoryRouter>
-                            <ProcessResultsPage />
+                            <Routes>
+                                <Route path="*" element={<ProcessResultsPage />} />
+                            </Routes>
                         </MemoryRouter>
                     </ThemeProvider>
                 </StyledEngineProvider>
@@ -96,7 +98,9 @@ describe('ProcessResultsPage', () => {
                 <StyledEngineProvider injectFirst>
                     <ThemeProvider theme={getAppTheme(DARK_THEME)}>
                         <MemoryRouter>
-                            <ProcessResultsPage />
+                            <Routes>
+                                <Route path="*" element={<ProcessResultsPage />} />
+                            </Routes>
                         </MemoryRouter>
                     </ThemeProvider>
                 </StyledEngineProvider>
@@ -117,7 +121,9 @@ describe('ProcessResultsPage', () => {
                 <StyledEngineProvider injectFirst>
                     <ThemeProvider theme={getAppTheme(DARK_THEME)}>
                         <MemoryRouter>
-                            <ProcessResultsPage />
+                            <Routes>
+                                <Route path="*" element={<ProcessResultsPage />} />
+                            </Routes>
                         </MemoryRouter>
                     </ThemeProvider>
                 </StyledEngineProvider>
