@@ -118,6 +118,7 @@ export function ProcessResultsTable({ executions }: Readonly<ProcessResultsListP
                 display: 'flex',
                 flexDirection: 'column',
                 height: '100%',
+                width: '100%',
                 ml: 1,
                 '& .row-action-button': {
                     visibility: 'hidden',
