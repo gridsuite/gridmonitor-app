@@ -62,11 +62,7 @@ function CustomAggridFilterReduxProvider({ children }: PropsWithChildren) {
     );
 
     const updateFilter = useCallback(
-        (
-            _colId: string,
-            filterParams: FilterParams,
-            updatedFilters: FilterConfig[],
-        ) => {
+        (_colId: string, filterParams: FilterParams, updatedFilters: FilterConfig[]) => {
             const { type, tab } = filterParams;
 
             if (type === TableType.ProcessExecutionHistory) {
