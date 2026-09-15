@@ -13,10 +13,15 @@ import { http, HttpResponse } from 'msw';
 import { createTestContext } from 'test-utils/create-test-context';
 import { server } from 'test-utils/msw/server';
 import { StyledEngineProvider, ThemeProvider } from '@mui/material';
-import { DARK_THEME } from '@gridsuite/commons-ui';
+import { DARK_THEME, SortWay, TableType } from '@gridsuite/commons-ui';
 import { getAppTheme } from 'app/config/app-theme';
 import ProcessResultsPage from '../../pages/ProcessResultsPage';
 import messagesEn from '../../../../../shared/translations/en/common.json';
+import { PROCESS_EXECUTION_HISTORY_SORT_STORE } from '../../store/process-results.constants';
+import {
+    setProcessExecutionHistoryTableFilters,
+    setProcessExecutionHistoryTableSort,
+} from '../../store/process-results.slice';
 
 describe('ProcessResultsPage', () => {
     it('displays process executions successfully', async () => {
@@ -122,5 +127,40 @@ describe('ProcessResultsPage', () => {
         await waitFor(() => {
             expect(screen.getByText('Unable to load process executions.')).toBeInTheDocument();
         });
+    });
+
+    it('persists table sort and filters in the process results state', () => {
+        const { store } = createTestContext();
+        const filters = [{ column: 'processStatus', value: 'FAILED' }];
+
+        store.dispatch(
+            setProcessExecutionHistoryTableSort({
+                table: PROCESS_EXECUTION_HISTORY_SORT_STORE,
+                tab: PROCESS_EXECUTION_HISTORY_SORT_STORE,
+                sort: [{ colId: 'processStatus', sort: SortWay.ASC }],
+            })
+        );
+        store.dispatch(
+            setProcessExecutionHistoryTableFilters({
+                filterType: TableType.ProcessExecutionHistory,
+                filterSubType: PROCESS_EXECUTION_HISTORY_SORT_STORE,
+                filters,
+            })
+        );
+
+        const { processResults } = store.getState();
+        expect(
+            processResults.tableSort[PROCESS_EXECUTION_HISTORY_SORT_STORE][PROCESS_EXECUTION_HISTORY_SORT_STORE]
+        ).toEqual([
+            {
+                colId: 'processStatus',
+                sort: SortWay.ASC,
+            },
+        ]);
+        expect(
+            processResults.tableFilters.columnsFilters[TableType.ProcessExecutionHistory][
+                PROCESS_EXECUTION_HISTORY_SORT_STORE
+            ]
+        ).toEqual(filters);
     });
 });
