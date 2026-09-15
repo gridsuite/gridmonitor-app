@@ -111,6 +111,8 @@ export const processResultsColumnsDefinition = (
             colId: 'processStatus',
             field: 'status',
             width: 174,
+            minWidth: 174,
+            maxWidth: 174,
             resizable: false,
             cellRenderer: ProcessStatusCellRenderer,
             cellRendererParams: (params: any) => ({
@@ -138,6 +140,8 @@ export const processResultsColumnsDefinition = (
             colId: 'processLaunchedBy',
             field: 'userId',
             width: 174,
+            minWidth: 174,
+            maxWidth: 174,
             resizable: false,
             cellRenderer: ProcessUserCellRenderer,
             cellRendererParams: (params: any) => ({
@@ -165,6 +169,8 @@ export const processResultsColumnsDefinition = (
             colId: 'processScheduledAt',
             field: 'scheduledAt',
             width: 183,
+            minWidth: 183,
+            maxWidth: 183,
             resizable: false,
             cellRenderer: ProcessDateCellRenderer,
             cellRendererParams: (params: any) => ({
@@ -182,6 +188,8 @@ export const processResultsColumnsDefinition = (
             colId: 'processStartedAt',
             field: 'startedAt',
             width: 183,
+            minWidth: 183,
+            maxWidth: 183,
             resizable: false,
             cellRenderer: ProcessDateCellRenderer,
             cellRendererParams: (params: any) => ({
@@ -199,6 +207,8 @@ export const processResultsColumnsDefinition = (
             colId: 'processCompletedAt',
             field: 'completedAt',
             width: 183,
+            minWidth: 183,
+            maxWidth: 183,
             resizable: false,
             cellRenderer: ProcessDateCellRenderer,
             cellRendererParams: (params: any) => ({
@@ -216,6 +226,8 @@ export const processResultsColumnsDefinition = (
             colId: 'ProcessShowDetails',
             field: 'ProcessShowDetails',
             width: 72,
+            minWidth: 72,
+            maxWidth: 72,
             resizable: false,
             cellRenderer: ProcessDetailCellRenderer,
             valueGetter: (params) => params.data.id,
