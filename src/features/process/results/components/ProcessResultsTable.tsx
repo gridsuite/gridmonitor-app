@@ -102,12 +102,15 @@ export function ProcessResultsTable({ executions }: Readonly<ProcessResultsListP
         return processResultsColumnsDefinition(intl, ProcessResultsEnumsType, getEnumLabel);
     }, [intl, getEnumLabel]);
 
-    const getCustomRowStyle = useCallback(() => {
-        const style: RowStyle = { background: theme.palette.background.default, highlightColor: 'yellow' };
-        return {
-            ...style,
-        };
-    }, [theme]);
+    const getCustomRowStyle = useCallback(
+        (_cellData: any) => {
+            const style: RowStyle = { background: theme.palette.background.default, highlightColor: 'yellow' };
+            return {
+                ...style,
+            };
+        },
+        [theme]
+    );
 
     return (
         <Box
@@ -115,6 +118,7 @@ export function ProcessResultsTable({ executions }: Readonly<ProcessResultsListP
                 display: 'flex',
                 flexDirection: 'column',
                 height: '100%',
+                width: '100%',
                 ml: 1,
                 '& .row-action-button': {
                     visibility: 'hidden',

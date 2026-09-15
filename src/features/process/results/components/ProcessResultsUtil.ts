@@ -15,6 +15,7 @@ import {
     TableType,
     CustomAggridComparatorFilter,
     FilterTextComparators,
+    CustomAggridAutocompleteFilterParams,
 } from '@gridsuite/commons-ui';
 import { IntlShape } from 'react-intl';
 import { ProcessStatusCellRenderer } from './renderers/process-status-cell-renderer';
@@ -74,7 +75,7 @@ export const processResultsColumnsDefinition = (
 
     return [
         // Process type
-        makeAgGridCustomHeaderColumn({
+        makeAgGridCustomHeaderColumn<CustomAggridAutocompleteFilterParams>({
             headerName: intl.formatMessage({ id: 'ProcessType' }),
             colId: 'processType',
             field: 'type',
@@ -96,7 +97,6 @@ export const processResultsColumnsDefinition = (
                         dataType: FilterDataTypes.TEXT,
                         ...filterParams,
                     },
-                    // @ts-ignore
                     options: filterEnums.processType ?? [],
                     getOptionLabel: getEnumLabel,
                 },
@@ -106,11 +106,13 @@ export const processResultsColumnsDefinition = (
         }),
 
         // Process status
-        makeAgGridCustomHeaderColumn({
+        makeAgGridCustomHeaderColumn<CustomAggridAutocompleteFilterParams>({
             headerName: intl.formatMessage({ id: 'ProcessStatus' }),
             colId: 'processStatus',
             field: 'status',
             width: 174,
+            minWidth: 174,
+            maxWidth: 174,
             resizable: false,
             cellRenderer: ProcessStatusCellRenderer,
             cellRendererParams: (params: any) => ({
@@ -124,7 +126,6 @@ export const processResultsColumnsDefinition = (
                         dataType: FilterDataTypes.TEXT,
                         ...filterParams,
                     },
-                    // @ts-ignore
                     options: filterEnums.processStatus ?? [],
                     getOptionLabel: getEnumLabel,
                 },
@@ -139,6 +140,8 @@ export const processResultsColumnsDefinition = (
             colId: 'processLaunchedBy',
             field: 'userId',
             width: 174,
+            minWidth: 174,
+            maxWidth: 174,
             resizable: false,
             cellRenderer: ProcessUserCellRenderer,
             cellRendererParams: (params: any) => ({
@@ -166,6 +169,8 @@ export const processResultsColumnsDefinition = (
             colId: 'processScheduledAt',
             field: 'scheduledAt',
             width: 183,
+            minWidth: 183,
+            maxWidth: 183,
             resizable: false,
             cellRenderer: ProcessDateCellRenderer,
             cellRendererParams: (params: any) => ({
@@ -183,6 +188,8 @@ export const processResultsColumnsDefinition = (
             colId: 'processStartedAt',
             field: 'startedAt',
             width: 183,
+            minWidth: 183,
+            maxWidth: 183,
             resizable: false,
             cellRenderer: ProcessDateCellRenderer,
             cellRendererParams: (params: any) => ({
@@ -200,6 +207,8 @@ export const processResultsColumnsDefinition = (
             colId: 'processCompletedAt',
             field: 'completedAt',
             width: 183,
+            minWidth: 183,
+            maxWidth: 183,
             resizable: false,
             cellRenderer: ProcessDateCellRenderer,
             cellRendererParams: (params: any) => ({
@@ -217,6 +226,8 @@ export const processResultsColumnsDefinition = (
             colId: 'ProcessShowDetails',
             field: 'ProcessShowDetails',
             width: 72,
+            minWidth: 72,
+            maxWidth: 72,
             resizable: false,
             cellRenderer: ProcessDetailCellRenderer,
             valueGetter: (params) => params.data.id,

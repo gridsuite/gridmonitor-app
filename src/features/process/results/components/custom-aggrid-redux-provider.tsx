@@ -22,7 +22,7 @@ import {
     setProcessExecutionHistoryTableSort,
 } from '../store/process-results.slice';
 
-function CustomAggridSortReduxProvider({ children }: PropsWithChildren) {
+function CustomAggridSortReduxProvider({ children }: Readonly<PropsWithChildren>) {
     const dispatch = useDispatch();
     const tableSort = useSelector((state: any) => {
         return state.processResults.tableSort;
@@ -59,7 +59,7 @@ function CustomAggridSortReduxProvider({ children }: PropsWithChildren) {
     return <CustomAggridSortContext.Provider value={value}>{children}</CustomAggridSortContext.Provider>;
 }
 
-function CustomAggridFilterReduxProvider({ children }: PropsWithChildren) {
+function CustomAggridFilterReduxProvider({ children }: Readonly<PropsWithChildren>) {
     const dispatch = useDispatch();
     const tableFilters = useSelector((state: any) => state.processResults.tableFilters);
 
@@ -71,7 +71,7 @@ function CustomAggridFilterReduxProvider({ children }: PropsWithChildren) {
     );
 
     const updateFilter = useCallback(
-        (colId: string, filterParams: FilterParams, updatedFilters: FilterConfig[]) => {
+        (_colId: string, filterParams: FilterParams, updatedFilters: FilterConfig[]) => {
             const { type, tab } = filterParams;
 
             if (type === TableType.ProcessExecutionHistory) {
@@ -95,7 +95,7 @@ function CustomAggridFilterReduxProvider({ children }: PropsWithChildren) {
     return <CustomAggridFilterContext.Provider value={value}>{children}</CustomAggridFilterContext.Provider>;
 }
 
-export function CustomAggridReduxProvider({ children }: PropsWithChildren) {
+export function CustomAggridReduxProvider({ children }: Readonly<PropsWithChildren>) {
     return (
         <CustomAggridSortReduxProvider>
             <CustomAggridFilterReduxProvider>{children}</CustomAggridFilterReduxProvider>
