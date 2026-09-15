@@ -55,6 +55,7 @@ const processResultsSlice = createSlice({
             action: PayloadAction<SetProcessExecutionHistoryTableSortPayload>
         ) => {
             const { table, tab, sort } = action.payload;
+            state.tableSort[table] ??= {};
             state.tableSort[table][tab] = sort;
         },
         setProcessExecutionHistoryTableFilters: (

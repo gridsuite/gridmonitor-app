@@ -150,7 +150,7 @@ describe('ProcessResultsPage', () => {
 
         const { processResults } = store.getState();
         expect(
-            processResults.tableSort[PROCESS_EXECUTION_HISTORY_SORT_STORE][PROCESS_EXECUTION_HISTORY_SORT_STORE]
+            processResults.tableSort[PROCESS_EXECUTION_HISTORY_SORT_STORE]?.[PROCESS_EXECUTION_HISTORY_SORT_STORE]
         ).toEqual([
             {
                 colId: 'processStatus',

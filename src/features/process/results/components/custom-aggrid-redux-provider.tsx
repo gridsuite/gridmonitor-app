@@ -5,7 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import React, { PropsWithChildren, useCallback, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import {
     CustomAggridFilterContext,
     type CustomAggridFilterContextValue,
@@ -17,16 +16,15 @@ import {
     SortParams,
     TableType,
 } from '@gridsuite/commons-ui';
+import { useAppDispatch, useAppSelector } from 'app/store/store';
 import {
     setProcessExecutionHistoryTableFilters,
     setProcessExecutionHistoryTableSort,
 } from '../store/process-results.slice';
 
 function CustomAggridSortReduxProvider({ children }: Readonly<PropsWithChildren>) {
-    const dispatch = useDispatch();
-    const tableSort = useSelector((state: any) => {
-        return state.processResults.tableSort;
-    });
+    const dispatch = useAppDispatch();
+    const tableSort = useAppSelector((state) => state.processResults.tableSort);
 
     const getSortConfig = useCallback(
         (sortParams: SortParams | undefined): SortConfig[] | undefined => {
@@ -60,8 +58,8 @@ function CustomAggridSortReduxProvider({ children }: Readonly<PropsWithChildren>
 }
 
 function CustomAggridFilterReduxProvider({ children }: Readonly<PropsWithChildren>) {
-    const dispatch = useDispatch();
-    const tableFilters = useSelector((state: any) => state.processResults.tableFilters);
+    const dispatch = useAppDispatch();
+    const tableFilters = useAppSelector((state) => state.processResults.tableFilters);
 
     const getFilters = useCallback(
         ({ type, tab }: Pick<FilterParams, 'type' | 'tab'>): FilterConfig[] => {
