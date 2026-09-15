@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { FilterConfig, TableSort } from '@gridsuite/commons-ui';
+import { FilterConfig, TableSortConfig } from '@gridsuite/commons-ui';
 import { UUID } from 'node:crypto';
 
 interface TablesState {
@@ -15,8 +15,8 @@ export type TableFiltersState = {
     columnsFilters: Record<string, Record<string, FilterConfig[]>>;
 };
 
-export interface AppState {
-    tableSort: TableSort;
+export interface ProcessResultsState {
+    tableSort: Record<string, TableSortConfig>;
     tables: TablesState;
     tableFilters: TableFiltersState;
 }

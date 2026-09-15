@@ -17,12 +17,15 @@ import {
     SortParams,
     TableType,
 } from '@gridsuite/commons-ui';
-import { setTableSort, updateColumnFiltersAction } from '../../../../app/store/actions';
+import {
+    setProcessExecutionHistoryTableFilters,
+    setProcessExecutionHistoryTableSort,
+} from '../store/process-results.slice';
 
 function CustomAggridSortReduxProvider({ children }: PropsWithChildren) {
     const dispatch = useDispatch();
     const tableSort = useSelector((state: any) => {
-        return state.appState.tableSort;
+        return state.processResults.tableSort;
     });
 
     const getSortConfig = useCallback(
@@ -37,7 +40,13 @@ function CustomAggridSortReduxProvider({ children }: PropsWithChildren) {
 
     const setSortConfig = useCallback(
         (sortParams: SortParams, updatedSortConfig: SortConfig[]) => {
-            dispatch(setTableSort(sortParams.table, sortParams.tab, updatedSortConfig));
+            dispatch(
+                setProcessExecutionHistoryTableSort({
+                    table: sortParams.table,
+                    tab: sortParams.tab,
+                    sort: updatedSortConfig,
+                })
+            );
         },
         [dispatch]
     );
@@ -52,7 +61,7 @@ function CustomAggridSortReduxProvider({ children }: PropsWithChildren) {
 
 function CustomAggridFilterReduxProvider({ children }: PropsWithChildren) {
     const dispatch = useDispatch();
-    const tableFilters = useSelector((state: any) => state.appState.tableFilters);
+    const tableFilters = useSelector((state: any) => state.processResults.tableFilters);
 
     const getFilters = useCallback(
         ({ type, tab }: Pick<FilterParams, 'type' | 'tab'>): FilterConfig[] => {
@@ -62,16 +71,17 @@ function CustomAggridFilterReduxProvider({ children }: PropsWithChildren) {
     );
 
     const updateFilter = useCallback(
-        (
-            colId: string,
-            filterParams: FilterParams,
-            updatedFilters: FilterConfig[],
-            colFilter: FilterConfig | undefined
-        ) => {
+        (colId: string, filterParams: FilterParams, updatedFilters: FilterConfig[]) => {
             const { type, tab } = filterParams;
 
             if (type === TableType.ProcessExecutionHistory) {
-                dispatch(updateColumnFiltersAction(TableType.ProcessExecutionHistory, tab, updatedFilters));
+                dispatch(
+                    setProcessExecutionHistoryTableFilters({
+                        filterType: TableType.ProcessExecutionHistory,
+                        filterSubType: tab,
+                        filters: updatedFilters,
+                    })
+                );
             }
         },
         [dispatch]

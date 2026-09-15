@@ -22,7 +22,7 @@ import { ProcessDetailCellRenderer } from './renderers/process-detail-cell-rende
 import { ProcessDateCellRenderer } from './renderers/process-date-cell-renderer';
 import { ProcessTypeCellRenderer } from './renderers/process-type-cell-renderer';
 import { ProcessUserCellRenderer } from './renderers/process-user-cell-renderer';
-import { PROCESS_EXECUTION_HISTORY_SORT_STORE } from '../../../../app/store/store-sort-filter-fields';
+import { PROCESS_EXECUTION_HISTORY_SORT_STORE } from '../store/process-results.constants';
 
 interface TableParams {
     sortParams: SortParams;

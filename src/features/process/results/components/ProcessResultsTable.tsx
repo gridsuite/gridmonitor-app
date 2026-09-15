@@ -17,8 +17,8 @@ import { ProcessExecutionInfos } from '../models/process-result';
 import { processResultsColumnsDefinition } from './ProcessResultsUtil';
 import { PROCESS_PATHS } from '../../router/process-paths';
 import { updateAgGridFilters } from '../custom-aggrid/custom-aggrid-filters/utils/aggrid-filters-utils';
-import { TableFiltersState } from '../../../../app/store/app-state.type';
-import { PROCESS_EXECUTION_HISTORY_SORT_STORE } from '../../../../app/store/store-sort-filter-fields';
+import { TableFiltersState } from '../store/process-results.type';
+import { PROCESS_EXECUTION_HISTORY_SORT_STORE } from '../store/process-results.constants';
 import { AGGRID_LOCALES } from '../../../../shared/translations/not-intl/aggrid-locales';
 
 type ProcessResultsListProps = {
@@ -36,10 +36,10 @@ export function ProcessResultsTable({ executions }: Readonly<ProcessResultsListP
     const intl = useIntl();
     const navigate = useNavigate();
     const tableSort: TableSort = useSelector((state: any) => {
-        return state.appState.tableSort;
+        return state.processResults.tableSort;
     });
     const tableFilters: TableFiltersState = useSelector((state: any) => {
-        return state.appState.tableFilters;
+        return state.processResults.tableFilters;
     });
 
     const applyTableState = useCallback(
@@ -102,15 +102,12 @@ export function ProcessResultsTable({ executions }: Readonly<ProcessResultsListP
         return processResultsColumnsDefinition(intl, ProcessResultsEnumsType, getEnumLabel);
     }, [intl, getEnumLabel]);
 
-    const getCustomRowStyle = useCallback(
-        (cellData: any) => {
-            const style: RowStyle = { background: theme.palette.background.default, highlightColor: 'yellow' };
-            return {
-                ...style,
-            };
-        },
-        [theme]
-    );
+    const getCustomRowStyle = useCallback(() => {
+        const style: RowStyle = { background: theme.palette.background.default, highlightColor: 'yellow' };
+        return {
+            ...style,
+        };
+    }, [theme]);
 
     return (
         <Box
