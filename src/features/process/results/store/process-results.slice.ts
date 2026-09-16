@@ -13,7 +13,7 @@ import { ProcessResultsState } from './process-results.type';
 type SetProcessExecutionHistoryTableSortPayload = {
     table: string;
     tab: string;
-    sort: SortConfig[];
+    sorts: SortConfig[];
 };
 
 type SetProcessExecutionHistoryTableFiltersPayload = {
@@ -54,9 +54,9 @@ const processResultsSlice = createSlice({
             state,
             action: PayloadAction<SetProcessExecutionHistoryTableSortPayload>
         ) => {
-            const { table, tab, sort } = action.payload;
+            const { table, tab, sorts } = action.payload;
             state.tableSort[table] ??= {};
-            state.tableSort[table][tab] = sort;
+            state.tableSort[table][tab] = sorts;
         },
         setProcessExecutionHistoryTableFilters: (
             state,
