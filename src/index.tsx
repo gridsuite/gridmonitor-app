@@ -5,12 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import './configure-yup-init';
 import 'typeface-roboto';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import './app/styles/index.css';
 import AppWrapper from './app/providers/AppProviders';
-import './configure-yup-init';
 
 const container = document.getElementById('root');
 if (container) {
