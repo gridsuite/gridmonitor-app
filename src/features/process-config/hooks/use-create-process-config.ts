@@ -10,6 +10,7 @@ import {
     FieldConstants,
     getProcessConfigBackendFromFormData,
     getProcessConfigFormData,
+    ProcessConfigBackend,
     type FetchProcessConfigHandler,
     type ProcessConfigFormValues,
 } from '@gridsuite/commons-ui';
@@ -22,8 +23,7 @@ export function toCreateProcessConfigApiArg(values: ProcessConfigFormValues): Cr
         name: values[FieldConstants.NAME],
         description: values[FieldConstants.DESCRIPTION] ?? '',
         parentDirectoryUuid: values[FieldConstants.DIRECTORY]?.directoryItemId ?? '',
-        // @ts-ignore
-        body: getProcessConfigBackendFromFormData(values),
+        body: JSON.stringify(getProcessConfigBackendFromFormData(values)),
     };
 }
 
@@ -57,8 +57,11 @@ export function useProcessConfigPrefill(): FetchProcessConfigHandler {
             if (!processConfig) {
                 return undefined;
             }
-            // @ts-ignore
-            return getProcessConfigFormData({ id: processConfigUuid as UUID, processConfig }, '', '');
+            return getProcessConfigFormData(
+                { id: processConfigUuid as UUID, processConfig: processConfig as unknown as ProcessConfigBackend },
+                '',
+                ''
+            );
         },
         [getProcessConfig]
     );

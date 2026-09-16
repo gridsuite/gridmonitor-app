@@ -1,170 +1,261 @@
-/**
+/*
  * Copyright (c) 2026, RTE (http://www.rte-france.com)
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import '@testing-library/jest-dom/vitest';
+import { act, fireEvent, render, screen } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { createElement } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
+import { createTheme, ThemeProvider } from '@mui/material';
 import { IntlProvider } from 'react-intl';
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { describe, expect, it, vi } from 'vitest';
 import { AppDialog } from '../AppDialog';
+import type { AppDialogProps } from '../AppDialog';
 
-function renderDialog(props: Partial<React.ComponentProps<typeof AppDialog>> = {}) {
+const dialogSpy = vi.hoisted(() => ({
+    onClose: null as null | ((event: object, reason: 'backdropClick' | 'escapeKeyDown') => void),
+    closeReasons: [] as Array<'backdropClick' | 'escapeKeyDown'>,
+}));
+
+vi.mock('@mui/material', async (importOriginal) => {
+    const actual = await importOriginal<typeof import('@mui/material')>();
+    const RealDialog = actual.Dialog;
+    type DialogProps = ComponentProps<typeof RealDialog>;
+
+    function DialogSpy({ onClose: propsOnClose, ...rest }: DialogProps) {
+        const wrappedOnClose: NonNullable<DialogProps['onClose']> = (event, reason) => {
+            dialogSpy.closeReasons.push(reason);
+            propsOnClose?.(event, reason);
+        };
+        dialogSpy.onClose = wrappedOnClose;
+        return createElement(RealDialog, { ...rest, onClose: wrappedOnClose });
+    }
+
+    return { ...actual, Dialog: DialogSpy };
+});
+
+const messages = {
+    close: 'Close',
+    back: 'Back',
+    cancel: 'Cancel',
+    validate: 'Validate',
+};
+
+const onClose = vi.fn();
+const onBack = vi.fn();
+const onCancel = vi.fn();
+const onConfirm = vi.fn();
+
+function renderAppDialog(props: Partial<AppDialogProps> = {}) {
     return render(
-        <IntlProvider
-            locale="en"
-            messages={{
-                close: 'Close',
-                back: 'Back',
-                cancel: 'Cancel',
-                validate: 'Validate',
-            }}
-        >
-            <AppDialog open title="Dialog title" onClose={vi.fn()} {...props}>
-                <div>Dialog content</div>
+        <IntlProvider locale="en" messages={messages}>
+            <AppDialog open onClose={onClose} title="Default title" {...props}>
+                <div>Dialog body</div>
             </AppDialog>
         </IntlProvider>
     );
 }
 
+beforeEach(() => {
+    vi.clearAllMocks();
+    dialogSpy.onClose = null;
+    dialogSpy.closeReasons = [];
+});
+
 describe('AppDialog', () => {
-    it('renders the dialog title and content', () => {
-        renderDialog({
-            description: 'Dialog description',
+    describe('rendering', () => {
+        it('renders title, description and children when open', () => {
+            renderAppDialog({ title: 'My Title', description: 'My description' });
+
+            expect(screen.getByRole('dialog')).toBeInTheDocument();
+            expect(screen.getByText('My Title')).toBeInTheDocument();
+            expect(screen.getByText('My description')).toBeInTheDocument();
+            expect(screen.getByText('Dialog body')).toBeInTheDocument();
         });
 
-        expect(screen.getByRole('dialog')).toBeInTheDocument();
-        expect(screen.getByRole('heading', { name: 'Dialog title' })).toBeInTheDocument();
-        expect(screen.getByText('Dialog description')).toBeInTheDocument();
-        expect(screen.getByText('Dialog content')).toBeInTheDocument();
-    });
+        it('is labelled by its title', () => {
+            renderAppDialog({ title: 'My Title' });
 
-    it('does not render when closed', () => {
-        renderDialog({ open: false });
-
-        expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
-    });
-
-    it('calls onClose when the close button is clicked', async () => {
-        const user = userEvent.setup();
-        const onClose = vi.fn();
-
-        renderDialog({ onClose });
-
-        await user.click(screen.getByRole('button', { name: 'Close' }));
-
-        expect(onClose).toHaveBeenCalledOnce();
-    });
-
-    it('calls onClose when the default cancel button is clicked', async () => {
-        const user = userEvent.setup();
-        const onClose = vi.fn();
-
-        renderDialog({ onClose });
-
-        await user.click(screen.getByRole('button', { name: 'Cancel' }));
-
-        expect(onClose).toHaveBeenCalledOnce();
-    });
-
-    it('calls onCancel instead of onClose when provided', async () => {
-        const user = userEvent.setup();
-        const onClose = vi.fn();
-        const onCancel = vi.fn();
-
-        renderDialog({ onClose, onCancel });
-
-        await user.click(screen.getByRole('button', { name: 'Cancel' }));
-
-        expect(onCancel).toHaveBeenCalledOnce();
-        expect(onClose).not.toHaveBeenCalled();
-    });
-
-    it('renders and calls the back action', async () => {
-        const user = userEvent.setup();
-        const onBack = vi.fn();
-
-        renderDialog({
-            onBack,
-            backLabel: 'Previous',
+            expect(screen.getByRole('dialog', { name: 'My Title' })).toBeInTheDocument();
         });
 
-        await user.click(screen.getByRole('button', { name: 'Previous' }));
+        it('exposes the description through aria-describedby', () => {
+            renderAppDialog({ description: 'My description' });
 
-        expect(onBack).toHaveBeenCalledOnce();
-    });
-
-    it('renders and calls the confirm action', async () => {
-        const user = userEvent.setup();
-        const onConfirm = vi.fn();
-
-        renderDialog({
-            onConfirm,
-            confirmLabel: 'Create',
+            const describedBy = screen.getByRole('dialog').getAttribute('aria-describedby');
+            expect(describedBy).not.toBeNull();
+            expect(screen.getByText('My description')).toHaveAttribute('id', describedBy!);
         });
 
-        await user.click(screen.getByRole('button', { name: 'Create' }));
+        it.each([undefined, null])('does not link any description when description is %s', (description) => {
+            renderAppDialog({ description: description as ReactNode });
 
-        expect(onConfirm).toHaveBeenCalledOnce();
-    });
-
-    it('disables the confirm button when confirmDisabled is true', () => {
-        const onConfirm = vi.fn();
-
-        renderDialog({
-            onConfirm,
-            confirmLabel: 'Create',
-            confirmDisabled: true,
+            expect(screen.getByRole('dialog')).not.toHaveAttribute('aria-describedby');
         });
 
-        expect(screen.getByRole('button', { name: 'Create' })).toBeDisabled();
-    });
+        it('renders nothing when closed', () => {
+            renderAppDialog({ open: false });
 
-    it('does not render a confirm button when onConfirm is not provided', () => {
-        renderDialog();
-
-        expect(screen.queryByRole('button', { name: 'Validate' })).not.toBeInTheDocument();
-    });
-
-    it('uses custom cancel and confirm labels', () => {
-        const onConfirm = vi.fn();
-
-        renderDialog({
-            cancelLabel: 'Dismiss',
-            confirmLabel: 'Save',
-            onConfirm,
+            expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
         });
 
-        expect(screen.getByRole('button', { name: 'Dismiss' })).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument();
-        expect(screen.queryByRole('button', { name: 'Cancel' })).not.toBeInTheDocument();
-        expect(screen.queryByRole('button', { name: 'Validate' })).not.toBeInTheDocument();
+        it('renders correctly in dark mode', () => {
+            render(
+                <IntlProvider locale="en" messages={messages}>
+                    <ThemeProvider theme={createTheme({ palette: { mode: 'dark' } })}>
+                        <AppDialog open onClose={onClose} title="My Title">
+                            <div>Dialog body</div>
+                        </AppDialog>
+                    </ThemeProvider>
+                </IntlProvider>
+            );
+
+            expect(screen.getByRole('dialog')).toBeInTheDocument();
+        });
     });
 
-    it('uses the default back label and calls onBack', async () => {
-        const user = userEvent.setup();
-        const onBack = vi.fn();
+    describe('closing', () => {
+        it('calls onClose when the close button is clicked', () => {
+            renderAppDialog();
 
-        renderDialog({ onBack });
+            fireEvent.click(screen.getByRole('button', { name: 'Close' }));
 
-        await user.click(screen.getByRole('button', { name: 'Back' }));
+            expect(onClose).toHaveBeenCalledTimes(1);
+        });
 
-        expect(onBack).toHaveBeenCalledOnce();
+        it('ignores backdrop clicks', () => {
+            renderAppDialog();
+
+            const backdrop = document.querySelector('.MuiBackdrop-root')!;
+            fireEvent.mouseDown(backdrop);
+            fireEvent.mouseUp(backdrop);
+            fireEvent.click(backdrop);
+
+            // MUI did forward a backdropClick close request...
+            expect(dialogSpy.closeReasons).toContain('backdropClick');
+            // ...but AppDialog deliberately blocked it.
+            expect(onClose).not.toHaveBeenCalled();
+        });
+
+        it('ignores close requests with reason backdropClick', () => {
+            renderAppDialog();
+
+            act(() => {
+                dialogSpy.onClose?.({}, 'backdropClick');
+            });
+
+            expect(onClose).not.toHaveBeenCalled();
+        });
+
+        it('does not react to the Escape key (disableEscapeKeyDown)', () => {
+            renderAppDialog();
+
+            fireEvent.keyDown(screen.getByRole('dialog'), { key: 'Escape' });
+
+            expect(onClose).not.toHaveBeenCalled();
+            expect(dialogSpy.closeReasons).not.toContain('escapeKeyDown');
+        });
+
+        it('closes for close requests with a reason other than backdropClick', () => {
+            renderAppDialog();
+
+            act(() => {
+                dialogSpy.onClose?.({}, 'escapeKeyDown');
+            });
+
+            expect(dialogSpy.closeReasons).toContain('escapeKeyDown');
+            expect(onClose).toHaveBeenCalledTimes(1);
+        });
     });
 
-    it('uses the default confirm label', () => {
-        const onConfirm = vi.fn();
+    describe('actions', () => {
+        it('calls onBack when the back button is clicked (default label)', () => {
+            renderAppDialog({ onBack });
 
-        renderDialog({ onConfirm });
+            fireEvent.click(screen.getByRole('button', { name: 'Back' }));
 
-        expect(screen.getByRole('button', { name: 'Validate' })).toBeInTheDocument();
-    });
+            expect(onBack).toHaveBeenCalledTimes(1);
+        });
 
-    it('renders without a description', () => {
-        renderDialog();
+        it('supports a custom back label', () => {
+            renderAppDialog({ onBack, backLabel: 'Go back' });
 
-        expect(screen.getByRole('dialog')).not.toHaveAttribute('aria-describedby');
+            expect(screen.queryByRole('button', { name: 'Back' })).not.toBeInTheDocument();
+            fireEvent.click(screen.getByRole('button', { name: 'Go back' }));
+
+            expect(onBack).toHaveBeenCalledTimes(1);
+        });
+
+        it('does not render a back button without onBack', () => {
+            renderAppDialog();
+
+            expect(screen.queryByRole('button', { name: 'Back' })).not.toBeInTheDocument();
+        });
+
+        it('closes when the cancel button is clicked (default label)', () => {
+            renderAppDialog();
+
+            fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+
+            expect(onClose).toHaveBeenCalledTimes(1);
+        });
+
+        it('calls onCancel instead of onClose when provided', () => {
+            renderAppDialog({ onCancel });
+
+            fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+
+            expect(onCancel).toHaveBeenCalledTimes(1);
+            expect(onClose).not.toHaveBeenCalled();
+        });
+
+        it('supports a custom cancel label', () => {
+            renderAppDialog({ cancelLabel: 'Nope' });
+
+            expect(screen.queryByRole('button', { name: 'Cancel' })).not.toBeInTheDocument();
+            fireEvent.click(screen.getByRole('button', { name: 'Nope' }));
+
+            expect(onClose).toHaveBeenCalledTimes(1);
+        });
+
+        it('does not render a confirm button without onConfirm', () => {
+            renderAppDialog();
+
+            expect(screen.queryByRole('button', { name: 'Validate' })).not.toBeInTheDocument();
+        });
+
+        it('calls onConfirm when the confirm button is clicked (default label)', () => {
+            renderAppDialog({ onConfirm });
+
+            const confirm = screen.getByRole('button', { name: 'Validate' });
+            expect(confirm).toBeEnabled();
+
+            fireEvent.click(confirm);
+
+            expect(onConfirm).toHaveBeenCalledTimes(1);
+        });
+
+        it('supports a custom confirm label', () => {
+            renderAppDialog({ onConfirm, confirmLabel: 'Confirm it' });
+
+            expect(screen.queryByRole('button', { name: 'Validate' })).not.toBeInTheDocument();
+            fireEvent.click(screen.getByRole('button', { name: 'Confirm it' }));
+
+            expect(onConfirm).toHaveBeenCalledTimes(1);
+        });
+
+        it('disables the confirm button when confirmDisabled is true', () => {
+            renderAppDialog({ onConfirm, confirmDisabled: true });
+
+            const confirm = screen.getByRole('button', { name: 'Validate' });
+            expect(confirm).toBeDisabled();
+
+            fireEvent.click(confirm);
+
+            expect(onConfirm).not.toHaveBeenCalled();
+        });
     });
 });

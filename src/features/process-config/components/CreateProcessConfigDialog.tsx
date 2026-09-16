@@ -5,12 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import {
-    CustomFormProvider,
-    isDisabledValidationButton,
-    ProcessConfigForm,
-    useProcessConfigForm,
-} from '@gridsuite/commons-ui';
+import { CustomFormProvider, ProcessConfigForm, useProcessConfigForm } from '@gridsuite/commons-ui';
 import { FormattedMessage } from 'react-intl';
 import { AppDialog } from 'shared/ui/AppDialog';
 import { useCreateProcessConfig, useProcessConfigPrefill } from '../hooks/use-create-process-config';
@@ -27,10 +22,7 @@ export function CreateProcessConfigDialog({ open, onClose }: CreateProcessConfig
     const { createProcessConfig, isCreating } = useCreateProcessConfig();
     const fetchProcessConfigPrefill = useProcessConfigPrefill();
 
-    const {
-        reset,
-        formState: { errors },
-    } = formMethods;
+    const { reset, formState } = formMethods;
 
     const handleClose = () => {
         reset(defaultValues);
@@ -48,7 +40,7 @@ export function CreateProcessConfigDialog({ open, onClose }: CreateProcessConfig
             open={open}
             onClose={handleClose}
             onConfirm={submit}
-            confirmDisabled={isDisabledValidationButton(errors) || isSubmitting || isCreating}
+            confirmDisabled={!formState.isValid || isSubmitting || isCreating}
             title={<FormattedMessage id="processConfigCreateTitle" />}
         >
             <CustomFormProvider {...formMethods} validationSchema={formSchema}>

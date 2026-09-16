@@ -1,212 +1,249 @@
-/**
+/*
  * Copyright (c) 2026, RTE (http://www.rte-france.com)
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { fireEvent, render, screen } from '@testing-library/react';
 import { IntlProvider } from 'react-intl';
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi, type Mock } from 'vitest';
+import { ReactNode } from 'react';
 import { CreateProcessConfigDialog } from '../CreateProcessConfigDialog';
 
 const mocks = vi.hoisted(() => ({
-    reset: vi.fn(),
-    submit: vi.fn(),
-    createProcessConfig: vi.fn(),
-    fetchProcessConfigPrefill: vi.fn(),
-    formMethods: {
-        formState: {
-            errors: {},
-        },
+    useProcessConfigForm: vi.fn(),
+    useCreateProcessConfig: vi.fn(),
+    useProcessConfigPrefill: vi.fn(),
+    useCreateProcessConfigSubmit: vi.fn(),
+    captured: {
+        appDialog: null as null | Record<string, unknown>,
+        formProvider: null as null | Record<string, unknown>,
+        processConfigForm: null as null | Record<string, unknown>,
     },
-    defaultValues: {
-        name: '',
-        description: '',
-    },
-    formSchema: {},
-    isCreating: false,
-    isSubmitting: false,
 }));
 
 vi.mock('@gridsuite/commons-ui', () => ({
-    CustomFormProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-
-    ProcessConfigForm: ({
-        form,
-        mode,
-        onFetchProcessConfig,
-    }: {
-        form: unknown;
-        mode: string;
-        onFetchProcessConfig: unknown;
-    }) => (
-        <div
-            data-testid="process-config-form"
-            data-mode={mode}
-            data-has-form={String(form != null)}
-            data-has-prefill={String(onFetchProcessConfig === mocks.fetchProcessConfigPrefill)}
-        />
-    ),
-
-    isDisabledValidationButton: (errors: object) => Object.keys(errors).length > 0,
-
-    useProcessConfigForm: () => ({
-        formMethods: {
-            ...mocks.formMethods,
-            reset: mocks.reset,
-        },
-        formSchema: mocks.formSchema,
-        defaultValues: mocks.defaultValues,
-    }),
-}));
-
-vi.mock('../../hooks/use-create-process-config', () => ({
-    useCreateProcessConfig: () => ({
-        createProcessConfig: mocks.createProcessConfig,
-        isCreating: mocks.isCreating,
-        isError: false,
-        error: undefined,
-        createdConfigUuid: undefined,
-    }),
-    useProcessConfigPrefill: () => mocks.fetchProcessConfigPrefill,
-}));
-
-vi.mock('../../hooks/useCreateProcessConfigSubmit', () => ({
-    useCreateProcessConfigSubmit: () => ({
-        submit: mocks.submit,
-        isSubmitting: mocks.isSubmitting,
-    }),
+    CustomFormProvider: ({ children, ...rest }: { children?: unknown }) => {
+        mocks.captured.formProvider = rest;
+        return <>{children}</>;
+    },
+    ProcessConfigForm: (props: Record<string, unknown>) => {
+        mocks.captured.processConfigForm = props;
+        return <div data-testid="process-config-form" />;
+    },
+    useProcessConfigForm: mocks.useProcessConfigForm,
 }));
 
 vi.mock('shared/ui/AppDialog', () => ({
     AppDialog: ({
         open,
-        title,
-        children,
         onClose,
         onConfirm,
         confirmDisabled,
+        title,
+        children,
     }: {
         open: boolean;
-        title: React.ReactNode;
-        children: React.ReactNode;
         onClose: () => void;
         onConfirm?: () => void;
         confirmDisabled?: boolean;
-    }) =>
-        open ? (
+        title?: string;
+        children?: ReactNode;
+    }) => {
+        mocks.captured.appDialog = { open, onClose, onConfirm, confirmDisabled, title, children };
+        if (!open) {
+            return null;
+        }
+        return (
             <div role="dialog">
-                <h1>{title}</h1>
-                <button type="button" aria-label="Close" onClick={onClose}>
-                    Close
-                </button>
+                <h2>{title}</h2>
                 {children}
-                {onConfirm && (
-                    <button type="button" onClick={onConfirm} disabled={confirmDisabled}>
-                        Validate
-                    </button>
-                )}
+                <button type="button" aria-label="dialog-close" onClick={() => onClose()} />
+                <button type="button" aria-label="dialog-cancel" onClick={() => onClose()} />
+                <button type="button" aria-label="dialog-confirm" onClick={onConfirm} disabled={confirmDisabled} />
             </div>
-        ) : null,
+        );
+    },
 }));
 
-function renderDialog(open = true, onClose = vi.fn()) {
+vi.mock('../../hooks/use-create-process-config', () => ({
+    useCreateProcessConfig: mocks.useCreateProcessConfig,
+    useProcessConfigPrefill: mocks.useProcessConfigPrefill,
+}));
+
+vi.mock('../../hooks/useCreateProcessConfigSubmit', () => ({
+    useCreateProcessConfigSubmit: mocks.useCreateProcessConfigSubmit,
+}));
+
+const messages = { processConfigCreateTitle: 'Create process configuration' };
+
+const defaultValues = { name: '', description: '' };
+const formSchema = { safeParse: vi.fn() };
+const createProcessConfig = vi.fn();
+const prefill = vi.fn();
+const submit = vi.fn();
+const onClose = vi.fn();
+
+type FormMethodsMock = { reset: Mock; formState: { isValid: boolean } };
+let formMethods: FormMethodsMock;
+
+function setup({ isValid = true, isSubmitting = false, isCreating = false } = {}) {
+    formMethods = { reset: vi.fn(), formState: { isValid } };
+    mocks.useProcessConfigForm.mockReturnValue({ formMethods, formSchema, defaultValues });
+    mocks.useCreateProcessConfig.mockReturnValue({ createProcessConfig, isCreating });
+    mocks.useProcessConfigPrefill.mockReturnValue(prefill);
+    mocks.useCreateProcessConfigSubmit.mockReturnValue({ submit, isSubmitting });
+}
+
+function renderDialog(open = true) {
     return render(
-        <IntlProvider
-            locale="en"
-            messages={{
-                processConfigCreateTitle: 'Create process configuration',
-            }}
-        >
+        <IntlProvider locale="en" messages={messages}>
             <CreateProcessConfigDialog open={open} onClose={onClose} />
         </IntlProvider>
     );
 }
 
+function getSubmitHookArgs() {
+    expect(mocks.useCreateProcessConfigSubmit).toHaveBeenCalledTimes(1);
+    return mocks.useCreateProcessConfigSubmit.mock.calls[0][0] as {
+        form: FormMethodsMock;
+        createProcessConfig: Mock;
+        onClose: () => void;
+    };
+}
+
+beforeEach(() => {
+    vi.clearAllMocks();
+    mocks.captured.appDialog = null;
+    mocks.captured.formProvider = null;
+    mocks.captured.processConfigForm = null;
+    setup();
+});
+
 describe('CreateProcessConfigDialog', () => {
-    beforeEach(() => {
-        vi.clearAllMocks();
-
-        mocks.formMethods.formState.errors = {};
-        mocks.isCreating = false;
-        mocks.isSubmitting = false;
+    describe('mocking sanity', () => {
+        it('has every external dependency mocked', () => {
+            expect(vi.isMockFunction(mocks.useProcessConfigForm)).toBe(true);
+            expect(vi.isMockFunction(mocks.useCreateProcessConfig)).toBe(true);
+            expect(vi.isMockFunction(mocks.useProcessConfigPrefill)).toBe(true);
+            expect(vi.isMockFunction(mocks.useCreateProcessConfigSubmit)).toBe(true);
+        });
     });
 
-    it('renders the dialog and process configuration form when open', () => {
-        renderDialog();
+    describe('hook wiring', () => {
+        it('initializes the process config form in create mode', () => {
+            renderDialog();
 
-        expect(screen.getByRole('dialog')).toBeInTheDocument();
-        expect(screen.getByRole('heading', { name: 'Create process configuration' })).toBeInTheDocument();
-        expect(screen.getByTestId('process-config-form')).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Validate' })).toBeEnabled();
+            expect(mocks.useProcessConfigForm).toHaveBeenCalledTimes(1);
+            expect(mocks.useProcessConfigForm).toHaveBeenCalledWith({ mode: 'create' });
+        });
+
+        it('passes formMethods, schema and prefill handler down to the form', () => {
+            renderDialog();
+
+            const providerProps = mocks.captured.formProvider!;
+            expect(providerProps.validationSchema).toBe(formSchema);
+            expect(providerProps.reset).toBe(formMethods.reset);
+
+            const formProps = mocks.captured.processConfigForm!;
+            expect(formProps.form).toBe(formMethods);
+            expect(formProps.mode).toBe('create');
+            expect(formProps.onFetchProcessConfig).toBe(prefill);
+        });
+
+        it('wires the submit hook with the form, the creation callback and handleClose', () => {
+            renderDialog();
+
+            const args = getSubmitHookArgs();
+            expect(args.form).toBe(formMethods);
+            expect(args.createProcessConfig).toBe(createProcessConfig);
+            expect(args.onClose).toBeTypeOf('function');
+        });
     });
 
-    it('does not render the dialog when closed', () => {
-        renderDialog(false);
+    describe('rendering', () => {
+        it('renders the dialog with translated title and the form when open', () => {
+            renderDialog();
 
-        expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+            expect(screen.getByRole('dialog')).toBeInTheDocument();
+            expect(screen.getByText('Create process configuration')).toBeInTheDocument();
+            expect(screen.getByTestId('process-config-form')).toBeInTheDocument();
+        });
+
+        it('renders nothing when closed', () => {
+            renderDialog(false);
+
+            expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+            expect(screen.queryByTestId('process-config-form')).not.toBeInTheDocument();
+        });
     });
 
-    it('resets the form and calls onClose when the dialog is closed', async () => {
-        const user = userEvent.setup();
-        const onClose = vi.fn();
+    describe('confirm', () => {
+        it('calls submit when the confirm button is clicked', () => {
+            renderDialog();
 
-        renderDialog(true, onClose);
+            fireEvent.click(screen.getByRole('button', { name: 'dialog-confirm' }));
 
-        await user.click(screen.getByRole('button', { name: 'Close' }));
+            expect(submit).toHaveBeenCalledTimes(1);
+        });
 
-        expect(mocks.reset).toHaveBeenCalledWith(mocks.defaultValues);
-        expect(onClose).toHaveBeenCalledOnce();
+        it('disables confirm when the form is invalid', () => {
+            setup({ isValid: false });
+            renderDialog();
+
+            expect(screen.getByRole('button', { name: 'dialog-confirm' })).toBeDisabled();
+        });
+
+        it('disables confirm while submitting', () => {
+            setup({ isSubmitting: true });
+            renderDialog();
+
+            expect(screen.getByRole('button', { name: 'dialog-confirm' })).toBeDisabled();
+        });
+
+        it('disables confirm while creating', () => {
+            setup({ isCreating: true });
+            renderDialog();
+
+            expect(screen.getByRole('button', { name: 'dialog-confirm' })).toBeDisabled();
+        });
+
+        it('enables confirm when valid and idle', () => {
+            renderDialog();
+
+            expect(screen.getByRole('button', { name: 'dialog-confirm' })).toBeEnabled();
+        });
     });
 
-    it('calls submit when the validate button is clicked', async () => {
-        const user = userEvent.setup();
+    describe('closing', () => {
+        it('resets the form and calls onClose when the dialog is closed', () => {
+            renderDialog();
 
-        renderDialog();
+            fireEvent.click(screen.getByRole('button', { name: 'dialog-close' }));
 
-        await user.click(screen.getByRole('button', { name: 'Validate' }));
+            expect(formMethods.reset).toHaveBeenCalledTimes(1);
+            expect(formMethods.reset).toHaveBeenCalledWith(defaultValues);
+            expect(onClose).toHaveBeenCalledTimes(1);
+        });
 
-        expect(mocks.submit).toHaveBeenCalledOnce();
-    });
+        it('routes the cancel action through the same handleClose', () => {
+            renderDialog();
 
-    it('disables validation when the form contains errors', () => {
-        mocks.formMethods.formState.errors = {
-            name: {
-                type: 'required',
-                message: 'Name is required',
-            },
-        };
+            fireEvent.click(screen.getByRole('button', { name: 'dialog-cancel' }));
 
-        renderDialog();
+            expect(formMethods.reset).toHaveBeenCalledWith(defaultValues);
+            expect(onClose).toHaveBeenCalledTimes(1);
+        });
 
-        expect(screen.getByRole('button', { name: 'Validate' })).toBeDisabled();
-    });
+        it('exposes that same handleClose to the submit hook', () => {
+            renderDialog();
 
-    it('disables validation while creating a process configuration', () => {
-        mocks.isCreating = true;
+            const { onClose: submitOnClose } = getSubmitHookArgs();
+            submitOnClose();
 
-        renderDialog();
-
-        expect(screen.getByRole('button', { name: 'Validate' })).toBeDisabled();
-    });
-
-    it('disables validation while submitting', () => {
-        mocks.isSubmitting = true;
-
-        renderDialog();
-
-        expect(screen.getByRole('button', { name: 'Validate' })).toBeDisabled();
-    });
-
-    it('passes create mode and prefill handler to the process configuration form', () => {
-        renderDialog();
-
-        const form = screen.getByTestId('process-config-form');
-
-        expect(form).toHaveAttribute('data-mode', 'create');
-        expect(form).toHaveAttribute('data-has-form', 'true');
-        expect(form).toHaveAttribute('data-has-prefill', 'true');
+            expect(formMethods.reset).toHaveBeenCalledWith(defaultValues);
+            expect(onClose).toHaveBeenCalledTimes(1);
+        });
     });
 });

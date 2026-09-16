@@ -6,19 +6,21 @@
  */
 
 import { act, renderHook } from '@testing-library/react';
-import { describe, expect, it, vi, beforeEach } from 'vitest';
-import { getProcessConfigBackendFromFormData, getProcessConfigFormData } from '@gridsuite/commons-ui';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import type { ProcessConfigBackend, ProcessConfigFormValues } from '@gridsuite/commons-ui';
+import type { CreateProcessConfigApiArg } from 'shared/api/explore-api';
 import {
     toCreateProcessConfigApiArg,
     useCreateProcessConfig,
     useProcessConfigPrefill,
 } from '../use-create-process-config';
-import { useCreateProcessConfigSubmit } from '../useCreateProcessConfigSubmit';
 
-const createProcessConfigMutation = vi.fn();
-const getProcessConfig = vi.fn();
-const snackSuccess = vi.fn();
-const snackError = vi.fn();
+const mocks = vi.hoisted(() => ({
+    getProcessConfigBackendFromFormData: vi.fn(),
+    getProcessConfigFormData: vi.fn(),
+    useCreateProcessConfigMutation: vi.fn(),
+    useLazyGetProcessConfigQuery: vi.fn(),
+}));
 
 vi.mock('@gridsuite/commons-ui', () => ({
     FieldConstants: {
@@ -26,277 +28,206 @@ vi.mock('@gridsuite/commons-ui', () => ({
         DESCRIPTION: 'description',
         DIRECTORY: 'directory',
     },
-    getProcessConfigBackendFromFormData: vi.fn((values) => ({
-        backendValue: values.backendValue,
-    })),
-    getProcessConfigFormData: vi.fn((args) => ({
-        id: args.id,
-        processConfig: args.processConfig,
-    })),
-    useSnackMessage: () => ({
-        snackSuccess,
-        snackError,
-    }),
-}));
-
-vi.mock('shared/api/explore-api', () => ({
-    useCreateProcessConfigMutation: vi.fn(() => [
-        createProcessConfigMutation,
-        {
-            isLoading: false,
-            isError: false,
-            error: undefined,
-            data: 'created-config-uuid',
-        },
-    ]),
+    getProcessConfigBackendFromFormData: mocks.getProcessConfigBackendFromFormData,
+    getProcessConfigFormData: mocks.getProcessConfigFormData,
 }));
 
 vi.mock('shared/api/monitor-api', () => ({
-    useLazyGetProcessConfigQuery: vi.fn(() => [getProcessConfig]),
+    useLazyGetProcessConfigQuery: mocks.useLazyGetProcessConfigQuery,
 }));
 
-describe('use-create-process-config', () => {
+vi.mock('shared/api/explore-api', () => ({
+    useCreateProcessConfigMutation: mocks.useCreateProcessConfigMutation,
+}));
+
+function makeRtkResult<T>(value: T) {
+    return {
+        unwrap: () => Promise.resolve(value),
+    };
+}
+
+function makeRtkError(error: unknown) {
+    return {
+        unwrap: () => Promise.reject(error),
+    };
+}
+
+const backendPayload = { foo: 'bar' };
+const directoryUuid = 'dir-1';
+const processConfigUuid = 'pc-1';
+const createdUuid = 'created-1';
+
+const fullFormValues = {
+    name: 'myConfig',
+    description: 'my description',
+    directory: { directoryItemId: directoryUuid },
+} as unknown as ProcessConfigFormValues;
+
+const expectedApiArg: CreateProcessConfigApiArg = {
+    name: 'myConfig',
+    description: 'my description',
+    parentDirectoryUuid: directoryUuid,
+    body: JSON.stringify(backendPayload),
+};
+
+describe('toCreateProcessConfigApiArg', () => {
     beforeEach(() => {
         vi.clearAllMocks();
+        mocks.getProcessConfigBackendFromFormData.mockReturnValue(backendPayload);
     });
 
-    describe('toCreateProcessConfigApiArg', () => {
-        it('maps form values to the API argument', () => {
-            const values = {
-                name: 'Process config',
-                description: 'Description',
-                directory: {
-                    directoryItemId: 'directory-uuid',
-                    directoryItemFullPath: '/configs',
-                },
-                backendValue: 'backend-value',
-            } as any;
+    it('should map complete form values to api args', () => {
+        const result = toCreateProcessConfigApiArg(fullFormValues);
 
-            expect(toCreateProcessConfigApiArg(values)).toEqual({
-                name: 'Process config',
-                description: 'Description',
-                parentDirectoryUuid: 'directory-uuid',
-                body: {
-                    backendValue: 'backend-value',
-                },
-            });
-
-            expect(getProcessConfigBackendFromFormData).toHaveBeenCalledWith(values);
-        });
-
-        it('uses empty strings for optional values', () => {
-            const values = {
-                name: 'Process config',
-                description: undefined,
-                directory: undefined,
-            } as any;
-
-            expect(toCreateProcessConfigApiArg(values)).toEqual({
-                name: 'Process config',
-                description: '',
-                parentDirectoryUuid: '',
-                body: {
-                    backendValue: undefined,
-                },
-            });
-        });
+        expect(mocks.getProcessConfigBackendFromFormData).toHaveBeenCalledTimes(1);
+        expect(mocks.getProcessConfigBackendFromFormData).toHaveBeenCalledWith(fullFormValues);
+        expect(result).toEqual(expectedApiArg);
     });
 
-    describe('useCreateProcessConfig', () => {
-        it('creates a process configuration', async () => {
-            const unwrap = vi.fn().mockResolvedValue('created-config-uuid');
-            createProcessConfigMutation.mockReturnValue({ unwrap });
+    it.each([undefined, null])('should default description %s to empty string', (description) => {
+        const result = toCreateProcessConfigApiArg({
+            ...fullFormValues,
+            description,
+        } as unknown as ProcessConfigFormValues);
 
-            const { result } = renderHook(() => useCreateProcessConfig());
-            const values = { name: 'Process config' } as any;
-
-            let createdConfig: unknown;
-
-            await act(async () => {
-                createdConfig = await result.current.createProcessConfig(values);
-            });
-
-            expect(createProcessConfigMutation).toHaveBeenCalledWith({
-                name: 'Process config',
-                description: '',
-                parentDirectoryUuid: '',
-                body: {
-                    backendValue: undefined,
-                },
-            });
-            expect(unwrap).toHaveBeenCalled();
-            expect(createdConfig).toBe('created-config-uuid');
-        });
-
-        it('exposes mutation state', () => {
-            const { result } = renderHook(() => useCreateProcessConfig());
-
-            expect(result.current.isCreating).toBe(false);
-            expect(result.current.isError).toBe(false);
-            expect(result.current.error).toBeUndefined();
-            expect(result.current.createdConfigUuid).toBe('created-config-uuid');
-        });
+        expect(result.description).toBe('');
     });
 
-    describe('useProcessConfigPrefill', () => {
-        it('returns form values for an existing process configuration', async () => {
-            const processConfig = {
-                name: 'Existing config',
-            };
+    it.each([undefined, null])('should default directory %s to empty parent uuid', (directory) => {
+        const result = toCreateProcessConfigApiArg({
+            ...fullFormValues,
+            directory,
+        } as unknown as ProcessConfigFormValues);
 
-            getProcessConfig.mockReturnValue({
-                unwrap: vi.fn().mockResolvedValue({ processConfig }),
-            });
-
-            const { result } = renderHook(() => useProcessConfigPrefill());
-
-            let prefilledValues: unknown;
-
-            await act(async () => {
-                prefilledValues = await result.current('process-config-uuid');
-            });
-
-            expect(getProcessConfig).toHaveBeenCalledWith({
-                uuid: 'process-config-uuid',
-            });
-            expect(getProcessConfigFormData).toHaveBeenCalledWith(
-                {
-                    id: 'process-config-uuid',
-                    processConfig,
-                },
-                '',
-                ''
-            );
-            expect(prefilledValues).toEqual({
-                id: 'process-config-uuid',
-                processConfig,
-            });
-        });
-
-        it('returns undefined when the process configuration does not exist', async () => {
-            getProcessConfig.mockReturnValue({
-                unwrap: vi.fn().mockResolvedValue({ processConfig: undefined }),
-            });
-
-            const { result } = renderHook(() => useProcessConfigPrefill());
-
-            let prefilledValues: unknown;
-
-            await act(async () => {
-                prefilledValues = await result.current('missing-uuid');
-            });
-
-            expect(prefilledValues).toBeUndefined();
-            expect(getProcessConfigFormData).not.toHaveBeenCalled();
-        });
+        expect(result.parentDirectoryUuid).toBe('');
     });
 });
 
-describe('useCreateProcessConfigSubmit', () => {
-    beforeEach(() => {
-        vi.clearAllMocks();
-    });
+describe('useCreateProcessConfig', () => {
+    const createProcessConfigMutationMock = vi.fn();
 
-    function createForm(values: any, error?: Error) {
-        return {
-            handleSubmit: vi.fn((callback: (values: any) => Promise<void>) => async () => {
-                if (error) {
-                    throw error;
-                }
-
-                await callback(values);
-            }),
-        } as any;
+    function mockMutationState(state: Record<string, unknown> = {}) {
+        mocks.useCreateProcessConfigMutation.mockReturnValue([createProcessConfigMutationMock, state]);
     }
 
-    it('creates the process configuration, shows a success message, and closes the dialog', async () => {
-        const values = {
-            name: 'Process config',
-            directory: {
-                directoryItemFullPath: '/configs',
-            },
-        };
-
-        const form = createForm(values);
-        const createProcessConfig = vi.fn().mockResolvedValue(undefined);
-        const onClose = vi.fn();
-
-        const { result } = renderHook(() =>
-            useCreateProcessConfigSubmit({
-                form,
-                createProcessConfig,
-                onClose,
-            })
-        );
-
-        await act(async () => {
-            await result.current.submit();
-        });
-
-        expect(form.handleSubmit).toHaveBeenCalled();
-        expect(createProcessConfig).toHaveBeenCalledWith(values);
-        expect(snackSuccess).toHaveBeenCalledWith({
-            messageId: 'processConfigCreated',
-            messageValues: {
-                folder: '/configs',
-            },
-        });
-        expect(onClose).toHaveBeenCalled();
-        expect(snackError).not.toHaveBeenCalled();
-        expect(result.current.isSubmitting).toBe(false);
+    beforeEach(() => {
+        vi.clearAllMocks();
+        mocks.getProcessConfigBackendFromFormData.mockReturnValue(backendPayload);
+        mockMutationState({ isLoading: false, isError: false });
     });
 
-    it('shows an error when form submission fails', async () => {
-        const formError = new Error('Invalid form');
-        const form = createForm({}, formError);
-        const createProcessConfig = vi.fn();
-        const onClose = vi.fn();
+    it('should expose the mutation state in its idle form', () => {
+        const { result } = renderHook(() => useCreateProcessConfig());
 
-        const { result } = renderHook(() =>
-            useCreateProcessConfigSubmit({
-                form,
-                createProcessConfig,
-                onClose,
-            })
-        );
-
-        await act(async () => {
-            await result.current.submit();
-        });
-
-        expect(createProcessConfig).not.toHaveBeenCalled();
-        expect(snackError).toHaveBeenCalledWith({
-            messageId: 'processConfigCreateError',
-        });
-        expect(onClose).not.toHaveBeenCalled();
-        expect(result.current.isSubmitting).toBe(false);
+        expect(result.current.createProcessConfig).toBeTypeOf('function');
+        expect(result.current.isCreating).toBe(false);
+        expect(result.current.isError).toBe(false);
+        expect(result.current.error).toBeUndefined();
+        expect(result.current.createdConfigUuid).toBeUndefined();
     });
 
-    it('shows an error when process configuration creation fails', async () => {
-        const values = {
-            name: 'Process config',
-        };
+    it('should expose isCreating while the mutation is pending', () => {
+        mockMutationState({ isLoading: true, isError: false });
 
-        const form = createForm(values);
-        const createProcessConfig = vi.fn().mockRejectedValue(new Error('Creation failed'));
-        const onClose = vi.fn();
+        const { result } = renderHook(() => useCreateProcessConfig());
 
-        const { result } = renderHook(() =>
-            useCreateProcessConfigSubmit({
-                form,
-                createProcessConfig,
-                onClose,
-            })
-        );
+        expect(result.current.isCreating).toBe(true);
+        expect(result.current.isError).toBe(false);
+    });
 
+    it('should send mapped api args and return the created config uuid on success', async () => {
+        mockMutationState({ isLoading: false, isError: false, data: createdUuid });
+        createProcessConfigMutationMock.mockReturnValue(makeRtkResult(createdUuid));
+
+        const { result } = renderHook(() => useCreateProcessConfig());
+
+        let created: string | undefined;
         await act(async () => {
-            await result.current.submit();
+            created = await result.current.createProcessConfig(fullFormValues);
         });
 
-        expect(snackError).toHaveBeenCalledWith({
-            messageId: 'processConfigCreateError',
+        expect(createProcessConfigMutationMock).toHaveBeenCalledTimes(1);
+        expect(createProcessConfigMutationMock).toHaveBeenCalledWith(expectedApiArg);
+        expect(created).toBe(createdUuid);
+        expect(result.current.createdConfigUuid).toBe(createdUuid);
+    });
+
+    it('should expose the error when the mutation fails', async () => {
+        const error = { status: 500, data: 'boom' };
+        mockMutationState({ isLoading: false, isError: true, error });
+        createProcessConfigMutationMock.mockReturnValue(makeRtkError(error));
+
+        const { result } = renderHook(() => useCreateProcessConfig());
+        expect(result.current.isError).toBe(true);
+        expect(result.current.error).toBe(error);
+
+        let caught: unknown;
+        await act(async () => {
+            try {
+                await result.current.createProcessConfig(fullFormValues);
+            } catch (e) {
+                caught = e;
+            }
         });
-        expect(onClose).not.toHaveBeenCalled();
-        expect(result.current.isSubmitting).toBe(false);
+
+        expect(caught).toBe(error);
+    });
+
+    it('should keep createProcessConfig stable across re-renders', () => {
+        const { result, rerender } = renderHook(() => useCreateProcessConfig());
+        const first = result.current.createProcessConfig;
+        rerender();
+        expect(result.current.createProcessConfig).toBe(first);
+    });
+});
+
+describe('useProcessConfigPrefill', () => {
+    const getProcessConfigTriggerMock = vi.fn();
+
+    beforeEach(() => {
+        vi.clearAllMocks();
+        mocks.useLazyGetProcessConfigQuery.mockReturnValue([getProcessConfigTriggerMock]);
+    });
+
+    it('should build form data from the fetched process config', async () => {
+        const processConfig = { name: 'fetched' } as unknown as ProcessConfigBackend;
+        const formData = { name: 'fetched', description: '' };
+        getProcessConfigTriggerMock.mockReturnValue(makeRtkResult({ processConfig }));
+        mocks.getProcessConfigFormData.mockReturnValue(formData);
+
+        const { result } = renderHook(() => useProcessConfigPrefill());
+
+        const prefill = await result.current(processConfigUuid);
+
+        expect(getProcessConfigTriggerMock).toHaveBeenCalledTimes(1);
+        expect(getProcessConfigTriggerMock).toHaveBeenCalledWith({ uuid: processConfigUuid });
+        expect(mocks.getProcessConfigFormData).toHaveBeenCalledTimes(1);
+        expect(mocks.getProcessConfigFormData).toHaveBeenCalledWith({ id: processConfigUuid, processConfig }, '', '');
+        expect(prefill).toBe(formData);
+    });
+
+    it.each([undefined, null])('should return undefined when process config is %s', async (processConfig) => {
+        getProcessConfigTriggerMock.mockReturnValue(makeRtkResult({ processConfig }));
+
+        const { result } = renderHook(() => useProcessConfigPrefill());
+
+        expect(await result.current(processConfigUuid)).toBeUndefined();
+        expect(mocks.getProcessConfigFormData).not.toHaveBeenCalled();
+    });
+
+    it('should propagate the error when the query fails', async () => {
+        const error = { status: 404 };
+        getProcessConfigTriggerMock.mockReturnValue(makeRtkError(error));
+
+        const { result } = renderHook(() => useProcessConfigPrefill());
+
+        await expect(result.current(processConfigUuid)).rejects.toBe(error);
+    });
+
+    it('should keep the prefill handler stable across re-renders', () => {
+        const { result, rerender } = renderHook(() => useProcessConfigPrefill());
+        const first = result.current;
+        rerender();
+        expect(result.current).toBe(first);
     });
 });

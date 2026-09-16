@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { CreateProcessConfigDialog } from '../components/CreateProcessConfigDialog';
 
-function ProcessConfigListPage() {
+function ProcessConfigPage() {
     const [dialogOpen, setDialogOpen] = useState(false);
 
     return (
@@ -36,4 +36,4 @@ function ProcessConfigListPage() {
     );
 }
 
-export default ProcessConfigListPage;
+export default ProcessConfigPage;

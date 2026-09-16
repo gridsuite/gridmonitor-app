@@ -8,6 +8,6 @@
 import { lazy } from 'react';
 import { Route } from 'react-router';
 
-const ProcessConfigListPage = lazy(() => import('../pages/ProcessConfigListPage'));
+const ProcessConfigPage = lazy(() => import('../pages/ProcessConfigPage'));
 
-export const processConfigRoutes = <Route path="process-config" element={<ProcessConfigListPage />} />;
+export const processConfigRoutes = <Route path="process-config" element={<ProcessConfigPage />} />;
