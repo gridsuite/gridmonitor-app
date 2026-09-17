@@ -121,26 +121,16 @@ export function AppDialog({
                 }}
             >
                 {onBack && (
-                    <Button
-                        variant="outlined"
-                        sx={{ textTransform: 'none' }}
-                        startIcon={<ChevronLeftIcon />}
-                        onClick={() => onBack()}
-                    >
+                    <Button variant="outlined" startIcon={<ChevronLeftIcon />} onClick={() => onBack()}>
                         {backLabel ?? <FormattedMessage id="back" />}
                     </Button>
                 )}
                 <Box sx={{ marginLeft: 'auto', display: 'flex', gap: 1 }}>
-                    <Button variant="text" sx={{ textTransform: 'none' }} onClick={() => (onCancel ?? onClose)()}>
+                    <Button variant="text" onClick={() => (onCancel ?? onClose)()}>
                         {cancelLabel ?? <FormattedMessage id="cancel" />}
                     </Button>
                     {onConfirm && (
-                        <Button
-                            variant="contained"
-                            sx={{ textTransform: 'none' }}
-                            disabled={confirmDisabled}
-                            onClick={() => onConfirm()}
-                        >
+                        <Button variant="contained" disabled={confirmDisabled} onClick={() => onConfirm()}>
                             {confirmLabel ?? <FormattedMessage id="validate" />}
                         </Button>
                     )}

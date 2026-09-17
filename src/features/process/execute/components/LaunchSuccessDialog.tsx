@@ -86,7 +86,7 @@ export function LaunchSuccessDialog({
                 </Box>
             </DialogContent>
             <DialogActions>
-                <Button variant="text" sx={{ textTransform: 'none' }} onClick={onClose}>
+                <Button variant="text" onClick={onClose}>
                     Fermer
                 </Button>
             </DialogActions>

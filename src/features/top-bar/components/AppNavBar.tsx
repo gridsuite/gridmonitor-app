@@ -57,7 +57,6 @@ export function SettingsTabs() {
                     component={NavLink}
                     to={tab.path}
                     label={<TabLabel icon={tab.icon} label={intl.formatMessage({ id: tab.labelId })} />}
-                    sx={{ textTransform: 'none' }}
                 />
             ))}
         </Tabs>
@@ -79,7 +78,6 @@ export function ExecuteButton() {
                 sx={{
                     flexShrink: 0,
                     whiteSpace: 'nowrap',
-                    textTransform: 'none',
                 }}
             >
                 <FormattedMessage id="nav.executeProcess" />
