@@ -57,7 +57,7 @@ export function LaunchSuccessDialog({
             slotProps={{
                 paper: {
                     sx: {
-                        minWidth: 444,
+                        width: 444,
                     },
                 },
             }}
@@ -87,7 +87,7 @@ export function LaunchSuccessDialog({
             </DialogContent>
             <DialogActions>
                 <Button variant="text" onClick={onClose}>
-                    Fermer
+                    <FormattedMessage id="close" />
                 </Button>
             </DialogActions>
         </Dialog>

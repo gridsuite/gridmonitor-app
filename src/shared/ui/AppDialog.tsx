@@ -84,7 +84,7 @@ export function AppDialog({
                 }}
             >
                 <Box
-                    component="span"
+                    component="div"
                     id={titleId}
                     sx={{
                         display: 'inline-flex',
