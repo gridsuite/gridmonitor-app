@@ -60,7 +60,7 @@ describe('ProcessResultsPage', () => {
         expect(rows).toHaveLength(2); // header row + one data row
 
         const headerTexts = Array.from(container.getElementsByClassName('ag-header-cell-text')) as HTMLElement[];
-        const expectedHeaders = ['Type', 'Status', 'Launched by', 'Scheduled', 'Started', 'Terminated', ''];
+        const expectedHeaders = ['Type', 'Status', 'Launched by', 'Scheduled', 'Started', 'Finished', ''];
         headerTexts.forEach((header, index) => {
             expect(header.innerHTML).toBe(expectedHeaders[index]);
         });
