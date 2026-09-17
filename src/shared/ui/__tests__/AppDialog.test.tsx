@@ -9,7 +9,7 @@ import '@testing-library/jest-dom/vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { IntlProvider } from 'react-intl';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { AppDialog } from '../AppDialog';
+import { AppDialog, AppDialogProps } from '../AppDialog';
 
 const messages = { close: 'Close', back: 'Back', cancel: 'Cancel', validate: 'Validate' };
 const onClose = vi.fn();
