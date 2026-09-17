@@ -10,6 +10,7 @@ import { useFormContext, Controller } from 'react-hook-form';
 import { IntlProvider } from 'react-intl';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { PROCESS_CONFIG_TYPES } from '@gridsuite/commons-ui';
+import messagesEn from 'shared/translations/en/common.json';
 import { ExecuteProcessConfigDialog } from '../ExecuteProcessConfigDialog';
 
 const mocks = vi.hoisted(() => ({
@@ -67,17 +68,14 @@ vi.mock('../ProcessTypeStep', () => ({
             name="processType"
             control={control}
             render={({ field }) => (
-                <label>
-                    Process type
-                    <select aria-label="Process type" {...field}>
-                        <option value="">Select a process type</option>
-                        {PROCESS_CONFIG_TYPES.map((option) => (
-                            <option key={option.id} value={option.id}>
-                                {option.label}
-                            </option>
-                        ))}
-                    </select>
-                </label>
+                <select aria-label="Process type" {...field}>
+                    <option value="">Select a process type</option>
+                    {PROCESS_CONFIG_TYPES.map((option) => (
+                        <option key={option.id} value={option.id}>
+                            {option.label}
+                        </option>
+                    ))}
+                </select>
             )}
         />
     ),
@@ -117,7 +115,7 @@ vi.mock('../CaseStep', () => ({
 
 function renderDialog(onClose = vi.fn(), onLaunch = vi.fn()) {
     return render(
-        <IntlProvider>
+        <IntlProvider locale="en" messages={messagesEn}>
             <ExecuteProcessConfigDialog open onClose={onClose} onLaunch={onLaunch} />
         </IntlProvider>
     );
@@ -133,7 +131,7 @@ describe('ExecuteProcessConfigDialog', () => {
         const onLaunch = vi.fn();
         renderDialog(undefined, onLaunch);
 
-        const nextButton = () => screen.getByRole('button', { name: 'next' });
+        const nextButton = () => screen.getByRole('button', { name: messagesEn.next });
 
         expect(nextButton()).toBeDisabled();
 
@@ -151,7 +149,7 @@ describe('ExecuteProcessConfigDialog', () => {
         fireEvent.click(nextButton());
 
         await waitFor(() => expect(screen.getByRole('button', { name: 'Select case' })).toBeInTheDocument());
-        const launchButton = () => screen.getByRole('button', { name: 'launch' });
+        const launchButton = () => screen.getByRole('button', { name: messagesEn.launch });
         expect(launchButton()).toBeDisabled();
 
         fireEvent.click(screen.getByRole('button', { name: 'Select case' }));
