@@ -31,6 +31,6 @@ export type CreateProcessConfigApiArg = {
   name: string;
   description: string;
   parentDirectoryUuid: string;
-  body: ProcessConfig;
+  body: string
 };
 export const { useCreateProcessConfigMutation } = injectedRtkApi;
