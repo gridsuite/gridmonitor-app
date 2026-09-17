@@ -293,6 +293,7 @@ export type ProcessExecution = {
   completedAt?: string;
   reportId?: string;
   userId: string;
+  userIdentity?: string;
 };
 export type ProcessExecutionStep = {
   id: string;

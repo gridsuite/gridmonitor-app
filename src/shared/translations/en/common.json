@@ -21,7 +21,7 @@
     "ProcessLaunchedBy": "Launched by",
     "ProcessScheduledAt": "Scheduled",
     "ProcessStartedAt": "Started",
-    "ProcessCompletedAt": "Terminated",
+    "ProcessCompletedAt": "Finished",
     "ProcessShowDetails": " ",
 
     "SECURITY_ANALYSIS": "Security analysis",
@@ -31,11 +31,11 @@
     "ScheduledStatus": "Scheduled",
     "RunningStatus": "Running",
     "FailedStatus": "Failed",
-    "CompletedStatus": "Terminated",
+    "CompletedStatus": "Finished",
 
     "SCHEDULED": "Scheduled",
     "RUNNING": "Running",
-    "COMPLETED": "Terminated",
+    "COMPLETED": "Finished",
     "FAILED": "Failed",
 
     "ProcessExecutionHistory": "Process execution history",
