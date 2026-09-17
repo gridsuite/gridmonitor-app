@@ -16,7 +16,7 @@ type CreateProcessConfigDialogProps = {
     onClose: () => void;
 };
 
-export function CreateProcessConfigDialog({ open, onClose }: CreateProcessConfigDialogProps) {
+export function CreateProcessConfigDialog({ open, onClose }: Readonly<CreateProcessConfigDialogProps>) {
     const { formMethods, formSchema, defaultValues } = useProcessConfigForm({ mode: 'create' });
 
     const { createProcessConfig, isCreating } = useCreateProcessConfig();

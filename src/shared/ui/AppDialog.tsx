@@ -44,7 +44,7 @@ export function AppDialog({
     onConfirm,
     confirmLabel,
     confirmDisabled = false,
-}: AppDialogProps) {
+}: Readonly<AppDialogProps>) {
     const intl = useIntl();
     const titleId = useId();
     const descriptionId = useId();
