@@ -25,6 +25,14 @@ vi.mock('@mui/material', async (importOriginal) => {
     };
 });
 
+vi.mock('../../../process/execute/components/LaunchSuccessDialog', () => ({
+    LaunchSuccessDialog: () => null,
+}));
+
+vi.mock('../../../process/execute/components/ExecuteProcessConfigDialog', () => ({
+    ExecuteProcessConfigDialog: () => null,
+}));
+
 function renderWithRouter(ui: React.ReactElement, initialPath: string) {
     return render(
         <IntlProvider locale="en" messages={messagesEn}>
@@ -48,60 +56,51 @@ describe('SettingsTabs', () => {
     it('renders the Configuration and Execution history tabs on a configuration path', () => {
         renderWithRouter(<SettingsTabs />, PROCESS_CONFIG_PATHS.root);
 
-        expect(screen.getByRole('tab', { name: /Configuration/i })).toBeInTheDocument();
-        expect(screen.getByRole('tab', { name: /Execution history/i })).toBeInTheDocument();
+        expect(screen.getByRole('tab', { name: 'Configuration' })).toBeInTheDocument();
+        expect(screen.getByRole('tab', { name: 'Launch history' })).toBeInTheDocument();
     });
 
     it('marks the Configuration tab as selected when on the process-config path', () => {
         renderWithRouter(<SettingsTabs />, PROCESS_CONFIG_PATHS.root);
 
-        const configTab = screen.getByRole('tab', { name: /Configuration/i });
+        const configTab = screen.getByRole('tab', { name: 'Configuration' });
         expect(configTab).toHaveAttribute('aria-selected', 'true');
     });
 
     it('marks the Execution history tab as selected when on the results path', () => {
         renderWithRouter(<SettingsTabs />, PROCESS_PATHS.results);
 
-        const historyTab = screen.getByRole('tab', { name: /Execution history/i });
+        const historyTab = screen.getByRole('tab', { name: 'Launch history' });
         expect(historyTab).toHaveAttribute('aria-selected', 'true');
     });
 
     it('each tab links to the correct path', () => {
         renderWithRouter(<SettingsTabs />, PROCESS_CONFIG_PATHS.root);
 
-        expect(screen.getByRole('tab', { name: /Configuration/i })).toHaveAttribute('href', PROCESS_CONFIG_PATHS.root);
-        expect(screen.getByRole('tab', { name: /Execution history/i })).toHaveAttribute('href', PROCESS_PATHS.results);
-    });
-
-    it('renders no tab as selected when the path does not match any tab', () => {
-        renderWithRouter(<SettingsTabs />, PROCESS_PATHS.execute);
-
-        const tabs = screen.getAllByRole('tab');
-        tabs.forEach((tab) => {
-            expect(tab).toHaveAttribute('aria-selected', 'false');
-        });
+        expect(screen.getByRole('tab', { name: 'Configuration' })).toHaveAttribute('href', PROCESS_CONFIG_PATHS.root);
+        expect(screen.getByRole('tab', { name: 'Launch history' })).toHaveAttribute('href', PROCESS_PATHS.results);
     });
 
     it('renders tabs when on the gridmonitorConfigProcessConfig path (second branch of isConfigurationPath)', () => {
         renderWithRouter(<SettingsTabs />, PROCESS_CONFIG_PATHS.root);
 
-        expect(screen.getByRole('tab', { name: /Configuration/i })).toBeInTheDocument();
-        expect(screen.getByRole('tab', { name: /Execution history/i })).toBeInTheDocument();
+        expect(screen.getByRole('tab', { name: 'Configuration' })).toBeInTheDocument();
+        expect(screen.getByRole('tab', { name: 'Launch history' })).toBeInTheDocument();
     });
 
     it('renders tabs when on the gridmonitor process base path (first branch of isConfigurationPath)', () => {
         renderWithRouter(<SettingsTabs />, PROCESS_PATHS.root);
 
-        expect(screen.getByRole('tab', { name: /Configuration/i })).toBeInTheDocument();
-        expect(screen.getByRole('tab', { name: /Execution history/i })).toBeInTheDocument();
+        expect(screen.getByRole('tab', { name: 'Configuration' })).toBeInTheDocument();
+        expect(screen.getByRole('tab', { name: 'Launch history' })).toBeInTheDocument();
     });
 
     it('renders tabs with tooltip listeners enabled on xs viewport (isXs = true)', () => {
         mockIsXs = true;
         renderWithRouter(<SettingsTabs />, PROCESS_CONFIG_PATHS.root);
 
-        expect(screen.getByRole('tab', { name: /Configuration/i })).toBeInTheDocument();
-        expect(screen.getByRole('tab', { name: /Execution history/i })).toBeInTheDocument();
+        expect(screen.getByRole('tab', { name: 'Configuration' })).toBeInTheDocument();
+        expect(screen.getByRole('tab', { name: 'Launch history' })).toBeInTheDocument();
     });
 });
 
@@ -112,32 +111,26 @@ describe('ExecuteButton', () => {
     it('renders an "Execute process" button on a configuration path', () => {
         renderWithRouter(<ExecuteButton />, PROCESS_CONFIG_PATHS.root);
 
-        expect(screen.getByRole('link', { name: /Execute process/i })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /Execute process/i })).toBeInTheDocument();
     });
 
-    it('links to the execute path', () => {
-        renderWithRouter(<ExecuteButton />, PROCESS_CONFIG_PATHS.root);
-
-        expect(screen.getByRole('link', { name: /Execute process/i })).toHaveAttribute('href', PROCESS_PATHS.execute);
-    });
-
-    it('renders an "Execute process" button on the gridmonitor process base path (first branch of isConfigurationPath)', () => {
+    it('renders an "Execute process" button on the process base path', () => {
         renderWithRouter(<ExecuteButton />, PROCESS_PATHS.root);
 
-        expect(screen.getByRole('link', { name: /Execute process/i })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /Execute process/i })).toBeInTheDocument();
     });
 
     it('renders an "Execute process" button on the results path', () => {
         renderWithRouter(<ExecuteButton />, PROCESS_PATHS.results);
 
-        expect(screen.getByRole('link', { name: /Execute process/i })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /Execute process/i })).toBeInTheDocument();
     });
 
-    it('renders the execute button with tooltip listeners enabled on xs viewport', () => {
+    it('renders the execute button on an xs viewport', () => {
         mockIsXs = true;
 
         renderWithRouter(<ExecuteButton />, PROCESS_CONFIG_PATHS.root);
 
-        expect(screen.getByRole('link', { name: /Execute process/i })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /Execute process/i })).toBeInTheDocument();
     });
 });

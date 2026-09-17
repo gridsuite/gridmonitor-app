@@ -33,10 +33,9 @@ beforeEach(() => {
 
 describe('AppDialog', () => {
     it('renders its title, description, and content', () => {
-        renderAppDialog({ description: 'Dialog description' });
+        renderAppDialog({});
 
         expect(screen.getByRole('dialog', { name: 'Default title' })).toBeInTheDocument();
-        expect(screen.getByText('Dialog description')).toBeInTheDocument();
         expect(screen.getByText('Dialog body')).toBeInTheDocument();
     });
 

@@ -6,8 +6,7 @@
  */
 
 export const PROCESS_PATHS = {
-    root: '/gridmonitor/process',
-    execute: '/gridmonitor/process/execute',
-    results: '/gridmonitor/process/results',
-    stepInfos: (id: string) => `/gridmonitor/process/results/${id}/step-infos`,
+    root: '/process',
+    results: '/process/results',
+    stepInfos: (id: string) => `/process/results/${id}/step-infos`,
 } as const;

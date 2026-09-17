@@ -10,14 +10,14 @@ import type { ChangeEvent } from 'react';
 import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router';
 import { APP_PATHS } from 'app/router/app-paths';
-import { PROCESS_PATHS } from 'features/process/router/process-paths';
+import { PROCESS_CONFIG_PATHS } from 'features/process-config/router/process-config-paths';
 
 export function ConfigurationModeToggle({ isConfigurationMode }: { readonly isConfigurationMode: boolean }) {
     const intl = useIntl();
     const navigate = useNavigate();
 
     const handleToggle = (_event: ChangeEvent<HTMLInputElement>, checked: boolean) => {
-        navigate(checked ? PROCESS_PATHS.execute : APP_PATHS.home, { replace: true });
+        navigate(checked ? PROCESS_CONFIG_PATHS.root : APP_PATHS.home, { replace: true });
     };
 
     return (
