@@ -23,7 +23,7 @@ import {
 } from '@gridsuite/commons-ui';
 import { useExecuteProcess } from '../hooks/use-execute-process';
 
-const STEP_LABELS = ["Type d'analyse", 'Configuration', 'case'];
+const STEP_LABELS = ['processType', 'configuration', 'case'];
 const LAST_STEP = STEP_LABELS.length - 1;
 
 const configOptions = Object.values(PROCESS_CONFIG_TYPES);

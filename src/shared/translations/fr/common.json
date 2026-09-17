@@ -46,6 +46,7 @@
     "createConfig": "Créer une configuration",
     "referenceConfigs": "Configurations de référence",
 
+    "configuration": "Configuration",
     "case": "Situation",
     "activateDebugMode": "Lancer en mode débug",
     "debugMode": "Mode Debug activé",
