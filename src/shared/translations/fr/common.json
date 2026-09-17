@@ -1,8 +1,10 @@
 {
     "close": "Fermer",
+    "cancel": "Annuler",
+    "validate": "Valider",
+    "back": "Retour",
+    "modifier": "Modifier",
     "parameters": "Paramètres",
-    "paramsChangingError": "Une erreur est survenue lors de la modification des paramètres",
-    "paramsRetrievingError": "Une erreur est survenue lors de la récupération des paramètres",
     "configurationMode": "Mode configuration",
     "nav.executeProcess": "Lancer une analyse",
     "nav.executionHistory": "Historique d'exécution",
@@ -37,5 +39,8 @@
     "FAILED": "Echec",
 
     "ProcessExecutionHistory": "Historique d'exécution des chaînes",
-    "Refresh": "Actualiser"
+    "Refresh": "Actualiser",
+    "nav.launchHistory": "Historique d'exécution",
+    "createConfig": "Créer une configuration",
+    "referenceConfigs": "Configurations de référence"
 }

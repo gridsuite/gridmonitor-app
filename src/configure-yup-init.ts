@@ -5,9 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { lazy } from 'react';
-import { Route } from 'react-router';
+// Must run before any module that defines a yup schema is loaded, so that
+// `string().required()` (no message) captures the configured locale instead
+// of yup's built-in default.
+import { configureYup } from '@gridsuite/commons-ui/configureYup';
 
-const ProcessConfigPage = lazy(() => import('../pages/ProcessConfigPage'));
-
-export const processConfigRoutes = <Route path="process-config" element={<ProcessConfigPage />} />;
+configureYup();

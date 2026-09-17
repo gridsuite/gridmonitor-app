@@ -352,6 +352,7 @@ export enum Severity {
 }
 export const {
   useGetProcessConfigQuery,
+  useLazyGetProcessConfigQuery,
   useUpdateProcessConfigMutation,
   useDeleteProcessConfigMutation,
   useGetProcessConfigsQuery,

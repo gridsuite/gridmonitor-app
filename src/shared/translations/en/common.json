@@ -1,8 +1,10 @@
 {
     "close": "Close",
+    "cancel": "Cancel",
+    "validate": "Validate",
+    "back": "Back",
+    "modifier": "Modify",
     "parameters": "Parameters",
-    "paramsChangingError": "An error occured when changing the parameters",
-    "paramsRetrievingError": "An error occurred while retrieving the parameters",
     "configurationMode": "Configuration mode",
     "nav.executeProcess": "Execute process",
     "nav.executionHistory": "Execution history",
@@ -37,5 +39,8 @@
     "FAILED": "Failed",
 
     "ProcessExecutionHistory": "Process execution history",
-    "Refresh": "Refresh"
+    "Refresh": "Refresh",
+    "nav.launchHistory": "Launch history",
+    "createConfig": "Create a configuration",
+    "referenceConfigs": "Reference Configurations"
 }
