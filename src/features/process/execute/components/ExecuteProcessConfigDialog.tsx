@@ -70,7 +70,7 @@ export function ExecuteProcessConfigDialog({ open, onClose, onLaunch }: ExecuteP
     const intl = useIntl();
     const [activeStep, setActiveStep] = useState(0);
 
-    const { executeProcess } = useExecuteProcess();
+    const { executeProcess, isCreating } = useExecuteProcess();
 
     const form = useForm<ExecuteProcessConfigFormData>({
         resolver: yupResolver(validationSchema),
@@ -128,7 +128,7 @@ export function ExecuteProcessConfigDialog({ open, onClose, onLaunch }: ExecuteP
             onCancel={handleClose}
             onBack={activeStep > 0 ? handleBack : undefined}
             onConfirm={handleConfirm}
-            confirmDisabled={isLastStep ? !isValid : !currentStepIsValid}
+            confirmDisabled={isCreating || (isLastStep ? !isValid : !currentStepIsValid)}
             confirmLabel={isLastStep ? intl.formatMessage({ id: 'launch' }) : intl.formatMessage({ id: 'next' })}
             title={<FormattedMessage id="runAnalysisTitle" />}
             chipLabel={debugMode && activeStep !== 0 ? 'debugMode' : undefined}

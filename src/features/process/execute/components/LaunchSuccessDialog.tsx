@@ -63,7 +63,7 @@ export function LaunchSuccessDialog({
             }}
             aria-labelledby={titleId}
         >
-            <DialogTitle component="div" id={titleId} sx={{ display: 'flex', justifyContent: 'flex-end', pr: 2 }}>
+            <DialogTitle component="div" sx={{ display: 'flex', justifyContent: 'flex-end', pr: 2 }}>
                 <IconButton aria-label={intl.formatMessage({ id: 'close' })} onClick={onClose} size="small" edge="end">
                     <Close />
                 </IconButton>
@@ -71,7 +71,7 @@ export function LaunchSuccessDialog({
             <DialogContent>
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
                     <CheckCircle color="primary" sx={{ fontSize: 72, mb: 2 }} />
-                    <Typography variant="h6" gutterBottom>
+                    <Typography id={titleId} variant="h6" gutterBottom>
                         <FormattedMessage id="analysisLaunched" />
                     </Typography>
                     <Link
