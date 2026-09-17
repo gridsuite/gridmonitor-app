@@ -5,23 +5,18 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Stepper, Step, StepLabel, Stack, FormControlLabel, Checkbox, Alert } from '@mui/material';
-import { Controller, useForm } from 'react-hook-form';
+import { Box, Stepper, Step, StepLabel } from '@mui/material';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { AppDialog } from 'shared/ui/AppDialog';
-import {
-    CustomFormProvider,
-    DirectoryItemsInput,
-    ElementAttributes,
-    ElementType,
-    PROCESS_CONFIG_TYPES,
-    RadioInput,
-    SelectInput,
-} from '@gridsuite/commons-ui';
+import { CustomFormProvider, PROCESS_CONFIG_TYPES } from '@gridsuite/commons-ui';
 import { useExecuteProcess } from '../hooks/use-execute-process';
+import { CaseStep } from './CaseStep';
+import { ProcessConfigStep } from './ProcessConfigStep';
+import { ProcessTypeStep } from './ProcessTypeStep';
 
 const STEP_LABELS = ['processType', 'configuration', 'case'];
 const LAST_STEP = STEP_LABELS.length - 1;
@@ -126,15 +121,6 @@ export function ExecuteProcessConfigDialog({ open, onClose, onLaunch }: ExecuteP
         }
     };
 
-    const alert = (
-        <Alert severity="info" sx={{ p: 1 }}>
-            <FormattedMessage id="processType" /> :{' '}
-            <strong>
-                <FormattedMessage id={processTypeLabel} />
-            </strong>
-        </Alert>
-    );
-
     return (
         <AppDialog
             open={open}
@@ -160,80 +146,13 @@ export function ExecuteProcessConfigDialog({ open, onClose, onLaunch }: ExecuteP
                     </Stepper>
 
                     <Box sx={{ mt: 3 }}>
-                        {activeStep === 0 && (
-                            <Stack spacing={2} paddingTop={1}>
-                                <SelectInput
-                                    name="processType"
-                                    label="processType"
-                                    options={Object.values(PROCESS_CONFIG_TYPES)}
-                                    fullWidth
-                                    size="small"
-                                />
-                                <Controller
-                                    name="debugMode"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <FormControlLabel
-                                            control={<Checkbox {...field} checked={field.value} />}
-                                            label={intl.formatMessage({ id: 'activateDebugMode' })}
-                                        />
-                                    )}
-                                />
-                            </Stack>
-                        )}
+                        {activeStep === 0 && <ProcessTypeStep control={control} />}
 
                         {activeStep === 1 && (
-                            <Stack spacing={2}>
-                                {alert}
-                                <RadioInput
-                                    formProps={{ sx: { paddingLeft: 2 } }}
-                                    name="configSource"
-                                    options={[
-                                        { id: 'configurations', label: 'Configurations' },
-                                        { id: 'reference', label: 'referenceConfigurations', disabled: true },
-                                    ]}
-                                />
-
-                                <DirectoryItemsInput
-                                    name="processConfig"
-                                    elementType={ElementType.PROCESS_CONFIG}
-                                    equipmentTypes={[processType]}
-                                    itemFilter={(item: ElementAttributes) =>
-                                        item?.type === ElementType.PROCESS_CONFIG &&
-                                        item?.specificMetadata?.type === processType
-                                    }
-                                    hideErrorMessage={false}
-                                    allowMultiSelect={false}
-                                    showPlaceHolder={false}
-                                    label="selectConfiguration"
-                                    titleId="selectConfiguration"
-                                />
-                            </Stack>
+                            <ProcessConfigStep processTypeLabel={processTypeLabel} processType={processType} />
                         )}
 
-                        {activeStep === 2 && (
-                            <Stack spacing={2}>
-                                {alert}
-                                <RadioInput
-                                    formProps={{ sx: { paddingLeft: 2 } }}
-                                    name="caseSource"
-                                    options={[
-                                        { id: 'auto', label: 'autoGenCase', disabled: true },
-                                        { id: 'gridExplore', label: 'gridExploreCase' },
-                                    ]}
-                                />
-
-                                <DirectoryItemsInput
-                                    name="case"
-                                    elementType={ElementType.CASE}
-                                    hideErrorMessage={false}
-                                    allowMultiSelect={false}
-                                    showPlaceHolder={false}
-                                    label="selectSituation"
-                                    titleId="selectSituation"
-                                />
-                            </Stack>
-                        )}
+                        {activeStep === 2 && <CaseStep processTypeLabel={processTypeLabel} />}
                     </Box>
                 </Box>
             </CustomFormProvider>

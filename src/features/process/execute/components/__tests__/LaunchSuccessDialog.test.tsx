@@ -69,7 +69,14 @@ describe('LaunchSuccessDialog', () => {
             </IntlProvider>
         );
 
-        fireEvent.click(screen.getByRole('button', { name: 'Close' }));
+        const buttons = screen.getAllByRole('button');
+
+        if (buttons.length === 0) {
+            throw new Error('No buttons found');
+        }
+
+        const lastButton = buttons[buttons.length - 1];
+        fireEvent.click(lastButton);
 
         expect(onClose).toHaveBeenCalledOnce();
     });

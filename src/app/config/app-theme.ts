@@ -51,6 +51,13 @@ const lightTheme: Theme = createTheme({
                 },
             },
         },
+        MuiTab: {
+            styleOverrides: {
+                root: {
+                    textTransform: 'none',
+                },
+            },
+        },
     },
 });
 
@@ -87,6 +94,13 @@ const darkTheme: Theme = createTheme({
     },
     components: {
         MuiButton: {
+            styleOverrides: {
+                root: {
+                    textTransform: 'none',
+                },
+            },
+        },
+        MuiTab: {
             styleOverrides: {
                 root: {
                     textTransform: 'none',
