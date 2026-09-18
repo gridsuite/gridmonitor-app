@@ -42,7 +42,7 @@ function CustomAggridSortReduxProvider({ children }: Readonly<PropsWithChildren>
                 setProcessExecutionHistoryTableSort({
                     table: sortParams.table,
                     tab: sortParams.tab,
-                    sort: updatedSortConfig,
+                    sorts: updatedSortConfig,
                 })
             );
         },
