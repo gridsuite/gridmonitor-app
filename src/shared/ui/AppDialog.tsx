@@ -97,7 +97,12 @@ export function AppDialog({
                     </Typography>
 
                     {chipLabel && (
-                        <Chip label={intl.formatMessage({ id: chipLabel })} color="primary" variant="outlined" />
+                        <Chip
+                            size="small"
+                            label={intl.formatMessage({ id: chipLabel })}
+                            color="primary"
+                            variant="outlined"
+                        />
                     )}
                 </Box>
                 <IconButton
