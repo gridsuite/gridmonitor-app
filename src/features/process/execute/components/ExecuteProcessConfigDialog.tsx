@@ -134,7 +134,7 @@ export function ExecuteProcessConfigDialog({ open, onClose, onLaunch }: ExecuteP
             chipLabel={debugMode && activeStep !== 0 ? 'debugMode' : undefined}
         >
             <CustomFormProvider {...form} validationSchema={validationSchema}>
-                <Box sx={{ width: '100%', mt: 3 }}>
+                <Box sx={{ width: '100%', mt: 2.5 }}>
                     <Stepper activeStep={activeStep}>
                         {STEP_LABELS.map((label) => (
                             <Step key={label}>
