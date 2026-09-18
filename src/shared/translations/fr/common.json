@@ -2,7 +2,7 @@
     "close": "Fermer",
     "cancel": "Annuler",
     "validate": "Valider",
-    "back": "Retour",
+    "back": "Précedent",
     "modifier": "Modifier",
     "next": "Suivant",
     "launch": "Lancer",
@@ -57,5 +57,5 @@
     "autoGenCase": "Situation générée par un processus automatique",
     "gridExploreCase": "Situation de GridExplore",
     "followExecution": "Suivre l'exécution",
-    "analysisLaunched": "L'analyse a été lancée avec succès"
+    "analysisLaunched": "Analyse lancée"
 }
