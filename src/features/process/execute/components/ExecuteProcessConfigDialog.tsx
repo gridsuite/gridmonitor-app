@@ -12,7 +12,7 @@ import * as yup from 'yup';
 import { useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { AppDialog } from 'shared/ui/AppDialog';
-import { CustomFormProvider, PROCESS_CONFIG_TYPES } from '@gridsuite/commons-ui';
+import { CustomFormProvider, PROCESS_CONFIG_TYPES, YUP_REQUIRED } from '@gridsuite/commons-ui';
 import { useExecuteProcess } from '../hooks/use-execute-process';
 import { CaseStep } from './CaseStep';
 import { ProcessConfigStep } from './ProcessConfigStep';
@@ -28,7 +28,7 @@ const elementSelectionSchema = yup.object({
     name: yup.string().required(),
 });
 
-const elementField = yup.array().of(elementSelectionSchema).required().length(1);
+const elementField = yup.array().of(elementSelectionSchema).required().length(1, YUP_REQUIRED);
 
 const fieldSchemas = {
     processType: yup.string().required(),
