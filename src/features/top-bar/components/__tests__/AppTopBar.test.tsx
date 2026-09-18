@@ -8,13 +8,22 @@
 import { render, screen } from '@testing-library/react';
 import { IntlProvider } from 'react-intl';
 import { MemoryRouter, Route, Routes } from 'react-router';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, vi, it } from 'vitest';
 import { PROCESS_PATHS } from 'features/process/router/process-paths';
 import { PROCESS_CONFIG_PATHS } from 'features/process-config/router/process-config-paths';
 import { APP_PATHS } from 'app/router/app-paths';
 import messagesEn from 'shared/translations/en/common.json';
 import AppTopBar from '../AppTopBar';
 import type { UserProfile } from '../../../authentication/store/authentication.type';
+
+vi.mock('../AppNavBar', () => ({
+    SettingsTabs: () => <div role="tab">Configuration</div>,
+    ExecuteButton: () => <a href="/execute">Execute process</a>,
+}));
+
+vi.mock('../ConfigurationModeToggle', () => ({
+    ConfigurationModeToggle: () => <button type="button">Toggle configuration mode</button>,
+}));
 
 const userProfile = {
     sub: '123',

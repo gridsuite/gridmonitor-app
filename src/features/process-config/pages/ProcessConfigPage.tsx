@@ -21,12 +21,7 @@ function ProcessConfigPage() {
                     <Typography variant="h5">
                         <FormattedMessage id="referenceConfigs" />
                     </Typography>
-                    <Button
-                        variant="contained"
-                        onClick={() => setDialogOpen(true)}
-                        sx={{ textTransform: 'none' }}
-                        startIcon={<Add />}
-                    >
+                    <Button variant="contained" onClick={() => setDialogOpen(true)} startIcon={<Add />}>
                         <FormattedMessage id="createConfig" />
                     </Button>
                 </Grid>

@@ -34,13 +34,7 @@ function ProcessResultsPage() {
                             <FormattedMessage id="ProcessExecutionHistory" />
                         </Typography>
 
-                        <Button
-                            startIcon={<RefreshIcon />}
-                            onClick={refresh}
-                            variant="outlined"
-                            color="primary"
-                            sx={{ textTransform: 'none' }}
-                        >
+                        <Button startIcon={<RefreshIcon />} onClick={refresh} variant="outlined" color="primary">
                             {intl.formatMessage({ id: 'Refresh' })}
                         </Button>
                     </Box>

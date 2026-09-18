@@ -4,6 +4,8 @@
     "validate": "Validate",
     "back": "Back",
     "modifier": "Modify",
+    "next": "Next",
+    "launch": "Run",
     "parameters": "Parameters",
     "configurationMode": "Configuration mode",
     "nav.executeProcess": "Execute process",
@@ -42,5 +44,18 @@
     "Refresh": "Refresh",
     "nav.launchHistory": "Launch history",
     "createConfig": "Create a configuration",
-    "referenceConfigs": "Reference Configurations"
+    "referenceConfigs": "Reference Configurations",
+
+    "configuration": "Configuration",
+    "case": "Case",
+    "activateDebugMode": "Debug mode",
+    "debugMode": "Debug mode activated",
+    "runAnalysisTitle": "Run analysis",
+    "selectConfiguration": "Select a configuration",
+    "selectSituation": "Select a case",
+    "referenceConfigurations": "Reference configurations",
+    "autoGenCase": "Case from automatic process",
+    "gridExploreCase": "Case from GridExplore",
+    "followExecution": "Follow execution",
+    "analysisLaunched": "Analysis started successfully"
 }
