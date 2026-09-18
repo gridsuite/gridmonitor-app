@@ -7,3 +7,15 @@
 
 import '@testing-library/jest-dom';
 import './src/test-utils/msw/setup-msw';
+
+class ResizeObserverMock implements ResizeObserver {
+    // eslint-disable-next-line class-methods-use-this
+    observe() {}
+
+    // eslint-disable-next-line class-methods-use-this
+    unobserve() {}
+
+    // eslint-disable-next-line class-methods-use-this
+    disconnect() {}
+}
+global.ResizeObserver = ResizeObserverMock;
