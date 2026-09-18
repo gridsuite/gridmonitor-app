@@ -36,7 +36,6 @@ export function ProcessResultsTable({ executions }: Readonly<ProcessResultsListP
     const navigate = useNavigate();
     const tableSort = useAppSelector((state) => state.processResults.tableSort);
     const tableFilters = useAppSelector((state) => state.processResults.tableFilters);
-    const boxRef = useRef<HTMLDivElement>(null);
 
     const applyTableState = useCallback(
         (api: GridApi) => {
@@ -51,7 +50,6 @@ export function ProcessResultsTable({ executions }: Readonly<ProcessResultsListP
                     PROCESS_EXECUTION_HISTORY_SORT_STORE
                 ];
             updateAgGridFilters(api, filters);
-            api.sizeColumnsToFit();
         },
         [tableSort, tableFilters]
     );
@@ -78,7 +76,6 @@ export function ProcessResultsTable({ executions }: Readonly<ProcessResultsListP
             lockPinned: true,
             wrapHeaderText: true,
             autoHeaderHeight: true,
-            flex: 1,
             cellRenderer: DefaultCellRenderer,
         }),
         []
@@ -108,22 +105,8 @@ export function ProcessResultsTable({ executions }: Readonly<ProcessResultsListP
         [theme]
     );
 
-    useEffect(() => {
-        const container = boxRef.current;
-        if (!container) {
-            return;
-        }
-        const resizeObserver = new ResizeObserver(() => {
-            gridRef.current?.api?.sizeColumnsToFit();
-        });
-        resizeObserver.observe(container);
-        // eslint-disable-next-line consistent-return
-        return () => resizeObserver.disconnect();
-    }, []);
-
     return (
         <Box
-            ref={boxRef}
             sx={{
                 display: 'flex',
                 flexDirection: 'column',

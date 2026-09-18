@@ -79,7 +79,6 @@ export const processResultsColumnsDefinition = (
             headerName: intl.formatMessage({ id: 'ProcessType' }),
             colId: 'processType',
             field: 'type',
-            pinned: 'left',
             suppressMovable: true,
             lockPosition: true,
             flex: 1,
