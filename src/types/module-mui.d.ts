@@ -9,6 +9,27 @@
 import { Theme as MuiTheme, ThemeOptions as MuiThemeOptions, CSSObject } from '@mui/material';
 
 declare module '@mui/material/styles' {
+    type ProcessStatusPalette = {
+        failed: string;
+        running: string;
+        scheduled: string;
+    };
+
+    type SidebarPalette = {
+        background: string;
+        appName: string;
+    };
+
+    interface Palette {
+        processStatus: ProcessStatusPalette;
+        sidebar: SidebarPalette;
+    }
+
+    interface PaletteOptions {
+        processStatus?: Partial<ProcessStatusPalette>;
+        sidebar?: Partial<SidebarPalette>;
+    }
+
     type ThemeExtension = {
         arrow: CSSObject;
         arrow_hover: CSSObject;
