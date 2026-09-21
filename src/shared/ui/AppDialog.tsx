@@ -110,9 +110,7 @@ export function AppDialog({
                     onClick={() => onClose()}
                     size="small"
                     edge="end"
-                    sx={{
-                        color: (theme) => (theme.palette.mode === 'dark' ? 'white' : 'black'),
-                    }}
+                    sx={{ color: 'text.primary' }}
                 >
                     <CloseIcon />
                 </IconButton>

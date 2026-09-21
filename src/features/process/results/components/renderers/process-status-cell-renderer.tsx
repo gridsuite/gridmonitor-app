@@ -24,15 +24,15 @@ export function ProcessStatusCellRenderer({ value, id }: Readonly<ProcessStatusC
 
     switch (value) {
         case ProcessStatus.Failed:
-            colorVal = theme.palette.mode === 'light' ? '#D32F2F' : '#EF5350';
+            colorVal = theme.palette.processStatus.failed;
             iconVal = <ErrorOutline />;
             break;
         case ProcessStatus.Running:
-            colorVal = theme.palette.mode === 'light' ? '#A0F' : '#EA80FC';
+            colorVal = theme.palette.processStatus.running;
             iconVal = <Autorenew />;
             break;
         case ProcessStatus.Scheduled:
-            colorVal = theme.palette.mode === 'light' ? '#00838F' : '#4DD0E1';
+            colorVal = theme.palette.processStatus.scheduled;
             iconVal = <AccessTime />;
             break;
         default:

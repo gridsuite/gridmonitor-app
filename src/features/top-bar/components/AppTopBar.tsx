@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { AppBar, Divider, Grid, Toolbar } from '@mui/material';
+import { AppBar, Divider, Grid, Toolbar, useTheme } from '@mui/material';
 import { useLocation } from 'react-router';
 import { ExecuteButton, SettingsTabs } from './AppNavBar';
 import { ConfigurationModeToggle } from './ConfigurationModeToggle';
@@ -17,13 +17,14 @@ export type AppTopBarProps = {
 };
 
 function AppTopBar({ userProfile }: Readonly<AppTopBarProps>) {
+    const theme = useTheme();
     const location = useLocation();
     const isConfigurationMode = isConfigurationPath(location.pathname);
 
     return (
         <AppBar position="sticky" color="default" elevation={0}>
             {userProfile !== null && (
-                <Toolbar sx={{ height: '56px', px: '24px' }}>
+                <Toolbar sx={{ height: theme.spacing(7), px: 3 }}>
                     <Grid
                         container
                         justifyContent="space-between"
@@ -45,7 +46,7 @@ function AppTopBar({ userProfile }: Readonly<AppTopBarProps>) {
                             )}
                             {isConfigurationMode && (
                                 <Grid>
-                                    <Divider orientation="vertical" sx={{ height: 50 }} />
+                                    <Divider orientation="vertical" sx={{ height: theme.spacing(6.25) }} />
                                 </Grid>
                             )}
                             <Grid>

@@ -39,9 +39,10 @@ export function AppSideBar({ onLogoutClick }: Readonly<SideBarProps>) {
     const [appsAndUrls, setAppsAndUrls] = useState<Metadata[]>([]);
     const isDarkMode = currentTheme === DARK_THEME;
     const invertedThemeId = isDarkMode ? LIGHT_THEME : DARK_THEME;
+    const appTheme = getAppTheme(currentTheme);
     const invertedTheme = useMemo(() => {
         const baseTheme = getAppTheme(invertedThemeId);
-        const overrideBackgroundColor = invertedThemeId === DARK_THEME ? '#263238' : '#ECEFF1';
+        const overrideBackgroundColor = baseTheme.palette.sidebar.background;
 
         return createTheme(baseTheme, {
             palette: {
@@ -52,8 +53,6 @@ export function AppSideBar({ onLogoutClick }: Readonly<SideBarProps>) {
             },
         });
     }, [invertedThemeId]);
-    const SMALL_SCREEN_BREAKPOINT = 768;
-
     useEffect(() => {
         if (userProfile) {
             fetchAppsMetadata()
@@ -70,14 +69,14 @@ export function AppSideBar({ onLogoutClick }: Readonly<SideBarProps>) {
         <CommonAppSideBar
             sideBarTheme={invertedTheme}
             isDeveloperMode={isDeveloperMode}
-            smallScreenBreakpoint={SMALL_SCREEN_BREAKPOINT}
+            smallScreenBreakpoint={appTheme.breakpoints.values.sm}
             handleChangeDeveloperMode={handleChangeDeveloperMode}
             currentTheme={currentTheme}
             setTheme={setTheme}
             selectedLanguage={selectedLanguage}
             setSelectedLanguage={setSelectedLanguage}
             appName={APP_NAME}
-            appNameColor={isDarkMode ? '#7e57c2' : '#B388FF'}
+            appNameColor={appTheme.palette.sidebar.appName}
             appLogo={isDarkMode ? <GridmonitorLogoDark /> : <GridmonitorLogoLight />}
             userProfile={userProfile}
             globalVersionPromise={() => fetchVersion().then((res) => res.deployVersion ?? 'unknown')}

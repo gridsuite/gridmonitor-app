@@ -8,13 +8,20 @@
 import { LIGHT_THEME } from '@gridsuite/commons-ui';
 import { createTheme, Theme } from '@mui/material';
 
-function breakPoints(): { values: { xs: number; sm: number; md: number; lg: number; xl: number } } {
-    return { values: { xs: 0, sm: 768, md: 900, lg: 1200, xl: 1536 } };
-}
+const breakpoints = { xs: 0, sm: 768, md: 900, lg: 1200, xl: 1536 };
 
 const lightTheme: Theme = createTheme({
     palette: {
         mode: 'light',
+        processStatus: {
+            failed: '#D32F2F',
+            running: '#A0F',
+            scheduled: '#00838F',
+        },
+        sidebar: {
+            background: '#ECEFF1',
+            appName: '#B388FF',
+        },
     },
     arrow: {
         fill: '#212121',
@@ -36,7 +43,7 @@ const lightTheme: Theme = createTheme({
         color: 'blue',
     },
     mapboxStyle: 'mapbox://styles/mapbox/light-v9',
-    breakpoints: breakPoints(),
+    breakpoints: { values: breakpoints },
     row: {
         color: 'black',
     },
@@ -64,6 +71,15 @@ const lightTheme: Theme = createTheme({
 const darkTheme: Theme = createTheme({
     palette: {
         mode: 'dark',
+        processStatus: {
+            failed: '#E57373',
+            running: '#EA80FC',
+            scheduled: '#4DD0E1',
+        },
+        sidebar: {
+            background: '#263238',
+            appName: '#7e57c2',
+        },
     },
     arrow: {
         fill: 'white',
@@ -85,7 +101,7 @@ const darkTheme: Theme = createTheme({
         color: 'green',
     },
     mapboxStyle: 'mapbox://styles/mapbox/dark-v9',
-    breakpoints: breakPoints(),
+    breakpoints: { values: breakpoints },
     row: {
         color: 'white',
     },
