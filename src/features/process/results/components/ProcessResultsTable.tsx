@@ -50,7 +50,6 @@ export function ProcessResultsTable({ executions }: Readonly<ProcessResultsListP
                     PROCESS_EXECUTION_HISTORY_SORT_STORE
                 ];
             updateAgGridFilters(api, filters);
-            api.sizeColumnsToFit();
         },
         [tableSort, tableFilters]
     );
@@ -77,7 +76,6 @@ export function ProcessResultsTable({ executions }: Readonly<ProcessResultsListP
             lockPinned: true,
             wrapHeaderText: true,
             autoHeaderHeight: true,
-            flex: 1,
             cellRenderer: DefaultCellRenderer,
         }),
         []
@@ -120,6 +118,9 @@ export function ProcessResultsTable({ executions }: Readonly<ProcessResultsListP
                 },
                 '& .ag-row-hover .row-action-button': {
                     visibility: 'visible',
+                },
+                '& .ag-row': {
+                    cursor: 'pointer',
                 },
             }}
         >
