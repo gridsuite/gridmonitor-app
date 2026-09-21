@@ -17,7 +17,13 @@ function ProcessConfigPage() {
     return (
         <Box sx={{ p: 3 }}>
             <Stack>
-                <Grid container alignItems="center" justifyContent="space-between">
+                <Grid
+                    container
+                    sx={{
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                    }}
+                >
                     <Typography variant="h5">
                         <FormattedMessage id="referenceConfigs" />
                     </Typography>

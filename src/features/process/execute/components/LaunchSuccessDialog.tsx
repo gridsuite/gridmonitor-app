@@ -17,7 +17,7 @@ import {
     DialogActions,
     Button,
 } from '@mui/material';
-import { useId, MouseEvent } from 'react';
+import { useId, MouseEvent, SyntheticEvent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Link as RouterLink, useNavigate } from 'react-router';
 
@@ -48,11 +48,16 @@ export function LaunchSuccessDialog({
         onClose();
     };
 
+    const handleDialogClose = (_event: SyntheticEvent, reason: 'backdropClick' | 'escapeKeyDown') => {
+        if (reason !== 'escapeKeyDown') {
+            onClose();
+        }
+    };
+
     return (
         <Dialog
             open={open}
-            onClose={onClose}
-            disableEscapeKeyDown
+            onClose={handleDialogClose}
             maxWidth="xs"
             slotProps={{
                 paper: {

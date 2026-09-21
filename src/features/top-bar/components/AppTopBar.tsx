@@ -26,18 +26,28 @@ function AppTopBar({ userProfile }: Readonly<AppTopBarProps>) {
                 <Toolbar sx={{ height: '56px', px: '24px' }}>
                     <Grid
                         container
-                        justifyContent="space-between"
-                        alignItems="center"
-                        width="100%"
                         wrap="nowrap"
                         spacing={2}
+                        sx={{
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            width: '100%',
+                        }}
                     >
                         {isConfigurationMode && (
                             <Grid>
                                 <SettingsTabs />
                             </Grid>
                         )}
-                        <Grid container spacing={2} alignItems="center" wrap="nowrap" sx={{ ml: 'auto' }}>
+                        <Grid
+                            container
+                            spacing={2}
+                            wrap="nowrap"
+                            sx={{
+                                alignItems: 'center',
+                                ml: 'auto',
+                            }}
+                        >
                             {isConfigurationMode && (
                                 <Grid>
                                     <ExecuteButton />

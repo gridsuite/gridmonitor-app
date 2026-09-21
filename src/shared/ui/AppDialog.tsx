@@ -59,20 +59,14 @@ export function AppDialog({
     const titleId = useId();
 
     const handleClose = (_event: SyntheticEvent, reason: 'backdropClick' | 'escapeKeyDown') => {
-        if (reason === 'backdropClick') {
+        if (reason === 'backdropClick' || reason === 'escapeKeyDown') {
             return;
         }
         onClose();
     };
 
     return (
-        <Dialog
-            open={open}
-            onClose={handleClose}
-            disableEscapeKeyDown
-            aria-labelledby={titleId}
-            slotProps={{ paper: { sx: paperSx } }}
-        >
+        <Dialog open={open} onClose={handleClose} aria-labelledby={titleId} slotProps={{ paper: { sx: paperSx } }}>
             <DialogTitle
                 component="div"
                 sx={{
