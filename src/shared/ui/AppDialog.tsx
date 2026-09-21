@@ -11,6 +11,7 @@ import {
     Button,
     Chip,
     Dialog,
+    DialogProps,
     DialogActions,
     DialogContent,
     DialogTitle,
@@ -22,7 +23,6 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 const paperSx = {
     width: { xs: '95%', sm: '50%' },
-    maxWidth: 'none',
     m: 0,
 } as const;
 
@@ -39,6 +39,8 @@ export type AppDialogProps = {
     confirmLabel?: ReactNode;
     confirmDisabled?: boolean;
     chipLabel?: string;
+    showTitle?: boolean;
+    maxWidth?: DialogProps['maxWidth'];
 };
 
 export function AppDialog({
@@ -54,6 +56,8 @@ export function AppDialog({
     confirmLabel,
     confirmDisabled = false,
     chipLabel,
+    showTitle = true,
+    maxWidth,
 }: AppDialogProps) {
     const intl = useIntl();
     const titleId = useId();
@@ -66,39 +70,48 @@ export function AppDialog({
     };
 
     return (
-        <Dialog open={open} onClose={handleClose} aria-labelledby={titleId} slotProps={{ paper: { sx: paperSx } }}>
+        <Dialog
+            open={open}
+            onClose={handleClose}
+            maxWidth={maxWidth ?? false}
+            aria-labelledby={showTitle ? titleId : undefined}
+            aria-label={!showTitle && typeof title === 'string' ? title : undefined}
+            slotProps={{ paper: { sx: paperSx } }}
+        >
             <DialogTitle
                 component="div"
                 sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'space-between',
+                    justifyContent: showTitle ? 'space-between' : 'flex-end',
                     gap: 1,
                     pr: 2,
                 }}
             >
-                <Box
-                    component="div"
-                    id={titleId}
-                    sx={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: 1,
-                    }}
-                >
-                    <Typography variant="h5" component="span">
-                        {title}
-                    </Typography>
+                {showTitle && (
+                    <Box
+                        component="div"
+                        id={titleId}
+                        sx={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: 1,
+                        }}
+                    >
+                        <Typography variant="h5" component="span">
+                            {title}
+                        </Typography>
 
-                    {chipLabel && (
-                        <Chip
-                            size="small"
-                            label={intl.formatMessage({ id: chipLabel })}
-                            color="primary"
-                            variant="outlined"
-                        />
-                    )}
-                </Box>
+                        {chipLabel && (
+                            <Chip
+                                size="small"
+                                label={intl.formatMessage({ id: chipLabel })}
+                                color="primary"
+                                variant="outlined"
+                            />
+                        )}
+                    </Box>
+                )}
                 <IconButton
                     aria-label={intl.formatMessage({ id: 'close' })}
                     onClick={() => onClose()}
