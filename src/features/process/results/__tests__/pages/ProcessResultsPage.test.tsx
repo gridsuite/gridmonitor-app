@@ -57,7 +57,7 @@ describe('ProcessResultsPage', () => {
         expect(screen.getByText('Refresh')).toBeInTheDocument();
 
         const rows = await screen.findAllByRole('row');
-        expect(rows).toHaveLength(2); // header row + one data row
+        expect(rows).toHaveLength(4); // 2 header row elements + 2 data row elements (pinned + remaining)
 
         const headerTexts = Array.from(container.getElementsByClassName('ag-header-cell-text')) as HTMLElement[];
         const expectedHeaders = ['Type', 'Status', 'Launched by', 'Scheduled', 'Started', 'Finished', ''];
