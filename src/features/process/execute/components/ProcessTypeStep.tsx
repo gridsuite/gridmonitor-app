@@ -13,7 +13,7 @@ import { useIntl } from 'react-intl';
 export function ProcessTypeStep({ control }: { control: any }) {
     const intl = useIntl();
     return (
-        <Stack spacing={0.5} paddingTop={1}>
+        <Stack spacing={0.5} sx={{ pt: 1 }}>
             <SelectInput
                 name="processType"
                 label="processType"
