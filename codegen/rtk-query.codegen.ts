@@ -9,8 +9,10 @@ import { generateEndpoints } from '@rtk-query/codegen-openapi';
 import monitorConfig from './monitor-api/monitor.codegen';
 import configConfig from './config-api/config.codegen';
 import studyConfig from './study-api/study.codegen';
+import exploreConfig from './explore-api/explore.codegen';
 
-const configFile = [monitorConfig, studyConfig, configConfig];
+
+const configFile = [monitorConfig, studyConfig, exploreConfig, configConfig];
 
 async function run() {
     for (const config of configFile) {

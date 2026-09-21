@@ -293,6 +293,7 @@ export type ProcessExecution = {
   completedAt?: string;
   reportId?: string;
   userId: string;
+  userIdentity?: string;
 };
 export type ProcessExecutionStep = {
   id: string;
@@ -351,6 +352,7 @@ export enum Severity {
 }
 export const {
   useGetProcessConfigQuery,
+  useLazyGetProcessConfigQuery,
   useUpdateProcessConfigMutation,
   useDeleteProcessConfigMutation,
   useGetProcessConfigsQuery,

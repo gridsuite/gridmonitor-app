@@ -5,8 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export const PROCESS_PATHS = {
-    root: '/process',
-    results: '/process/results',
-    stepInfos: (id: string) => `/process/results/${id}/step-infos`,
-} as const;
+// Must run before any module that defines a yup schema is loaded, so that
+// `string().required()` (no message) captures the configured locale instead
+// of yup's built-in default.
+import { configureYup } from '@gridsuite/commons-ui/configureYup';
+
+configureYup();

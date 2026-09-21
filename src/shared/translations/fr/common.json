@@ -1,8 +1,12 @@
 {
     "close": "Fermer",
+    "cancel": "Annuler",
+    "validate": "Valider",
+    "back": "Précédent",
+    "modifier": "Modifier",
+    "next": "Suivant",
+    "launch": "Lancer",
     "parameters": "Paramètres",
-    "paramsChangingError": "Une erreur est survenue lors de la modification des paramètres",
-    "paramsRetrievingError": "Une erreur est survenue lors de la récupération des paramètres",
     "configurationMode": "Mode configuration",
     "nav.executeProcess": "Lancer une analyse",
     "nav.executionHistory": "Historique d'exécution",
@@ -37,5 +41,21 @@
     "FAILED": "Echec",
 
     "ProcessExecutionHistory": "Historique d'exécution des chaînes",
-    "Refresh": "Actualiser"
+    "Refresh": "Actualiser",
+    "nav.launchHistory": "Historique d'exécution",
+    "createConfig": "Créer une configuration",
+    "referenceConfigs": "Configurations de référence",
+
+    "configuration": "Configuration",
+    "case": "Situation",
+    "activateDebugMode": "Lancer en mode débug",
+    "debugMode": "Mode Debug activé",
+    "runAnalysisTitle": "Lancer une analyse",
+    "selectConfiguration": "Sélectionner une configuration",
+    "selectSituation": "Sélectionner une situation",
+    "referenceConfigurations": "Configurations de références",
+    "autoGenCase": "Situation générée par un processus automatique",
+    "gridExploreCase": "Situation de GridExplore",
+    "followExecution": "Suivre l'exécution",
+    "analysisLaunched": "Analyse lancée"
 }

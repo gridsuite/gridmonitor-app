@@ -5,8 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export const PROCESS_PATHS = {
-    root: '/process',
-    results: '/process/results',
-    stepInfos: (id: string) => `/process/results/${id}/step-infos`,
-} as const;
+export * from './explore.enhanced';
+export { useCreateProcessConfigMutation } from './explore.generated';
+export type { CreateProcessConfigApiArg } from './explore.generated';

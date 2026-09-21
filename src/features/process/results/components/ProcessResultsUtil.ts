@@ -138,7 +138,7 @@ export const processResultsColumnsDefinition = (
         makeAgGridCustomHeaderColumn({
             headerName: intl.formatMessage({ id: 'ProcessLaunchedBy' }),
             colId: 'processLaunchedBy',
-            field: 'userId',
+            field: 'userIdentity',
             width: 174,
             minWidth: 174,
             maxWidth: 174,
@@ -160,7 +160,7 @@ export const processResultsColumnsDefinition = (
                     },
                 },
             },
-            valueGetter: (params) => params.data.userId,
+            valueGetter: (params) => params.data.userIdentity ?? params.data.userId,
         }),
 
         // Process scheduled at

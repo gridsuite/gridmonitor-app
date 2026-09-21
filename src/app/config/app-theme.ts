@@ -43,6 +43,22 @@ const lightTheme: Theme = createTheme({
     aggrid: {
         theme: 'ag-theme-alpine',
     },
+    components: {
+        MuiButton: {
+            styleOverrides: {
+                root: {
+                    textTransform: 'none',
+                },
+            },
+        },
+        MuiTab: {
+            styleOverrides: {
+                root: {
+                    textTransform: 'none',
+                },
+            },
+        },
+    },
 });
 
 const darkTheme: Theme = createTheme({
@@ -75,6 +91,22 @@ const darkTheme: Theme = createTheme({
     },
     aggrid: {
         theme: 'ag-theme-alpine-dark',
+    },
+    components: {
+        MuiButton: {
+            styleOverrides: {
+                root: {
+                    textTransform: 'none',
+                },
+            },
+        },
+        MuiTab: {
+            styleOverrides: {
+                root: {
+                    textTransform: 'none',
+                },
+            },
+        },
     },
 });
 

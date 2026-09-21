@@ -5,8 +5,4 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export const PROCESS_PATHS = {
-    root: '/process',
-    results: '/process/results',
-    stepInfos: (id: string) => `/process/results/${id}/step-infos`,
-} as const;
+export { exploreGeneratedApi as exploreApi } from './explore.generated';

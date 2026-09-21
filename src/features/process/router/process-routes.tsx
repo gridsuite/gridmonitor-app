@@ -8,14 +8,12 @@
 import { lazy } from 'react';
 import { Navigate, Route } from 'react-router';
 
-const ProcessExecutePage = lazy(() => import('../execute/pages/ProcessExecutePage'));
 const ProcessResultsPage = lazy(() => import('../results/pages/ProcessResultsPage'));
 const ProcessStepInfosPage = lazy(() => import('../results/pages/ProcessStepInfosPage'));
 
 export const processRoutes = (
     <Route path="process">
-        <Route index element={<Navigate to="execute" replace />} />
-        <Route path="execute" element={<ProcessExecutePage />} />
+        <Route index element={<Navigate to="results" replace />} />
         <Route path="results">
             <Route index element={<ProcessResultsPage />} />
             <Route path=":id">
