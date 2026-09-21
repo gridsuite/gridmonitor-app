@@ -11,43 +11,41 @@ import { FormattedMessage } from 'react-intl';
 import { Routes, Route, Navigate, Outlet } from 'react-router';
 import { Loader } from 'shared/ui/Loader';
 import { Suspense } from 'react';
+import { PROCESS_CONFIG_PATHS } from 'features/process-config/router/process-config-paths';
 import { APP_PATHS } from './app-paths';
 import { processRoutes } from '../../features/process/router/process-routes';
 import { processConfigRoutes } from '../../features/process-config/router/process-config-routes';
-import { PROCESS_PATHS } from '../../features/process/router/process-paths';
 
 export function AppRouter() {
     return (
         <Suspense fallback={<Loader />}>
             <Routes>
-                <Route
-                    path={APP_PATHS.home}
-                    element={
-                        <Box
-                            sx={{
-                                mt: 20,
-                            }}
-                        >
-                            <Typography variant="h3" color="textPrimary" align="center">
-                                Connected
-                            </Typography>
-                        </Box>
-                    }
-                />
-                <Route path={APP_PATHS.signInCallback} element={<Navigate replace to={getPreLoginPath() || '/'} />} />
-                <Route
-                    path={APP_PATHS.logoutCallback}
-                    element={<h1>Error: logout failed; you are still logged in.</h1>}
-                />
-
-                <Route path="gridmonitor">
-                    <Route index element={<Box />} />
-                    <Route path="configuration" element={<Navigate to={PROCESS_PATHS.execute} replace />} />
+                <Route path={APP_PATHS.home}>
+                    <Route
+                        index
+                        element={
+                            <Box
+                                sx={{
+                                    mt: 20,
+                                }}
+                            >
+                                <Typography variant="h3" color="textPrimary" align="center">
+                                    Connected
+                                </Typography>
+                            </Box>
+                        }
+                    />
+                    <Route path="configuration" element={<Navigate to={PROCESS_CONFIG_PATHS.root} replace />} />
                     <Route element={<Outlet />}>
                         {processRoutes}
                         {processConfigRoutes}
                     </Route>
                 </Route>
+                <Route path={APP_PATHS.signInCallback} element={<Navigate replace to={getPreLoginPath() || '/'} />} />
+                <Route
+                    path={APP_PATHS.logoutCallback}
+                    element={<h1>Error: logout failed; you are still logged in.</h1>}
+                />
 
                 <Route
                     path={APP_PATHS.notFound}

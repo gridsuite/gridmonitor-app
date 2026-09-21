@@ -11,8 +11,8 @@ import { IntlProvider } from 'react-intl';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import { describe, expect, it } from 'vitest';
 import { APP_PATHS } from 'app/router/app-paths';
-import { PROCESS_PATHS } from 'features/process/router/process-paths';
 import messagesEn from 'shared/translations/en/common.json';
+import { PROCESS_CONFIG_PATHS } from 'features/process-config/router/process-config-paths';
 import { ConfigurationModeToggle } from '../ConfigurationModeToggle';
 
 function renderToggle(initialPath: string, isConfigurationMode: boolean) {
@@ -41,7 +41,7 @@ describe('ConfigurationModeToggle', () => {
     });
 
     it('is checked when the current path is a configuration path', () => {
-        renderToggle(PROCESS_PATHS.execute, true);
+        renderToggle(PROCESS_CONFIG_PATHS.root, true);
 
         expect(screen.getByRole('switch')).toBeChecked();
     });
@@ -49,7 +49,7 @@ describe('ConfigurationModeToggle', () => {
     it('navigates back to the gridmonitor root when toggled off from a configuration path', async () => {
         const user = userEvent.setup();
 
-        renderToggle(PROCESS_PATHS.execute, false);
+        renderToggle(PROCESS_CONFIG_PATHS.root, false);
 
         await user.click(screen.getByRole('switch', { name: 'Configuration mode' }));
 

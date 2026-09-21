@@ -8,12 +8,16 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import { authenticationReducer } from 'features/authentication/store/authentication.slice';
 import { configApi } from 'shared/api/config-api';
+import { exploreApi } from 'shared/api/explore-api';
 import { studyApi } from 'shared/api/study-api';
 import { monitorApi } from 'shared/api/monitor-api';
+import { processResultsReducer } from 'features/process/results/store/process-results.slice';
 
 export const reducer = combineReducers({
     authentication: authenticationReducer,
     [monitorApi.reducerPath]: monitorApi.reducer,
     [configApi.reducerPath]: configApi.reducer,
     [studyApi.reducerPath]: studyApi.reducer,
+    processResults: processResultsReducer,
+    [exploreApi.reducerPath]: exploreApi.reducer,
 });

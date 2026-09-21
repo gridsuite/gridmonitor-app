@@ -1,0 +1,102 @@
+/**
+ * Copyright (c) 2026, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+import React, { PropsWithChildren, useCallback, useMemo } from 'react';
+import {
+    CustomAggridFilterContext,
+    type CustomAggridFilterContextValue,
+    CustomAggridSortContext,
+    type CustomAggridSortContextValue,
+    FilterConfig,
+    FilterParams,
+    SortConfig,
+    SortParams,
+    TableType,
+} from '@gridsuite/commons-ui';
+import { useAppDispatch, useAppSelector } from 'app/store/store';
+import {
+    setProcessExecutionHistoryTableFilters,
+    setProcessExecutionHistoryTableSort,
+} from '../store/process-results.slice';
+
+function CustomAggridSortReduxProvider({ children }: Readonly<PropsWithChildren>) {
+    const dispatch = useAppDispatch();
+    const tableSort = useAppSelector((state) => state.processResults.tableSort);
+
+    const getSortConfig = useCallback(
+        (sortParams: SortParams | undefined): SortConfig[] | undefined => {
+            if (!sortParams) {
+                return undefined;
+            }
+            return tableSort[sortParams.table]?.[sortParams.tab];
+        },
+        [tableSort]
+    );
+
+    const setSortConfig = useCallback(
+        (sortParams: SortParams, updatedSortConfig: SortConfig[]) => {
+            dispatch(
+                setProcessExecutionHistoryTableSort({
+                    table: sortParams.table,
+                    tab: sortParams.tab,
+                    sort: updatedSortConfig,
+                })
+            );
+        },
+        [dispatch]
+    );
+
+    const value: CustomAggridSortContextValue = useMemo(
+        () => ({ getSortConfig, setSortConfig }),
+        [getSortConfig, setSortConfig]
+    );
+
+    return <CustomAggridSortContext.Provider value={value}>{children}</CustomAggridSortContext.Provider>;
+}
+
+function CustomAggridFilterReduxProvider({ children }: Readonly<PropsWithChildren>) {
+    const dispatch = useAppDispatch();
+    const tableFilters = useAppSelector((state) => state.processResults.tableFilters);
+
+    const getFilters = useCallback(
+        ({ type, tab }: Pick<FilterParams, 'type' | 'tab'>): FilterConfig[] => {
+            return tableFilters.columnsFilters?.[type]?.[tab] ?? [];
+        },
+        [tableFilters]
+    );
+
+    const updateFilter = useCallback(
+        (_colId: string, filterParams: FilterParams, updatedFilters: FilterConfig[]) => {
+            const { type, tab } = filterParams;
+
+            if (type === TableType.ProcessExecutionHistory) {
+                dispatch(
+                    setProcessExecutionHistoryTableFilters({
+                        filterType: TableType.ProcessExecutionHistory,
+                        filterSubType: tab,
+                        filters: updatedFilters,
+                    })
+                );
+            }
+        },
+        [dispatch]
+    );
+
+    const value: CustomAggridFilterContextValue = useMemo(
+        () => ({ getFilters, updateFilter }),
+        [getFilters, updateFilter]
+    );
+
+    return <CustomAggridFilterContext.Provider value={value}>{children}</CustomAggridFilterContext.Provider>;
+}
+
+export function CustomAggridReduxProvider({ children }: Readonly<PropsWithChildren>) {
+    return (
+        <CustomAggridSortReduxProvider>
+            <CustomAggridFilterReduxProvider>{children}</CustomAggridFilterReduxProvider>
+        </CustomAggridSortReduxProvider>
+    );
+}

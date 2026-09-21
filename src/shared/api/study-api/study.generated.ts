@@ -17,9 +17,8 @@ const injectedRtkApi = api.injectEndpoints({
 });
 export { injectedRtkApi as studyGeneratedApi };
 export type GetSuiteAboutInformationApiResponse =
-  /** status 200 The information on all known servers */
-    | AboutInfo[]
-    | /** status 207 Partial result because some servers haven't responded or threw an error */ AboutInfo[];
+  | /** status 200 The information on all known servers */ AboutInfo[]
+  | /** status 207 Partial result because some servers haven't responded or threw an error */ AboutInfo[];
 export type GetSuiteAboutInformationApiArg = {
   /** The view which will be used to filter the returned services */
   view?: "EXPLORE" | "STUDY" | "MERGE" | "DYNA" | "ADMIN";

@@ -1,0 +1,95 @@
+/**
+ * Copyright (c) 2026, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+import { Close, CheckCircle } from '@mui/icons-material';
+import {
+    Dialog,
+    Link,
+    DialogTitle,
+    IconButton,
+    DialogContent,
+    Box,
+    Typography,
+    DialogActions,
+    Button,
+} from '@mui/material';
+import { useId, MouseEvent } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { Link as RouterLink, useNavigate } from 'react-router';
+
+export function LaunchSuccessDialog({
+    executionId,
+    open,
+    onClose,
+}: {
+    readonly executionId: string;
+    readonly open: boolean;
+    readonly onClose: () => void;
+}) {
+    const intl = useIntl();
+    const titleId = useId();
+
+    const navigate = useNavigate();
+    const path = `/process/results/${executionId}/step-infos`;
+
+    const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
+        const isModifiedClick = event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0;
+        if (isModifiedClick) {
+            return;
+        }
+
+        event.preventDefault();
+
+        navigate(path);
+        onClose();
+    };
+
+    return (
+        <Dialog
+            open={open}
+            onClose={onClose}
+            disableEscapeKeyDown
+            maxWidth="xs"
+            slotProps={{
+                paper: {
+                    sx: {
+                        width: 444,
+                    },
+                },
+            }}
+            aria-labelledby={titleId}
+        >
+            <DialogTitle component="div" sx={{ display: 'flex', justifyContent: 'flex-end', pr: 2 }}>
+                <IconButton aria-label={intl.formatMessage({ id: 'close' })} onClick={onClose} size="small" edge="end">
+                    <Close />
+                </IconButton>
+            </DialogTitle>
+            <DialogContent>
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+                    <CheckCircle color="primary" sx={{ fontSize: 72, mb: 2 }} />
+                    <Typography id={titleId} variant="h6" gutterBottom>
+                        <FormattedMessage id="analysisLaunched" />
+                    </Typography>
+                    <Link
+                        component={RouterLink}
+                        to={path}
+                        onClick={handleClick}
+                        sx={{ color: 'primary.main' }}
+                        underline="hover"
+                    >
+                        <FormattedMessage id="followExecution" />
+                    </Link>
+                </Box>
+            </DialogContent>
+            <DialogActions>
+                <Button variant="text" onClick={onClose}>
+                    <FormattedMessage id="close" />
+                </Button>
+            </DialogActions>
+        </Dialog>
+    );
+}
