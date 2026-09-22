@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Done, AccessTime, Autorenew, ErrorOutline } from '@mui/icons-material';
+import { Done, AccessTime, Autorenew, ErrorOutlineOutlined } from '@mui/icons-material';
 import { Box, Chip, Icon, Stack, useTheme } from '@mui/material';
 import { useIntl } from 'react-intl';
 import { ReactNode } from 'react';
@@ -25,7 +25,7 @@ export function ProcessStatusCellRenderer({ value, id }: Readonly<ProcessStatusC
     switch (value) {
         case ProcessStatus.Failed:
             colorVal = theme.palette.mode === 'light' ? '#D32F2F' : '#E57373';
-            iconVal = <ErrorOutline />;
+            iconVal = <ErrorOutlineOutlined />;
             break;
         case ProcessStatus.Running:
             colorVal = theme.palette.mode === 'light' ? '#A0F' : '#EA80FC';
@@ -69,7 +69,7 @@ export function ProcessStatusCellRenderer({ value, id }: Readonly<ProcessStatusC
     }
     return (
         <Link to={PROCESS_PATHS.stepInfos(id ?? '')} onClick={(event) => event.stopPropagation()} style={linkStyle}>
-            <Stack direction="row" alignItems="center" spacing={0.75}>
+            <Stack direction="row" spacing={0.75} sx={{ alignItems: 'center' }}>
                 <Done sx={{ color: 'success.main' }} fontSize="small" />
                 <span>
                     {intl.formatMessage({

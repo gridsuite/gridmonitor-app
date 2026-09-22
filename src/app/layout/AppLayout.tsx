@@ -22,11 +22,26 @@ export function AppLayout({ onLogoutClick, children }: Readonly<PropsWithChildre
     const userProfile = useStableUserProfile();
 
     return (
-        <Stack height="100vh">
+        <Stack
+            sx={{
+                height: '100vh',
+            }}
+        >
             {userProfile && isDeveloperMode && <DevModeBanner />}
-            <Stack direction="row" flex={1} overflow="hidden">
+            <Stack
+                direction="row"
+                sx={{
+                    flex: 1,
+                    overflow: 'hidden',
+                }}
+            >
                 <AppSideBar onLogoutClick={onLogoutClick} />
-                <Stack flex={1} overflow="hidden">
+                <Stack
+                    sx={{
+                        flex: 1,
+                        overflow: 'hidden',
+                    }}
+                >
                     <AppTopBar userProfile={userProfile} />
                     <Box
                         sx={{
