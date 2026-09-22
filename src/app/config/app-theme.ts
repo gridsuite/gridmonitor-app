@@ -12,6 +12,51 @@ function breakPoints(): { values: { xs: number; sm: number; md: number; lg: numb
     return { values: { xs: 0, sm: 768, md: 900, lg: 1200, xl: 1536 } };
 }
 
+const darkScrollbarStyles = () => {
+    const trackColor = '#1e1e1e';
+    const thumbColor = '#666';
+
+    return {
+        '*': {
+            scrollbarColor: `${thumbColor} ${trackColor}`,
+
+            '&::-webkit-scrollbar': {
+                width: '12px',
+                height: '12px',
+            },
+
+            '&::-webkit-scrollbar-track': {
+                backgroundColor: trackColor,
+            },
+
+            '&::-webkit-scrollbar-thumb': {
+                backgroundColor: thumbColor,
+                borderRadius: '8px',
+                border: `3px solid ${trackColor}`,
+            },
+        },
+    };
+};
+
+const componentsStyleOverrides = () => {
+    return {
+        MuiButton: {
+            styleOverrides: {
+                root: {
+                    textTransform: 'none',
+                },
+            },
+        },
+        MuiTab: {
+            styleOverrides: {
+                root: {
+                    textTransform: 'none',
+                },
+            },
+        },
+    };
+};
+
 const lightTheme: Theme = createTheme({
     palette: {
         mode: 'light',
@@ -44,20 +89,7 @@ const lightTheme: Theme = createTheme({
         theme: 'ag-theme-alpine',
     },
     components: {
-        MuiButton: {
-            styleOverrides: {
-                root: {
-                    textTransform: 'none',
-                },
-            },
-        },
-        MuiTab: {
-            styleOverrides: {
-                root: {
-                    textTransform: 'none',
-                },
-            },
-        },
+        ...componentsStyleOverrides(),
     },
 });
 
@@ -93,20 +125,10 @@ const darkTheme: Theme = createTheme({
         theme: 'ag-theme-alpine-dark',
     },
     components: {
-        MuiButton: {
-            styleOverrides: {
-                root: {
-                    textTransform: 'none',
-                },
-            },
+        MuiCssBaseline: {
+            styleOverrides: darkScrollbarStyles(),
         },
-        MuiTab: {
-            styleOverrides: {
-                root: {
-                    textTransform: 'none',
-                },
-            },
-        },
+        ...componentsStyleOverrides(),
     },
 });
 
