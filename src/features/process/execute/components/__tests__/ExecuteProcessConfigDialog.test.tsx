@@ -9,9 +9,11 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { useFormContext, Controller } from 'react-hook-form';
 import { IntlProvider } from 'react-intl';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { PROCESS_CONFIG_TYPES } from '@gridsuite/commons-ui';
+import { processConfigEn, PROCESS_CONFIG_TYPES } from '@gridsuite/commons-ui';
 import messagesEn from 'shared/translations/en/common.json';
 import { ExecuteProcessConfigDialog } from '../ExecuteProcessConfigDialog';
+
+const messages = { ...messagesEn, ...processConfigEn };
 
 const mocks = vi.hoisted(() => ({
     executeProcess: vi.fn(),
@@ -115,7 +117,7 @@ vi.mock('../CaseStep', () => ({
 
 function renderDialog(onClose = vi.fn(), onLaunch = vi.fn()) {
     return render(
-        <IntlProvider locale="en" messages={messagesEn}>
+        <IntlProvider locale="en" messages={messages}>
             <ExecuteProcessConfigDialog open onClose={onClose} onLaunch={onLaunch} />
         </IntlProvider>
     );
@@ -131,7 +133,7 @@ describe('ExecuteProcessConfigDialog', () => {
         const onLaunch = vi.fn();
         renderDialog(undefined, onLaunch);
 
-        const nextButton = () => screen.getByRole('button', { name: messagesEn.next });
+        const nextButton = () => screen.getByRole('button', { name: messages.next });
 
         expect(nextButton()).toBeDisabled();
 
@@ -149,7 +151,7 @@ describe('ExecuteProcessConfigDialog', () => {
         fireEvent.click(nextButton());
 
         await waitFor(() => expect(screen.getByRole('button', { name: 'Select case' })).toBeInTheDocument());
-        const launchButton = () => screen.getByRole('button', { name: messagesEn.launch });
+        const launchButton = () => screen.getByRole('button', { name: messages.launch });
         expect(launchButton()).toBeDisabled();
 
         fireEvent.click(screen.getByRole('button', { name: 'Select case' }));

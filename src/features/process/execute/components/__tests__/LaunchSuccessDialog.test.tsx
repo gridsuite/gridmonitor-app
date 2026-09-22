@@ -5,13 +5,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { fireEvent, render, screen } from '@testing-library/react';
+import { createEvent, fireEvent, render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import { describe, expect, it, vi } from 'vitest';
 import { IntlProvider } from 'react-intl';
+import messagesEn from 'shared/translations/en/common.json';
 import { LaunchSuccessDialog } from '../LaunchSuccessDialog';
 
-const messages = { close: 'Close' };
+const messages = messagesEn;
 
 const navigateMock = vi.fn();
 
@@ -36,7 +37,7 @@ describe('LaunchSuccessDialog', () => {
             </IntlProvider>
         );
 
-        fireEvent.click(screen.getByText('followExecution'));
+        fireEvent.click(screen.getByText(messages.followExecution));
 
         expect(navigateMock).toHaveBeenCalledWith('/process/results/execution-1/step-infos');
         expect(onClose).toHaveBeenCalledOnce();
@@ -53,7 +54,10 @@ describe('LaunchSuccessDialog', () => {
             </IntlProvider>
         );
 
-        fireEvent.click(screen.getByText('followExecution'), { ctrlKey: true });
+        const link = screen.getByText(messages.followExecution);
+        const clickEvent = createEvent.click(link, { ctrlKey: true });
+        clickEvent.preventDefault();
+        fireEvent(link, clickEvent);
 
         expect(onClose).not.toHaveBeenCalled();
     });
@@ -69,7 +73,7 @@ describe('LaunchSuccessDialog', () => {
             </IntlProvider>
         );
 
-        fireEvent.click(screen.getByText('Close'));
+        fireEvent.click(screen.getByText(messages.close));
 
         expect(onClose).toHaveBeenCalledOnce();
     });

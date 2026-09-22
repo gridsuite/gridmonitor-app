@@ -18,6 +18,15 @@ import App from '../App';
 import { store } from '../store/store';
 import { appMessages } from '../config/app-messages';
 
+vi.mock('@gridsuite/commons-ui', async () => {
+    const actual = await vi.importActual<typeof import('@gridsuite/commons-ui')>('@gridsuite/commons-ui');
+
+    return {
+        ...actual,
+        AuthenticationRouter: () => null,
+    };
+});
+
 vi.mock('uuid', () => ({ v4: () => '00000000-0000-0000-0000-000000000000' }));
 vi.mock('features/side-bar/components/AppSideBar', () => ({
     AppSideBar: () => <div>GridMonitor</div>,
