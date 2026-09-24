@@ -10,7 +10,7 @@ import { Checkbox, FormControlLabel, Stack } from '@mui/material';
 import { Controller } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
-export function ProcessTypeStep({ control }: { control: any }) {
+export function ProcessTypeStep({ control }: Readonly<{ control: any }>) {
     const intl = useIntl();
     return (
         <Stack spacing={0.5} sx={{ pt: 1 }}>

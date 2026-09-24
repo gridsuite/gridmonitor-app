@@ -58,7 +58,7 @@ export function AppDialog({
     chipLabel,
     showTitle = true,
     maxWidth,
-}: AppDialogProps) {
+}: Readonly<AppDialogProps>) {
     const intl = useIntl();
     const titleId = useId();
 

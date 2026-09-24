@@ -9,7 +9,7 @@ import { DirectoryItemsInput, ElementType, RadioInput } from '@gridsuite/commons
 import { Stack } from '@mui/material';
 import { ProcessTypeAlert } from './ProcessTypeAlert';
 
-export function CaseStep({ processTypeLabel }: { processTypeLabel?: string }) {
+export function CaseStep({ processTypeLabel }: Readonly<{ processTypeLabel?: string }>) {
     return (
         <Stack spacing={2}>
             <ProcessTypeAlert processTypeLabel={processTypeLabel} />
