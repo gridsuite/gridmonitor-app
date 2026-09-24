@@ -8,7 +8,7 @@
 import { Alert } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 
-export function ProcessTypeAlert({ processTypeLabel }: { processTypeLabel?: string }) {
+export function ProcessTypeAlert({ processTypeLabel }: Readonly<{ processTypeLabel?: string }>) {
     return (
         <Alert severity="info" sx={{ p: 1 }}>
             <FormattedMessage id="processType" /> :{' '}
