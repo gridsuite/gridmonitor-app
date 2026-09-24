@@ -12,10 +12,10 @@ import { ProcessTypeAlert } from './ProcessTypeAlert';
 export function ProcessConfigStep({
     processTypeLabel,
     processType,
-}: {
+}: Readonly<{
     processTypeLabel?: string;
     processType: string;
-}) {
+}>) {
     return (
         <Stack spacing={2}>
             <ProcessTypeAlert processTypeLabel={processTypeLabel} />

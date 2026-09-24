@@ -66,7 +66,7 @@ interface ExecuteProcessConfigDialogProps {
     onLaunch: (url: string) => void;
 }
 
-export function ExecuteProcessConfigDialog({ open, onClose, onLaunch }: ExecuteProcessConfigDialogProps) {
+export function ExecuteProcessConfigDialog({ open, onClose, onLaunch }: Readonly<ExecuteProcessConfigDialogProps>) {
     const intl = useIntl();
     const [activeStep, setActiveStep] = useState(0);
 

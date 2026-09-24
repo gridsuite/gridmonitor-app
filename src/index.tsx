@@ -21,6 +21,8 @@ if (container) {
         </React.StrictMode>
     );
 } else {
-    document.write("<b>Can't start the application...</b>");
+    const errorMessage = document.createElement('b');
+    errorMessage.textContent = "Can't start the application...";
+    document.body.append(errorMessage);
     throw new Error('No root container found');
 }
