@@ -18,11 +18,11 @@ import {
     CustomAggridAutocompleteFilterParams,
 } from '@gridsuite/commons-ui';
 import { IntlShape } from 'react-intl';
-import { ProcessStatusCellRenderer } from './renderers/process-status-cell-renderer';
-import { ProcessDetailCellRenderer } from './renderers/process-detail-cell-renderer';
-import { ProcessDateCellRenderer } from './renderers/process-date-cell-renderer';
-import { ProcessTypeCellRenderer } from './renderers/process-type-cell-renderer';
-import { ProcessUserCellRenderer } from './renderers/process-user-cell-renderer';
+import { ProcessStatusCellRenderer } from './renderers/ProcessStatusCellRenderer';
+import { ProcessDetailCellRenderer } from './renderers/ProcessDetailCellRenderer';
+import { ProcessDateCellRenderer } from './renderers/ProcessDateCellRenderer';
+import { ProcessTypeCellRenderer } from './renderers/ProcessTypeCellRenderer';
+import { ProcessUserCellRenderer } from './renderers/ProcessUserCellRenderer';
 import { PROCESS_EXECUTION_HISTORY_SORT_STORE } from '../store/process-results.constants';
 
 interface TableParams {

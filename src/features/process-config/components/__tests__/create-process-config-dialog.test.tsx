@@ -55,7 +55,7 @@ vi.mock('../../hooks/use-create-process-config', () => ({
     useProcessConfigPrefill: mocks.useProcessConfigPrefill,
 }));
 
-vi.mock('../../hooks/useCreateProcessConfigSubmit', () => ({
+vi.mock('../../hooks/use-create-process-config-submit', () => ({
     useCreateProcessConfigSubmit: mocks.useCreateProcessConfigSubmit,
 }));
 

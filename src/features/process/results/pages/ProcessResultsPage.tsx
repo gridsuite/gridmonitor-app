@@ -11,7 +11,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { ProcessResultsAlert } from '../components/ProcessResultsAlert';
 import { ProcessResultsTable } from '../components/ProcessResultsTable';
 import { useProcessResults } from '../hooks/use-process-results';
-import { CustomAggridReduxProvider } from '../components/custom-aggrid-redux-provider';
+import { CustomAggridReduxProvider } from '../components/CustomAggridReduxProvider';
 
 function ProcessResultsPage() {
     const intl = useIntl();

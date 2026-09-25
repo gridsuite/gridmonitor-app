@@ -9,7 +9,7 @@ import { CustomFormProvider, ProcessConfigForm, useProcessConfigForm } from '@gr
 import { FormattedMessage } from 'react-intl';
 import { AppDialog } from 'shared/ui/AppDialog';
 import { useCreateProcessConfig, useProcessConfigPrefill } from '../hooks/use-create-process-config';
-import { useCreateProcessConfigSubmit } from '../hooks/useCreateProcessConfigSubmit';
+import { useCreateProcessConfigSubmit } from '../hooks/use-create-process-config-submit';
 
 type CreateProcessConfigDialogProps = {
     open: boolean;

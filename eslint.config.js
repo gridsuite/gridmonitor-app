@@ -15,6 +15,7 @@
 
 import { configs, plugins } from 'eslint-config-airbnb-extended';
 import { rules as prettierConfigRules } from 'eslint-config-prettier';
+import checkFile from 'eslint-plugin-check-file';
 import prettierPlugin from 'eslint-plugin-prettier';
 import js from '@eslint/js';
 
@@ -69,6 +70,49 @@ const prettierConfig = [
         },
     },
 ];
+
+const fileNamingConfig = {
+    name: 'project/file-naming',
+    files: ['src/**/*.{ts,tsx}'],
+    ignores: ['src/**/*.generated.ts', 'src/**/__tests__/**'],
+    plugins: {
+        'check-file': checkFile,
+    },
+    rules: {
+        'check-file/filename-naming-convention': [
+            'error',
+            {
+                'src/**/components/**/*.tsx': 'PASCAL_CASE',
+                'src/**/pages/**/*.tsx': 'PASCAL_CASE',
+                'src/**/hooks/**/*.{ts,tsx}': 'KEBAB_CASE',
+                'src/**/utils/**/*.{ts,tsx}': 'KEBAB_CASE',
+            },
+            {
+                ignoreMiddleExtensions: true,
+            },
+        ],
+    },
+};
+
+const testFileNamingConfig = {
+    name: 'project/test-file-naming',
+    files: ['src/**/__tests__/**/*.{ts,tsx}'],
+    ignores: ['src/**/*.generated.ts'],
+    plugins: {
+        'check-file': checkFile,
+    },
+    rules: {
+        'check-file/filename-naming-convention': [
+            'error',
+            {
+                'src/**/__tests__/**/*.{ts,tsx}': 'KEBAB_CASE',
+            },
+            {
+                ignoreMiddleExtensions: true,
+            },
+        ],
+    },
+};
 
 const projectConfig = [
     {
@@ -202,6 +246,8 @@ const projectConfig = [
             ],
         },
     },
+    fileNamingConfig,
+    testFileNamingConfig,
 ];
 
 export default [...jsConfig, ...reactConfig, ...typescriptConfig, ...prettierConfig, ...projectConfig];
