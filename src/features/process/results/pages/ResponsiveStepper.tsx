@@ -14,7 +14,7 @@ import { ProcessStepModel } from '../models/process-result';
 import { useElapsedTime } from '../hooks/use-elapsed-time';
 import { useStepperOrientation } from '../hooks/use-stepper-orientation';
 
-function StepStatusText({ step }: { step: ProcessStepModel }) {
+function StepStatusText({ step }: { readonly step: ProcessStepModel }) {
     const elapsed = useElapsedTime(step.status === StepStatus.Running ? step.startedAt : undefined);
     switch (step.status) {
         case StepStatus.Completed:
@@ -35,7 +35,7 @@ function StepStatusText({ step }: { step: ProcessStepModel }) {
     }
 }
 
-export default function ResponsiveStepper({ steps }: { steps: ProcessStepModel[] }) {
+export default function ResponsiveStepper({ steps }: { readonly steps: ProcessStepModel[] }) {
     const { containerRef, orientation } = useStepperOrientation(steps.length);
     const theme = useTheme();
     const errorColor = theme.palette.mode === 'light' ? '#D32F2F' : '#E57373';
