@@ -38,7 +38,7 @@ describe('LaunchSuccessDialog', () => {
 
         fireEvent.click(screen.getByText('followExecution'));
 
-        expect(navigateMock).toHaveBeenCalledWith('/process/results/execution-1/step-infos');
+        expect(navigateMock).toHaveBeenCalledWith('/process/results/execution-1');
         expect(onClose).toHaveBeenCalledOnce();
     });
 

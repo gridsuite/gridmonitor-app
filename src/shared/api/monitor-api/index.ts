@@ -13,8 +13,12 @@ export {
     useGetStepsInfosQuery,
     useGetProcessExecutionsQuery,
     useExecuteProcessMutation,
+    useGetExecutionQuery,
+    useGetExecutionResultsQuery,
+    useGetExecutionReportsQuery,
     ProcessType,
     ProcessStatus,
+    StepStatus,
 } from './monitor.generated';
 
 export type {

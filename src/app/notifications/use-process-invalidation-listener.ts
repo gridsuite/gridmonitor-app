@@ -7,14 +7,24 @@
 
 import { NotificationsUrlKeys, useNotificationsListener } from '@gridsuite/commons-ui';
 import { useAppDispatch } from '../store/store';
-import { invalidateProcessExecutionsLists, ProcessType } from '../../shared/api/monitor-api';
+import {
+    invalidateProcessExecutionsLists,
+    ProcessType,
+    invalidateProcessExecution,
+    invalidateProcessExecutionSteps,
+} from '../../shared/api/monitor-api';
 
 type MonitorNotificationData = {
     headers?: {
         updateType?: string;
         processType?: ProcessType;
         processExecutionId?: string;
+        stepId?: string;
+        stepType?: string;
+        stepStatus?: string;
+        stepsIds?: string;
     };
+    payload?: any;
 };
 
 export const useProcessInvalidationsListener = () => {
@@ -25,6 +35,8 @@ export const useProcessInvalidationsListener = () => {
         if (eventData.headers?.updateType === 'PROCESS_EXECUTION_UPDATED') {
             invalidateProcessExecutionsLists(dispatch);
         }
+        invalidateProcessExecution(dispatch);
+        invalidateProcessExecutionSteps(dispatch);
     };
 
     useNotificationsListener(NotificationsUrlKeys.MONITOR, {
