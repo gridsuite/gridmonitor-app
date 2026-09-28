@@ -58,5 +58,22 @@
     "gridExploreCase": "Situation de GridExplore",
     "followExecution": "Suivre l'exécution",
     "analysisLaunched": "Analyse lancée",
-    "Configurations": "Configurations"
+    "Configurations": "Configurations",
+
+    "logs": "Logs",
+    "compare.agregate": "Compare / Agregate",
+    "finishedAt": "Terminé à {date}",
+    "elapsedTime": "Temps écoulé : {date}",
+    "pending": "En attente",
+    "skipped": "Sauté",
+
+    "processLaunchHistory": "Historique d’exécution des chaînes",
+    "analysisProgress": "Avancement de l’analyse",
+    "resultsNotAvailable": "Résultat non disponible.",
+
+    "APPLY_MODIFICATIONS": "Application des modifications",
+    "LOAD_NETWORK": "Récupération de la situation",
+    "RUN_SC_COMPUTATION": "Simulation",
+    "RUN_SA_COMPUTATION": "Simulation",
+    "RUN_LF_COMPUTATION": "Simulation"
 }

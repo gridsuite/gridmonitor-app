@@ -10,6 +10,8 @@ import { createBaseQuery } from '../rtk-query/base-api';
 
 export const MonitorTags = {
     ProcessExecutions: 'ProcessExecutions',
+    ProcessExecution: 'ProcessExecution',
+    ProcessExecutionSteps: 'ProcessExecutionSteps',
 } as const;
 
 export const monitorBaseApi = createApi({
