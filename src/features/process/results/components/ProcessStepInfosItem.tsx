@@ -84,7 +84,7 @@ export function ProcessStepInfosItem({ index, step }: Readonly<ProcessStepInfosI
 
                     <Divider />
 
-                    <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
+                    <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
                         <Box sx={{ flex: 1 }}>
                             <Stack spacing={2}>
                                 <FieldRow label="Step Order" value={step.stepOrder} />

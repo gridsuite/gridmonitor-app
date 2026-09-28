@@ -96,7 +96,10 @@ export function ProcessResultsTable({ executions }: Readonly<ProcessResultsListP
 
     const getCustomRowStyle = useCallback(
         (_cellData: any) => {
-            const style: RowStyle = { background: theme.palette.background.default, highlightColor: 'yellow' };
+            const style: RowStyle = {
+                background: theme.palette.background.default,
+                highlightColor: 'yellow',
+            };
             return {
                 ...style,
             };

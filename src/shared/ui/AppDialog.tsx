@@ -118,7 +118,8 @@ export function AppDialog({
                     size="small"
                     edge="end"
                     sx={{
-                        color: (theme) => (theme.palette.mode === 'dark' ? 'white' : 'black'),
+                        color: (theme) =>
+                            theme.palette.mode === 'dark' ? theme.palette.common.white : theme.palette.common.black,
                     }}
                 >
                     <CloseIcon />

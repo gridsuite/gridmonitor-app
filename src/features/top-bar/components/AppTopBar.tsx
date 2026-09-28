@@ -23,7 +23,12 @@ function AppTopBar({ userProfile }: Readonly<AppTopBarProps>) {
     return (
         <AppBar position="sticky" color="default" elevation={0}>
             {userProfile !== null && (
-                <Toolbar sx={{ height: '56px', px: '24px' }}>
+                <Toolbar
+                    sx={{
+                        height: 56,
+                        px: 3,
+                    }}
+                >
                     <Grid
                         container
                         wrap="nowrap"

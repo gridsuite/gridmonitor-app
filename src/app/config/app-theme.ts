@@ -7,14 +7,20 @@
 
 import { LIGHT_THEME } from '@gridsuite/commons-ui';
 import { createTheme, Theme } from '@mui/material';
+import { common, grey } from '@mui/material/colors';
 
-function breakPoints(): { values: { xs: number; sm: number; md: number; lg: number; xl: number } } {
-    return { values: { xs: 0, sm: 768, md: 900, lg: 1200, xl: 1536 } };
+function breakPoints(): { values: { xs: number; sm: number } } {
+    return {
+        values: {
+            xs: 0,
+            sm: 768,
+        },
+    };
 }
 
-const darkScrollbarStyles = () => {
-    const trackColor = '#1e1e1e';
-    const thumbColor = '#666';
+const darkScrollbarStyles = (theme: Theme) => {
+    const trackColor = theme.palette.grey[800];
+    const thumbColor = theme.palette.grey[500];
 
     return {
         '*': {
@@ -62,20 +68,20 @@ const lightTheme: Theme = createTheme({
         mode: 'light',
     },
     arrow: {
-        fill: '#212121',
-        stroke: '#212121',
+        fill: grey[900],
+        stroke: grey[900],
     },
     arrow_hover: {
-        fill: 'white',
-        stroke: 'white',
+        fill: common.white,
+        stroke: common.white,
     },
     circle: {
-        stroke: 'white',
-        fill: 'white',
+        stroke: common.white,
+        fill: common.white,
     },
     circle_hover: {
-        stroke: '#212121',
-        fill: '#212121',
+        stroke: grey[900],
+        fill: grey[900],
     },
     link: {
         color: 'blue',
@@ -83,7 +89,7 @@ const lightTheme: Theme = createTheme({
     mapboxStyle: 'mapbox://styles/mapbox/light-v9',
     breakpoints: breakPoints(),
     row: {
-        color: 'black',
+        color: common.black,
     },
     aggrid: {
         theme: 'ag-theme-alpine',
@@ -98,20 +104,20 @@ const darkTheme: Theme = createTheme({
         mode: 'dark',
     },
     arrow: {
-        fill: 'white',
-        stroke: 'white',
+        fill: common.white,
+        stroke: common.white,
     },
     arrow_hover: {
-        fill: '#424242',
-        stroke: '#424242',
+        fill: grey[800],
+        stroke: grey[800],
     },
     circle: {
-        stroke: '#424242',
-        fill: '#424242',
+        stroke: grey[800],
+        fill: grey[800],
     },
     circle_hover: {
-        stroke: 'white',
-        fill: 'white',
+        stroke: common.white,
+        fill: common.white,
     },
     link: {
         color: 'green',
@@ -119,14 +125,14 @@ const darkTheme: Theme = createTheme({
     mapboxStyle: 'mapbox://styles/mapbox/dark-v9',
     breakpoints: breakPoints(),
     row: {
-        color: 'white',
+        color: common.white,
     },
     aggrid: {
         theme: 'ag-theme-alpine-dark',
     },
     components: {
         MuiCssBaseline: {
-            styleOverrides: darkScrollbarStyles(),
+            styleOverrides: darkScrollbarStyles,
         },
         ...componentsStyleOverrides(),
     },
