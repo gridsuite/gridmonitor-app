@@ -25,7 +25,7 @@ export function ProcessStatusCellRenderer({ value, id }: Readonly<ProcessStatusC
 
     switch (value) {
         case ProcessStatus.Failed:
-            colorVal = theme.palette.mode === 'light' ? theme.palette.error.main : theme.palette.error.light;
+            colorVal = theme.palette.error.main;
             iconVal = <ErrorOutlineOutlined />;
             break;
         case ProcessStatus.Running:

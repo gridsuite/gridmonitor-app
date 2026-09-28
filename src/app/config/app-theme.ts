@@ -99,9 +99,14 @@ const lightTheme: Theme = createTheme({
     },
 });
 
+const darkPalette = createTheme({ palette: { mode: 'dark' } }).palette;
+
 const darkTheme: Theme = createTheme({
     palette: {
         mode: 'dark',
+        error: {
+            main: darkPalette.error.light,
+        },
     },
     arrow: {
         fill: common.white,
