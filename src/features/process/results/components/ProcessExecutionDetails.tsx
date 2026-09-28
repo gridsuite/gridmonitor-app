@@ -32,17 +32,14 @@ import { PROCESS_PATHS } from 'features/process/router/process-paths';
 import ResponsiveStepper from './ResponsiveStepper';
 import { ProcessStepModel } from '../models/process-result';
 
-function InfoItem({
-    label,
-    value,
-    link = false,
-    user = false,
-}: {
+type InfoItemProps = {
     label: string;
     value: string;
     link?: boolean;
     user?: boolean;
-}) {
+};
+
+function InfoItem({ label, value, link = false, user = false }: Readonly<InfoItemProps>) {
     return (
         <Grid
             size={{

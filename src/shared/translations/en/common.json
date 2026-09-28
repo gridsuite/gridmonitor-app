@@ -60,7 +60,7 @@
     "analysisLaunched": "Analysis started",
 
     "logs": "Logs",
-    "compare.agregate": "Comparer / Agréger",
+    "compare.agregate": "Compare / Agregate",
     "finishedAt": "Finished at {date}",
     "elapsedTime": "Elapsed time : {date}",
     "pending": "Pending",

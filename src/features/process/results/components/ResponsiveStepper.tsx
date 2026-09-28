@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Step, StepLabel, Stepper, Typography, useTheme } from '@mui/material';
+import { Box, Step, StepLabel, Stepper, Typography } from '@mui/material';
 import { Error as ErrorIcon } from '@mui/icons-material';
 import { StepStatus } from 'shared/api/monitor-api';
 import { formatCompletedAt, formatDuration } from 'shared/lib/date-time-formatter';
@@ -14,7 +14,7 @@ import { ProcessStepModel } from '../models/process-result';
 import { useElapsedTime } from '../hooks/use-elapsed-time';
 import { useStepperOrientation } from '../hooks/use-stepper-orientation';
 
-function StepStatusText({ step }: { step: ProcessStepModel }) {
+function StepStatusText({ step }: { readonly step: ProcessStepModel }) {
     const elapsed = useElapsedTime(step.status === StepStatus.Running ? step.startedAt : undefined);
     switch (step.status) {
         case StepStatus.Completed:
@@ -35,12 +35,8 @@ function StepStatusText({ step }: { step: ProcessStepModel }) {
     }
 }
 
-export default function ResponsiveStepper({ steps }: { steps: ProcessStepModel[] }) {
+export default function ResponsiveStepper({ steps }: { readonly steps: ProcessStepModel[] }) {
     const { containerRef, orientation } = useStepperOrientation(steps.length);
-    const theme = useTheme();
-    const errorColor = theme.palette.mode === 'light' ? '#D32F2F' : '#E57373';
-
-    // change to steps;
     const runningIndex = steps.findIndex((s) => s.status === StepStatus.Running);
     const activeStep = runningIndex === -1 ? steps.length : runningIndex;
 
@@ -70,8 +66,8 @@ export default function ResponsiveStepper({ steps }: { steps: ProcessStepModel[]
                                     <ErrorIcon
                                         sx={{
                                             transform: 'scale(1.2)',
-                                            color: errorColor,
                                         }}
+                                        color="error"
                                     />
                                 ) : undefined
                             }
@@ -82,9 +78,6 @@ export default function ResponsiveStepper({ steps }: { steps: ProcessStepModel[]
                                 '&.MuiStepLabel-vertical': {
                                     alignItems: 'flex-start',
                                     paddingBottom: '0px',
-                                },
-                                '& .MuiStepLabel-label.Mui-error': {
-                                    color: errorColor,
                                 },
                             }}
                             optional={
