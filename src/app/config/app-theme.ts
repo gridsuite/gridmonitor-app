@@ -7,7 +7,7 @@
 
 import { LIGHT_THEME } from '@gridsuite/commons-ui';
 import { createTheme, Theme } from '@mui/material';
-import { common, grey } from '@mui/material/colors';
+import { common, grey, red } from '@mui/material/colors';
 
 function breakPoints(): { values: { xs: number; sm: number } } {
     return {
@@ -99,13 +99,11 @@ const lightTheme: Theme = createTheme({
     },
 });
 
-const darkPalette = createTheme({ palette: { mode: 'dark' } }).palette;
-
 const darkTheme: Theme = createTheme({
     palette: {
         mode: 'dark',
         error: {
-            main: darkPalette.error.light,
+            main: red[300],
         },
     },
     arrow: {
