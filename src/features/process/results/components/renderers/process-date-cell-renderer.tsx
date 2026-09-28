@@ -7,6 +7,7 @@
 import { useIntl } from 'react-intl';
 import { Box, Tooltip } from '@mui/material';
 import { Link } from 'react-router';
+import { getFormattedDate } from 'shared/lib/date-time-formatter';
 import { PROCESS_PATHS } from '../../../router/process-paths';
 
 export type ProcessDateCellRendererProps = { value: string; id: string };
@@ -14,26 +15,7 @@ export type ProcessDateCellRendererProps = { value: string; id: string };
 export function ProcessDateCellRenderer({ value, id }: Readonly<ProcessDateCellRendererProps>) {
     const intl = useIntl();
 
-    const todayStart = new Date().setHours(0, 0, 0, 0);
-    const dateValue = new Date(value);
-    let cellText = '-';
-    let fullDate = '';
-    if (!Number.isNaN(dateValue.getDate())) {
-        const cellMidnight = new Date(value).setHours(0, 0, 0, 0);
-
-        const time = new Intl.DateTimeFormat(intl.locale, {
-            timeStyle: 'medium',
-            hour12: false,
-        }).format(dateValue);
-        const displayedDate =
-            intl.locale === 'en' ? dateValue.toISOString().substring(0, 10) : dateValue.toLocaleDateString(intl.locale);
-        cellText = todayStart === cellMidnight ? time : `${displayedDate} - ${time}`;
-        fullDate = new Intl.DateTimeFormat(intl.locale, {
-            dateStyle: 'long',
-            timeStyle: 'long',
-            hour12: false,
-        }).format(dateValue);
-    }
+    const { fullDate, formattedDate } = getFormattedDate(intl.locale, value);
     return (
         <Box>
             <Tooltip title={fullDate}>
@@ -45,7 +27,7 @@ export function ProcessDateCellRenderer({ value, id }: Readonly<ProcessDateCellR
                         textDecoration: 'none',
                     }}
                 >
-                    {cellText}
+                    {formattedDate}
                 </Link>
             </Tooltip>
         </Box>

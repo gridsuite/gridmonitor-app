@@ -5,12 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { ProcessStepInfosView } from '../components/ProcessStepInfosView';
 import { ProcessStepInfosAlert } from '../components/ProcessStepInfosAlert';
-import { useProcessStepInfos } from '../hooks/use-process-step-infos';
+import { useExecutionWithSteps } from '../hooks/use-get-execution-with-steps';
+import ProcessExecutionDetails from './ProcessExecutionDetails';
 
-function ProcessStepInfosPage() {
-    const { executionId, isEmpty, isError, isLoading, isMissingExecutionId, steps } = useProcessStepInfos();
+function ProcessExecutionPage() {
+    const { execution, steps, isMissingExecutionId, isLoading, isError, isEmpty } = useExecutionWithSteps();
 
     return (
         <>
@@ -20,11 +20,11 @@ function ProcessStepInfosPage() {
                 isLoading={isLoading}
                 isMissingExecutionId={isMissingExecutionId}
             />
-            {!isMissingExecutionId && !isLoading && !isError && !isEmpty && executionId && (
-                <ProcessStepInfosView executionId={executionId} steps={steps} />
+            {execution !== undefined && steps.length > 0 && (
+                <ProcessExecutionDetails execution={execution} steps={steps} />
             )}
         </>
     );
 }
 
-export default ProcessStepInfosPage;
+export default ProcessExecutionPage;
