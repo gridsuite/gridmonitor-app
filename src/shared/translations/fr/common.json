@@ -61,7 +61,7 @@
     "Configurations": "Configurations",
 
     "logs": "Logs",
-    "compare.agregate": "Compare / Agregate",
+    "compare.agregate": "Comparer / Agréger",
     "finishedAt": "Terminé à {date}",
     "elapsedTime": "Temps écoulé : {date}",
     "pending": "En attente",

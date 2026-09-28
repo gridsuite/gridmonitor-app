@@ -7,7 +7,7 @@
 
 import { ProcessStepInfosAlert } from '../components/ProcessStepInfosAlert';
 import { useExecutionWithSteps } from '../hooks/use-get-execution-with-steps';
-import ProcessExecutionDetails from './ProcessExecutionDetails';
+import ProcessExecutionDetails from '../components/ProcessExecutionDetails';
 
 function ProcessExecutionPage() {
     const { execution, steps, isMissingExecutionId, isLoading, isError, isEmpty } = useExecutionWithSteps();

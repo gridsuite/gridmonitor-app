@@ -7,6 +7,7 @@
 
 import { Done, AccessTime, Autorenew, ErrorOutlineOutlined } from '@mui/icons-material';
 import { Chip, Icon, Stack, useTheme } from '@mui/material';
+import { cyan, purple } from '@mui/material/colors';
 import { useIntl } from 'react-intl';
 import { ReactNode } from 'react';
 import { ProcessStatus } from 'shared/api/monitor-api';
@@ -20,15 +21,15 @@ export function ExecutionStatus({ value }: Readonly<{ value: string }>) {
 
     switch (value) {
         case ProcessStatus.Failed:
-            colorVal = theme.palette.mode === 'light' ? '#D32F2F' : '#E57373';
+            colorVal = theme.palette.error.main;
             iconVal = <ErrorOutlineOutlined />;
             break;
         case ProcessStatus.Running:
-            colorVal = theme.palette.mode === 'light' ? '#A0F' : '#EA80FC';
+            colorVal = theme.palette.mode === 'light' ? purple.A700 : purple.A100;
             iconVal = <Autorenew />;
             break;
         case ProcessStatus.Scheduled:
-            colorVal = theme.palette.mode === 'light' ? '#00838F' : '#4DD0E1';
+            colorVal = theme.palette.mode === 'light' ? cyan[800] : cyan[300];
             iconVal = <AccessTime />;
             break;
         default:
