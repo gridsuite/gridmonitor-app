@@ -7,7 +7,7 @@
 
 import { LIGHT_THEME } from '@gridsuite/commons-ui';
 import { createTheme, Theme } from '@mui/material';
-import { common, grey, red } from '@mui/material/colors';
+import { blue, common, green, grey, red } from '@mui/material/colors';
 
 function breakPoints(): { values: { xs: number; sm: number } } {
     return {
@@ -84,7 +84,7 @@ const lightTheme: Theme = createTheme({
         fill: grey[900],
     },
     link: {
-        color: 'blue',
+        color: blue[500],
     },
     mapboxStyle: 'mapbox://styles/mapbox/light-v9',
     breakpoints: breakPoints(),
@@ -123,7 +123,7 @@ const darkTheme: Theme = createTheme({
         fill: common.white,
     },
     link: {
-        color: 'green',
+        color: green[500],
     },
     mapboxStyle: 'mapbox://styles/mapbox/dark-v9',
     breakpoints: breakPoints(),
