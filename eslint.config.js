@@ -169,6 +169,51 @@ const projectConfig = [
         },
     },
     {
+        name: 'project/shared-boundaries',
+        files: ['src/shared/**/*.{ts,tsx}'],
+        ignores: ['**/__tests__/**', '**/*.test.{ts,tsx}'],
+        rules: {
+            '@typescript-eslint/no-restricted-imports': [
+                'error',
+                {
+                    patterns: [
+                        {
+                            regex: '(^|/)app(/|$)',
+                            allowTypeImports: true,
+                            message:
+                                'Shared modules must not depend on app runtime code. Move application wiring to app; Redux type-only imports are allowed.',
+                        },
+                        {
+                            regex: '(^|/)(features|plugins)(/|$)',
+                            message: 'Shared modules must not depend on features or application plugins.',
+                        },
+                    ],
+                },
+            ],
+        },
+    },
+    {
+        name: 'project/feature-boundaries',
+        files: ['src/features/**/*.{ts,tsx}'],
+        ignores: ['**/__tests__/**', '**/*.test.{ts,tsx}'],
+        rules: {
+            'import-x/no-restricted-paths': [
+                'error',
+                {
+                    zones: [
+                        {
+                            target: './src/features',
+                            from: './src/app',
+                            except: ['./store'],
+                            message:
+                                'Features must not depend on app composition. Only the Redux store integration is allowed.',
+                        },
+                    ],
+                },
+            ],
+        },
+    },
+    {
         files: ['src/**/*.{ts,tsx}'],
         ignores: ['src/shared/api/**'],
         rules: {

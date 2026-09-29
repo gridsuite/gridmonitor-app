@@ -6,7 +6,7 @@
  */
 
 import { PARAM_DEVELOPER_MODE } from '@gridsuite/commons-ui';
-import { AppParameters, AppParametersKey } from 'features/app-parameters/store/app-parameters.type';
+import { AppParameters, AppParametersKey } from 'shared/config/app-parameters/app-parameters.type';
 
 export function mapRawParamValue<K extends AppParametersKey>(paramName: K, rawValue: string): AppParameters[K] {
     if (paramName === PARAM_DEVELOPER_MODE) {

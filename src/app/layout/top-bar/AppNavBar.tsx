@@ -10,10 +10,10 @@ import { NavLink, useLocation } from 'react-router';
 import { PlayArrow, MiscellaneousServices, ListAlt } from '@mui/icons-material';
 import { useState, type ReactNode } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { PROCESS_PATHS } from '../../process/router/process-paths';
-import { PROCESS_CONFIG_PATHS } from '../../process-config/router/process-config-paths';
-import { LaunchSuccessDialog } from '../../process/execute/components/LaunchSuccessDialog';
-import { ExecuteProcessConfigDialog } from '../../process/execute/components/ExecuteProcessConfigDialog';
+import { PROCESS_PATHS } from 'features/process/router/process-paths';
+import { PROCESS_CONFIG_PATHS } from 'features/process-config/router/process-config-paths';
+import { LaunchSuccessDialog } from 'features/process/execute/components/LaunchSuccessDialog';
+import { ExecuteProcessConfigDialog } from 'features/process/execute/components/ExecuteProcessConfigDialog';
 
 interface NavBarTab {
     icon: ReactNode;

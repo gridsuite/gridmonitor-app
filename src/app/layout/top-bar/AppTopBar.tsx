@@ -7,10 +7,10 @@
 
 import { AppBar, Divider, Grid, Toolbar } from '@mui/material';
 import { useLocation } from 'react-router';
+import { isConfigurationPath } from 'app/router/app-paths';
+import { UserProfile } from 'features/authentication/store/authentication.type';
 import { ExecuteButton, SettingsTabs } from './AppNavBar';
 import { ConfigurationModeToggle } from './ConfigurationModeToggle';
-import { isConfigurationPath } from '../../../app/router/app-paths';
-import { UserProfile } from '../../authentication/store/authentication.type';
 
 export type AppTopBarProps = {
     userProfile: UserProfile | null;
@@ -23,12 +23,7 @@ function AppTopBar({ userProfile }: Readonly<AppTopBarProps>) {
     return (
         <AppBar position="sticky" color="default" elevation={0}>
             {userProfile !== null && (
-                <Toolbar
-                    sx={{
-                        height: 56,
-                        px: 3,
-                    }}
-                >
+                <Toolbar sx={{ height: '56px', px: '24px' }}>
                     <Grid
                         container
                         wrap="nowrap"

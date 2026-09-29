@@ -19,7 +19,7 @@ import { store } from '../store/store';
 import { appMessages } from '../config/app-messages';
 
 vi.mock('uuid', () => ({ v4: () => '00000000-0000-0000-0000-000000000000' }));
-vi.mock('features/side-bar/components/AppSideBar', () => ({
+vi.mock('app/layout/side-bar/AppSideBar', () => ({
     AppSideBar: () => <div>GridMonitor</div>,
 }));
 

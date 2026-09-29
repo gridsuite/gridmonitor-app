@@ -16,16 +16,15 @@ import {
     PARAM_THEME,
 } from '@gridsuite/commons-ui';
 import { createTheme } from '@mui/material';
-import { blueGrey, deepPurple } from '@mui/material/colors';
 import { useEffect, useMemo, useState } from 'react';
 import GridmonitorLogoLight from 'assets/images/gridmonitor_logo_light.svg?react';
 import GridmonitorLogoDark from 'assets/images/gridmonitor_logo_dark.svg?react';
-import { useAppParameterState } from '../../app-parameters/hooks/use-app-parameter-state';
-import { APP_NAME } from '../../../app/config/app-config';
-import { getAppTheme } from '../../../app/config/app-theme';
-import { useStableUserProfile } from '../../authentication/hooks/use-stable-user-profile';
-import { fetchVersion } from '../../../shared/config/version';
-import { getServersInfos } from '../../top-bar/api/get-servers-infos';
+import { useAppParameterState } from 'features/app-parameters/hooks/use-app-parameter-state';
+import { APP_NAME } from 'shared/config/app-config';
+import { getAppTheme } from 'app/config/app-theme';
+import { useStableUserProfile } from 'features/authentication/hooks/use-stable-user-profile';
+import { fetchVersion } from 'shared/config/version';
+import { getServersInfos } from './get-servers-infos';
 import AppPackage from '../../../../package.json';
 
 type SideBarProps = {
@@ -42,7 +41,7 @@ export function AppSideBar({ onLogoutClick }: Readonly<SideBarProps>) {
     const invertedThemeId = isDarkMode ? LIGHT_THEME : DARK_THEME;
     const invertedTheme = useMemo(() => {
         const baseTheme = getAppTheme(invertedThemeId);
-        const overrideBackgroundColor = invertedThemeId === DARK_THEME ? blueGrey[900] : blueGrey[50];
+        const overrideBackgroundColor = invertedThemeId === DARK_THEME ? '#263238' : '#ECEFF1';
 
         return createTheme(baseTheme, {
             palette: {
@@ -53,6 +52,7 @@ export function AppSideBar({ onLogoutClick }: Readonly<SideBarProps>) {
             },
         });
     }, [invertedThemeId]);
+    const SMALL_SCREEN_BREAKPOINT = 768;
 
     useEffect(() => {
         if (userProfile) {
@@ -70,14 +70,14 @@ export function AppSideBar({ onLogoutClick }: Readonly<SideBarProps>) {
         <CommonAppSideBar
             sideBarTheme={invertedTheme}
             isDeveloperMode={isDeveloperMode}
-            smallScreenBreakpoint={invertedTheme.breakpoints.values.sm}
+            smallScreenBreakpoint={SMALL_SCREEN_BREAKPOINT}
             handleChangeDeveloperMode={handleChangeDeveloperMode}
             currentTheme={currentTheme}
             setTheme={setTheme}
             selectedLanguage={selectedLanguage}
             setSelectedLanguage={setSelectedLanguage}
             appName={APP_NAME}
-            appNameColor={isDarkMode ? deepPurple[400] : deepPurple.A100}
+            appNameColor={isDarkMode ? '#7e57c2' : '#B388FF'}
             appLogo={isDarkMode ? <GridmonitorLogoDark /> : <GridmonitorLogoLight />}
             userProfile={userProfile}
             globalVersionPromise={() => fetchVersion().then((res) => res.deployVersion ?? 'unknown')}

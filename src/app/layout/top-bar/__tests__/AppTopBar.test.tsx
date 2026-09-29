@@ -13,8 +13,8 @@ import { PROCESS_PATHS } from 'features/process/router/process-paths';
 import { PROCESS_CONFIG_PATHS } from 'features/process-config/router/process-config-paths';
 import { APP_PATHS } from 'app/router/app-paths';
 import messagesEn from 'shared/translations/en/common.json';
+import type { UserProfile } from 'features/authentication/store/authentication.type';
 import AppTopBar from '../AppTopBar';
-import type { UserProfile } from '../../../authentication/store/authentication.type';
 
 vi.mock('../AppNavBar', () => ({
     SettingsTabs: () => <div role="tab">Configuration</div>,

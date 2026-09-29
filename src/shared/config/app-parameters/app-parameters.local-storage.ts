@@ -6,7 +6,7 @@
  */
 
 import { DARK_THEME, GsLang, GsTheme, LANG_SYSTEM } from '@gridsuite/commons-ui';
-import { APP_NAME } from 'app/config/app-config';
+import { APP_NAME } from '../app-config';
 
 export const LOCAL_STORAGE_THEME_KEY = `${APP_NAME}_THEME`.toUpperCase();
 const LOCAL_STORAGE_LANGUAGE_KEY = `${APP_NAME}_LANGUAGE`.toUpperCase();

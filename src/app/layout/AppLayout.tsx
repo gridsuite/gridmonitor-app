@@ -10,8 +10,8 @@ import { PropsWithChildren } from 'react';
 import { DevModeBanner, PARAM_DEVELOPER_MODE } from '@gridsuite/commons-ui';
 import { useAppParameterState } from 'features/app-parameters/hooks/use-app-parameter-state';
 import { useStableUserProfile } from 'features/authentication/hooks/use-stable-user-profile';
-import AppTopBar from 'features/top-bar/components/AppTopBar';
-import { AppSideBar } from '../../features/side-bar/components/AppSideBar';
+import AppTopBar from './top-bar/AppTopBar';
+import { AppSideBar } from './side-bar/AppSideBar';
 
 export type AppTopBarProps = {
     onLogoutClick?: () => void;

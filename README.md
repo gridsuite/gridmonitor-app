@@ -44,6 +44,82 @@ See the [UI styling guidelines](STYLE_GUIDELINES.md) for this application's them
 - React Hook Form
 - Zod
 
+## Source Organization
+
+The application uses a lightweight feature-oriented structure:
+
+```text
+src/
+  app/                         Application composition and runtime wiring
+    config/                    Theme and translation assembly
+    layout/                    Shell, top bar, side bar, and navigation
+    notifications/             Notification URLs, WebSocket wiring, invalidation
+    providers/                 Global React providers
+    router/                    Root routing
+    store/                     Redux store assembly and middleware
+  features/
+    app-parameters/             Parameter interaction hooks
+    authentication/             Authentication state and hooks
+    process/
+      execute/                 Execution workflow
+      results/                 Results pages, table, and state
+      router/                  Process route definitions
+    process-config/            Configuration workflow and routes
+  shared/
+    api/                       Service clients and API infrastructure
+    config/                    Shared configuration and parameter persistence
+    lib/                       Cross-feature utilities
+    translations/              Translation resources
+    ui/                        Reusable, domain-independent UI
+  plugins/                     Application extension points and translations
+  test-utils/                  Shared test context and MSW setup
+  assets/                      Bundled static assets
+  types/                       Ambient declarations and library augmentations
+```
+
+### Ownership and dependency rules
+
+- `app` composes features and shared infrastructure. Shell navigation belongs here,
+  not in a business feature. Application-specific WebSocket clients that access
+  the Redux singleton also belong here.
+- `features` owns business workflows. Keep their pages, components, hooks, models,
+  routes, and state together; add subfolders only when needed. Keep the existing
+  `process/execute` and `process/results` split rather than introducing another
+  global `components` or `hooks` folder.
+- `shared` contains code used across features or infrastructure. It must not
+  import features, plugins, or app runtime code. Shared parameter types, defaults,
+  and local-storage helpers live in `shared/config/app-parameters`, since both
+  feature hooks and the config API use them.
+- **Pragmatic Redux exception:** features may import `app/store` for typed hooks
+  and state integration; shared API modules may use explicit `import type` for
+  store types. Type-only imports do not create runtime dependencies. Other
+  feature-to-app imports and shared-to-app runtime imports are rejected by ESLint.
+  Test files are exempt so they can exercise application integration.
+- Use source-root imports (`features/...`, `shared/...`, `app/...`) across
+  module boundaries and relative imports within a module. Prefer the service
+  entry points (`shared/api/monitor-api`, etc.) over generated API imports:
+  enhancements must be applied. Keep generation inputs in `codegen/` and do not
+  move or edit generated clients manually.
+- Colocate new tests in `__tests__` next to their owning module. Use PascalCase
+  for React components and kebab-case for hooks and non-component modules.
+  Existing naming and test-layout differences can be migrated when those
+  modules are changed, rather than through a repository-wide rename.
+
+### Architectural assessment and next steps
+
+Feature colocation, centralized app composition, and separate generated/enhanced
+API clients already follow common React/Redux organization practices. The layout
+and notification ownership rules above address the main layering problems without
+adding a full multi-layer architecture or changing application behavior.
+
+As the app grows, introduce small explicit feature entry points where multiple
+consumers need a stable interface; avoid blanket barrel exports of all internals.
+Keep process-specific grid helpers inside the process feature, and promote them
+to `shared` only when another feature actually needs them. Consider extracting
+typed Redux hooks from store initialization if singleton coupling becomes a
+testing or reuse obstacle. These are incremental options, not prerequisites for
+the current application size.
+
 ## Development Scripts
 
 - **`npm run start`** - Starts the Vite development server.
@@ -89,4 +165,3 @@ Notes:
     - `esprima@1.2.2`
     - `jackspeak@2.3.6`
     - `path-scurry@1.10.2`
-

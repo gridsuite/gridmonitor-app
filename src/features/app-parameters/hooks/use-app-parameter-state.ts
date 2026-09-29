@@ -5,11 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { AppParameters, AppParametersKey } from 'features/app-parameters/store/app-parameters.type';
+import { AppParameters, AppParametersKey } from 'shared/config/app-parameters/app-parameters.type';
 import { getAppName } from '@gridsuite/commons-ui';
 import { useUpdateParameterMutation } from 'shared/api/config-api';
+import { APP_NAME } from 'shared/config/app-config';
 import { useGetConfigParameterWithFallback } from './use-get-config-parameter-with-fallback';
-import { APP_NAME } from '../../../app/config/app-config';
 
 export function useAppParameterState<K extends AppParametersKey>(paramName: K) {
     const { data: paramValue } = useGetConfigParameterWithFallback(paramName);

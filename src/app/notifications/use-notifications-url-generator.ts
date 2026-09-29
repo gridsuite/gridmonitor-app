@@ -9,7 +9,7 @@ import {
     PREFIX_CONFIG_NOTIFICATION_WS,
     PREFIX_MONITOR_NOTIFICATION_WS,
 } from '@gridsuite/commons-ui';
-import { APP_NAME } from 'app/config/app-config';
+import { APP_NAME } from 'shared/config/app-config';
 import { useMemo } from 'react';
 
 export const useNotificationsUrlGenerator = (): Partial<Record<NotificationsUrlKeys, string | undefined>> => {

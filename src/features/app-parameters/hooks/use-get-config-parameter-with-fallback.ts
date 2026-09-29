@@ -6,10 +6,10 @@
  */
 
 import { getAppName } from '@gridsuite/commons-ui';
-import { APP_NAME } from 'app/config/app-config';
+import { APP_NAME } from 'shared/config/app-config';
 import { useGetParameterQuery } from 'shared/api/config-api';
-import { getInitialAppParametersState } from '../store/app-parameters.default';
-import { AppParametersKey } from '../store/app-parameters.type';
+import { getInitialAppParametersState } from 'shared/config/app-parameters/app-parameters.default';
+import { AppParametersKey } from 'shared/config/app-parameters/app-parameters.type';
 import { mapRawParamValue } from '../../../shared/api/config-api/config.mapping';
 import { useStableUserProfile } from '../../authentication/hooks/use-stable-user-profile';
 

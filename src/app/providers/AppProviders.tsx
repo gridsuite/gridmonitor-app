@@ -22,7 +22,7 @@ import App from 'app/App';
 import { appMessages } from 'app/config/app-messages';
 import { getAppTheme } from 'app/config/app-theme';
 import { useGetConfigParameterWithFallback } from 'features/app-parameters/hooks/use-get-config-parameter-with-fallback';
-import { useNotificationsUrlGenerator } from 'shared/api/ws/use-notifications-url-generator';
+import { useNotificationsUrlGenerator } from 'app/notifications/use-notifications-url-generator';
 import { SnackRefRegisterer } from './SnackRefRegisterer';
 
 const basename = new URL(document.querySelector('base')?.href ?? '').pathname;

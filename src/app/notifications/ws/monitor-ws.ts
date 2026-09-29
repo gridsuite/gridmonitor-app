@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { APP_NAME } from 'app/config/app-config';
+import { APP_NAME } from 'shared/config/app-config';
 import { createReconnectingWebSocket } from './ws-client';
 
 const PREFIX_MONITOR_NOTIFICATION_WS = `${import.meta.env.VITE_WS_GATEWAY}/monitor-notification`;
