@@ -21,7 +21,7 @@ function ProcessResultsPage() {
         <CustomAggridReduxProvider>
             <ProcessResultsAlert isEmpty={isEmpty} isError={isError} isLoading={isLoading} />
             {!isError && (
-                <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', px: '24px' }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', px: 3 }}>
                     <Box
                         sx={{
                             display: 'flex',
@@ -30,7 +30,7 @@ function ProcessResultsPage() {
                             ml: 1,
                         }}
                     >
-                        <Typography variant="h5" sx={{ mt: '24px', mb: '24px' }}>
+                        <Typography variant="h5" sx={{ mt: 3, mb: 3 }}>
                             <FormattedMessage id="ProcessExecutionHistory" />
                         </Typography>
 

@@ -16,6 +16,7 @@ import {
     PARAM_THEME,
 } from '@gridsuite/commons-ui';
 import { createTheme } from '@mui/material';
+import { blueGrey, deepPurple } from '@mui/material/colors';
 import { useEffect, useMemo, useState } from 'react';
 import GridmonitorLogoLight from 'assets/images/gridmonitor_logo_light.svg?react';
 import GridmonitorLogoDark from 'assets/images/gridmonitor_logo_dark.svg?react';
@@ -41,7 +42,7 @@ export function AppSideBar({ onLogoutClick }: Readonly<SideBarProps>) {
     const invertedThemeId = isDarkMode ? LIGHT_THEME : DARK_THEME;
     const invertedTheme = useMemo(() => {
         const baseTheme = getAppTheme(invertedThemeId);
-        const overrideBackgroundColor = invertedThemeId === DARK_THEME ? '#263238' : '#ECEFF1';
+        const overrideBackgroundColor = invertedThemeId === DARK_THEME ? blueGrey[900] : blueGrey[50];
 
         return createTheme(baseTheme, {
             palette: {
@@ -52,7 +53,6 @@ export function AppSideBar({ onLogoutClick }: Readonly<SideBarProps>) {
             },
         });
     }, [invertedThemeId]);
-    const SMALL_SCREEN_BREAKPOINT = 768;
 
     useEffect(() => {
         if (userProfile) {
@@ -70,14 +70,14 @@ export function AppSideBar({ onLogoutClick }: Readonly<SideBarProps>) {
         <CommonAppSideBar
             sideBarTheme={invertedTheme}
             isDeveloperMode={isDeveloperMode}
-            smallScreenBreakpoint={SMALL_SCREEN_BREAKPOINT}
+            smallScreenBreakpoint={invertedTheme.breakpoints.values.sm}
             handleChangeDeveloperMode={handleChangeDeveloperMode}
             currentTheme={currentTheme}
             setTheme={setTheme}
             selectedLanguage={selectedLanguage}
             setSelectedLanguage={setSelectedLanguage}
             appName={APP_NAME}
-            appNameColor={isDarkMode ? '#7e57c2' : '#B388FF'}
+            appNameColor={isDarkMode ? deepPurple[400] : deepPurple.A100}
             appLogo={isDarkMode ? <GridmonitorLogoDark /> : <GridmonitorLogoLight />}
             userProfile={userProfile}
             globalVersionPromise={() => fetchVersion().then((res) => res.deployVersion ?? 'unknown')}
