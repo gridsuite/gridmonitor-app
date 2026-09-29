@@ -18,7 +18,7 @@ import { createTestContext } from './create-test-context';
 
 type ProviderOptions = {
     initialEntries?: string[];
-    state?: Parameters<typeof createTestContext>[0];
+    state?: NonNullable<Parameters<typeof createTestContext>[0]>;
 };
 
 export function createTestProviders({ initialEntries = ['/'], state }: ProviderOptions = {}) {

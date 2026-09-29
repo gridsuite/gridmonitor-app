@@ -40,7 +40,7 @@
 ```ts
 it('maps a typed form to metadata and the serialized backend configuration', () => {
     expect(toCreateProcessConfigApiArg(processConfigValues())).toEqual({
-        name: 'Load flow',
+        name: 'Loadflow',
         description: 'A configuration for testing',
         parentDirectoryUuid: 'directory-1',
         body: JSON.stringify({
