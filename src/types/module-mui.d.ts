@@ -9,6 +9,12 @@
 import { Theme as MuiTheme, ThemeOptions as MuiThemeOptions, CSSObject } from '@mui/material';
 
 declare module '@mui/material/styles' {
+    export interface BreakpointOverrides {
+        md: false;
+        lg: false;
+        xl: false;
+    }
+
     type ThemeExtension = {
         arrow: CSSObject;
         arrow_hover: CSSObject;

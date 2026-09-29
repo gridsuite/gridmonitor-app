@@ -28,6 +28,8 @@ npm start
 
 If you are a developer and you want to update or enhance components used from the GridSuite `commons-ui` library, click [here](https://github.com/gridsuite/commons-ui) and follow the instructions.
 
+See the [UI styling guidelines](STYLE_GUIDELINES.md) for this application's theme, colors, spacing, and responsive layout conventions.
+
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
 ## Technical Stack
