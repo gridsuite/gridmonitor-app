@@ -53,6 +53,8 @@ If you are a developer and you want to update or enhance components used from th
 - **`npm run prebuild`** - Runs linting and type checking before the build. This script is executed automatically by npm before `npm run build` and ensures that the build is not executed if linting or type checking fails. You do not need to call this manually unless you want to verify code quality without building.
 - **`npm run test`** - Runs tests with Vitest.
 
+See the [unit test guidelines](UNIT_TEST_GUIDELINES.md) for test scope, shared helpers, mocking boundaries, and examples.
+
 ## OpenAPI Code Generation
 
 The interface with `monitor-server` is generated using OpenAPI code generation.
@@ -87,4 +89,3 @@ Notes:
     - `esprima@1.2.2`
     - `jackspeak@2.3.6`
     - `path-scurry@1.10.2`
-

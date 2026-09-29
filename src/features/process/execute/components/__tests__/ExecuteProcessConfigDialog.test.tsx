@@ -1,171 +1,80 @@
-/*
+/**
  * Copyright (c) 2026, RTE (http://www.rte-france.com)
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { useFormContext, Controller } from 'react-hook-form';
-import { IntlProvider } from 'react-intl';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { PROCESS_CONFIG_TYPES } from '@gridsuite/commons-ui';
-import messagesEn from 'shared/translations/en/common.json';
-import { ExecuteProcessConfigDialog } from '../ExecuteProcessConfigDialog';
+import { screen, waitFor } from '@testing-library/react';
+import { useFormContext } from 'react-hook-form';
+import { describe, expect, it, vi } from 'vitest';
+import { http, HttpResponse } from 'msw';
+import { server } from 'test-utils/msw/server';
+import { renderWithProviders } from 'test-utils/render-with-providers';
+import { ExecuteProcessConfigDialog, type ExecuteProcessConfigFormData } from '../ExecuteProcessConfigDialog';
 
-const mocks = vi.hoisted(() => ({
-    executeProcess: vi.fn(),
-}));
-
-vi.mock('shared/ui/AppDialog', () => ({
-    AppDialog: ({
-        open,
-        onClose,
-        onCancel,
-        onBack,
-        onConfirm,
-        confirmDisabled,
-        confirmLabel,
-        title,
-        children,
-    }: {
-        open: boolean;
-        onClose: () => void;
-        onCancel?: () => void;
-        onBack?: () => void;
-        onConfirm: () => void;
-        confirmDisabled: boolean;
-        confirmLabel: React.ReactNode;
-        title: React.ReactNode;
-        children: React.ReactNode;
-    }) =>
-        open ? (
-            <div role="dialog">
-                <h1>{title}</h1>
-                {children}
-                {onBack && (
-                    <button type="button" onClick={onBack}>
-                        Back
-                    </button>
-                )}
-                <button type="button" onClick={onCancel ?? onClose}>
-                    Cancel
-                </button>
-                <button type="button" onClick={onConfirm} disabled={confirmDisabled}>
-                    {confirmLabel}
-                </button>
-            </div>
-        ) : null,
-}));
-
-vi.mock('../../hooks/use-execute-process', () => ({
-    useExecuteProcess: () => ({ executeProcess: mocks.executeProcess }),
-}));
-
-vi.mock('../ProcessTypeStep', () => ({
-    ProcessTypeStep: ({ control }: { control: React.ComponentProps<typeof Controller>['control'] }) => (
-        <Controller
-            name="processType"
-            control={control}
-            render={({ field }) => (
-                <select aria-label="Process type" {...field}>
-                    <option value="">Select a process type</option>
-                    {PROCESS_CONFIG_TYPES.map((option) => (
-                        <option key={option.id} value={option.id}>
-                            {option.label}
-                        </option>
-                    ))}
-                </select>
-            )}
-        />
-    ),
-}));
-
-vi.mock('../ProcessConfigStep', () => ({
-    ProcessConfigStep: () => {
-        const { setValue } = useFormContext();
-
+vi.mock('@gridsuite/commons-ui', async (importOriginal) => ({
+    ...(await importOriginal<typeof import('@gridsuite/commons-ui')>()),
+    DirectoryItemsInput: ({ name }: { name: 'case' | 'processConfig' }) => {
+        const { setValue } = useFormContext<ExecuteProcessConfigFormData>();
         return (
             <button
                 type="button"
                 onClick={() =>
-                    setValue('processConfig', [{ id: 'config-1', name: 'Configuration' }], { shouldValidate: true })
+                    setValue(name, [{ id: name === 'case' ? 'case-1' : 'config-1', name: 'Selected item' }], {
+                        shouldValidate: true,
+                    })
                 }
             >
-                Select configuration
+                Select {name}
             </button>
         );
     },
 }));
 
-vi.mock('../CaseStep', () => ({
-    CaseStep: () => {
-        const { setValue } = useFormContext();
-
-        return (
-            <button
-                type="button"
-                onClick={() => setValue('case', [{ id: 'case-1', name: 'Case' }], { shouldValidate: true })}
-            >
-                Select case
-            </button>
-        );
-    },
-}));
-
-function renderDialog(onClose = vi.fn(), onLaunch = vi.fn()) {
-    return render(
-        <IntlProvider locale="en" messages={messagesEn}>
-            <ExecuteProcessConfigDialog open onClose={onClose} onLaunch={onLaunch} />
-        </IntlProvider>
-    );
+async function completeSteps(user: ReturnType<typeof renderWithProviders>['user']) {
+    expect(screen.getByRole('button', { name: 'Next' })).toBeDisabled();
+    await user.click(screen.getByRole('combobox'));
+    await user.click(screen.getByRole('option', { name: 'Loadflow' }));
+    await user.click(screen.getByRole('checkbox'));
+    await user.click(screen.getByRole('button', { name: 'Next' }));
+    expect(screen.getByRole('button', { name: 'Next' })).toBeDisabled();
+    await user.click(await screen.findByRole('button', { name: 'Select processConfig' }));
+    await user.click(screen.getByRole('button', { name: 'Next' }));
+    expect(screen.getByRole('button', { name: 'Run' })).toBeDisabled();
+    await user.click(await screen.findByRole('button', { name: 'Select case' }));
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Run' })).toBeEnabled());
 }
 
-beforeEach(() => {
-    vi.clearAllMocks();
-    mocks.executeProcess.mockResolvedValue('execution-1');
-});
-
 describe('ExecuteProcessConfigDialog', () => {
-    it('validates each step and launches the selected process', async () => {
-        const onLaunch = vi.fn();
-        renderDialog(undefined, onLaunch);
-
-        const nextButton = () => screen.getByRole('button', { name: messagesEn.next });
-
-        expect(nextButton()).toBeDisabled();
-
-        fireEvent.change(screen.getByRole('combobox', { name: 'Process type' }), {
-            target: { value: PROCESS_CONFIG_TYPES[0].id },
-        });
-        expect(nextButton()).toBeEnabled();
-
-        fireEvent.click(nextButton());
-        await waitFor(() => expect(screen.getByRole('button', { name: 'Select configuration' })).toBeInTheDocument());
-        expect(nextButton()).toBeDisabled();
-
-        fireEvent.click(screen.getByRole('button', { name: 'Select configuration' }));
-        await waitFor(() => expect(nextButton()).toBeEnabled());
-        fireEvent.click(nextButton());
-
-        await waitFor(() => expect(screen.getByRole('button', { name: 'Select case' })).toBeInTheDocument());
-        const launchButton = () => screen.getByRole('button', { name: messagesEn.launch });
-        expect(launchButton()).toBeDisabled();
-
-        fireEvent.click(screen.getByRole('button', { name: 'Select case' }));
-        await waitFor(() => expect(launchButton()).toBeEnabled());
-        fireEvent.click(launchButton());
-
-        await waitFor(() =>
-            expect(mocks.executeProcess).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    processType: PROCESS_CONFIG_TYPES[0].id,
-                    processConfig: [{ id: 'config-1', name: 'Configuration' }],
-                    case: [{ id: 'case-1', name: 'Case' }],
-                })
-            )
+    it('validates each step, sends the selected IDs and blocks duplicate launches while pending', async () => {
+        const response = Promise.withResolvers<void>();
+        const requests: URL[] = [];
+        server.use(
+            http.post('*/v1/execute', async ({ request }) => {
+                requests.push(new URL(request.url));
+                await response.promise;
+                return HttpResponse.json('execution-1');
+            })
         );
-        expect(onLaunch).toHaveBeenCalledWith('execution-1');
-        expect(screen.getByRole('combobox', { name: 'Process type' })).toHaveValue('');
+        const onLaunch = vi.fn();
+        const { user } = renderWithProviders(<ExecuteProcessConfigDialog open onClose={vi.fn()} onLaunch={onLaunch} />);
+        await completeSteps(user);
+        const launch = screen.getByRole('button', { name: 'Run' });
+        await user.click(launch);
+        await waitFor(() => expect(requests).toHaveLength(1));
+        expect(launch).toBeDisabled();
+        await user.keyboard('{Enter}');
+        expect(requests).toHaveLength(1);
+        expect(Object.fromEntries(requests[0].searchParams)).toEqual({
+            caseUuid: 'case-1',
+            processConfigUuid: 'config-1',
+            isDebug: 'true',
+        });
+        expect(onLaunch).not.toHaveBeenCalled();
+        response.resolve();
+        await waitFor(() => expect(onLaunch).toHaveBeenCalledWith('execution-1'));
+        expect(await screen.findByRole('button', { name: 'Next' })).toBeDisabled();
+        expect(screen.getByRole('checkbox')).not.toBeChecked();
     });
 });

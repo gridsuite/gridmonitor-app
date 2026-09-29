@@ -7,7 +7,7 @@
 
 import React, { PropsWithChildren } from 'react';
 import { Provider } from 'react-redux';
-import { setupStore } from 'app/store/store';
+import { setupStore, type RootState } from 'app/store/store';
 import { AuthenticationState } from 'features/authentication/store/authentication.type';
 
 export const defaultAuthTestState: AuthenticationState = {
@@ -21,13 +21,14 @@ export const defaultTestState = {
     authentication: defaultAuthTestState,
 };
 
-type TestOverrides = {
+type TestOverrides = Partial<Omit<RootState, 'authentication'>> & {
     authentication?: Partial<AuthenticationState>;
 };
 
 export function createTestContext(overrides?: TestOverrides) {
     const mergedState = {
         ...defaultTestState,
+        ...overrides,
         authentication: {
             ...defaultAuthTestState,
             ...overrides?.authentication,

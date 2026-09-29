@@ -5,122 +5,67 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { render, screen, waitFor } from '@testing-library/react';
-import { IntlProvider } from 'react-intl';
-import { MemoryRouter } from 'react-router';
+import { screen, waitFor } from '@testing-library/react';
+import { Route, Routes } from 'react-router';
 import { describe, expect, it } from 'vitest';
 import { http, HttpResponse } from 'msw';
-import { createTestContext } from 'test-utils/create-test-context';
+import { renderWithProviders } from 'test-utils/render-with-providers';
 import { server } from 'test-utils/msw/server';
-import { StyledEngineProvider, ThemeProvider } from '@mui/material';
-import { DARK_THEME } from '@gridsuite/commons-ui';
-import { getAppTheme } from 'app/config/app-theme';
 import ProcessResultsPage from '../../pages/ProcessResultsPage';
-import messagesEn from '../../../../../shared/translations/en/common.json';
+import ProcessStepInfosPage from '../../pages/ProcessStepInfosPage';
+
+const execution = {
+    id: 'execution-1',
+    type: 'SECURITY_ANALYSIS',
+    status: 'FAILED',
+    scheduledAt: '2026-01-01T09:55:00Z',
+    startedAt: '2026-01-01T10:00:00Z',
+    completedAt: '2026-01-01T10:05:00Z',
+};
 
 describe('ProcessResultsPage', () => {
-    it('displays process executions successfully', async () => {
+    it('displays execution data and opens the selected execution details', async () => {
         server.use(
-            http.get('*/v1/executions', () =>
-                HttpResponse.json([
-                    {
-                        id: 'execution-1',
-                        type: 'SECURITY_ANALYSIS',
-                        status: 'FAILED',
-                        scheduledAt: '2026-01-01T09:55:00Z',
-                        startedAt: '2026-01-01T10:00:00Z',
-                        completedAt: '2026-01-01T10:05:00Z',
-                    },
-                ])
+            http.get('*/v1/executions', () => HttpResponse.json([execution])),
+            http.get('*/v1/executions/execution-1/step-infos', () =>
+                HttpResponse.json([{ id: 'step-1', stepOrder: 1, stepType: 'LOADFLOW', status: 'COMPLETED' }])
             )
         );
-
-        const { wrapper } = createTestContext();
-
-        const { container } = render(
-            <IntlProvider locale="en" messages={messagesEn}>
-                <StyledEngineProvider injectFirst>
-                    <ThemeProvider theme={getAppTheme(DARK_THEME)}>
-                        <MemoryRouter>
-                            <ProcessResultsPage />
-                        </MemoryRouter>
-                    </ThemeProvider>
-                </StyledEngineProvider>
-            </IntlProvider>,
-            { wrapper }
+        const { user } = renderWithProviders(
+            <Routes>
+                <Route path="/" element={<ProcessResultsPage />} />
+                <Route path="/process/results/:id/step-infos" element={<ProcessStepInfosPage />} />
+            </Routes>
         );
-
-        await waitFor(() => {
-            expect(screen.getByText('Process execution history')).toBeInTheDocument();
-        });
-
-        expect(screen.getByText('Refresh')).toBeInTheDocument();
-
-        const rows = await screen.findAllByRole('row');
-        expect(rows).toHaveLength(4); // 2 header row elements + 2 data row elements (pinned + remaining)
-
-        const headerTexts = Array.from(container.getElementsByClassName('ag-header-cell-text')) as HTMLElement[];
-        const expectedHeaders = ['Type', 'Status', 'Launched by', 'Scheduled', 'Started', 'Finished', ''];
-        headerTexts.forEach((header, index) => {
-            expect(header.innerHTML).toBe(expectedHeaders[index]);
-        });
-
-        const typeCell = await screen.findByText('Security analysis');
-        const statusCell = await screen.findByText('Failed');
-
-        expect(typeCell).toBeInTheDocument();
-        expect(statusCell).toBeInTheDocument();
+        expect(await screen.findByText('Security analysis')).toBeVisible();
+        expect(screen.getByRole('link', { name: 'Failed' })).toBeVisible();
+        expect(screen.getByRole('columnheader', { name: /^Status/ })).toBeInTheDocument();
+        await user.click(screen.getByRole('link', { name: 'Failed' }));
+        expect(await screen.findByText('1 step for execution execution-1.')).toBeVisible();
     });
 
-    it('displays the loading state', async () => {
+    it('shows loading until the request resolves, then shows the empty state', async () => {
+        const response = Promise.withResolvers<void>();
         server.use(
             http.get('*/v1/executions', async () => {
-                await new Promise((resolve) => {
-                    setTimeout(resolve, 50);
-                });
-
+                await response.promise;
                 return HttpResponse.json([]);
             })
         );
-
-        const { wrapper } = createTestContext();
-
-        render(
-            <IntlProvider locale="en" messages={messagesEn}>
-                <StyledEngineProvider injectFirst>
-                    <ThemeProvider theme={getAppTheme(DARK_THEME)}>
-                        <MemoryRouter>
-                            <ProcessResultsPage />
-                        </MemoryRouter>
-                    </ThemeProvider>
-                </StyledEngineProvider>
-            </IntlProvider>,
-            { wrapper }
-        );
-
-        expect(screen.getByText('Loading process executions...')).toBeInTheDocument();
+        renderWithProviders(<ProcessResultsPage />);
+        expect(screen.getByText('Loading process executions...')).toBeVisible();
+        response.resolve();
+        expect(await screen.findByText('No process executions found.')).toBeVisible();
+        expect(screen.queryByText('Loading process executions...')).not.toBeInTheDocument();
     });
 
-    it('displays the error state', async () => {
-        server.use(http.get('*/v1/executions', () => HttpResponse.error()));
-
-        const { wrapper } = createTestContext();
-
-        render(
-            <IntlProvider locale="en" messages={messagesEn}>
-                <StyledEngineProvider injectFirst>
-                    <ThemeProvider theme={getAppTheme(DARK_THEME)}>
-                        <MemoryRouter>
-                            <ProcessResultsPage />
-                        </MemoryRouter>
-                    </ThemeProvider>
-                </StyledEngineProvider>
-            </IntlProvider>,
-            { wrapper }
-        );
-
-        await waitFor(() => {
-            expect(screen.getByText('Unable to load process executions.')).toBeInTheDocument();
-        });
+    it('refreshes the execution status', async () => {
+        server.use(http.get('*/v1/executions', () => HttpResponse.json([execution])));
+        const { user } = renderWithProviders(<ProcessResultsPage />);
+        expect(await screen.findByRole('link', { name: 'Failed' })).toBeVisible();
+        server.use(http.get('*/v1/executions', () => HttpResponse.json([{ ...execution, status: 'COMPLETED' }])));
+        await user.click(screen.getByRole('button', { name: 'Refresh' }));
+        expect(await screen.findByRole('link', { name: 'Finished' })).toBeVisible();
+        await waitFor(() => expect(screen.queryByRole('link', { name: 'Failed' })).not.toBeInTheDocument());
     });
 });
