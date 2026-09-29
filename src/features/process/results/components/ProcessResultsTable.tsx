@@ -6,6 +6,7 @@
  */
 
 import { Box, useTheme } from '@mui/material';
+import { yellow } from '@mui/material/colors';
 import { useIntl } from 'react-intl';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router';
@@ -96,7 +97,10 @@ export function ProcessResultsTable({ executions }: Readonly<ProcessResultsListP
 
     const getCustomRowStyle = useCallback(
         (_cellData: any) => {
-            const style: RowStyle = { background: theme.palette.background.default, highlightColor: 'yellow' };
+            const style: RowStyle = {
+                background: theme.palette.background.default,
+                highlightColor: yellow[500],
+            };
             return {
                 ...style,
             };
