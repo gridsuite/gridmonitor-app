@@ -59,6 +59,12 @@ describe('ProcessResultsPage', () => {
         expect(screen.queryByText('Loading process executions...')).not.toBeInTheDocument();
     });
 
+    it('displays the error state', async () => {
+        server.use(http.get('*/v1/executions', () => HttpResponse.error()));
+        renderWithProviders(<ProcessResultsPage />);
+        expect(await screen.findByText('Unable to load process executions.')).toBeVisible();
+    });
+
     it('refreshes the execution status', async () => {
         server.use(http.get('*/v1/executions', () => HttpResponse.json([execution])));
         const { user } = renderWithProviders(<ProcessResultsPage />);
