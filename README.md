@@ -53,7 +53,12 @@ See the [UI styling guidelines](STYLE_GUIDELINES.md) for this application's them
 - **`npm run lint:format`** - Checks formatting with Prettier.
 - **`npm run build`** - Builds the application. This automatically runs `npm run prebuild` first.
 - **`npm run prebuild`** - Runs linting and type checking before the build. This script is executed automatically by npm before `npm run build` and ensures that the build is not executed if linting or type checking fails. You do not need to call this manually unless you want to verify code quality without building.
-- **`npm run test`** - Runs tests with Vitest.
+
+## Testing
+
+- **`npm run test`** - Runs Vitest in watch mode.
+- **`npm run test:run`** - Runs the complete test suite once.
+- **`npm run test:coverage`** - Runs the test suite and generates text and LCOV coverage reports.
 
 See the [unit test guidelines](UNIT_TEST_GUIDELINES.md) for test scope, shared helpers, mocking boundaries, and examples.
 

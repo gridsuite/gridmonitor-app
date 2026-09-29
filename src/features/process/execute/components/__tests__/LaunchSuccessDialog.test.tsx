@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { screen } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/react';
 import { Route, Routes } from 'react-router';
 import { describe, expect, it, vi } from 'vitest';
 import { renderWithProviders } from 'test-utils/render-with-providers';
@@ -23,6 +23,15 @@ describe('LaunchSuccessDialog', () => {
         await user.click(screen.getByRole('link'));
         expect(await screen.findByRole('heading', { name: 'Execution details' })).toBeVisible();
         expect(onClose).toHaveBeenCalledOnce();
+    });
+
+    it('keeps the default browser behavior for modified clicks', () => {
+        const onClose = vi.fn();
+        renderWithProviders(<LaunchSuccessDialog executionId="execution-1" open onClose={onClose} />);
+
+        fireEvent.click(screen.getByRole('link', { name: 'Follow execution' }), { ctrlKey: true });
+
+        expect(onClose).not.toHaveBeenCalled();
     });
 
     it('closes when the close button is clicked', async () => {
