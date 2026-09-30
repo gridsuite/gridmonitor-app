@@ -21,7 +21,7 @@ export function getFormattedDate(locale: string, value?: string): { fullDate: st
             hour12: false,
         }).format(dateValue);
         const displayedDate =
-            locale === 'en' ? dateValue.toISOString().substring(0, 10) : dateValue.toLocaleDateString(locale);
+            locale === 'en' ? dateValue.toLocaleDateString('en-CA') : dateValue.toLocaleDateString(locale);
         formattedDate = todayStart === cellMidnight ? time : `${displayedDate} - ${time}`;
         fullDate = new Intl.DateTimeFormat(locale, {
             dateStyle: 'long',
