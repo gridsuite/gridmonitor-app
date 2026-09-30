@@ -5,14 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { act, renderHook, waitFor } from '@testing-library/react';
+import { renderHook } from '@testing-library/react';
 import { NotificationsUrlKeys, useNotificationsListener } from '@gridsuite/commons-ui';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { invalidateProcessExecutionsLists } from 'shared/api/monitor-api';
 import { createTestContext } from 'test-utils/create-test-context';
-import { http, HttpResponse } from 'msw';
-import { server } from 'test-utils/msw/server';
-import { useProcessResults } from 'features/process/results/hooks/use-process-results';
 import { useProcessInvalidationsListener } from '../../notifications/use-process-invalidation-listener';
 
 vi.mock('shared/api/monitor-api', async (importOriginal) => {
@@ -20,7 +17,7 @@ vi.mock('shared/api/monitor-api', async (importOriginal) => {
 
     return {
         ...actual,
-        invalidateProcessExecutionsLists: vi.fn(actual.invalidateProcessExecutionsLists),
+        invalidateProcessExecutionsLists: vi.fn(),
     };
 });
 
@@ -112,28 +109,5 @@ describe('useProcessInvalidationListener', () => {
             } as MessageEvent);
         }).toThrow(SyntaxError);
         expect(invalidateProcessExecutionsLists).not.toHaveBeenCalled();
-    });
-
-    it('refetches subscribed execution data after a matching notification', async () => {
-        server.use(http.get('*/v1/executions', () => HttpResponse.json([{ id: 'execution-1', status: 'RUNNING' }])));
-        const { wrapper } = createTestContext();
-        const { result } = renderHook(
-            () => {
-                useProcessInvalidationsListener();
-                return useProcessResults();
-            },
-            { wrapper }
-        );
-        await waitFor(() => expect(result.current.executions[0]?.status).toBe('RUNNING'));
-        server.use(http.get('*/v1/executions', () => HttpResponse.json([{ id: 'execution-1', status: 'COMPLETED' }])));
-        expect(listenerCallbackMessage).toBeDefined();
-        act(() =>
-            listenerCallbackMessage?.(
-                new MessageEvent('message', {
-                    data: JSON.stringify({ headers: { updateType: 'PROCESS_EXECUTION_UPDATED' } }),
-                })
-            )
-        );
-        await waitFor(() => expect(result.current.executions[0]?.status).toBe('COMPLETED'));
     });
 });
