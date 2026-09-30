@@ -26,45 +26,12 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router';
 import { ExecutionStatus } from 'shared/ui/ExecutionStatus';
 import { ProcessExecution, ProcessStatus } from 'shared/api/monitor-api';
-import { fetchElementNames, UserAvatar } from '@gridsuite/commons-ui';
+import { fetchElementNames } from '@gridsuite/commons-ui';
 import { getFormattedDate } from 'shared/lib/date-time-formatter';
 import { PROCESS_PATHS } from 'features/process/router/process-paths';
 import ResponsiveStepper from './ResponsiveStepper';
 import { ProcessStepModel } from '../models/process-result';
-
-type InfoItemProps = {
-    label: string;
-    value: string;
-    link?: boolean;
-    user?: boolean;
-};
-
-function InfoItem({ label, value, link = false, user = false }: Readonly<InfoItemProps>) {
-    return (
-        <Grid
-            size={{
-                xs: 2,
-                sm: 2,
-            }}
-        >
-            <Box>
-                <Typography variant="body2" sx={{ mb: 0.5, color: 'text.secondary' }}>
-                    <FormattedMessage id={label} />
-                </Typography>
-
-                {user && <UserAvatar label={value} backgroundColor="grey" />}
-
-                {!user && link && (
-                    <Link component={RouterLink} to="/process/results" underline="hover">
-                        <Typography variant="body2">{value}</Typography>
-                    </Link>
-                )}
-
-                {!user && !link && <Typography variant="body2">{value}</Typography>}
-            </Box>
-        </Grid>
-    );
-}
+import { InfoItem, InfoItemType } from './InfoItem';
 
 type ProcessExecutionDetailsProps = {
     execution: ProcessExecution;
@@ -178,7 +145,7 @@ export default function ProcessExecutionDetails({ execution, steps }: Readonly<P
                 )}
                 <Accordion
                     expanded={isOpen}
-                    elevation={0}
+                    elevation={theme.palette.mode === 'dark' ? 0 : 1}
                     onChange={handleAccordionChange}
                     sx={{
                         '&.Mui-expanded': {
@@ -202,7 +169,11 @@ export default function ProcessExecutionDetails({ execution, steps }: Readonly<P
                                 boxSizing: 'border-box',
                             }}
                         >
-                            <InfoItem label="ProcessLaunchedBy" value={execution.userId} user />
+                            <InfoItem
+                                label="ProcessLaunchedBy"
+                                value={execution.userIdentity ?? execution.userId}
+                                infoType={InfoItemType.User}
+                            />
 
                             <InfoItem
                                 label="ProcessScheduledAt"
@@ -219,7 +190,7 @@ export default function ProcessExecutionDetails({ execution, steps }: Readonly<P
                                 value={getFormattedDate(intl.locale, execution.completedAt).formattedDate}
                             />
 
-                            <InfoItem label="configuration" value={processConfigName} link />
+                            <InfoItem label="configuration" value={processConfigName} infoType={InfoItemType.Url} />
 
                             <InfoItem label="case" value={caseName} />
                         </Grid>

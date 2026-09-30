@@ -19,10 +19,6 @@ type MonitorNotificationData = {
         updateType?: string;
         processType?: ProcessType;
         processExecutionId?: string;
-        stepId?: string;
-        stepType?: string;
-        stepStatus?: string;
-        stepsIds?: string;
     };
     payload?: any;
 };
@@ -34,9 +30,11 @@ export const useProcessInvalidationsListener = () => {
         const eventData = JSON.parse(event.data) as MonitorNotificationData;
         if (eventData.headers?.updateType === 'PROCESS_EXECUTION_UPDATED') {
             invalidateProcessExecutionsLists(dispatch);
+            if (eventData.headers && eventData.headers.processExecutionId) {
+                invalidateProcessExecution(dispatch, eventData.headers.processExecutionId);
+                invalidateProcessExecutionSteps(dispatch, eventData.headers.processExecutionId);
+            }
         }
-        invalidateProcessExecution(dispatch);
-        invalidateProcessExecutionSteps(dispatch);
     };
 
     useNotificationsListener(NotificationsUrlKeys.MONITOR, {

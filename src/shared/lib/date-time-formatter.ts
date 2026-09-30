@@ -8,7 +8,7 @@
 export function getFormattedDate(locale: string, value?: string): { fullDate: string; formattedDate: string } {
     let formattedDate = '-';
     let fullDate = '';
-    if (value === undefined) {
+    if (value === undefined || value === null) {
         return { fullDate, formattedDate };
     }
     const todayStart = new Date().setHours(0, 0, 0, 0);
