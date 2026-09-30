@@ -24,7 +24,7 @@ export function LaunchSuccessDialog({
 }) {
     const intl = useIntl();
     const navigate = useNavigate();
-    const path = PROCESS_PATHS.stepInfos(executionId ?? '');
+    const path = PROCESS_PATHS.stepInfos(executionId);
     const title = intl.formatMessage({ id: 'analysisLaunched' });
 
     const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
