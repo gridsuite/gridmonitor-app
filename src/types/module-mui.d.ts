@@ -30,6 +30,7 @@ declare module '@mui/material/styles' {
         searchedText: {
             highlightColor: string;
             currentHighlightColor: string;
+            textColor?: string;
         };
     };
     export interface Theme extends MuiTheme, ThemeExtension {}

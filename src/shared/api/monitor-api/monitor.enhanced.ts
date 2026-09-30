@@ -48,9 +48,6 @@ export const invalidateProcessExecutionsLists = (dispatch: AppDispatch) =>
 export const invalidateProcessExecution = (dispatch: AppDispatch, executionId: string) =>
     dispatch(monitorApi.util.invalidateTags([{ type: MonitorTags.ProcessExecution, id: executionId }]));
 
-export const invalidateProcessExecutionSteps = (dispatch: AppDispatch) =>
-    dispatch(monitorApi.util.invalidateTags([{ type: MonitorTags.ProcessExecutionSteps, id: 'STEPS' }]));
-
 export const invalidateProcessExecutionReports = (dispatch: AppDispatch, processExecutionId: string) =>
     dispatch(monitorApi.util.invalidateTags([{ type: MonitorTags.ProcessExecutionReports, id: processExecutionId }]));
 
@@ -63,5 +60,6 @@ export const invalidateProcessExecutionReportsSeverities = (dispatch: AppDispatc
 
 export const invalidateProcessExecutionLogs = (dispatch: AppDispatch, processExecutionId: string) =>
     dispatch(monitorApi.util.invalidateTags([{ type: MonitorTags.ProcessExecutionLogs, id: processExecutionId }]));
+
 export const invalidateProcessExecutionSteps = (dispatch: AppDispatch, executionId: string) =>
     dispatch(monitorApi.util.invalidateTags([{ type: MonitorTags.ProcessExecutionSteps, id: executionId }]));
