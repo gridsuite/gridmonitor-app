@@ -85,7 +85,17 @@ export default function ProcessExecutionDetails({ execution, steps }: Readonly<P
     const processConfigName = names[execution.processConfigId];
 
     useEffect(() => {
-        fetchElementNames(new Set([execution.processConfigId, execution.caseUuid])).then(setNames);
+        let active = true;
+        fetchElementNames(new Set([execution.processConfigId, execution.caseUuid]))
+            .then((result) => {
+                if (active) setNames(result);
+            })
+            .catch(() => {
+                if (active) setNames({});
+            });
+        return () => {
+            active = false;
+        };
     }, [execution.processConfigId, execution.caseUuid]);
 
     const boxBackground = theme.palette.mode === 'dark' ? grey[900] : grey[100];
