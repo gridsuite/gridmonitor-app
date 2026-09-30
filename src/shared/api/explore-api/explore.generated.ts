@@ -1,5 +1,4 @@
 import { exploreBaseApi as api } from "shared/api/explore-api/explore-base-api";
-import { ProcessConfig } from "../monitor-api";
 const injectedRtkApi = api.injectEndpoints({
   endpoints: (build) => ({
     createProcessConfig: build.mutation<
@@ -15,10 +14,6 @@ const injectedRtkApi = api.injectEndpoints({
           description: queryArg.description,
           parentDirectoryUuid: queryArg.parentDirectoryUuid,
         },
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
       }),
     }),
   }),
@@ -31,6 +26,6 @@ export type CreateProcessConfigApiArg = {
   name: string;
   description: string;
   parentDirectoryUuid: string;
-  body: string
+  body: string;
 };
 export const { useCreateProcessConfigMutation } = injectedRtkApi;

@@ -12,6 +12,9 @@ import {
     ProcessType,
     invalidateProcessExecution,
     invalidateProcessExecutionSteps,
+    invalidateProcessExecutionReports,
+    invalidateProcessExecutionReportsSeverities,
+    invalidateProcessExecutionLogs,
 } from '../../shared/api/monitor-api';
 
 type MonitorNotificationData = {
@@ -34,6 +37,15 @@ export const useProcessInvalidationsListener = () => {
         const eventData = JSON.parse(event.data) as MonitorNotificationData;
         if (eventData.headers?.updateType === 'PROCESS_EXECUTION_UPDATED') {
             invalidateProcessExecutionsLists(dispatch);
+        }
+        if (
+            (eventData.headers?.updateType === 'PROCESS_STEP_UPDATED' ||
+                eventData.headers?.updateType === 'PROCESS_STEPS_UPDATED') &&
+            eventData.headers?.processExecutionId
+        ) {
+            invalidateProcessExecutionReports(dispatch, eventData.headers?.processExecutionId);
+            invalidateProcessExecutionReportsSeverities(dispatch, eventData.headers?.processExecutionId);
+            invalidateProcessExecutionLogs(dispatch, eventData.headers?.processExecutionId);
         }
         invalidateProcessExecution(dispatch);
         invalidateProcessExecutionSteps(dispatch);

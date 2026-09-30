@@ -156,11 +156,11 @@ export default function ProcessExecutionDetails({ execution, steps }: Readonly<P
                     >
                         <Button
                             component={RouterLink}
-                            to="logs"
+                            to={PROCESS_PATHS.logs(execution.id)}
                             variant="outlined"
                             disabled={execution.status === ProcessStatus.Scheduled}
                         >
-                            <FormattedMessage id="logs" />
+                            <FormattedMessage id="Logs" />
                         </Button>
 
                         <Button variant="contained" disabled>

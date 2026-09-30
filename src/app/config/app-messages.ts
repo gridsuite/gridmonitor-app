@@ -27,6 +27,10 @@ import {
     loginFr,
     topBarEn,
     topBarFr,
+    tableEn,
+    tableFr,
+    reportViewerEn,
+    reportViewerFr,
 } from '@gridsuite/commons-ui';
 import type { IntlConfig } from 'react-intl';
 import pluginMessagesEn from 'plugins/translations/en.json';
@@ -47,6 +51,8 @@ export const appMessages: Record<GsLangUser, IntlConfig['messages']> = {
         ...parametersEn,
         ...networkModificationsEn,
         ...filterEn,
+        ...tableEn,
+        ...reportViewerEn,
         ...pluginMessagesEn, // keep it at the end to allow translation overwriting
     },
     fr: {
@@ -61,6 +67,8 @@ export const appMessages: Record<GsLangUser, IntlConfig['messages']> = {
         ...parametersFr,
         ...networkModificationsFr,
         ...filterFr,
+        ...tableFr,
+        ...reportViewerFr,
         ...pluginMessagesFr, // keep it at the end to allow translation overwriting
     },
 };

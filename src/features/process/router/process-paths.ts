@@ -9,4 +9,5 @@ export const PROCESS_PATHS = {
     root: '/process',
     results: '/process/results',
     stepInfos: (id: string) => `/process/results/${id}`,
+    logs: (id: string) => `/process/results/${id}/logs`,
 } as const;

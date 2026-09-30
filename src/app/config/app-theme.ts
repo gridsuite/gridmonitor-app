@@ -97,6 +97,10 @@ const lightTheme: Theme = createTheme({
     components: {
         ...componentsStyleOverrides(),
     },
+    searchedText: {
+        highlightColor: '#53AAFF',
+        currentHighlightColor: '#FFA853',
+    },
 });
 
 const darkTheme: Theme = createTheme({
@@ -138,6 +142,10 @@ const darkTheme: Theme = createTheme({
             styleOverrides: darkScrollbarStyles,
         },
         ...componentsStyleOverrides(),
+    },
+    searchedText: {
+        highlightColor: '#123FBB',
+        currentHighlightColor: '#BB8E12',
     },
 });
 
