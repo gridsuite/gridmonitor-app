@@ -21,14 +21,14 @@ export function useExecutionWithSteps() {
     const skip = !id;
 
     const {
-        data: execution,
+        currentData: execution,
         isError: isExecutionError,
         isLoading: isExecutionLoading,
         isSuccess: isExecutionSuccess,
     } = useGetExecutionQuery({ executionId }, { skip });
 
     const {
-        data: stepInfos = [],
+        currentData: stepInfos = [],
         isError: isStepsError,
         isLoading: isStepsLoading,
         isSuccess: isStepsSuccess,

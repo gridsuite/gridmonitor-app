@@ -86,7 +86,7 @@ describe('ProcessExecutionDetails', () => {
         expect(screen.getAllByText('LoadFlow')[0]).toBeInTheDocument();
         expect(screen.getByText('Running')).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'Logs' })).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Compare / Agregate' })).toBeDisabled();
+        expect(screen.getByRole('button', { name: 'Compare / Aggregate' })).toBeDisabled();
         expect(screen.getByText('Load case')).toBeInTheDocument();
         expect(screen.getByText('Apply modifications')).toBeInTheDocument();
         expect(screen.getByText('processConfigGeneralInformation')).toBeInTheDocument();
