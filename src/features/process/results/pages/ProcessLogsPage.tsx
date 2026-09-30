@@ -7,17 +7,26 @@
 import { PROCESS_EXECUTION, ReportViewer } from '@gridsuite/commons-ui';
 import { FormattedMessage } from 'react-intl';
 import { Box, Breadcrumbs, Link, Stack, Typography } from '@mui/material';
-import { Link as RouterLink } from 'react-router';
+import { Link as RouterLink, useParams } from 'react-router';
 import { ProcessReportViewerProvider } from '../components/ProcessReportViewerProvider';
 import { useProcessLogs } from '../hooks/use-process-logs';
 import { PROCESS_PATHS } from '../../router/process-paths';
 import { ExecutionStatus } from '../../../../shared/ui/ExecutionStatus';
+import { ProcessLogsAlert } from '../components/ProcessLogsAlert';
 
 function ProcessLogsPage() {
-    const { execution, report, severities } = useProcessLogs();
+    const { id: executionId } = useParams<{ id: string }>();
+    const { execution, report, severities, isError, isEmpty, isLoading } = useProcessLogs(executionId);
 
     if (!execution) {
-        return null;
+        return (
+            <ProcessLogsAlert
+                isEmpty={isEmpty}
+                isError={isError}
+                isLoading={isLoading}
+                isMissingExecutionId={!executionId}
+            />
+        );
     }
 
     return (
@@ -29,7 +38,7 @@ function ProcessLogsPage() {
                     </Typography>
                 </Link>
 
-                <Link component={RouterLink} to={PROCESS_PATHS.stepInfos(execution.id)} underline="hover">
+                <Link component={RouterLink} to={PROCESS_PATHS.stepInfos(executionId)} underline="hover">
                     <Typography variant="subtitle1">
                         <FormattedMessage id={execution.type} />
                     </Typography>
@@ -49,7 +58,7 @@ function ProcessLogsPage() {
 
             {report && (
                 <Box sx={{ flex: 1, minHeight: 0 }}>
-                    <ProcessReportViewerProvider>
+                    <ProcessReportViewerProvider executionId={executionId}>
                         <ReportViewer report={report} reportType={PROCESS_EXECUTION} severities={severities} />
                     </ProcessReportViewerProvider>
                 </Box>

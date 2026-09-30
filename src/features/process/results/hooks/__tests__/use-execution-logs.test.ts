@@ -25,8 +25,8 @@ describe('useProcessLogs', () => {
             http.get('*/v1/executions/execution-1/reports/aggregated-severities', () => HttpResponse.json(severities))
         );
 
-        const { result } = renderHook(() => useProcessLogs(), {
-            wrapper: createTestProviders({ initialEntries: ['/process/results/execution-1/logs'] }),
+        const { result } = renderHook(() => useProcessLogs('execution-1'), {
+            wrapper: createTestProviders(),
         });
 
         await waitFor(() => expect(result.current.execution).toEqual(execution));
@@ -35,8 +35,8 @@ describe('useProcessLogs', () => {
     });
 
     it('returns empty data when execution ID is missing', () => {
-        const { result } = renderHook(() => useProcessLogs(), {
-            wrapper: createTestProviders({ initialEntries: ['/process/results/logs'] }),
+        const { result } = renderHook(() => useProcessLogs(undefined), {
+            wrapper: createTestProviders(),
         });
 
         expect(result.current.execution).toBeUndefined();
@@ -47,8 +47,8 @@ describe('useProcessLogs', () => {
     it('handles server errors gracefully', async () => {
         server.use(http.get('*/v1/executions/execution-1', () => new HttpResponse(null, { status: 500 })));
 
-        const { result } = renderHook(() => useProcessLogs(), {
-            wrapper: createTestProviders({ initialEntries: ['/process/results/execution-1/logs'] }),
+        const { result } = renderHook(() => useProcessLogs('execution-1'), {
+            wrapper: createTestProviders(),
         });
 
         await waitFor(() => expect(result.current.execution).toBeUndefined());

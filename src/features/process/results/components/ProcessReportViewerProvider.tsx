@@ -13,12 +13,10 @@ import {
     NotificationsUrlKeys,
     useNotificationsListener,
 } from '@gridsuite/commons-ui';
-import { useParams } from 'react-router';
 import { CustomAggridReduxProvider } from './custom-aggrid-redux-provider';
 import { useReportViewerProvider } from '../hooks/use-report-viewer-provider';
 
-export function ProcessReportViewerProvider({ children }: Readonly<PropsWithChildren>) {
-    const { id: executionId } = useParams<{ id: string }>();
+export function ProcessReportViewerProvider({ executionId, children }: Readonly<PropsWithChildren>) {
     const [refreshCounter, setRefreshCounter] = useState(0);
 
     useNotificationsListener(NotificationsUrlKeys.MONITOR, {

@@ -59,7 +59,6 @@
     "followExecution": "Follow execution",
     "analysisLaunched": "Analysis started",
 
-    "logs": "Logs",
     "compare.agregate": "Compare / Aggregate",
     "finishedAt": "Finished at {date}",
     "elapsedTime": "Elapsed time : {date}",

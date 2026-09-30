@@ -5,7 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useParams } from 'react-router';
 import {
     useGetExecutionQuery,
     useGetExecutionReportsQuery,
@@ -13,18 +12,23 @@ import {
 } from 'shared/api/monitor-api';
 import { SeverityLevel, Report } from '@gridsuite/commons-ui';
 
-export function useProcessLogs() {
-    const { id } = useParams<{ id: string }>();
-    const executionId = id ?? '';
-    const skip = !id;
+export function useProcessLogs(executionId?: string) {
+    const skip = !executionId;
 
-    const { currentData: execution } = useGetExecutionQuery({ executionId }, { skip });
-    const { currentData: report } = useGetExecutionReportsQuery({ executionId }, { skip });
+    const { currentData: execution, isError: isExecutionError } = useGetExecutionQuery({ executionId }, { skip });
+    const {
+        currentData: report,
+        isError: isReportsError,
+        isLoading: isReportLoading,
+    } = useGetExecutionReportsQuery({ executionId }, { skip });
     const { currentData: severities } = useGetExecutionReportsSeveritiesQuery({ executionId }, { skip });
 
     return {
         execution,
         report: report as Report,
         severities: severities as SeverityLevel[],
+        isError: isReportsError || isExecutionError,
+        isEmpty: !isLoading && !report,
+        isLoading: isReportLoading,
     };
 }
