@@ -50,7 +50,7 @@ export default function ResponsiveStepper({ steps }: { readonly steps: ProcessSt
                         alignItems: 'flex-start',
                     },
                     '& .MuiStepConnector-horizontal': {
-                        marginTop: '12px',
+                        marginTop: 1.5,
                     },
                     '& .MuiStep-vertical': {
                         paddingLeft: 1,
@@ -77,7 +77,7 @@ export default function ResponsiveStepper({ steps }: { readonly steps: ProcessSt
                                 },
                                 '&.MuiStepLabel-vertical': {
                                     alignItems: 'flex-start',
-                                    paddingBottom: '0px',
+                                    paddingBottom: 0,
                                 },
                             }}
                             optional={

@@ -64,7 +64,7 @@
     "finishedAt": "Terminé à {date}",
     "elapsedTime": "Temps écoulé : {date}",
     "pending": "En attente",
-    "skipped": "Sauté",
+    "skipped": "Non exécutée",
 
     "processLaunchHistory": "Historique d’exécution des chaînes",
     "analysisProgress": "Avancement de l’analyse",
