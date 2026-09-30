@@ -16,80 +16,45 @@ import { ExecutionStatus } from '../../../../shared/ui/ExecutionStatus';
 function ProcessLogsPage() {
     const { execution, report, severities } = useProcessLogs();
 
+    if (!execution) {
+        return null;
+    }
+
     return (
-        <>
-            {execution && (
-                <Box
-                    sx={{
-                        p: 3,
-                        height: '100%',
-                        display: 'flex',
-                        flexDirection: 'column',
-                    }}
-                >
-                    <Stack
-                        spacing={3}
-                        sx={{
-                            height: '100%',
-                        }}
-                    >
-                        <Breadcrumbs separator="/">
-                            <Link component={RouterLink} to={PROCESS_PATHS.results} underline="hover">
-                                <Typography variant="subtitle1">
-                                    <FormattedMessage id="processLaunchHistory" />
-                                </Typography>
-                            </Link>
+        <Stack spacing={3} sx={{ p: 3, height: '100%' }}>
+            <Breadcrumbs separator="/">
+                <Link component={RouterLink} to={PROCESS_PATHS.results} underline="hover">
+                    <Typography variant="subtitle1">
+                        <FormattedMessage id="processLaunchHistory" />
+                    </Typography>
+                </Link>
 
-                            <Link component={RouterLink} to={PROCESS_PATHS.stepInfos(execution.id)} underline="hover">
-                                <Typography variant="subtitle1">
-                                    <FormattedMessage id={execution.type} />
-                                </Typography>
-                            </Link>
+                <Link component={RouterLink} to={PROCESS_PATHS.stepInfos(execution.id)} underline="hover">
+                    <Typography variant="subtitle1">
+                        <FormattedMessage id={execution.type} />
+                    </Typography>
+                </Link>
 
-                            <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-                                <FormattedMessage id="Logs" />
-                            </Typography>
-                        </Breadcrumbs>
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                                flexWrap: 'wrap',
-                                gap: 1,
-                                width: '100%',
-                            }}
-                        >
-                            <Stack
-                                direction="row"
-                                spacing={1}
-                                sx={{
-                                    minWidth: 0,
-                                    flex: '1 1 240px',
-                                }}
-                            >
-                                <Typography variant="h6" noWrap>
-                                    <FormattedMessage id="Logs" />
-                                </Typography>
+                <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
+                    <FormattedMessage id="Logs" />
+                </Typography>
+            </Breadcrumbs>
 
-                                <ExecutionStatus value={execution.status} />
-                            </Stack>
-                        </Box>
-                        {report && (
-                            <Box sx={{ flex: 1, minHeight: 0 }}>
-                                <ProcessReportViewerProvider>
-                                    <ReportViewer
-                                        report={report}
-                                        reportType={PROCESS_EXECUTION}
-                                        severities={severities}
-                                    />
-                                </ProcessReportViewerProvider>
-                            </Box>
-                        )}
-                    </Stack>
+            <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+                <Typography variant="h6" noWrap>
+                    <FormattedMessage id="Logs" />
+                </Typography>
+                <ExecutionStatus value={execution.status} />
+            </Stack>
+
+            {report && (
+                <Box sx={{ flex: 1, minHeight: 0 }}>
+                    <ProcessReportViewerProvider>
+                        <ReportViewer report={report} reportType={PROCESS_EXECUTION} severities={severities} />
+                    </ProcessReportViewerProvider>
                 </Box>
             )}
-        </>
+        </Stack>
     );
 }
 

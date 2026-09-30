@@ -18,21 +18,13 @@ export function useProcessLogs() {
     const executionId = id ?? '';
     const skip = !id;
 
-    const { data: execution, isError: isExecutionError } = useGetExecutionQuery({ executionId }, { skip });
-    const {
-        data: report,
-        isError: isReportsError,
-        isLoading,
-    } = useGetExecutionReportsQuery({ executionId: id ?? '' }, { skip: !id });
-    const { data: severities } = useGetExecutionReportsSeveritiesQuery({ executionId: id ?? '' }, { skip: !id });
+    const { currentData: execution } = useGetExecutionQuery({ executionId }, { skip });
+    const { currentData: report } = useGetExecutionReportsQuery({ executionId }, { skip });
+    const { currentData: severities } = useGetExecutionReportsSeveritiesQuery({ executionId }, { skip });
 
     return {
         execution,
         report: report as Report,
         severities: severities as SeverityLevel[],
-        isError: isReportsError || isExecutionError,
-        isEmpty: !isLoading && !report,
-        isLoading,
-        isMissingExecutionId: !id,
     };
 }
