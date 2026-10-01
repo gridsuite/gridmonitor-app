@@ -7,7 +7,7 @@
 
 import { LIGHT_THEME } from '@gridsuite/commons-ui';
 import { createTheme, Theme } from '@mui/material';
-import { blue, common, green, grey, lime, red } from '@mui/material/colors';
+import { amber, blue, common, green, grey, red, teal } from '@mui/material/colors';
 
 function breakPoints(): { values: { xs: number; sm: number } } {
     return {
@@ -98,8 +98,8 @@ const lightTheme: Theme = createTheme({
         ...componentsStyleOverrides(),
     },
     searchedText: {
-        highlightColor: lime[200],
-        currentHighlightColor: '#FFA853',
+        highlightColor: amber[200],
+        currentHighlightColor: teal[100],
     },
 });
 
@@ -144,8 +144,8 @@ const darkTheme: Theme = createTheme({
         ...componentsStyleOverrides(),
     },
     searchedText: {
-        highlightColor: lime[200],
-        currentHighlightColor: '#BB8E12',
+        highlightColor: amber[200],
+        currentHighlightColor: teal[100],
         textColor: common.black,
     },
 });
