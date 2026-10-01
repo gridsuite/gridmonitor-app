@@ -5,85 +5,105 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { screen, waitFor } from '@testing-library/react';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import { useForm } from 'react-hook-form';
-import { http, HttpResponse } from 'msw';
-import { describe, expect, it, vi } from 'vitest';
-import type { ProcessConfigFormValues } from '@gridsuite/commons-ui';
-import { renderWithProviders } from 'test-utils/render-with-providers';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { FieldConstants, type ProcessConfigFormValues } from '@gridsuite/commons-ui';
 import { processConfigValues } from 'test-utils/fixtures';
-import { server } from 'test-utils/msw/server';
-import { useCreateProcessConfig } from '../use-create-process-config';
 import { useCreateProcessConfigSubmit } from '../useCreateProcessConfigSubmit';
 
-function SubmissionForm({ onClose }: { readonly onClose: () => void }) {
-    const form = useForm<ProcessConfigFormValues>({ defaultValues: processConfigValues() });
-    const { createProcessConfig } = useCreateProcessConfig();
-    const { submit, isSubmitting } = useCreateProcessConfigSubmit({ form, createProcessConfig, onClose });
-    return (
-        <>
-            <label htmlFor="config-name">
-                Name
-                <input id="config-name" {...form.register('name', { required: true })} />
-            </label>
-            {form.formState.errors.name && <p role="alert">Name is required</p>}
-            <button type="button" onClick={submit} disabled={isSubmitting}>
-                Create
-            </button>
-        </>
-    );
+const mocks = vi.hoisted(() => ({
+    snackSuccess: vi.fn(),
+    snackError: vi.fn(),
+}));
+
+vi.mock('@gridsuite/commons-ui', async (importOriginal) => {
+    const original = await importOriginal<typeof import('@gridsuite/commons-ui')>();
+
+    return {
+        ...original,
+        useSnackMessage: () => ({
+            snackSuccess: mocks.snackSuccess,
+            snackError: mocks.snackError,
+        }),
+    };
+});
+
+function renderSubmitHook(
+    createProcessConfig: (values: ProcessConfigFormValues) => Promise<unknown>,
+    onClose: () => void
+) {
+    return renderHook(() => {
+        // Could mock handleSubmit directly to avoid depending on useForm here
+        const form = useForm<ProcessConfigFormValues>({ defaultValues: processConfigValues() });
+        form.register(FieldConstants.NAME, { required: true });
+        return { form, ...useCreateProcessConfigSubmit({ form, createProcessConfig, onClose }) };
+    });
 }
 
-describe('configuration submission', () => {
-    it('blocks repeat submission while pending, then notifies and closes on success', async () => {
+describe('useCreateProcessConfigSubmit', () => {
+    beforeEach(() => {
+        vi.clearAllMocks();
+    });
+
+    it('reports pending state, then notifies and closes on success', async () => {
         const response = Promise.withResolvers<void>();
-        const request = vi.fn(async () => {
+        const createProcessConfig = vi.fn(async () => {
             await response.promise;
-            return HttpResponse.json('created-uuid');
+            return 'created-uuid';
         });
-        server.use(http.post('*/v1/explore/process-configs', request));
         const onClose = vi.fn();
-        const { user } = renderWithProviders(<SubmissionForm onClose={onClose} />);
-        const button = screen.getByRole('button', { name: 'Create' });
+        const { result } = renderSubmitHook(createProcessConfig, onClose);
 
-        await user.click(button);
-        await waitFor(() => expect(request).toHaveBeenCalledOnce());
-        expect(button).toBeDisabled();
-        await user.click(button);
-        expect(request).toHaveBeenCalledOnce();
+        let submission!: Promise<void>;
+        await act(async () => {
+            submission = result.current.submit();
+            await waitFor(() => expect(createProcessConfig).toHaveBeenCalledOnce());
+        });
+        expect(result.current.isSubmitting).toBe(true);
         expect(onClose).not.toHaveBeenCalled();
+
         response.resolve();
-
-        expect(await screen.findByText('Process configuration created in "/Configurations".')).toBeVisible();
+        await act(async () => submission);
+        expect(createProcessConfig).toHaveBeenCalledWith(processConfigValues());
+        expect(mocks.snackSuccess).toHaveBeenCalledWith({
+            messageId: 'processConfigCreated',
+            messageValues: { folder: '/Configurations' },
+        });
+        expect(mocks.snackError).not.toHaveBeenCalled();
         expect(onClose).toHaveBeenCalledOnce();
-        await waitFor(() => expect(button).toBeEnabled());
+        expect(result.current.isSubmitting).toBe(false);
     });
 
-    it('rejects invalid input without sending a request', async () => {
-        const request = vi.fn(() => HttpResponse.json('created-uuid'));
-        server.use(http.post('*/v1/explore/process-configs', request));
+    it('does not create an invalid form', async () => {
+        const createProcessConfig = vi.fn(async () => 'created-uuid');
         const onClose = vi.fn();
-        const { user } = renderWithProviders(<SubmissionForm onClose={onClose} />);
-        await user.clear(screen.getByRole('textbox', { name: 'Name' }));
-        await user.click(screen.getByRole('button', { name: 'Create' }));
-        expect(await screen.findByRole('alert')).toHaveTextContent('Name is required');
-        expect(request).not.toHaveBeenCalled();
+        const { result } = renderSubmitHook(createProcessConfig, onClose);
+
+        await act(async () => {
+            result.current.form.setValue(FieldConstants.NAME, '');
+            await result.current.submit();
+        });
+
+        expect(createProcessConfig).not.toHaveBeenCalled();
+        expect(mocks.snackSuccess).not.toHaveBeenCalled();
+        expect(mocks.snackError).not.toHaveBeenCalled();
         expect(onClose).not.toHaveBeenCalled();
-        expect(screen.getByRole('button', { name: 'Create' })).toBeEnabled();
+        expect(result.current.isSubmitting).toBe(false);
     });
 
-    it('keeps the form recoverable after failure and allows retry', async () => {
-        server.use(http.post('*/v1/explore/process-configs', () => HttpResponse.json({}, { status: 500 })));
+    it('notifies on failure and leaves the form open', async () => {
+        const createProcessConfig = vi.fn(async () => {
+            throw new Error('save failed');
+        });
         const onClose = vi.fn();
-        const { user } = renderWithProviders(<SubmissionForm onClose={onClose} />);
-        await user.click(screen.getByRole('button', { name: 'Create' }));
-        expect(await screen.findByText('Configuration save failed.')).toBeVisible();
-        expect(onClose).not.toHaveBeenCalled();
-        expect(screen.getByRole('textbox', { name: 'Name' })).toHaveValue('Loadflow');
-        expect(screen.getByRole('button', { name: 'Create' })).toBeEnabled();
+        const { result } = renderSubmitHook(createProcessConfig, onClose);
 
-        server.use(http.post('*/v1/explore/process-configs', () => HttpResponse.json('created-uuid')));
-        await user.click(screen.getByRole('button', { name: 'Create' }));
-        await waitFor(() => expect(onClose).toHaveBeenCalledOnce());
+        await act(async () => result.current.submit());
+
+        expect(mocks.snackError).toHaveBeenCalledWith({ messageId: 'processConfigCreateError' });
+        expect(mocks.snackSuccess).not.toHaveBeenCalled();
+        expect(onClose).not.toHaveBeenCalled();
+        expect(result.current.isSubmitting).toBe(false);
     });
 });
