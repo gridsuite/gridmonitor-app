@@ -5,64 +5,32 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { render, screen } from '@testing-library/react';
-import { IntlProvider } from 'react-intl';
-import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router';
-import { createTheme, CssBaseline, StyledEngineProvider, ThemeProvider } from '@mui/material';
+import { screen } from '@testing-library/react';
 import { it, expect, vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
-import { SnackbarProvider } from '@gridsuite/commons-ui';
 import { server } from 'test-utils/msw/server';
+import { renderWithProviders } from 'test-utils/render-with-providers';
 import App from '../App';
-import { store } from '../store/store';
-import { appMessages } from '../config/app-messages';
 
-vi.mock('uuid', () => ({ v4: () => '00000000-0000-0000-0000-000000000000' }));
-vi.mock('features/side-bar/components/AppSideBar', () => ({
-    AppSideBar: () => <div>GridMonitor</div>,
+vi.mock('@gridsuite/commons-ui', async (importOriginal) => ({
+    ...(await importOriginal<typeof import('@gridsuite/commons-ui')>()),
+    initializeAuthenticationProd: vi.fn().mockResolvedValue(null),
+    useNotificationsListener: vi.fn(),
 }));
 
-it('renders', async () => {
+vi.mock('features/side-bar/components/AppSideBar', () => ({
+    AppSideBar: () => <nav aria-label="Sidebar" />,
+}));
+
+it('renders the authenticated home route', async () => {
     server.use(
-        http.get('*/env.json', () =>
-            HttpResponse.json({
-                appsMetadataServerUrl: 'http://localhost:8070',
-            })
-        ),
-        http.get('http://localhost:8070/version.json', () =>
-            HttpResponse.json({
-                deployVersion: 'test-version',
-            })
+        http.get('*/config/v1/applications/*/parameters/:name', ({ params }) =>
+            HttpResponse.json({ name: params.name, value: 'false' })
         )
     );
 
-    render(
-        <IntlProvider locale="en" messages={appMessages.en}>
-            <BrowserRouter>
-                <Provider store={store}>
-                    <StyledEngineProvider injectFirst>
-                        <ThemeProvider theme={createTheme()}>
-                            <SnackbarProvider hideIconVariant={false}>
-                                <CssBaseline />
-                                <App />
-                            </SnackbarProvider>
-                        </ThemeProvider>
-                    </StyledEngineProvider>
-                </Provider>
-            </BrowserRouter>
-        </IntlProvider>
-    );
+    renderWithProviders(<App />);
 
-    const res1 = await screen.findAllByText((_, element) => {
-        return element?.textContent === 'GridMonitor';
-    });
-
-    expect(res1.length).toBeGreaterThan(0);
-
-    const res2 = screen.queryAllByAltText((_, element) => {
-        return element?.textContent === 'Configuration mode';
-    });
-
-    expect(res2).toHaveLength(0);
+    expect(await screen.findByRole('heading', { name: 'Connected' })).toBeVisible();
+    expect(screen.getByRole('switch', { name: 'Configuration mode' })).not.toBeChecked();
 });

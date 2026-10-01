@@ -61,11 +61,10 @@ describe('ProcessStepInfosPage', () => {
     });
 
     it('displays the loading state', async () => {
+        const response = Promise.withResolvers<void>();
         server.use(
             http.get('*/v1/executions/execution-1/step-infos', async () => {
-                await new Promise((resolve) => {
-                    setTimeout(resolve, 50);
-                });
+                await response.promise;
 
                 return HttpResponse.json([]);
             })
@@ -83,6 +82,8 @@ describe('ProcessStepInfosPage', () => {
         );
 
         expect(screen.getByText('Loading process step information...')).toBeInTheDocument();
+        response.resolve();
+        await waitFor(() => expect(screen.queryByText('Loading process step information...')).not.toBeInTheDocument());
     });
 
     it('displays the error state', async () => {

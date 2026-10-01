@@ -7,8 +7,9 @@
 
 import { useCallback } from 'react';
 import { ExecuteProcessApiArg, useExecuteProcessMutation } from 'shared/api/monitor-api';
+import type { ExecuteProcessConfigFormData } from '../components/ExecuteProcessConfigDialog';
 
-export function toExecuteProcessApiArg(values: any): ExecuteProcessApiArg {
+export function toExecuteProcessApiArg(values: ExecuteProcessConfigFormData): ExecuteProcessApiArg {
     return {
         caseUuid: values.case?.[0].id,
         processConfigUuid: values.processConfig?.[0].id,
@@ -20,7 +21,7 @@ export function useExecuteProcess() {
     const [executeProcessMutation, mutationResult] = useExecuteProcessMutation();
 
     const executeProcess = useCallback(
-        async (values: any) => {
+        async (values: ExecuteProcessConfigFormData) => {
             const result = await executeProcessMutation(toExecuteProcessApiArg(values)).unwrap();
             return result;
         },

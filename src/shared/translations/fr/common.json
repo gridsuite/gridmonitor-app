@@ -57,5 +57,6 @@
     "autoGenCase": "Situation générée par un processus automatique",
     "gridExploreCase": "Situation de GridExplore",
     "followExecution": "Suivre l'exécution",
-    "analysisLaunched": "Analyse lancée"
+    "analysisLaunched": "Analyse lancée",
+    "Configurations": "Configurations"
 }
