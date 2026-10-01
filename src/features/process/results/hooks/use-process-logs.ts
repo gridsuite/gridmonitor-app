@@ -13,22 +13,29 @@ import {
 import { SeverityLevel, Report } from '@gridsuite/commons-ui';
 
 export function useProcessLogs(executionId?: string) {
+    const effectiveExecutionId = executionId ?? '';
     const skip = !executionId;
 
-    const { currentData: execution, isError: isExecutionError } = useGetExecutionQuery({ executionId }, { skip });
+    const { currentData: execution, isError: isExecutionError } = useGetExecutionQuery(
+        { executionId: effectiveExecutionId },
+        { skip }
+    );
     const {
         currentData: report,
         isError: isReportsError,
         isLoading: isReportLoading,
-    } = useGetExecutionReportsQuery({ executionId }, { skip });
-    const { currentData: severities } = useGetExecutionReportsSeveritiesQuery({ executionId }, { skip });
+    } = useGetExecutionReportsQuery({ executionId: effectiveExecutionId }, { skip });
+    const { currentData: severities } = useGetExecutionReportsSeveritiesQuery(
+        { executionId: effectiveExecutionId },
+        { skip }
+    );
 
     return {
         execution,
         report: report as Report,
         severities: severities as SeverityLevel[],
         isError: isReportsError || isExecutionError,
-        isEmpty: !isLoading && !report,
+        isEmpty: !isReportLoading && !report,
         isLoading: isReportLoading,
     };
 }
