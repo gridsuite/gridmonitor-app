@@ -14,7 +14,6 @@ import {
     invalidateProcessExecutionSteps,
     invalidateProcessExecutionReports,
     invalidateProcessExecutionReportsSeverities,
-    invalidateProcessExecutionLogs,
 } from '../../shared/api/monitor-api';
 
 type MonitorNotificationData = {
@@ -45,7 +44,6 @@ export const useProcessInvalidationsListener = () => {
         ) {
             invalidateProcessExecutionReports(dispatch, eventData.headers.processExecutionId);
             invalidateProcessExecutionReportsSeverities(dispatch, eventData.headers.processExecutionId);
-            invalidateProcessExecutionLogs(dispatch, eventData.headers.processExecutionId);
         }
     };
 
