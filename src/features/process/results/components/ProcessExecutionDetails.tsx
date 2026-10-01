@@ -99,14 +99,7 @@ export default function ProcessExecutionDetails({ execution, steps }: Readonly<P
                         width: '100%',
                     }}
                 >
-                    <Stack
-                        direction="row"
-                        spacing={1}
-                        sx={{
-                            minWidth: 0,
-                            flex: '1 1 240px',
-                        }}
-                    >
+                    <Stack direction="row" spacing={1}>
                         <Typography variant="h6" noWrap>
                             <FormattedMessage id={execution.type} />
                         </Typography>
@@ -198,7 +191,7 @@ export default function ProcessExecutionDetails({ execution, steps }: Readonly<P
                 </Accordion>
                 <Box
                     sx={{
-                        minHeight: 138,
+                        padding: 5,
                         bgcolor: boxBackground,
                         display: 'flex',
                         alignItems: 'center',
