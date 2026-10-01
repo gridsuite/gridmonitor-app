@@ -14,8 +14,7 @@ import { ProcessStepModel } from '../models/process-result';
 import { useElapsedTime } from '../hooks/use-elapsed-time';
 import { useStepperOrientation } from '../hooks/use-stepper-orientation';
 
-function StepStatusText({ step }: { readonly step: ProcessStepModel }) {
-    const elapsed = useElapsedTime(step.status === StepStatus.Running ? step.startedAt : undefined);
+function StepStatusText({ step, elapsed }: { readonly step: ProcessStepModel; readonly elapsed: number }) {
     switch (step.status) {
         case StepStatus.Completed:
         case StepStatus.Failed:
@@ -35,62 +34,88 @@ function StepStatusText({ step }: { readonly step: ProcessStepModel }) {
     }
 }
 
+function ProcessStepper({
+    steps,
+    activeStep,
+    orientation,
+    elapsed,
+}: {
+    readonly steps: ProcessStepModel[];
+    readonly activeStep: number;
+    readonly orientation: 'horizontal' | 'vertical';
+    readonly elapsed: number;
+}) {
+    return (
+        <Stepper
+            activeStep={activeStep}
+            orientation={orientation}
+            sx={{
+                ...(orientation === 'horizontal' && { minWidth: 'max-content' }),
+                '& .MuiStep-horizontal': {
+                    alignItems: 'flex-start',
+                },
+                '& .MuiStepConnector-horizontal': {
+                    marginTop: 1.5,
+                },
+                '& .MuiStep-vertical': {
+                    paddingLeft: 1,
+                },
+            }}
+        >
+            {steps.map((step) => (
+                <Step key={step.id} completed={step.status === StepStatus.Completed}>
+                    <StepLabel
+                        error={step.status === StepStatus.Failed}
+                        icon={
+                            step.status === StepStatus.Failed ? (
+                                <ErrorIcon
+                                    sx={{
+                                        transform: 'scale(1.2)',
+                                    }}
+                                    color="error"
+                                />
+                            ) : undefined
+                        }
+                        sx={{
+                            '&.MuiStepLabel-horizontal': {
+                                alignItems: 'flex-start',
+                            },
+                            '&.MuiStepLabel-vertical': {
+                                alignItems: 'flex-start',
+                                paddingBottom: 0,
+                            },
+                        }}
+                        optional={
+                            <Typography variant="caption" color="text.secondary">
+                                <StepStatusText step={step} elapsed={elapsed} />
+                            </Typography>
+                        }
+                    >
+                        <FormattedMessage id={step.stepType} />
+                    </StepLabel>
+                </Step>
+            ))}
+        </Stepper>
+    );
+}
+
 export default function ResponsiveStepper({ steps }: { readonly steps: ProcessStepModel[] }) {
-    const { containerRef, orientation } = useStepperOrientation(steps.length);
+    const { containerRef, measureRef, orientation } = useStepperOrientation();
     const runningIndex = steps.findIndex((s) => s.status === StepStatus.Running);
     const activeStep = runningIndex === -1 ? steps.length : runningIndex;
+    const elapsed = useElapsedTime(steps[runningIndex]?.startedAt);
 
     return (
-        <Box ref={containerRef} sx={{ width: '100%' }}>
-            <Stepper
-                activeStep={activeStep}
-                orientation={orientation}
-                sx={{
-                    '& .MuiStep-horizontal': {
-                        alignItems: 'flex-start',
-                    },
-                    '& .MuiStepConnector-horizontal': {
-                        marginTop: 1.5,
-                    },
-                    '& .MuiStep-vertical': {
-                        paddingLeft: 1,
-                    },
-                }}
+        <Box ref={containerRef} sx={{ width: '100%', minWidth: 0, position: 'relative' }}>
+            <Box
+                aria-hidden="true"
+                sx={{ position: 'absolute', width: 0, height: 0, overflow: 'hidden', visibility: 'hidden' }}
             >
-                {steps.map((step) => (
-                    <Step key={step.id} completed={step.status === StepStatus.Completed}>
-                        <StepLabel
-                            error={step.status === StepStatus.Failed}
-                            icon={
-                                step.status === StepStatus.Failed ? (
-                                    <ErrorIcon
-                                        sx={{
-                                            transform: 'scale(1.2)',
-                                        }}
-                                        color="error"
-                                    />
-                                ) : undefined
-                            }
-                            sx={{
-                                '&.MuiStepLabel-horizontal': {
-                                    alignItems: 'flex-start',
-                                },
-                                '&.MuiStepLabel-vertical': {
-                                    alignItems: 'flex-start',
-                                    paddingBottom: 0,
-                                },
-                            }}
-                            optional={
-                                <Typography variant="caption" color="text.secondary">
-                                    <StepStatusText step={step} />
-                                </Typography>
-                            }
-                        >
-                            <FormattedMessage id={step.stepType} />
-                        </StepLabel>
-                    </Step>
-                ))}
-            </Stepper>
+                <Box ref={measureRef} sx={{ width: 'max-content' }}>
+                    <ProcessStepper steps={steps} activeStep={activeStep} orientation="horizontal" elapsed={elapsed} />
+                </Box>
+            </Box>
+            <ProcessStepper steps={steps} activeStep={activeStep} orientation={orientation} elapsed={elapsed} />
         </Box>
     );
 }

@@ -5,22 +5,24 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { render, screen } from '@testing-library/react';
-import { IntlProvider } from 'react-intl';
-import { MemoryRouter } from 'react-router';
+import { screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { ProcessStatus, StepStatus, type ProcessExecution } from 'shared/api/monitor-api';
-import messagesEn from '../../../../../shared/translations/en/common.json';
+import { renderWithProviders } from 'test-utils/render-with-providers';
 import ProcessExecutionDetails from '../ProcessExecutionDetails';
 import type { ProcessStepModel } from '../../models/process-result';
 
-vi.mock('@gridsuite/commons-ui', () => ({
-    fetchElementNames: vi.fn().mockResolvedValue({
-        'process-config-1': 'Load-flow configuration',
-        'case-1': 'Test case',
-    }),
-    UserAvatar: ({ label }: { label: string }) => <span>{label}</span>,
-}));
+vi.mock('@gridsuite/commons-ui', async (importOriginal) => {
+    const actual = await importOriginal();
+    return {
+        ...actual,
+        fetchElementNames: vi.fn().mockResolvedValue({
+            'process-config-1': 'Load-flow configuration',
+            'case-1': 'Test case',
+        }),
+        UserAvatar: ({ label }: { label: string }) => <span>{label}</span>,
+    };
+});
 
 vi.mock('../../hooks/use-stepper-orientation', () => ({
     useStepperOrientation: () => ({
@@ -75,21 +77,15 @@ const steps: ProcessStepModel[] = [
 
 describe('ProcessExecutionDetails', () => {
     it('renders the execution details of a running process', async () => {
-        render(
-            <IntlProvider locale="en" messages={messagesEn}>
-                <MemoryRouter>
-                    <ProcessExecutionDetails execution={execution} steps={steps} />
-                </MemoryRouter>
-            </IntlProvider>
-        );
+        renderWithProviders(<ProcessExecutionDetails execution={execution} steps={steps} />);
 
         expect(screen.getAllByText('LoadFlow')[0]).toBeInTheDocument();
         expect(screen.getByText('Running')).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'Logs' })).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Compare / Aggregate' })).toBeDisabled();
-        expect(screen.getByText('Load case')).toBeInTheDocument();
-        expect(screen.getByText('Apply modifications')).toBeInTheDocument();
-        expect(screen.getByText('processConfigGeneralInformation')).toBeInTheDocument();
+        expect(screen.getAllByText('Load case')[0]).toBeInTheDocument();
+        expect(screen.getAllByText('Apply modifications')[0]).toBeInTheDocument();
+        expect(screen.getByText('General informations')).toBeInTheDocument();
         expect(screen.getByText('Results not available.')).toBeInTheDocument();
 
         expect(await screen.findByText('Load-flow configuration')).toBeInTheDocument();
@@ -97,31 +93,22 @@ describe('ProcessExecutionDetails', () => {
     });
 
     it('renders the execution details of a finished', async () => {
-        render(
-            <IntlProvider locale="en" messages={messagesEn}>
-                <MemoryRouter>
-                    <ProcessExecutionDetails
-                        execution={{ ...execution, status: ProcessStatus.Completed }}
-                        steps={steps}
-                    />
-                </MemoryRouter>
-            </IntlProvider>
+        renderWithProviders(
+            <ProcessExecutionDetails execution={{ ...execution, status: ProcessStatus.Completed }} steps={steps} />
         );
 
         expect(screen.getAllByText('LoadFlow')[0]).toBeInTheDocument();
         expect(screen.getAllByText('Finished')[0]).toBeInTheDocument();
+        expect(await screen.findByText('Load-flow configuration')).toBeInTheDocument();
     });
 
     it('renders the execution details of a failed process', async () => {
-        render(
-            <IntlProvider locale="en" messages={messagesEn}>
-                <MemoryRouter>
-                    <ProcessExecutionDetails execution={{ ...execution, status: ProcessStatus.Failed }} steps={steps} />
-                </MemoryRouter>
-            </IntlProvider>
+        renderWithProviders(
+            <ProcessExecutionDetails execution={{ ...execution, status: ProcessStatus.Failed }} steps={steps} />
         );
 
         expect(screen.getAllByText('LoadFlow')[0]).toBeInTheDocument();
         expect(screen.getAllByText('Failed')[0]).toBeInTheDocument();
+        expect(await screen.findByText('Load-flow configuration')).toBeInTheDocument();
     });
 });

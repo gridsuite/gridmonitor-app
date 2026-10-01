@@ -17,7 +17,7 @@ describe('LaunchSuccessDialog', () => {
         const { user } = renderWithProviders(
             <Routes>
                 <Route path="/" element={<LaunchSuccessDialog executionId="execution-1" open onClose={onClose} />} />
-                <Route path="/process/results/execution-1/step-infos" element={<h1>Execution details</h1>} />
+                <Route path="/process/results/execution-1" element={<h1>Execution details</h1>} />
             </Routes>
         );
         await user.click(screen.getByRole('link'));

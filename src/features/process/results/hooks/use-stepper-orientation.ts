@@ -5,36 +5,31 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 
-const STEP_WIDTH = 232;
-const CONNECTOR_MIN_WIDTH = 24;
-const GAP = 8;
-
-export function useStepperOrientation(stepCount: number) {
+export function useStepperOrientation() {
     const containerRef = useRef<HTMLDivElement>(null);
-    const [orientation, setOrientation] = useState<'horizontal' | 'vertical'>('horizontal');
+    const measureRef = useRef<HTMLDivElement>(null);
+    const [orientation, setOrientation] = useState<'horizontal' | 'vertical'>('vertical');
 
-    useEffect(() => {
-        const element = containerRef.current;
-        if (!element) {
+    useLayoutEffect(() => {
+        const container = containerRef.current;
+        const measure = measureRef.current;
+        if (!container || !measure || typeof ResizeObserver === 'undefined') {
             return undefined;
         }
 
-        const updateOrientation = (width: number) => {
-            const requiredWidth = stepCount * STEP_WIDTH + (stepCount - 1) * (CONNECTOR_MIN_WIDTH + GAP * 2);
-
-            setOrientation(width < requiredWidth ? 'vertical' : 'horizontal');
+        const updateOrientation = () => {
+            const fits = measure.getBoundingClientRect().width <= container.getBoundingClientRect().width;
+            setOrientation(fits ? 'horizontal' : 'vertical');
         };
-
-        const observer = new ResizeObserver(([entry]) => {
-            updateOrientation(entry.contentRect.width);
-        });
-
-        observer.observe(element);
+        const observer = new ResizeObserver(updateOrientation);
+        observer.observe(container);
+        observer.observe(measure);
+        updateOrientation();
 
         return () => observer.disconnect();
-    }, [stepCount]);
+    }, []);
 
-    return { containerRef, orientation };
+    return { containerRef, measureRef, orientation };
 }

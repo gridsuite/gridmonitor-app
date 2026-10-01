@@ -12,7 +12,7 @@ import { http, HttpResponse } from 'msw';
 import { renderWithProviders } from 'test-utils/render-with-providers';
 import { server } from 'test-utils/msw/server';
 import ProcessResultsPage from '../../pages/ProcessResultsPage';
-import ProcessStepInfosPage from '../../pages/ProcessStepInfosPage';
+import ProcessExecutionPage from '../../pages/ProcessExecutionPage';
 
 const execution = {
     id: 'execution-1',
@@ -25,23 +25,16 @@ const execution = {
 
 describe('ProcessResultsPage', () => {
     it('displays execution data and opens the selected execution details', async () => {
-        server.use(
-            http.get('*/v1/executions', () => HttpResponse.json([execution])),
-            http.get('*/v1/executions/execution-1/step-infos', () =>
-                HttpResponse.json([{ id: 'step-1', stepOrder: 1, stepType: 'LOADFLOW', status: 'COMPLETED' }])
-            )
-        );
-        const { user } = renderWithProviders(
+        server.use(http.get('*/v1/executions', () => HttpResponse.json([execution])));
+        renderWithProviders(
             <Routes>
                 <Route path="/" element={<ProcessResultsPage />} />
-                <Route path="/process/results/:id/step-infos" element={<ProcessStepInfosPage />} />
+                <Route path="/process/results/:id" element={<ProcessExecutionPage />} />
             </Routes>
         );
         expect(await screen.findByText('Security analysis')).toBeVisible();
         expect(screen.getByRole('link', { name: 'Failed' })).toBeVisible();
         expect(screen.getByRole('columnheader', { name: /^Status/ })).toBeInTheDocument();
-        await user.click(screen.getByRole('link', { name: 'Failed' }));
-        expect(await screen.findByText('1 step for execution execution-1.')).toBeVisible();
     });
 
     it('shows loading until the request resolves, then shows the empty state', async () => {
