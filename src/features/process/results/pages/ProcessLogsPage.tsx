@@ -15,7 +15,7 @@ import { ExecutionStatus } from '../../../../shared/ui/ExecutionStatus';
 import { ProcessLogsAlert } from '../components/ProcessLogsAlert';
 
 function ProcessLogsPage() {
-    const { id: executionId } = useParams<{ id: string }>();
+    const { id: executionId = '' } = useParams<{ id: string }>();
     const { execution, report, severities, isError, isEmpty, isLoading } = useProcessLogs(executionId);
 
     if (!execution) {

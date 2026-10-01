@@ -16,7 +16,11 @@ import {
 import { CustomAggridReduxProvider } from './custom-aggrid-redux-provider';
 import { useReportViewerProvider } from '../hooks/use-report-viewer-provider';
 
-export function ProcessReportViewerProvider({ executionId, children }: Readonly<PropsWithChildren>) {
+type ProcessReportViewerProviderProps = PropsWithChildren<{
+    executionId: string;
+}>;
+
+export function ProcessReportViewerProvider({ executionId, children }: Readonly<ProcessReportViewerProviderProps>) {
     const [refreshCounter, setRefreshCounter] = useState(0);
 
     useNotificationsListener(NotificationsUrlKeys.MONITOR, {
