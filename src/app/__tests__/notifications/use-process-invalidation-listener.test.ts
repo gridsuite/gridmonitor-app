@@ -5,80 +5,144 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { renderHook, act } from '@testing-library/react';
+import { renderHook } from '@testing-library/react';
 import { NotificationsUrlKeys, useNotificationsListener } from '@gridsuite/commons-ui';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import * as monitorApi from '../../../shared/api/monitor-api';
-import { createTestProviders } from '../../../test-utils/render-with-providers';
+import {
+    invalidateProcessExecutionLogs,
+    invalidateProcessExecutionReports,
+    invalidateProcessExecutionReportsSeverities,
+    invalidateProcessExecutionsLists,
+} from 'shared/api/monitor-api';
+import { createTestContext } from 'test-utils/create-test-context';
 import { useProcessInvalidationsListener } from '../../notifications/use-process-invalidation-listener';
 
-vi.mock('@gridsuite/commons-ui', async (importOriginal) => {
-    const actual = await importOriginal<typeof import('@gridsuite/commons-ui')>();
-    return {
-        ...actual,
-        useNotificationsListener: vi.fn(),
-    };
-});
+vi.mock('shared/api/monitor-api', async (importOriginal) => {
+    const actual = await importOriginal<typeof import('shared/api/monitor-api')>();
 
-vi.mock('../../../shared/api/monitor-api', async (importOriginal) => {
-    const actual = await importOriginal<typeof import('../../../shared/api/monitor-api')>();
     return {
         ...actual,
         invalidateProcessExecutionsLists: vi.fn(),
         invalidateProcessExecutionReports: vi.fn(),
         invalidateProcessExecutionReportsSeverities: vi.fn(),
         invalidateProcessExecutionLogs: vi.fn(),
-        invalidateProcessExecution: vi.fn(),
-        invalidateProcessExecutionSteps: vi.fn(),
+    };
+});
+
+vi.mock('@gridsuite/commons-ui', async (importOriginal) => {
+    const actual = await importOriginal<typeof import('@gridsuite/commons-ui')>();
+
+    return {
+        ...actual,
+        useNotificationsListener: vi.fn(),
     };
 });
 
 describe('useProcessInvalidationListener', () => {
-    let listenerCallback: ((event: MessageEvent) => void) | undefined;
+    let listenerCallbackMessage: ((event: MessageEvent) => void) | undefined;
 
     beforeEach(() => {
         vi.clearAllMocks();
-        listenerCallback = undefined;
+        listenerCallbackMessage = undefined;
+
         vi.mocked(useNotificationsListener).mockImplementation((_urlKey, options) => {
-            listenerCallback = options.listenerCallbackMessage;
+            listenerCallbackMessage = options.listenerCallbackMessage;
         });
     });
 
-    it('subscribes to MONITOR notifications and invalidates lists on update', () => {
-        renderHook(() => useProcessInvalidationsListener(), {
-            wrapper: createTestProviders(),
+    it('registers a notifications listener on the monitor channel', () => {
+        const { wrapper } = createTestContext();
+
+        expect(listenerCallbackMessage).not.toBeDefined();
+        renderHook(() => useProcessInvalidationsListener(), { wrapper });
+
+        expect(useNotificationsListener).toHaveBeenCalledWith(NotificationsUrlKeys.MONITOR, {
+            listenerCallbackMessage: expect.any(Function),
         });
-
-        expect(useNotificationsListener).toHaveBeenCalledWith(NotificationsUrlKeys.MONITOR, expect.any(Object));
-
-        act(() => {
-            listenerCallback?.({
-                data: JSON.stringify({
-                    headers: { updateType: 'PROCESS_EXECUTION_UPDATED' },
-                }),
-            } as MessageEvent);
-        });
-
-        expect(monitorApi.invalidateProcessExecutionsLists).toHaveBeenCalled();
+        expect(listenerCallbackMessage).toBeDefined();
     });
 
-    it('invalidates reports and logs on step update', () => {
-        renderHook(() => useProcessInvalidationsListener(), {
-            wrapper: createTestProviders(),
-        });
+    it('invalidates process execution lists when receiving a matching update type', () => {
+        const { wrapper } = createTestContext();
 
-        act(() => {
-            listenerCallback?.({
-                data: JSON.stringify({
-                    headers: {
-                        updateType: 'PROCESS_STEP_UPDATED',
-                        processExecutionId: 'execution-1',
-                    },
-                }),
+        renderHook(() => useProcessInvalidationsListener(), { wrapper });
+
+        listenerCallbackMessage?.({
+            data: JSON.stringify({
+                headers: { updateType: 'PROCESS_EXECUTION_UPDATED' },
+            }),
+        } as MessageEvent);
+
+        expect(invalidateProcessExecutionsLists).toHaveBeenCalledTimes(1);
+    });
+
+    it('invalidates process reports, reports severities and logs when receiving a matching update type', () => {
+        const { wrapper } = createTestContext();
+
+        renderHook(() => useProcessInvalidationsListener(), { wrapper });
+
+        listenerCallbackMessage?.({
+            data: JSON.stringify({
+                headers: { updateType: 'PROCESS_STEP_UPDATED', processExecutionId: '123' },
+            }),
+        } as MessageEvent);
+
+        listenerCallbackMessage?.({
+            data: JSON.stringify({
+                headers: { updateType: 'PROCESS_STEPS_UPDATED', processExecutionId: '456' },
+            }),
+        } as MessageEvent);
+
+        expect(invalidateProcessExecutionReports).toHaveBeenNthCalledWith(1, expect.anything(), '123');
+        expect(invalidateProcessExecutionReports).toHaveBeenNthCalledWith(2, expect.anything(), '456');
+
+        expect(invalidateProcessExecutionReportsSeverities).toHaveBeenNthCalledWith(1, expect.anything(), '123');
+        expect(invalidateProcessExecutionReportsSeverities).toHaveBeenNthCalledWith(2, expect.anything(), '456');
+
+        expect(invalidateProcessExecutionLogs).toHaveBeenNthCalledWith(1, expect.anything(), '123');
+        expect(invalidateProcessExecutionLogs).toHaveBeenNthCalledWith(2, expect.anything(), '456');
+    });
+
+    it('does nothing when updateType is not matching', () => {
+        const { wrapper } = createTestContext();
+
+        renderHook(() => useProcessInvalidationsListener(), { wrapper });
+
+        listenerCallbackMessage?.({
+            data: JSON.stringify({
+                headers: {
+                    updateType: 'unknown',
+                },
+            }),
+        } as MessageEvent);
+
+        expect(invalidateProcessExecutionsLists).not.toHaveBeenCalled();
+    });
+
+    it('does nothing when updateType is missing', () => {
+        const { wrapper } = createTestContext();
+
+        renderHook(() => useProcessInvalidationsListener(), { wrapper });
+
+        listenerCallbackMessage?.({
+            data: JSON.stringify({
+                headers: {},
+            }),
+        } as MessageEvent);
+
+        expect(invalidateProcessExecutionsLists).not.toHaveBeenCalled();
+    });
+
+    it('throws on invalid JSON payloads', () => {
+        const { wrapper } = createTestContext();
+
+        renderHook(() => useProcessInvalidationsListener(), { wrapper });
+
+        expect(() => {
+            listenerCallbackMessage?.({
+                data: 'not-json',
             } as MessageEvent);
-        });
-
-        expect(monitorApi.invalidateProcessExecutionReports).toHaveBeenCalledWith(expect.any(Function), 'execution-1');
-        expect(monitorApi.invalidateProcessExecutionLogs).toHaveBeenCalledWith(expect.any(Function), 'execution-1');
+        }).toThrow(SyntaxError);
+        expect(invalidateProcessExecutionsLists).not.toHaveBeenCalled();
     });
 });
