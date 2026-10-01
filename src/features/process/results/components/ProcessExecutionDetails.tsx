@@ -21,7 +21,7 @@ import {
 
 import { ExpandMore, RotateRightOutlined } from '@mui/icons-material';
 import { grey } from '@mui/material/colors';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router';
 import { ExecutionStatus } from 'shared/ui/ExecutionStatus';
@@ -43,6 +43,7 @@ export default function ProcessExecutionDetails({ execution, steps }: Readonly<P
     const [isOpen, setIsOpen] = useState(!executionCompleted);
 
     const [names, setNames] = useState<Record<string, string>>({});
+    const fetchedNamesKey = useRef<string | null>(null);
 
     const intl = useIntl();
 
@@ -52,17 +53,23 @@ export default function ProcessExecutionDetails({ execution, steps }: Readonly<P
     const processConfigName = names[execution.processConfigId];
 
     useEffect(() => {
-        let active = true;
+        const namesKey = JSON.stringify([execution.processConfigId, execution.caseUuid]);
+        if (fetchedNamesKey.current === namesKey) {
+            return;
+        }
+
+        fetchedNamesKey.current = namesKey;
         fetchElementNames(new Set([execution.processConfigId, execution.caseUuid]))
             .then((result) => {
-                if (active) setNames(result);
+                if (fetchedNamesKey.current === namesKey) {
+                    setNames(result);
+                }
             })
             .catch(() => {
-                if (active) setNames({});
+                if (fetchedNamesKey.current === namesKey) {
+                    setNames({});
+                }
             });
-        return () => {
-            active = false;
-        };
     }, [execution.processConfigId, execution.caseUuid]);
 
     const boxBackground = theme.palette.mode === 'dark' ? grey[900] : grey[100];
