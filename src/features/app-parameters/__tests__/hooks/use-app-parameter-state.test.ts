@@ -26,11 +26,10 @@ describe('useAppParameterState', () => {
     });
 
     it('optimistic update then stays updated on success', async () => {
+        const response = Promise.withResolvers<void>();
         server.use(
             http.put('*/config/v1/applications/*/parameters/theme', async () => {
-                await new Promise((r) => {
-                    setTimeout(r, 50);
-                });
+                await response.promise;
                 return HttpResponse.json({});
             })
         );
@@ -56,6 +55,7 @@ describe('useAppParameterState', () => {
 
         // wait for server success
         await act(async () => {
+            response.resolve();
             await promise;
         });
 
@@ -65,11 +65,10 @@ describe('useAppParameterState', () => {
     });
 
     it('optimistic update then rollback on error', async () => {
+        const response = Promise.withResolvers<void>();
         server.use(
             http.put('*/config/v1/applications/*/parameters/theme', async () => {
-                await new Promise((r) => {
-                    setTimeout(r, 50);
-                });
+                await response.promise;
                 return HttpResponse.error();
             })
         );
@@ -96,11 +95,8 @@ describe('useAppParameterState', () => {
 
         // wait for server failure
         await act(async () => {
-            try {
-                await promise;
-            } catch {
-                // expected error
-            }
+            response.resolve();
+            await expect(promise).rejects.toMatchObject({ status: 'FETCH_ERROR' });
         });
 
         // check value has been changed to old one

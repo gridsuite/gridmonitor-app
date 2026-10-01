@@ -16,8 +16,23 @@ export default mergeConfig(
             globals: true,
             setupFiles: './vitest.setup.ts',
             css: true,
+            clearMocks: true,
+            restoreMocks: true,
             coverage: {
                 reporter: ['text', 'lcov'],
+                include: ['src/**/*.{ts,tsx}'],
+                exclude: [
+                    '**/*.test.ts',
+                    '**/*.test.tsx',
+                    '**/*.spec.ts',
+                    '**/*.spec.tsx',
+                    '**/__tests__/**',
+                    'src/test-utils/**',
+                    'src/**/*.generated.ts',
+                    'src/types/**',
+                    'src/**/*.d.ts',
+                    'src/**/*.type.ts',
+                ],
             },
         },
     })

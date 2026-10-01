@@ -58,6 +58,7 @@
     "gridExploreCase": "Case from GridExplore",
     "followExecution": "Follow execution",
     "analysisLaunched": "Analysis started",
+    "Configurations": "Configurations",
 
     "compare.agregate": "Compare / Aggregate",
     "finishedAt": "Finished at {date}",

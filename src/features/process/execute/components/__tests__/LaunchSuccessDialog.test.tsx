@@ -5,72 +5,42 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { fireEvent, render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router';
+import { createEvent, fireEvent, screen } from '@testing-library/react';
+import { Route, Routes } from 'react-router';
 import { describe, expect, it, vi } from 'vitest';
-import { IntlProvider } from 'react-intl';
+import { renderWithProviders } from 'test-utils/render-with-providers';
 import { LaunchSuccessDialog } from '../LaunchSuccessDialog';
 
-const messages = { close: 'Close' };
-
-const navigateMock = vi.fn();
-
-vi.mock('react-router', async () => {
-    const actual = await vi.importActual<typeof import('react-router')>('react-router');
-
-    return {
-        ...actual,
-        useNavigate: () => navigateMock,
-    };
-});
-
 describe('LaunchSuccessDialog', () => {
-    it('navigates to the execution result and closes the dialog', () => {
+    it('follows the execution result and closes the dialog', async () => {
         const onClose = vi.fn();
-
-        render(
-            <IntlProvider locale="en" messages={messages}>
-                <MemoryRouter>
-                    <LaunchSuccessDialog executionId="execution-1" open onClose={onClose} />
-                </MemoryRouter>
-            </IntlProvider>
+        const { user } = renderWithProviders(
+            <Routes>
+                <Route path="/" element={<LaunchSuccessDialog executionId="execution-1" open onClose={onClose} />} />
+                <Route path="/process/results/execution-1" element={<h1>Execution details</h1>} />
+            </Routes>
         );
-
-        fireEvent.click(screen.getByText('followExecution'));
-
-        expect(navigateMock).toHaveBeenCalledWith('/process/results/execution-1');
+        await user.click(screen.getByRole('link'));
+        expect(await screen.findByRole('heading', { name: 'Execution details' })).toBeVisible();
         expect(onClose).toHaveBeenCalledOnce();
     });
 
     it('keeps the default browser behavior for modified clicks', () => {
         const onClose = vi.fn();
+        renderWithProviders(<LaunchSuccessDialog executionId="execution-1" open onClose={onClose} />);
 
-        render(
-            <IntlProvider locale="en" messages={messages}>
-                <MemoryRouter>
-                    <LaunchSuccessDialog executionId="execution-1" open onClose={onClose} />
-                </MemoryRouter>
-            </IntlProvider>
-        );
-
-        fireEvent.click(screen.getByText('followExecution'), { ctrlKey: true });
+        const link = screen.getByRole('link', { name: 'Follow execution' });
+        const clickEvent = createEvent.click(link, { ctrlKey: true, cancelable: true });
+        fireEvent(link, clickEvent);
 
         expect(onClose).not.toHaveBeenCalled();
+        expect(clickEvent.defaultPrevented).toBe(false);
     });
 
-    it('closes when the close button is clicked', () => {
+    it('closes when the close button is clicked', async () => {
         const onClose = vi.fn();
-
-        render(
-            <IntlProvider locale="en" messages={messages}>
-                <MemoryRouter>
-                    <LaunchSuccessDialog executionId="execution-1" open onClose={onClose} />
-                </MemoryRouter>
-            </IntlProvider>
-        );
-
-        fireEvent.click(screen.getByText('Close'));
-
+        const { user } = renderWithProviders(<LaunchSuccessDialog executionId="execution-1" open onClose={onClose} />);
+        await user.click(screen.getAllByRole('button', { name: 'Close' })[0]);
         expect(onClose).toHaveBeenCalledOnce();
     });
 });

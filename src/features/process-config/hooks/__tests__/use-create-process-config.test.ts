@@ -6,97 +6,87 @@
  */
 
 import { act, renderHook } from '@testing-library/react';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
-import type { ProcessConfigBackend, ProcessConfigFormValues } from '@gridsuite/commons-ui';
-import type { CreateProcessConfigApiArg } from 'shared/api/explore-api';
+import { describe, expect, it } from 'vitest';
+import { http, HttpResponse } from 'msw';
+import { FieldConstants } from '@gridsuite/commons-ui';
+import { createTestContext } from 'test-utils/create-test-context';
+import { processConfigValues } from 'test-utils/fixtures';
+import { server } from 'test-utils/msw/server';
 import {
     toCreateProcessConfigApiArg,
     useCreateProcessConfig,
     useProcessConfigPrefill,
 } from '../use-create-process-config';
 
-const mocks = vi.hoisted(() => ({
-    getProcessConfigBackendFromFormData: vi.fn(),
-    getProcessConfigFormData: vi.fn(),
-    useCreateProcessConfigMutation: vi.fn(),
-    useLazyGetProcessConfigQuery: vi.fn(),
-}));
-
-vi.mock('@gridsuite/commons-ui', () => ({
-    FieldConstants: { NAME: 'name', DESCRIPTION: 'description', DIRECTORY: 'directory' },
-    getProcessConfigBackendFromFormData: mocks.getProcessConfigBackendFromFormData,
-    getProcessConfigFormData: mocks.getProcessConfigFormData,
-}));
-
-vi.mock('shared/api/monitor-api', () => ({
-    useLazyGetProcessConfigQuery: mocks.useLazyGetProcessConfigQuery,
-}));
-
-vi.mock('shared/api/explore-api', () => ({
-    useCreateProcessConfigMutation: mocks.useCreateProcessConfigMutation,
-}));
-
-const formValues = {
-    name: 'myConfig',
-    description: 'my description',
-    directory: { directoryItemId: 'directory-uuid' },
-} as unknown as ProcessConfigFormValues;
-
-const apiArg: CreateProcessConfigApiArg = {
-    name: 'myConfig',
-    description: 'my description',
-    parentDirectoryUuid: 'directory-uuid',
-    body: JSON.stringify({ key: 'value' }),
-};
-
-beforeEach(() => {
-    vi.clearAllMocks();
-    mocks.getProcessConfigBackendFromFormData.mockReturnValue({ key: 'value' });
-});
-
 describe('toCreateProcessConfigApiArg', () => {
-    it('maps form values to the create API request', () => {
-        expect(toCreateProcessConfigApiArg(formValues)).toEqual(apiArg);
+    it('maps a typed form to metadata and the serialized backend configuration', () => {
+        expect(toCreateProcessConfigApiArg(processConfigValues())).toEqual({
+            name: 'Loadflow',
+            description: 'A configuration for testing',
+            parentDirectoryUuid: 'directory-1',
+            body: JSON.stringify({
+                processType: 'LOADFLOW',
+                modifications: [],
+                loadflowParametersUuid: 'parameters-1',
+            }),
+        });
     });
 });
 
 describe('useCreateProcessConfig', () => {
-    it('creates a process configuration from form values', async () => {
-        const createMutation = vi.fn().mockReturnValue({ unwrap: () => Promise.resolve('created-uuid') });
-        mocks.useCreateProcessConfigMutation.mockReturnValue([createMutation, {}]);
-
-        const { result } = renderHook(() => useCreateProcessConfig());
-        let createdConfigUuid: string | undefined;
+    it('sends the configuration and returns its UUID', async () => {
+        let requestReceived: Request | undefined;
+        server.use(
+            http.post('*/v1/explore/process-configs', ({ request }) => {
+                requestReceived = request;
+                return HttpResponse.json('created-uuid');
+            })
+        );
+        const { wrapper } = createTestContext();
+        const { result } = renderHook(() => useCreateProcessConfig(), { wrapper });
 
         await act(async () => {
-            createdConfigUuid = await result.current.createProcessConfig(formValues);
+            await expect(result.current.createProcessConfig(processConfigValues())).resolves.toBe('created-uuid');
         });
 
-        expect(createMutation).toHaveBeenCalledWith(apiArg);
-        expect(createdConfigUuid).toBe('created-uuid');
+        expect(requestReceived).toBeDefined();
+        const request = requestReceived!;
+        expect(Object.fromEntries(new URL(request.url).searchParams)).toEqual({
+            name: 'Loadflow',
+            description: 'A configuration for testing',
+            parentDirectoryUuid: 'directory-1',
+        });
+        expect(await request.json()).toEqual({
+            processType: 'LOADFLOW',
+            modifications: [],
+            loadflowParametersUuid: 'parameters-1',
+        });
+        expect(result.current.isCreating).toBe(false);
+        expect(result.current.createdConfigUuid).toBe('created-uuid');
     });
 });
 
 describe('useProcessConfigPrefill', () => {
-    it('converts a fetched process configuration to form values', async () => {
-        const processConfig = { name: 'existing' } as unknown as ProcessConfigBackend;
-        const getProcessConfig = vi.fn().mockReturnValue({
-            unwrap: () => Promise.resolve({ processConfig }),
-        });
-        const formData = { name: 'existing' };
-        mocks.useLazyGetProcessConfigQuery.mockReturnValue([getProcessConfig]);
-        mocks.getProcessConfigFormData.mockReturnValue(formData);
-
-        const { result } = renderHook(() => useProcessConfigPrefill());
-
-        await expect(result.current('process-config-uuid')).resolves.toBe(formData);
-        expect(mocks.getProcessConfigFormData).toHaveBeenCalledWith(
-            {
-                id: 'process-config-uuid',
-                processConfig,
-            },
-            '',
-            ''
+    it('fetches a configuration and resolves its parameter names', async () => {
+        server.use(
+            http.get('*/v1/process-configs/config-1', () =>
+                HttpResponse.json({
+                    processConfig: {
+                        processType: 'LOADFLOW',
+                        modifications: [],
+                        loadflowParametersUuid: 'parameters-1',
+                    },
+                })
+            ),
+            http.get('*/v1/explore/elements/name', () => HttpResponse.json({ 'parameters-1': 'Default parameters' }))
         );
+        const { wrapper } = createTestContext();
+        const { result } = renderHook(() => useProcessConfigPrefill(), { wrapper });
+        await act(async () => {
+            await expect(result.current('config-1')).resolves.toMatchObject({
+                processType: 'LOADFLOW',
+                [FieldConstants.LOADFLOW_PARAMETERS]: [{ id: 'parameters-1', name: 'Default parameters' }],
+            });
+        });
     });
 });

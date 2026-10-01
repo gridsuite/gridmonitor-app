@@ -5,7 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useParams } from 'react-router';
 import { ProcessExecutionStep, useGetExecutionQuery, useGetStepsInfosQuery } from 'shared/api/monitor-api';
 import { ProcessStepModel } from '../models/process-result';
 
@@ -15,8 +14,7 @@ export const mapStepsInfos = (api: ProcessExecutionStep): ProcessStepModel => ({
     completedAt: api.completedAt ? new Date(api.completedAt) : undefined,
 });
 
-export function useExecutionWithSteps() {
-    const { id } = useParams<{ id: string }>();
+export function useExecutionWithSteps(id?: string) {
     const executionId = id ?? '';
     const skip = !id;
 
