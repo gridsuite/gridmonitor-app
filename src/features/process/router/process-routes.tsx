@@ -10,12 +10,14 @@ import { Navigate, Route } from 'react-router';
 
 const ProcessResultsPage = lazy(() => import('../results/pages/ProcessResultsPage'));
 const ProcessExecutionPage = lazy(() => import('../results/pages/ProcessExecutionPage'));
+const StepperDemoPage = import.meta.env.DEV ? lazy(() => import('../results/pages/StepperDemoPage')) : null;
 
 export const processRoutes = (
     <Route path="process">
         <Route index element={<Navigate to="results" replace />} />
         <Route path="results">
             <Route index element={<ProcessResultsPage />} />
+            {StepperDemoPage && <Route path="stepper-demo" element={<StepperDemoPage />} />}
             <Route path=":id">
                 <Route index element={<ProcessExecutionPage />} />
             </Route>
