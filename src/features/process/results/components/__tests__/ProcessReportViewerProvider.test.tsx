@@ -69,7 +69,7 @@ describe('ProcessReportViewerProvider', () => {
                 data: JSON.stringify({
                     headers: {
                         processExecutionId: 'execution-1',
-                        updateType: 'PROCESS_STEP_UPDATED',
+                        updateType: 'PROCESS_EXECUTION_UPDATED',
                     },
                 }),
             } as MessageEvent);
@@ -98,7 +98,7 @@ describe('ProcessReportViewerProvider', () => {
                 data: JSON.stringify({
                     headers: {
                         processExecutionId: 'execution-1',
-                        updateType: 'PROCESS_STEPS_UPDATED',
+                        updateType: 'PROCESS_EXECUTION_UPDATED',
                     },
                 }),
             } as MessageEvent);
@@ -127,7 +127,7 @@ describe('ProcessReportViewerProvider', () => {
                 data: JSON.stringify({
                     headers: {
                         processExecutionId: 'execution-2',
-                        updateType: 'PROCESS_STEP_UPDATED',
+                        updateType: 'PROCESS_EXECUTION_UPDATED',
                     },
                 }),
             } as MessageEvent);
@@ -156,7 +156,7 @@ describe('ProcessReportViewerProvider', () => {
                 data: JSON.stringify({
                     headers: {
                         processExecutionId: 'execution-1',
-                        updateType: 'PROCESS_EXECUTION_UPDATED',
+                        updateType: 'UNKNOWN_UPDATE',
                     },
                 }),
             } as MessageEvent);
@@ -185,7 +185,7 @@ describe('ProcessReportViewerProvider', () => {
                 data: JSON.stringify({
                     headers: {
                         processExecutionId: 'execution-1',
-                        updateType: 'PROCESS_STEP_UPDATED',
+                        updateType: 'PROCESS_EXECUTION_UPDATED',
                     },
                 }),
             } as MessageEvent);
@@ -196,7 +196,7 @@ describe('ProcessReportViewerProvider', () => {
                 data: JSON.stringify({
                     headers: {
                         processExecutionId: 'execution-1',
-                        updateType: 'PROCESS_STEPS_UPDATED',
+                        updateType: 'PROCESS_EXECUTION_UPDATED',
                     },
                 }),
             } as MessageEvent);
