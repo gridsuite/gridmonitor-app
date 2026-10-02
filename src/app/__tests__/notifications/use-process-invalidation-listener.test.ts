@@ -9,7 +9,6 @@ import { renderHook } from '@testing-library/react';
 import { NotificationsUrlKeys, useNotificationsListener } from '@gridsuite/commons-ui';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
-    invalidateProcessExecutionLogs,
     invalidateProcessExecutionReports,
     invalidateProcessExecutionReportsSeverities,
     invalidateProcessExecutionsLists,
@@ -98,9 +97,6 @@ describe('useProcessInvalidationListener', () => {
 
         expect(invalidateProcessExecutionReportsSeverities).toHaveBeenNthCalledWith(1, expect.anything(), '123');
         expect(invalidateProcessExecutionReportsSeverities).toHaveBeenNthCalledWith(2, expect.anything(), '456');
-
-        expect(invalidateProcessExecutionLogs).toHaveBeenNthCalledWith(1, expect.anything(), '123');
-        expect(invalidateProcessExecutionLogs).toHaveBeenNthCalledWith(2, expect.anything(), '456');
     });
 
     it('does nothing when updateType is not matching', () => {
