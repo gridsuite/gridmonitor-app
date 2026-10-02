@@ -6,7 +6,7 @@
  */
 
 import { screen } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { ProcessStatus, StepStatus, type ProcessExecution } from 'shared/api/monitor-api';
 import { renderWithProviders } from 'test-utils/render-with-providers';
 import ProcessExecutionDetails from '../ProcessExecutionDetails';
@@ -23,13 +23,11 @@ vi.mock('@gridsuite/commons-ui', async (importOriginal) => {
         UserAvatar: ({ label }: { label: string }) => <span>{label}</span>,
     };
 });
+class ResizeObserverMock {
+    observe = vi.fn();
 
-vi.mock('../../hooks/use-stepper-orientation', () => ({
-    useStepperOrientation: () => ({
-        containerRef: { current: null },
-        orientation: 'horizontal',
-    }),
-}));
+    disconnect = vi.fn();
+}
 
 const execution: ProcessExecution = {
     id: 'execution-1',
@@ -76,6 +74,9 @@ const steps: ProcessStepModel[] = [
 ];
 
 describe('ProcessExecutionDetails', () => {
+    beforeEach(() => {
+        vi.stubGlobal('ResizeObserver', ResizeObserverMock);
+    });
     it('renders the execution details of a running process', async () => {
         renderWithProviders(<ProcessExecutionDetails execution={execution} steps={steps} />);
 
