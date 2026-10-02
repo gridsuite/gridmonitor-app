@@ -30,7 +30,7 @@ export const useProcessInvalidationsListener = () => {
         const eventData = JSON.parse(event.data) as MonitorNotificationData;
         if (eventData.headers?.updateType === 'PROCESS_EXECUTION_UPDATED') {
             invalidateProcessExecutionsLists(dispatch);
-            if (eventData.headers && eventData.headers.processExecutionId) {
+            if (eventData.headers?.processExecutionId) {
                 invalidateProcessExecution(dispatch, eventData.headers.processExecutionId);
                 invalidateProcessExecutionSteps(dispatch, eventData.headers.processExecutionId);
             }

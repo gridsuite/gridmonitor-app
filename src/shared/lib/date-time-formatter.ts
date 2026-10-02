@@ -43,10 +43,10 @@ export function formatDuration(milliseconds: number) {
     return [hours, minutes, seconds].map((value) => String(value).padStart(2, '0')).join(':');
 }
 
-export function formatCompletedAt(date: Date | undefined) {
+export function formatCompletedAt(locale: string, date: Date | undefined) {
     if (!date) return '';
 
-    return new Intl.DateTimeFormat(undefined, {
+    return new Intl.DateTimeFormat(locale, {
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit',
