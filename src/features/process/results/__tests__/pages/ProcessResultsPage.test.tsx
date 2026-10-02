@@ -19,7 +19,7 @@ vi.mock('@gridsuite/commons-ui', async (importOriginal) => {
     return {
         ...actual,
         fetchElementNames: vi.fn().mockResolvedValue({
-            'process-config-1': 'Load-flow configuration',
+            'process-config-1': 'Security Analysis configuration',
             'case-1': 'Test case',
         }),
         UserAvatar: ({ label }: { label: string }) => <span>{label}</span>,
