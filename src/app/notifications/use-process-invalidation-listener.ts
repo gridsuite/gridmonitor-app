@@ -35,15 +35,9 @@ export const useProcessInvalidationsListener = () => {
             if (eventData.headers?.processExecutionId) {
                 invalidateProcessExecution(dispatch, eventData.headers.processExecutionId);
                 invalidateProcessExecutionSteps(dispatch, eventData.headers.processExecutionId);
+                invalidateProcessExecutionReports(dispatch, eventData.headers.processExecutionId);
+                invalidateProcessExecutionReportsSeverities(dispatch, eventData.headers.processExecutionId);
             }
-        }
-        if (
-            (eventData.headers?.updateType === 'PROCESS_STEP_UPDATED' ||
-                eventData.headers?.updateType === 'PROCESS_STEPS_UPDATED') &&
-            eventData.headers?.processExecutionId
-        ) {
-            invalidateProcessExecutionReports(dispatch, eventData.headers.processExecutionId);
-            invalidateProcessExecutionReportsSeverities(dispatch, eventData.headers.processExecutionId);
         }
     };
 

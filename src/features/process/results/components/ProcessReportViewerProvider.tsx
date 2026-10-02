@@ -29,8 +29,7 @@ export function ProcessReportViewerProvider({ executionId, children }: Readonly<
             if (
                 executionId &&
                 eventData.headers?.processExecutionId === executionId &&
-                (eventData.headers?.updateType === 'PROCESS_STEP_UPDATED' ||
-                    eventData.headers?.updateType === 'PROCESS_STEPS_UPDATED')
+                eventData.headers?.updateType === 'PROCESS_EXECUTION_UPDATED'
             ) {
                 setRefreshCounter((prev) => prev + 1);
             }

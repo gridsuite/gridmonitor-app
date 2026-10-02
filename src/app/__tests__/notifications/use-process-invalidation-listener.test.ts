@@ -89,32 +89,28 @@ describe('useProcessInvalidationListener', () => {
             }),
         } as MessageEvent);
 
-        expect(invalidateProcessExecution).toHaveBeenCalledTimes(1);
-        expect(invalidateProcessExecutionSteps).toHaveBeenCalledTimes(1);
-    });
-  
-    it('invalidates process reports, reports severities and logs when receiving a matching update type and executionId', () => {
-        const { wrapper } = createTestContext();
-
-        renderHook(() => useProcessInvalidationsListener(), { wrapper });
-
         listenerCallbackMessage?.({
             data: JSON.stringify({
-                headers: { updateType: 'PROCESS_STEP_UPDATED', processExecutionId: '123' },
+                headers: { updateType: 'PROCESS_EXECUTION_UPDATED', processExecutionId: 'execution-2' },
             }),
         } as MessageEvent);
 
-        listenerCallbackMessage?.({
-            data: JSON.stringify({
-                headers: { updateType: 'PROCESS_STEPS_UPDATED', processExecutionId: '456' },
-            }),
-        } as MessageEvent);
+        expect(invalidateProcessExecution).toHaveBeenCalledTimes(2);
+        expect(invalidateProcessExecutionSteps).toHaveBeenCalledTimes(2);
 
-        expect(invalidateProcessExecutionReports).toHaveBeenNthCalledWith(1, expect.anything(), '123');
-        expect(invalidateProcessExecutionReports).toHaveBeenNthCalledWith(2, expect.anything(), '456');
+        expect(invalidateProcessExecutionReports).toHaveBeenNthCalledWith(1, expect.anything(), 'execution-1');
+        expect(invalidateProcessExecutionReports).toHaveBeenNthCalledWith(2, expect.anything(), 'execution-2');
 
-        expect(invalidateProcessExecutionReportsSeverities).toHaveBeenNthCalledWith(1, expect.anything(), '123');
-        expect(invalidateProcessExecutionReportsSeverities).toHaveBeenNthCalledWith(2, expect.anything(), '456');
+        expect(invalidateProcessExecutionReportsSeverities).toHaveBeenNthCalledWith(
+            1,
+            expect.anything(),
+            'execution-1'
+        );
+        expect(invalidateProcessExecutionReportsSeverities).toHaveBeenNthCalledWith(
+            2,
+            expect.anything(),
+            'execution-2'
+        );
     });
 
     it('does nothing when updateType is not matching', () => {
