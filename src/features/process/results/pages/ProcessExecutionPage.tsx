@@ -5,12 +5,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { ProcessStepInfosView } from '../components/ProcessStepInfosView';
+import { useParams } from 'react-router';
 import { ProcessStepInfosAlert } from '../components/ProcessStepInfosAlert';
-import { useProcessStepInfos } from '../hooks/use-process-step-infos';
+import { useExecutionWithSteps } from '../hooks/use-get-execution-with-steps';
+import ProcessExecutionDetails from '../components/ProcessExecutionDetails';
 
-function ProcessStepInfosPage() {
-    const { executionId, isEmpty, isError, isLoading, isMissingExecutionId, steps } = useProcessStepInfos();
+function ProcessExecutionPage() {
+    const { id } = useParams<{ id: string }>();
+    const { execution, steps, isMissingExecutionId, isLoading, isError, isEmpty } = useExecutionWithSteps(id);
 
     return (
         <>
@@ -20,11 +22,11 @@ function ProcessStepInfosPage() {
                 isLoading={isLoading}
                 isMissingExecutionId={isMissingExecutionId}
             />
-            {!isMissingExecutionId && !isLoading && !isError && !isEmpty && executionId && (
-                <ProcessStepInfosView executionId={executionId} steps={steps} />
+            {execution !== undefined && steps.length > 0 && (
+                <ProcessExecutionDetails execution={execution} steps={steps} />
             )}
         </>
     );
 }
 
-export default ProcessStepInfosPage;
+export default ProcessExecutionPage;

@@ -7,6 +7,7 @@
 
 import { CheckCircle } from '@mui/icons-material';
 import { Box, Link, Typography } from '@mui/material';
+import { PROCESS_PATHS } from 'features/process/router/process-paths';
 import { MouseEvent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Link as RouterLink, useNavigate } from 'react-router';
@@ -23,7 +24,7 @@ export function LaunchSuccessDialog({
 }) {
     const intl = useIntl();
     const navigate = useNavigate();
-    const path = `/process/results/${executionId}/step-infos`;
+    const path = PROCESS_PATHS.stepInfos(executionId);
     const title = intl.formatMessage({ id: 'analysisLaunched' });
 
     const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {

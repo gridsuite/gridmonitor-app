@@ -7,12 +7,24 @@
 
 import { screen, waitFor } from '@testing-library/react';
 import { Route, Routes } from 'react-router';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { renderWithProviders } from 'test-utils/render-with-providers';
 import { server } from 'test-utils/msw/server';
 import ProcessResultsPage from '../../pages/ProcessResultsPage';
-import ProcessStepInfosPage from '../../pages/ProcessStepInfosPage';
+import ProcessExecutionPage from '../../pages/ProcessExecutionPage';
+
+vi.mock('@gridsuite/commons-ui', async (importOriginal) => {
+    const actual = await importOriginal<typeof import('@gridsuite/commons-ui')>();
+    return {
+        ...actual,
+        fetchElementNames: vi.fn().mockResolvedValue({
+            'process-config-1': 'Security Analysis configuration',
+            'case-1': 'Test case',
+        }),
+        UserAvatar: ({ label }: { label: string }) => <span>{label}</span>,
+    };
+});
 
 const execution = {
     id: 'execution-1',
@@ -21,12 +33,15 @@ const execution = {
     scheduledAt: '2026-01-01T09:55:00Z',
     startedAt: '2026-01-01T10:00:00Z',
     completedAt: '2026-01-01T10:05:00Z',
+    caseUuid: 'case-1',
+    processConfigId: 'process-config-1',
 };
 
 describe('ProcessResultsPage', () => {
     it('displays execution data and opens the selected execution details', async () => {
         server.use(
             http.get('*/v1/executions', () => HttpResponse.json([execution])),
+            http.get('*/v1/executions/execution-1', () => HttpResponse.json(execution)),
             http.get('*/v1/executions/execution-1/step-infos', () =>
                 HttpResponse.json([{ id: 'step-1', stepOrder: 1, stepType: 'LOADFLOW', status: 'COMPLETED' }])
             )
@@ -34,14 +49,14 @@ describe('ProcessResultsPage', () => {
         const { user } = renderWithProviders(
             <Routes>
                 <Route path="/" element={<ProcessResultsPage />} />
-                <Route path="/process/results/:id/step-infos" element={<ProcessStepInfosPage />} />
+                <Route path="/process/results/:id" element={<ProcessExecutionPage />} />
             </Routes>
         );
         expect(await screen.findByText('Security analysis')).toBeVisible();
         expect(screen.getByRole('link', { name: 'Failed' })).toBeVisible();
         expect(screen.getByRole('columnheader', { name: /^Status/ })).toBeInTheDocument();
         await user.click(screen.getByRole('link', { name: 'Failed' }));
-        expect(await screen.findByText('1 step for execution execution-1.')).toBeVisible();
+        expect(await screen.findByText('Analysis Progress')).toBeVisible();
     });
 
     it('shows loading until the request resolves, then shows the empty state', async () => {

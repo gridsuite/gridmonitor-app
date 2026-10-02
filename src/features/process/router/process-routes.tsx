@@ -9,7 +9,7 @@ import { lazy } from 'react';
 import { Navigate, Route } from 'react-router';
 
 const ProcessResultsPage = lazy(() => import('../results/pages/ProcessResultsPage'));
-const ProcessStepInfosPage = lazy(() => import('../results/pages/ProcessStepInfosPage'));
+const ProcessExecutionPage = lazy(() => import('../results/pages/ProcessExecutionPage'));
 
 export const processRoutes = (
     <Route path="process">
@@ -17,8 +17,7 @@ export const processRoutes = (
         <Route path="results">
             <Route index element={<ProcessResultsPage />} />
             <Route path=":id">
-                <Route index element={<Navigate to="step-infos" replace />} />
-                <Route path="step-infos" element={<ProcessStepInfosPage />} />
+                <Route index element={<ProcessExecutionPage />} />
             </Route>
         </Route>
     </Route>

@@ -8,7 +8,11 @@
 import { renderHook } from '@testing-library/react';
 import { NotificationsUrlKeys, useNotificationsListener } from '@gridsuite/commons-ui';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { invalidateProcessExecutionsLists } from 'shared/api/monitor-api';
+import {
+    invalidateProcessExecution,
+    invalidateProcessExecutionsLists,
+    invalidateProcessExecutionSteps,
+} from 'shared/api/monitor-api';
 import { createTestContext } from 'test-utils/create-test-context';
 import { useProcessInvalidationsListener } from '../../notifications/use-process-invalidation-listener';
 
@@ -18,6 +22,8 @@ vi.mock('shared/api/monitor-api', async (importOriginal) => {
     return {
         ...actual,
         invalidateProcessExecutionsLists: vi.fn(),
+        invalidateProcessExecution: vi.fn(),
+        invalidateProcessExecutionSteps: vi.fn(),
     };
 });
 
@@ -66,6 +72,21 @@ describe('useProcessInvalidationListener', () => {
         } as MessageEvent);
 
         expect(invalidateProcessExecutionsLists).toHaveBeenCalledTimes(1);
+    });
+
+    it('invalidates process execution and steps when receiving a matching update type and executionId', () => {
+        const { wrapper } = createTestContext();
+
+        renderHook(() => useProcessInvalidationsListener(), { wrapper });
+
+        listenerCallbackMessage?.({
+            data: JSON.stringify({
+                headers: { updateType: 'PROCESS_EXECUTION_UPDATED', processExecutionId: 'execution-1' },
+            }),
+        } as MessageEvent);
+
+        expect(invalidateProcessExecution).toHaveBeenCalledTimes(1);
+        expect(invalidateProcessExecutionSteps).toHaveBeenCalledTimes(1);
     });
 
     it('does nothing when updateType is not matching', () => {
