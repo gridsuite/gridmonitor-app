@@ -14,13 +14,9 @@ import {
     FilterParams,
     SortConfig,
     SortParams,
-    TableType,
 } from '@gridsuite/commons-ui';
 import { useAppDispatch, useAppSelector } from 'app/store/store';
-import {
-    setProcessExecutionHistoryTableFilters,
-    setProcessExecutionHistoryTableSort,
-} from '../store/process-results.slice';
+import { setTableFilters, setTableSort } from '../store/process-results.slice';
 
 function CustomAggridSortReduxProvider({ children }: Readonly<PropsWithChildren>) {
     const dispatch = useAppDispatch();
@@ -39,7 +35,7 @@ function CustomAggridSortReduxProvider({ children }: Readonly<PropsWithChildren>
     const setSortConfig = useCallback(
         (sortParams: SortParams, updatedSortConfig: SortConfig[]) => {
             dispatch(
-                setProcessExecutionHistoryTableSort({
+                setTableSort({
                     table: sortParams.table,
                     tab: sortParams.tab,
                     sorts: updatedSortConfig,
@@ -72,15 +68,13 @@ function CustomAggridFilterReduxProvider({ children }: Readonly<PropsWithChildre
         (_colId: string, filterParams: FilterParams, updatedFilters: FilterConfig[]) => {
             const { type, tab } = filterParams;
 
-            if (type === TableType.ProcessExecutionHistory) {
-                dispatch(
-                    setProcessExecutionHistoryTableFilters({
-                        filterType: TableType.ProcessExecutionHistory,
-                        filterSubType: tab,
-                        filters: updatedFilters,
-                    })
-                );
-            }
+            dispatch(
+                setTableFilters({
+                    filterType: type,
+                    filterSubType: tab,
+                    filters: updatedFilters,
+                })
+            );
         },
         [dispatch]
     );

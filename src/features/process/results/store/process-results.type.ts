@@ -15,7 +15,7 @@ export type TableFiltersState = {
     columnsFilters: TableColumnFilter;
 };
 
-export interface ProcessResultsState {
+export interface ProcessTablesState {
     tableSort: TableSort;
     tables: TablesState;
     tableFilters: TableFiltersState;

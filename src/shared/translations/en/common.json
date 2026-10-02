@@ -60,7 +60,6 @@
     "analysisLaunched": "Analysis started",
     "Configurations": "Configurations",
 
-    "logs": "Logs",
     "compare.agregate": "Compare / Aggregate",
     "finishedAt": "Finished at {date}",
     "elapsedTime": "Elapsed time : {date}",

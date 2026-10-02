@@ -6,17 +6,24 @@
  */
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { FilterConfig, SortConfig, SortWay, TableSortConfig, TableType } from '@gridsuite/commons-ui';
+import {
+    FilterConfig,
+    PROCESS_EXECUTION,
+    SortConfig,
+    SortWay,
+    TableSortConfig,
+    TableType,
+} from '@gridsuite/commons-ui';
 import { PROCESS_EXECUTION_HISTORY_SORT_STORE } from './process-results.constants';
-import { ProcessResultsState } from './process-results.type';
+import { ProcessTablesState } from './process-results.type';
 
-type SetProcessExecutionHistoryTableSortPayload = {
+type SetTableSortPayload = {
     table: string;
     tab: string;
     sorts: SortConfig[];
 };
 
-type SetProcessExecutionHistoryTableFiltersPayload = {
+type SetTableFiltersPayload = {
     filterType: TableType;
     filterSubType: string;
     filters: FilterConfig[];
@@ -26,11 +33,15 @@ const initialSortState: TableSortConfig = {
     [PROCESS_EXECUTION_HISTORY_SORT_STORE]: [{ colId: 'processScheduledAt', sort: SortWay.DESC }],
 };
 
-const initialFilterState = {
+const initialProcessExecutionHistoryFilterState = {
     [PROCESS_EXECUTION_HISTORY_SORT_STORE]: [],
 };
 
-const initialState: ProcessResultsState = {
+const initialLogsFilterState = {
+    [PROCESS_EXECUTION]: [],
+};
+
+const initialState: ProcessTablesState = {
     tableSort: {
         [PROCESS_EXECUTION_HISTORY_SORT_STORE]: {
             ...initialSortState,
@@ -39,7 +50,10 @@ const initialState: ProcessResultsState = {
     tableFilters: {
         columnsFilters: {
             [TableType.ProcessExecutionHistory]: {
-                ...initialFilterState,
+                ...initialProcessExecutionHistoryFilterState,
+            },
+            [TableType.Logs]: {
+                ...initialLogsFilterState,
             },
         },
     },
@@ -50,18 +64,12 @@ const processResultsSlice = createSlice({
     name: 'processResults',
     initialState,
     reducers: {
-        setProcessExecutionHistoryTableSort: (
-            state,
-            action: PayloadAction<SetProcessExecutionHistoryTableSortPayload>
-        ) => {
+        setTableSort: (state, action: PayloadAction<SetTableSortPayload>) => {
             const { table, tab, sorts } = action.payload;
             state.tableSort[table] ??= {};
             state.tableSort[table][tab] = sorts;
         },
-        setProcessExecutionHistoryTableFilters: (
-            state,
-            action: PayloadAction<SetProcessExecutionHistoryTableFiltersPayload>
-        ) => {
+        setTableFilters: (state, action: PayloadAction<SetTableFiltersPayload>) => {
             const { filterType, filterSubType, filters } = action.payload;
             state.tableFilters.columnsFilters[filterType] ??= {};
             state.tableFilters.columnsFilters[filterType][filterSubType] = filters;
@@ -69,6 +77,6 @@ const processResultsSlice = createSlice({
     },
 });
 
-export const { setProcessExecutionHistoryTableSort, setProcessExecutionHistoryTableFilters } =
-    processResultsSlice.actions;
+export const { setTableSort, setTableFilters } = processResultsSlice.actions;
+
 export const processResultsReducer = processResultsSlice.reducer;

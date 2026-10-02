@@ -10,6 +10,7 @@ import { Navigate, Route } from 'react-router';
 
 const ProcessResultsPage = lazy(() => import('../results/pages/ProcessResultsPage'));
 const ProcessExecutionPage = lazy(() => import('../results/pages/ProcessExecutionPage'));
+const ProcessLogsPage = lazy(() => import('../results/pages/ProcessLogsPage'));
 
 export const processRoutes = (
     <Route path="process">
@@ -18,6 +19,7 @@ export const processRoutes = (
             <Route index element={<ProcessResultsPage />} />
             <Route path=":id">
                 <Route index element={<ProcessExecutionPage />} />
+                <Route path="logs" element={<ProcessLogsPage />} />
             </Route>
         </Route>
     </Route>

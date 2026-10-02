@@ -24,6 +24,16 @@ export const monitorApi = monitorGeneratedApi.enhanceEndpoints({
                 { type: MonitorTags.ProcessExecutionSteps, id: queryArg.executionId },
             ],
         },
+        getExecutionReports: {
+            providesTags: (result, error, { executionId }) => [
+                { type: MonitorTags.ProcessExecutionReports, id: executionId },
+            ],
+        },
+        getExecutionReportsSeverities: {
+            providesTags: (result, error, { executionId }) => [
+                { type: MonitorTags.ProcessExecutionReportsSeverities, id: executionId },
+            ],
+        },
     },
 });
 
@@ -35,3 +45,13 @@ export const invalidateProcessExecution = (dispatch: AppDispatch, executionId: s
 
 export const invalidateProcessExecutionSteps = (dispatch: AppDispatch, executionId: string) =>
     dispatch(monitorApi.util.invalidateTags([{ type: MonitorTags.ProcessExecutionSteps, id: executionId }]));
+
+export const invalidateProcessExecutionReports = (dispatch: AppDispatch, processExecutionId: string) =>
+    dispatch(monitorApi.util.invalidateTags([{ type: MonitorTags.ProcessExecutionReports, id: processExecutionId }]));
+
+export const invalidateProcessExecutionReportsSeverities = (dispatch: AppDispatch, processExecutionId: string) =>
+    dispatch(
+        monitorApi.util.invalidateTags([
+            { type: MonitorTags.ProcessExecutionReportsSeverities, id: processExecutionId },
+        ])
+    );

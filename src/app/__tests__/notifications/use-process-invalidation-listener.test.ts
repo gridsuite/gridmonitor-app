@@ -9,6 +9,8 @@ import { renderHook } from '@testing-library/react';
 import { NotificationsUrlKeys, useNotificationsListener } from '@gridsuite/commons-ui';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
+    invalidateProcessExecutionReports,
+    invalidateProcessExecutionReportsSeverities,
     invalidateProcessExecution,
     invalidateProcessExecutionsLists,
     invalidateProcessExecutionSteps,
@@ -22,6 +24,8 @@ vi.mock('shared/api/monitor-api', async (importOriginal) => {
     return {
         ...actual,
         invalidateProcessExecutionsLists: vi.fn(),
+        invalidateProcessExecutionReports: vi.fn(),
+        invalidateProcessExecutionReportsSeverities: vi.fn(),
         invalidateProcessExecution: vi.fn(),
         invalidateProcessExecutionSteps: vi.fn(),
     };
@@ -85,8 +89,28 @@ describe('useProcessInvalidationListener', () => {
             }),
         } as MessageEvent);
 
-        expect(invalidateProcessExecution).toHaveBeenCalledTimes(1);
-        expect(invalidateProcessExecutionSteps).toHaveBeenCalledTimes(1);
+        listenerCallbackMessage?.({
+            data: JSON.stringify({
+                headers: { updateType: 'PROCESS_EXECUTION_UPDATED', processExecutionId: 'execution-2' },
+            }),
+        } as MessageEvent);
+
+        expect(invalidateProcessExecution).toHaveBeenCalledTimes(2);
+        expect(invalidateProcessExecutionSteps).toHaveBeenCalledTimes(2);
+
+        expect(invalidateProcessExecutionReports).toHaveBeenNthCalledWith(1, expect.anything(), 'execution-1');
+        expect(invalidateProcessExecutionReports).toHaveBeenNthCalledWith(2, expect.anything(), 'execution-2');
+
+        expect(invalidateProcessExecutionReportsSeverities).toHaveBeenNthCalledWith(
+            1,
+            expect.anything(),
+            'execution-1'
+        );
+        expect(invalidateProcessExecutionReportsSeverities).toHaveBeenNthCalledWith(
+            2,
+            expect.anything(),
+            'execution-2'
+        );
     });
 
     it('does nothing when updateType is not matching', () => {

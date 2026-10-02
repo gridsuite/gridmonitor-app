@@ -16,8 +16,14 @@ export {
     useGetExecutionQuery,
     useGetExecutionResultsQuery,
     useGetExecutionReportsQuery,
+    useGetExecutionReportsSeveritiesQuery,
+    useGetExecutionLogsQuery,
+    useLazyGetExecutionLogsQuery,
+    useGetExecutionLogsSearchQuery,
+    useLazyGetExecutionLogsSearchQuery,
     ProcessType,
     ProcessStatus,
+    Severity,
     StepStatus,
 } from './monitor.generated';
 

@@ -27,6 +27,11 @@ declare module '@mui/material/styles' {
             theme: 'ag-theme-alpine' | 'ag-theme-alpine-dark';
         };
         agGridBackground: CSSObject;
+        searchedText: {
+            highlightColor: string;
+            currentHighlightColor: string;
+            textColor?: string;
+        };
     };
     export interface Theme extends MuiTheme, ThemeExtension {}
     // allow configuration using `createTheme`
