@@ -11,7 +11,9 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
     invalidateProcessExecutionReports,
     invalidateProcessExecutionReportsSeverities,
+    invalidateProcessExecution,
     invalidateProcessExecutionsLists,
+    invalidateProcessExecutionSteps,
 } from 'shared/api/monitor-api';
 import { createTestContext } from 'test-utils/create-test-context';
 import { useProcessInvalidationsListener } from '../../notifications/use-process-invalidation-listener';
@@ -24,7 +26,8 @@ vi.mock('shared/api/monitor-api', async (importOriginal) => {
         invalidateProcessExecutionsLists: vi.fn(),
         invalidateProcessExecutionReports: vi.fn(),
         invalidateProcessExecutionReportsSeverities: vi.fn(),
-        invalidateProcessExecutionLogs: vi.fn(),
+        invalidateProcessExecution: vi.fn(),
+        invalidateProcessExecutionSteps: vi.fn(),
     };
 });
 
@@ -75,7 +78,22 @@ describe('useProcessInvalidationListener', () => {
         expect(invalidateProcessExecutionsLists).toHaveBeenCalledTimes(1);
     });
 
-    it('invalidates process reports, reports severities and logs when receiving a matching update type', () => {
+    it('invalidates process execution and steps when receiving a matching update type and executionId', () => {
+        const { wrapper } = createTestContext();
+
+        renderHook(() => useProcessInvalidationsListener(), { wrapper });
+
+        listenerCallbackMessage?.({
+            data: JSON.stringify({
+                headers: { updateType: 'PROCESS_EXECUTION_UPDATED', processExecutionId: 'execution-1' },
+            }),
+        } as MessageEvent);
+
+        expect(invalidateProcessExecution).toHaveBeenCalledTimes(1);
+        expect(invalidateProcessExecutionSteps).toHaveBeenCalledTimes(1);
+    });
+  
+    it('invalidates process reports, reports severities and logs when receiving a matching update type and executionId', () => {
         const { wrapper } = createTestContext();
 
         renderHook(() => useProcessInvalidationsListener(), { wrapper });

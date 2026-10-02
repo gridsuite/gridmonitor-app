@@ -89,15 +89,9 @@ export default function ProcessExecutionDetails({ execution, steps }: Readonly<P
                         <FormattedMessage id={execution.type} />
                     </Typography>
                 </Breadcrumbs>
-                <Box
-                    sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        flexWrap: 'wrap',
-                        gap: 1,
-                        width: '100%',
-                    }}
+                <Stack
+                    direction="row"
+                    sx={{ justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 1 }}
                 >
                     <Stack direction="row" spacing={1}>
                         <Typography variant="h6" noWrap>
@@ -127,7 +121,7 @@ export default function ProcessExecutionDetails({ execution, steps }: Readonly<P
                             <FormattedMessage id="compare.agregate" />
                         </Button>
                     </Stack>
-                </Box>
+                </Stack>
                 {!executionCompleted && (
                     <Box sx={{ p: 1, bgcolor: boxBackground }}>
                         <Typography variant="subtitle1" sx={{ px: 1, mb: 2 }}>
@@ -189,14 +183,12 @@ export default function ProcessExecutionDetails({ execution, steps }: Readonly<P
                         </Grid>
                     </AccordionDetails>
                 </Accordion>
-                <Box
+                <Stack
                     sx={{
                         padding: 5,
                         bgcolor: boxBackground,
-                        display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        flexDirection: 'column',
                         gap: 0.8,
                     }}
                 >
@@ -209,7 +201,7 @@ export default function ProcessExecutionDetails({ execution, steps }: Readonly<P
                     <Typography variant="body1">
                         <FormattedMessage id="resultsNotAvailable" />
                     </Typography>
-                </Box>
+                </Stack>
             </Stack>
         </Box>
     );

@@ -13,7 +13,7 @@ import ProcessExecutionDetails from '../ProcessExecutionDetails';
 import type { ProcessStepModel } from '../../models/process-result';
 
 vi.mock('@gridsuite/commons-ui', async (importOriginal) => {
-    const actual = await importOriginal();
+    const actual = await importOriginal<typeof import('@gridsuite/commons-ui')>();
     return {
         ...actual,
         fetchElementNames: vi.fn().mockResolvedValue({

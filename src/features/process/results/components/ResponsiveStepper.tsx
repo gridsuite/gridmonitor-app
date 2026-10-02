@@ -9,16 +9,24 @@ import { Box, Step, StepLabel, Stepper, Typography } from '@mui/material';
 import { Error as ErrorIcon } from '@mui/icons-material';
 import { StepStatus } from 'shared/api/monitor-api';
 import { formatCompletedAt, formatDuration } from 'shared/lib/date-time-formatter';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { ProcessStepModel } from '../models/process-result';
 import { useElapsedTime } from '../hooks/use-elapsed-time';
 import { useStepperOrientation } from '../hooks/use-stepper-orientation';
 
-function StepStatusText({ step, elapsed }: { readonly step: ProcessStepModel; readonly elapsed: number }) {
+function StepStatusText({
+    step,
+    elapsed,
+    locale,
+}: Readonly<{
+    step: ProcessStepModel;
+    elapsed: number;
+    locale: string;
+}>) {
     switch (step.status) {
         case StepStatus.Completed:
         case StepStatus.Failed:
-            return <FormattedMessage id="finishedAt" values={{ date: formatCompletedAt(step.completedAt) }} />;
+            return <FormattedMessage id="finishedAt" values={{ date: formatCompletedAt(locale, step.completedAt) }} />;
 
         case StepStatus.Running:
             return <FormattedMessage id="elapsedTime" values={{ date: formatDuration(elapsed) }} />;
@@ -45,6 +53,7 @@ function ProcessStepper({
     readonly orientation: 'horizontal' | 'vertical';
     readonly elapsed: number;
 }) {
+    const intl = useIntl();
     return (
         <Stepper
             activeStep={activeStep}
@@ -87,7 +96,7 @@ function ProcessStepper({
                         }}
                         optional={
                             <Typography variant="caption" color="text.secondary">
-                                <StepStatusText step={step} elapsed={elapsed} />
+                                <StepStatusText step={step} elapsed={elapsed} locale={intl.locale} />
                             </Typography>
                         }
                     >

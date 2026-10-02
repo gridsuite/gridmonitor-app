@@ -17,7 +17,6 @@ export function useElapsedTime(startedAt: Date | undefined) {
             return undefined;
         }
         const updateElapsed = () => setElapsed(Date.now() - startMs);
-        updateElapsed();
         const intervalId = window.setInterval(updateElapsed, 1000);
         return () => window.clearInterval(intervalId);
     }, [startMs]);
