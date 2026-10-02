@@ -7,6 +7,7 @@
 
 import { HttpResponse, http } from 'msw';
 import { act, renderHook, waitFor } from '@testing-library/react';
+import { expect, describe, it } from 'vitest';
 import { PROCESS_EXECUTION, REPORT_SEVERITY, TableType, type FilterConfig, ReportType } from '@gridsuite/commons-ui';
 import { createTestProviders } from 'test-utils/render-with-providers';
 import { useReportViewerProvider, mapReportLogs } from '../use-report-viewer-provider';

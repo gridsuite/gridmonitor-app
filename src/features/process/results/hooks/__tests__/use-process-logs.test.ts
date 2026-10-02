@@ -7,6 +7,7 @@
 
 import { HttpResponse, http } from 'msw';
 import { renderHook, waitFor } from '@testing-library/react';
+import { expect, describe, it } from 'vitest';
 import { createTestProviders } from 'test-utils/render-with-providers';
 import { useProcessLogs } from '../use-process-logs';
 import { server } from '../../../../../test-utils/msw/server';

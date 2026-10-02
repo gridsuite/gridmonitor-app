@@ -6,7 +6,7 @@
  */
 
 import { act, screen } from '@testing-library/react';
-import { expect, vi } from 'vitest';
+import { expect, vi, beforeEach, afterEach, describe, it } from 'vitest';
 import { ReportFetcherContext } from '@gridsuite/commons-ui';
 import { renderWithProviders } from 'test-utils/render-with-providers';
 import { ProcessReportViewerProvider } from '../ProcessReportViewerProvider';
