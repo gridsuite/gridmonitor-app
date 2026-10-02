@@ -21,10 +21,15 @@ function breakPoints(): { values: { xs: number; sm: number } } {
 const darkScrollbarStyles = (theme: Theme) => {
     const trackColor = theme.palette.grey[800];
     const thumbColor = theme.palette.grey[500];
+    const hoverThumbColor = theme.palette.grey[400];
 
     return {
         '*': {
             scrollbarColor: `${thumbColor} ${trackColor}`,
+
+            '&:hover, &:active': {
+                scrollbarColor: `${hoverThumbColor} ${trackColor}`,
+            },
 
             '&::-webkit-scrollbar': {
                 width: '12px',
@@ -39,6 +44,10 @@ const darkScrollbarStyles = (theme: Theme) => {
                 backgroundColor: thumbColor,
                 borderRadius: '8px',
                 border: `3px solid ${trackColor}`,
+            },
+
+            '&::-webkit-scrollbar-thumb:hover, &::-webkit-scrollbar-thumb:active': {
+                backgroundColor: hoverThumbColor,
             },
         },
     };
