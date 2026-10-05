@@ -5,12 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { HttpResponse, http } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { renderHook, waitFor } from '@testing-library/react';
-import { expect, describe, it } from 'vitest';
-import { createTestProviders } from '../../../../../../../test-utils/render-with-providers';
+import { describe, expect, it } from 'vitest';
+import { createTestProviders } from 'test-utils/render-with-providers';
+import { server } from 'test-utils/msw/server';
 import { useProcessLogs } from '../use-process-logs';
-import { server } from '../../../../../../../test-utils/msw/server';
 
 describe('useProcessLogs', () => {
     it('returns the execution, report and severities when all requests succeed', async () => {

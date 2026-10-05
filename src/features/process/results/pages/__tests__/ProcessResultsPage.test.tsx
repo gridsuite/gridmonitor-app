@@ -9,8 +9,8 @@ import { screen, waitFor } from '@testing-library/react';
 import { Route, Routes } from 'react-router';
 import { describe, expect, it, vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
-import { renderWithProviders } from '../../../../../test-utils/render-with-providers';
-import { server } from '../../../../../test-utils/msw/server';
+import { renderWithProviders } from 'test-utils/render-with-providers';
+import { server } from 'test-utils/msw/server';
 import ProcessResultsPage from '../ProcessResultsPage';
 import ProcessExecutionPage from '../ProcessExecutionPage';
 

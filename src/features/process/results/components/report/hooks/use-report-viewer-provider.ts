@@ -17,11 +17,8 @@ import {
     SeverityLevel,
     TableType,
 } from '@gridsuite/commons-ui';
-import { useAppDispatch, useAppSelector } from '../../../../../../app/store/store';
-import {
-    useLazyGetExecutionLogsQuery,
-    useLazyGetExecutionLogsSearchQuery,
-} from '../../../../../../shared/api/monitor-api';
+import { useAppDispatch, useAppSelector } from 'app/store/store';
+import { useLazyGetExecutionLogsQuery, useLazyGetExecutionLogsSearchQuery } from 'shared/api/monitor-api';
 import { setTableFilters } from '../../../store/process-results.slice';
 import { useProcessLogsInvalidation } from './use-process-logs-invalidation';
 

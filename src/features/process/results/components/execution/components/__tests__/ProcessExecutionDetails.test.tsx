@@ -7,8 +7,8 @@
 
 import { screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { ProcessStatus, StepStatus, type ProcessExecution } from '../../../../../../../shared/api/monitor-api';
-import { renderWithProviders } from '../../../../../../../test-utils/render-with-providers';
+import { type ProcessExecution, ProcessStatus, StepStatus } from 'shared/api/monitor-api';
+import { renderWithProviders } from 'test-utils/render-with-providers';
 import ProcessExecutionDetails from '../ProcessExecutionDetails';
 import type { ProcessStepModel } from '../../../../models/process-result';
 

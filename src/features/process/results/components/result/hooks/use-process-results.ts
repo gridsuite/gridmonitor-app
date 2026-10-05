@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { ProcessExecution, useGetProcessExecutionsQuery } from '../../../../../../shared/api/monitor-api';
+import { ProcessExecution, useGetProcessExecutionsQuery } from 'shared/api/monitor-api';
 import { ProcessExecutionInfos } from '../../../models/process-result';
 import { useProcessResultsInvalidation } from './use-process-results-invalidation';
 

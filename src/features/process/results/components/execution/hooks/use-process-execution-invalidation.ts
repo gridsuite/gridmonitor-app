@@ -8,7 +8,7 @@ import { useCallback } from 'react';
 import { NotificationsUrlKeys, useNotificationsListener } from '@gridsuite/commons-ui';
 import { useAppDispatch } from 'app/store/store';
 import { invalidateProcessExecution, invalidateProcessExecutionSteps } from 'shared/api/monitor-api';
-import { isProcessExecutionUpdateNotification } from '../../../../../../shared/api/monitor-api/monitor.notification.type';
+import { isProcessExecutionUpdateNotification } from 'shared/api/monitor-api/monitor.notification.type';
 
 export function useProcessExecutionInvalidation({ executionId }: Readonly<{ executionId?: string }>) {
     const dispatch = useAppDispatch();

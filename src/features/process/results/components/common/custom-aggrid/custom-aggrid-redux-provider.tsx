@@ -15,7 +15,7 @@ import {
     SortConfig,
     SortParams,
 } from '@gridsuite/commons-ui';
-import { useAppDispatch, useAppSelector } from '../../../../../../app/store/store';
+import { useAppDispatch, useAppSelector } from 'app/store/store';
 import { setTableFilters, setTableSort } from '../../../store/process-results.slice';
 
 function CustomAggridSortReduxProvider({ children }: Readonly<PropsWithChildren>) {

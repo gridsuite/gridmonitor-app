@@ -7,8 +7,8 @@
 
 import { Box } from '@mui/material';
 import { Link } from 'react-router';
-import { ProcessStatus } from '../../../../../../../shared/api/monitor-api';
-import { ExecutionStatus } from '../../../../../../../shared/ui/ExecutionStatus';
+import { ProcessStatus } from 'shared/api/monitor-api';
+import { ExecutionStatus } from 'shared/ui/ExecutionStatus';
 import { PROCESS_PATHS } from '../../../../../router/process-paths';
 
 export type ProcessStatusCellRendererProps = { value: ProcessStatus; id: string };

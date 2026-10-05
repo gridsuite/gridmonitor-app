@@ -9,7 +9,7 @@ import { act, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { ReportFetcherContext } from '@gridsuite/commons-ui';
 import { NotificationType } from 'shared/api/monitor-api/monitor.notification.type';
-import { renderWithProviders } from '../../../../../../../test-utils/render-with-providers';
+import { renderWithProviders } from 'test-utils/render-with-providers';
 import { ProcessReportViewerProvider } from '../ProcessReportViewerProvider';
 
 const useNotificationsListenerMock = vi.hoisted(() => vi.fn());
