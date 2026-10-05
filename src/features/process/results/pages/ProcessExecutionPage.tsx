@@ -6,9 +6,9 @@
  */
 
 import { useParams } from 'react-router';
-import { ProcessStepInfosAlert } from '../components/ProcessStepInfosAlert';
-import { useExecutionWithSteps } from '../hooks/use-get-execution-with-steps';
-import ProcessExecutionDetails from '../components/ProcessExecutionDetails';
+import { ProcessStepInfosAlert } from '../components/execution/components/ProcessStepInfosAlert';
+import { useExecutionWithSteps } from '../components/execution/hooks/use-get-execution-with-steps';
+import ProcessExecutionDetails from '../components/execution/components/ProcessExecutionDetails';
 
 function ProcessExecutionPage() {
     const { id } = useParams<{ id: string }>();

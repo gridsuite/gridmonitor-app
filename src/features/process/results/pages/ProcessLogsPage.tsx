@@ -8,11 +8,11 @@ import { PROCESS_EXECUTION, ReportViewer } from '@gridsuite/commons-ui';
 import { FormattedMessage } from 'react-intl';
 import { Box, Breadcrumbs, Link, Stack, Typography } from '@mui/material';
 import { Link as RouterLink, useParams } from 'react-router';
-import { ProcessReportViewerProvider } from '../components/ProcessReportViewerProvider';
-import { useProcessLogs } from '../hooks/use-process-logs';
+import { ProcessReportViewerProvider } from '../components/report/components/ProcessReportViewerProvider';
+import { useProcessLogs } from '../components/report/hooks/use-process-logs';
 import { PROCESS_PATHS } from '../../router/process-paths';
 import { ExecutionStatus } from '../../../../shared/ui/ExecutionStatus';
-import { ProcessLogsAlert } from '../components/ProcessLogsAlert';
+import { ProcessLogsAlert } from '../components/report/components/ProcessLogsAlert';
 
 function ProcessLogsPage() {
     const { id: executionId = '' } = useParams<{ id: string }>();
