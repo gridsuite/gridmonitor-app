@@ -9,7 +9,6 @@ export * from './monitor.enhanced';
 export {
     useGetProcessConfigsQuery,
     useGetProcessConfigQuery,
-    useLazyGetProcessConfigQuery,
     useGetStepsInfosQuery,
     useGetProcessExecutionsQuery,
     useExecuteProcessMutation,
@@ -18,9 +17,7 @@ export {
     useGetExecutionReportsQuery,
     useGetExecutionReportsSeveritiesQuery,
     useGetExecutionLogsQuery,
-    useLazyGetExecutionLogsQuery,
     useGetExecutionLogsSearchQuery,
-    useLazyGetExecutionLogsSearchQuery,
     ProcessType,
     ProcessStatus,
     Severity,
