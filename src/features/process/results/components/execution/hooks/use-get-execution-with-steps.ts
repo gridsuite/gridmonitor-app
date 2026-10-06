@@ -24,14 +24,14 @@ export function useExecutionWithSteps(id?: string) {
         isError: isExecutionError,
         isLoading: isExecutionLoading,
         isSuccess: isExecutionSuccess,
-    } = useGetExecutionQuery({ executionId }, { skip });
+    } = useGetExecutionQuery({ executionId }, { skip, refetchOnMountOrArgChange: true });
 
     const {
         currentData: stepInfos = [],
         isError: isStepsError,
         isLoading: isStepsLoading,
         isSuccess: isStepsSuccess,
-    } = useGetStepsInfosQuery({ executionId }, { skip });
+    } = useGetStepsInfosQuery({ executionId }, { skip, refetchOnMountOrArgChange: true });
 
     const steps = stepInfos.map(mapStepsInfos);
 

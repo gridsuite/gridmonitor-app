@@ -56,13 +56,11 @@ function ProcessLogsPage() {
                 <ExecutionStatus value={execution.status} />
             </Stack>
 
-            {report && (
-                <Box sx={{ flex: 1, minHeight: 0 }}>
-                    <ProcessReportViewerProvider executionId={executionId}>
-                        <ReportViewer report={report} reportType={PROCESS_EXECUTION} severities={severities} />
-                    </ProcessReportViewerProvider>
-                </Box>
-            )}
+            <Box sx={{ flex: 1, minHeight: 0 }}>
+                <ProcessReportViewerProvider executionId={executionId}>
+                    {report && <ReportViewer report={report} reportType={PROCESS_EXECUTION} severities={severities} />}
+                </ProcessReportViewerProvider>
+            </Box>
         </Stack>
     );
 }

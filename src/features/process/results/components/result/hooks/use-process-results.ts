@@ -17,7 +17,13 @@ export const mapStepsInfos = (api: ProcessExecution): ProcessExecutionInfos => (
 });
 
 export function useProcessResults() {
-    const { data = [], isError, isLoading, isSuccess, refetch } = useGetProcessExecutionsQuery();
+    const {
+        data = [],
+        isError,
+        isLoading,
+        isSuccess,
+        refetch,
+    } = useGetProcessExecutionsQuery(undefined, { refetchOnMountOrArgChange: true });
 
     const mappedData = data.map(mapStepsInfos);
 
