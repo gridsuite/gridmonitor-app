@@ -35,5 +35,5 @@ export type MonitorExecutionEventData = CommonMonitorEventData & {
 export function isProcessExecutionUpdateNotification(
     notif: CommonMonitorEventData
 ): notif is MonitorExecutionEventData {
-    return notif.headers.updateType === NotificationType.PROCESS_EXECUTION_UPDATED;
+    return notif?.headers?.updateType === NotificationType.PROCESS_EXECUTION_UPDATED;
 }

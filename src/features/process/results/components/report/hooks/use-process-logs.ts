@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { SeverityLevel, Report } from '@gridsuite/commons-ui';
+import { Report, SeverityLevel } from '@gridsuite/commons-ui';
 import {
     useGetExecutionQuery,
     useGetExecutionReportsQuery,
@@ -15,13 +15,19 @@ import {
 export function useProcessLogs(executionId: string) {
     const skip = !executionId;
 
-    const { currentData: execution, isError: isExecutionError } = useGetExecutionQuery({ executionId }, { skip });
+    const { currentData: execution, isError: isExecutionError } = useGetExecutionQuery(
+        { executionId },
+        { skip, refetchOnMountOrArgChange: true }
+    );
     const {
         currentData: report,
         isError: isReportsError,
         isLoading: isReportLoading,
-    } = useGetExecutionReportsQuery({ executionId }, { skip });
-    const { currentData: severities } = useGetExecutionReportsSeveritiesQuery({ executionId }, { skip });
+    } = useGetExecutionReportsQuery({ executionId }, { skip, refetchOnMountOrArgChange: true });
+    const { currentData: severities } = useGetExecutionReportsSeveritiesQuery(
+        { executionId },
+        { skip, refetchOnMountOrArgChange: true }
+    );
 
     return {
         execution,

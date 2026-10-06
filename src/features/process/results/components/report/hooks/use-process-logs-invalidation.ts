@@ -7,7 +7,11 @@
 import { useCallback } from 'react';
 import { NotificationsUrlKeys, useNotificationsListener } from '@gridsuite/commons-ui';
 import { useAppDispatch } from 'app/store/store';
-import { invalidateProcessExecutionReports, invalidateProcessExecutionReportsSeverities } from 'shared/api/monitor-api';
+import {
+    invalidateProcessExecution,
+    invalidateProcessExecutionReports,
+    invalidateProcessExecutionReportsSeverities,
+} from 'shared/api/monitor-api';
 import { isProcessExecutionUpdateNotification } from 'shared/api/monitor-api/monitor.notification.type';
 
 export function useProcessLogsInvalidation({
@@ -23,6 +27,7 @@ export function useProcessLogsInvalidation({
                 isProcessExecutionUpdateNotification(eventData) &&
                 eventData.headers.processExecutionId === executionId
             ) {
+                invalidateProcessExecution(dispatch, eventData.headers.processExecutionId); // update execution status
                 invalidateProcessExecutionReports(dispatch, eventData.headers.processExecutionId);
                 invalidateProcessExecutionReportsSeverities(dispatch, eventData.headers.processExecutionId);
                 onInvalidate?.();
