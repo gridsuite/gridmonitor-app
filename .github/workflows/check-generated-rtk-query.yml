@@ -1,0 +1,24 @@
+name: Check generated RTK Query files
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check-generated-rtk-query:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run generate:api
+      - name: Check generated files are up to date
+        run: git diff --exit-code -- '*.generated.ts'
