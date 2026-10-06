@@ -20,5 +20,10 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run generate:api
-      - name: Check generated files are up to date
-        run: git diff --exit-code -- '*.generated.ts'
+      - name: Check RTK Query generated files are up to date
+        run: |
+          if ! git diff --quiet -- '*.generated.ts'; then
+            echo "::error::Generated RTK Query files are out of date. Run npm run generate:api and commit the generated files."
+            git --no-pager diff -- '*.generated.ts'
+            exit 1
+          fi
