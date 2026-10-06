@@ -55,3 +55,7 @@ export const invalidateProcessExecutionReportsSeverities = (dispatch: AppDispatc
             { type: MonitorTags.ProcessExecutionReportsSeverities, id: processExecutionId },
         ])
     );
+
+export const useLazyGetProcessConfigQuery = monitorApi.endpoints.getProcessConfig.useLazyQuery;
+export const useLazyGetExecutionLogsQuery = monitorApi.endpoints.getExecutionLogs.useLazyQuery;
+export const useLazyGetExecutionLogsSearchQuery = monitorApi.endpoints.getExecutionLogsSearch.useLazyQuery;

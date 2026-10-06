@@ -380,7 +380,6 @@ export enum Severity {
 }
 export const {
     useGetProcessConfigQuery,
-    useLazyGetProcessConfigQuery,
     useUpdateProcessConfigMutation,
     useDeleteProcessConfigMutation,
     useGetProcessConfigsQuery,
@@ -397,8 +396,6 @@ export const {
     useGetExecutionReportsQuery,
     useGetExecutionReportsSeveritiesQuery,
     useGetExecutionLogsQuery,
-    useLazyGetExecutionLogsQuery,
-    useGetDebugInfosQuery,
     useGetExecutionLogsSearchQuery,
-    useLazyGetExecutionLogsSearchQuery,
+    useGetDebugInfosQuery,
 } = injectedRtkApi;
