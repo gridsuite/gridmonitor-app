@@ -31,7 +31,7 @@ vi.mock('@gridsuite/commons-ui', async (importOriginal) => {
     };
 });
 
-describe('useProcessInvalidationListener', () => {
+describe('useProcessResultsInvalidation', () => {
     let listenerCallbackMessage: ((event: MessageEvent) => void) | undefined;
 
     beforeEach(() => {

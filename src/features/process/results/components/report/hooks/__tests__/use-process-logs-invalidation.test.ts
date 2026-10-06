@@ -8,7 +8,11 @@
 import { renderHook } from '@testing-library/react';
 import { NotificationsUrlKeys, useNotificationsListener } from '@gridsuite/commons-ui';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { invalidateProcessExecutionReports, invalidateProcessExecutionReportsSeverities } from 'shared/api/monitor-api';
+import {
+    invalidateProcessExecution,
+    invalidateProcessExecutionReports,
+    invalidateProcessExecutionReportsSeverities,
+} from 'shared/api/monitor-api';
 import { NotificationType } from 'shared/api/monitor-api/monitor.notification.type';
 import { createTestContext } from 'test-utils/create-test-context';
 import { useProcessLogsInvalidation } from '../use-process-logs-invalidation';
@@ -18,6 +22,7 @@ vi.mock('shared/api/monitor-api', async (importOriginal) => {
 
     return {
         ...actual,
+        invalidateProcessExecution: vi.fn(),
         invalidateProcessExecutionReports: vi.fn(),
         invalidateProcessExecutionReportsSeverities: vi.fn(),
     };
@@ -66,7 +71,7 @@ describe('useProcessLogsInvalidation', () => {
         expect(listenerCallbackMessages.length).toBe(1);
     });
 
-    it('invalidates process execution and steps when receiving a matching update type and executionId', () => {
+    it('invalidates process execution report and severities when receiving a matching update type and executionId', () => {
         const { wrapper } = createTestContext();
 
         renderHook(() => useProcessLogsInvalidation({ executionId: 'execution-1', onInvalidate: onInvalidation }), {
@@ -93,6 +98,9 @@ describe('useProcessLogsInvalidation', () => {
                 },
             }),
         } as MessageEvent);
+
+        expect(invalidateProcessExecution).toHaveBeenNthCalledWith(1, expect.anything(), 'execution-1');
+        expect(invalidateProcessExecution).toHaveBeenNthCalledWith(2, expect.anything(), 'execution-2');
 
         expect(invalidateProcessExecutionReports).toHaveBeenNthCalledWith(1, expect.anything(), 'execution-1');
         expect(invalidateProcessExecutionReports).toHaveBeenNthCalledWith(2, expect.anything(), 'execution-2');
