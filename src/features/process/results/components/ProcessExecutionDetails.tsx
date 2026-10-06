@@ -21,12 +21,12 @@ import {
 
 import { ExpandMore, RotateRightOutlined } from '@mui/icons-material';
 import { grey } from '@mui/material/colors';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router';
 import { ExecutionStatus } from 'shared/ui/ExecutionStatus';
-import { ProcessExecution, ProcessStatus } from 'shared/api/monitor-api';
-import { fetchElementNames } from '@gridsuite/commons-ui';
+import { ProcessStatus, type ProcessExecution } from 'shared/api/monitor-api';
+import { useGetElementsNameQuery } from 'shared/api/explore-api';
 import { getFormattedDate } from 'shared/lib/date-time-formatter';
 import { PROCESS_PATHS } from 'features/process/router/process-paths';
 import ResponsiveStepper from './ResponsiveStepper';
@@ -42,7 +42,9 @@ export default function ProcessExecutionDetails({ execution, steps }: Readonly<P
     const executionCompleted = execution.status === ProcessStatus.Completed;
     const [isOpen, setIsOpen] = useState(!executionCompleted);
 
-    const [names, setNames] = useState<Record<string, string>>({});
+    const { currentData: names = {} } = useGetElementsNameQuery({
+        ids: [execution.processConfigId, execution.caseUuid],
+    });
 
     const intl = useIntl();
 
@@ -50,20 +52,6 @@ export default function ProcessExecutionDetails({ execution, steps }: Readonly<P
 
     const caseName = names[execution.caseUuid];
     const processConfigName = names[execution.processConfigId];
-
-    useEffect(() => {
-        let active = true;
-        fetchElementNames(new Set([execution.processConfigId, execution.caseUuid]))
-            .then((result) => {
-                if (active) setNames(result);
-            })
-            .catch(() => {
-                if (active) setNames({});
-            });
-        return () => {
-            active = false;
-        };
-    }, [execution.processConfigId, execution.caseUuid]);
 
     const boxBackground = theme.palette.mode === 'dark' ? grey[900] : grey[100];
 

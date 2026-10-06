@@ -16,7 +16,7 @@ const config: ConfigFile = {
     exportName: 'exploreGeneratedApi',
     hooks: true,
     useEnumType: true,
-    filterEndpoints: ['createProcessConfig'],
+    filterEndpoints: ['createProcessConfig', 'getElementsName'],
     endpointOverrides: gatewayManagedHeaderOverrides,
 };
 
