@@ -23,7 +23,7 @@ export function ProcessUserCellRenderer({ value, backgroundColor, id }: Readonly
             }}
         >
             <Box sx={{ display: 'inline-flex', verticalAlign: 'middle' }}>
-                <UserAvatar label={value} backgroundColor={backgroundColor} />
+                <UserAvatar size="small" label={value} backgroundColor={backgroundColor} />
             </Box>
         </Link>
     );
