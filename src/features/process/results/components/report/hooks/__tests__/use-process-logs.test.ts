@@ -24,6 +24,7 @@ describe('useProcessLogs', () => {
             logs: [],
         };
         const severities = ['INFO', 'WARN', 'ERROR'];
+        const sortedSeverities = ['ERROR', 'WARN', 'INFO']; // see sortSeverityList()
 
         server.use(
             http.get('*/v1/executions/execution-1', () => HttpResponse.json(execution)),
@@ -39,7 +40,7 @@ describe('useProcessLogs', () => {
         });
 
         expect(result.current.report).toEqual(report);
-        expect(result.current.severities).toEqual(severities);
+        expect(result.current.severities).toEqual(sortedSeverities);
         expect(result.current.isLoading).toBe(false);
         expect(result.current.isError).toBe(false);
         expect(result.current.isEmpty).toBe(false);
