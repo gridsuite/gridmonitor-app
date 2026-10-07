@@ -77,18 +77,23 @@ export default function ProcessExecutionDetails({ execution, steps }: Readonly<P
                 p: 3,
             }}
         >
-            <Stack spacing={3}>
-                <Breadcrumbs separator="/">
-                    <Link component={RouterLink} to={PROCESS_PATHS.results} underline="hover">
-                        <Typography variant="subtitle1">
-                            <FormattedMessage id="processLaunchHistory" />
-                        </Typography>
-                    </Link>
-
-                    <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-                        <FormattedMessage id={execution.type} />
+            <Breadcrumbs separator="/">
+                <Link component={RouterLink} to={PROCESS_PATHS.results} underline="hover">
+                    <Typography variant="subtitle1">
+                        <FormattedMessage id="processLaunchHistory" />
                     </Typography>
-                </Breadcrumbs>
+                </Link>
+
+                <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
+                    <FormattedMessage id={execution.type} />
+                </Typography>
+            </Breadcrumbs>
+            <Stack
+                spacing={3}
+                sx={{
+                    mt: 1,
+                }}
+            >
                 <Stack
                     direction="row"
                     sx={{ justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 1 }}

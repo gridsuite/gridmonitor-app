@@ -29,7 +29,7 @@ export function InfoItem({ label, value, infoType = InfoItemType.Text, path }: R
 
     switch (infoType) {
         case InfoItemType.User:
-            content = <UserAvatar label={value} backgroundColor="grey" />;
+            content = <UserAvatar size="small" label={value} backgroundColor="grey" />;
             break;
 
         case InfoItemType.Url:
