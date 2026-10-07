@@ -30,7 +30,7 @@ function ProcessLogsPage() {
     }
 
     return (
-        <Stack spacing={3} sx={{ p: 3, height: '100%' }}>
+        <Stack sx={{ p: 3, height: '100%' }}>
             <Breadcrumbs separator="/">
                 <Link component={RouterLink} to={PROCESS_PATHS.results} underline="hover">
                     <Typography variant="subtitle1">
@@ -49,7 +49,7 @@ function ProcessLogsPage() {
                 </Typography>
             </Breadcrumbs>
 
-            <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+            <Stack direction="row" spacing={1} sx={{ alignItems: 'center', mt: 1 }}>
                 <Typography variant="h6" noWrap>
                     <FormattedMessage id="Logs" />
                 </Typography>
@@ -57,7 +57,7 @@ function ProcessLogsPage() {
             </Stack>
 
             {report && (
-                <Box sx={{ flex: 1, minHeight: 0 }}>
+                <Box sx={{ flex: 1, minHeight: 0, mt: 3 }}>
                     <ProcessReportViewerProvider executionId={executionId}>
                         <ReportViewer report={report} reportType={PROCESS_EXECUTION} severities={severities} />
                     </ProcessReportViewerProvider>
