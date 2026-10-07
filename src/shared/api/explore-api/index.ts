@@ -6,5 +6,5 @@
  */
 
 export * from './explore.enhanced';
-export { useCreateProcessConfigMutation } from './explore.generated';
-export type { CreateProcessConfigApiArg } from './explore.generated';
+export { useCreateProcessConfigMutation, useGetElementsNameQuery } from './explore.generated';
+export type { CreateProcessConfigApiArg, GetElementsNameApiArg } from './explore.generated';
