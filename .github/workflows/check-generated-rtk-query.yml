@@ -1,0 +1,34 @@
+name: Check generated RTK Query files
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check-generated-rtk-query:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Setup Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run generate:api
+      - name: Check RTK Query generated files are up to date
+        run: |
+          changed_files=$(git status --porcelain --untracked-files=all -- '*.generated.ts')
+          if [ -n "$changed_files" ]; then
+            echo "::error::Generated RTK Query files are out of date. Run npm run generate:api and commit the generated files."
+            printf '%s\n' "$changed_files"
+            exit 1
+          fi
