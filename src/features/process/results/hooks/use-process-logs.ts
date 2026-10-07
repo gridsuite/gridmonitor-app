@@ -5,12 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { useMemo } from 'react';
 import {
     useGetExecutionQuery,
     useGetExecutionReportsQuery,
     useGetExecutionReportsSeveritiesQuery,
 } from 'shared/api/monitor-api';
-import { SeverityLevel, Report } from '@gridsuite/commons-ui';
+import { Report, SeverityLevel, sortSeverityList } from '@gridsuite/commons-ui';
 
 export function useProcessLogs(executionId: string) {
     const skip = !executionId;
@@ -23,10 +24,21 @@ export function useProcessLogs(executionId: string) {
     } = useGetExecutionReportsQuery({ executionId }, { skip });
     const { currentData: severities } = useGetExecutionReportsSeveritiesQuery({ executionId }, { skip });
 
+    // sort severities
+    const sortedSeverities = useMemo(() => {
+        if (!severities) {
+            return severities;
+        }
+
+        return sortSeverityList([
+            ...severities /* spread because RTK uses Immer to keep the cached state immutable */,
+        ] as SeverityLevel[]);
+    }, [severities]);
+
     return {
         execution,
         report: report as Report,
-        severities: severities as SeverityLevel[],
+        severities: sortedSeverities,
         isError: isReportsError || isExecutionError,
         isEmpty: !isReportLoading && !report,
         isLoading: isReportLoading,

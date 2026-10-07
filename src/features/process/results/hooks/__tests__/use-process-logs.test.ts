@@ -5,9 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { HttpResponse, http } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { renderHook, waitFor } from '@testing-library/react';
-import { expect, describe, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { createTestProviders } from 'test-utils/render-with-providers';
 import { useProcessLogs } from '../use-process-logs';
 import { server } from '../../../../../test-utils/msw/server';
@@ -24,6 +24,7 @@ describe('useProcessLogs', () => {
             logs: [],
         };
         const severities = ['INFO', 'WARN', 'ERROR'];
+        const sortedSeverities = ['ERROR', 'WARN', 'INFO']; // see sortSeverityList()
 
         server.use(
             http.get('*/v1/executions/execution-1', () => HttpResponse.json(execution)),
@@ -39,7 +40,7 @@ describe('useProcessLogs', () => {
         });
 
         expect(result.current.report).toEqual(report);
-        expect(result.current.severities).toEqual(severities);
+        expect(result.current.severities).toEqual(sortedSeverities);
         expect(result.current.isLoading).toBe(false);
         expect(result.current.isError).toBe(false);
         expect(result.current.isEmpty).toBe(false);
