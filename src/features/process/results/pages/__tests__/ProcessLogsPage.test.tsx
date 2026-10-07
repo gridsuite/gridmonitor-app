@@ -13,11 +13,11 @@ import ProcessLogsPage from '../ProcessLogsPage';
 
 const useProcessLogsMock = vi.hoisted(() => vi.fn());
 
-vi.mock('../../hooks/use-process-logs', () => ({
+vi.mock('../../components/report/hooks/use-process-logs', () => ({
     useProcessLogs: useProcessLogsMock,
 }));
 
-vi.mock('../../components/ProcessReportViewerProvider', () => ({
+vi.mock('../../components/report/components/ProcessReportViewerProvider', () => ({
     ProcessReportViewerProvider: ({ children }: { children: React.ReactNode }) => (
         <div data-testid="report-viewer-provider">{children}</div>
     ),
