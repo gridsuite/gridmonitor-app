@@ -20,7 +20,7 @@ export function useCreateProcessConfigSubmit({
     createProcessConfig,
     onClose,
 }: UseCreateProcessConfigSubmitParams) {
-    const { snackSuccess, snackError } = useSnackMessage();
+    const { snackSuccess } = useSnackMessage();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const submit = useCallback(async () => {
@@ -36,12 +36,10 @@ export function useCreateProcessConfigSubmit({
                 });
                 onClose();
             })();
-        } catch {
-            snackError({ messageId: 'processConfigCreateError' });
         } finally {
             setIsSubmitting(false);
         }
-    }, [form, createProcessConfig, snackSuccess, snackError, onClose]);
+    }, [form, createProcessConfig, snackSuccess, onClose]);
 
     return { submit, isSubmitting };
 }
