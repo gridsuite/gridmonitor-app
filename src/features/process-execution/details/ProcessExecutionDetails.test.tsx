@@ -23,6 +23,12 @@ vi.mock('@gridsuite/commons-ui', async (importOriginal) => {
         UserAvatar: ({ label }: { label: string }) => <span>{label}</span>,
     };
 });
+
+vi.mock('../ExecutionResultPanel', () => ({
+    ExecutionResultPanel: ({ processType }: { processType: string }) => (
+        <div data-testid="execution-result-panel">{processType}</div>
+    ),
+}));
 class ResizeObserverMock {
     observe = vi.fn();
 
@@ -100,6 +106,8 @@ describe('ProcessExecutionDetails', () => {
 
         expect(screen.getAllByText('LoadFlow')[0]).toBeInTheDocument();
         expect(screen.getAllByText('Finished')[0]).toBeInTheDocument();
+        expect(screen.getByTestId('execution-result-panel')).toHaveTextContent('LOADFLOW');
+        expect(screen.queryByText('Results not available.')).not.toBeInTheDocument();
         expect(await screen.findByText('Load-flow configuration')).toBeInTheDocument();
     });
 
@@ -110,6 +118,8 @@ describe('ProcessExecutionDetails', () => {
 
         expect(screen.getAllByText('LoadFlow')[0]).toBeInTheDocument();
         expect(screen.getAllByText('Failed')[0]).toBeInTheDocument();
+        expect(screen.queryByTestId('execution-result-panel')).not.toBeInTheDocument();
+        expect(screen.getByText('Results not available.')).toBeInTheDocument();
         expect(await screen.findByText('Load-flow configuration')).toBeInTheDocument();
     });
 });
