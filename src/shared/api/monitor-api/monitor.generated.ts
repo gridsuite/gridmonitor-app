@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 import { monitorBaseApi as api } from "shared/api/monitor-api/monitor-base-api";
 const injectedRtkApi = api.injectEndpoints({
   endpoints: (build) => ({
@@ -54,6 +56,21 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/v1/process-configs/${queryArg.uuid}/duplicate`,
         method: "POST",
+      }),
+    }),
+    exportExecutionResultsCsv: build.mutation<
+      ExportExecutionResultsCsvApiResponse,
+      ExportExecutionResultsCsvApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/v1/executions/${queryArg.executionId}/results/csv`,
+        method: "POST",
+        body: queryArg.body,
+        params: {
+          resultType: queryArg.resultType,
+          sort: queryArg.sort,
+          filters: queryArg.filters,
+        },
       }),
     }),
     executeProcess: build.mutation<
@@ -122,6 +139,13 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/v1/executions/${queryArg.executionId}/results`,
+        params: {
+          resultType: queryArg.resultType,
+          page: queryArg.page,
+          size: queryArg.size,
+          sort: queryArg.sort,
+          filters: queryArg.filters,
+        },
       }),
     }),
     getExecutionReports: build.query<
@@ -181,7 +205,11 @@ const injectedRtkApi = api.injectEndpoints({
 export { injectedRtkApi as monitorGeneratedApi };
 export type GetProcessConfigApiResponse =
   /** status 200 process config was returned */ PersistedProcessConfig;
+export type GetProcessConfigApiResponse =
+  /** status 200 process config was returned */ PersistedProcessConfig;
 export type GetProcessConfigApiArg = {
+  /** process config UUID */
+  uuid: string;
   /** process config UUID */
   uuid: string;
 };
@@ -190,28 +218,52 @@ export type UpdateProcessConfigApiArg = {
   /** process config UUID */
   uuid: string;
   body: LoadFlowConfig | SecurityAnalysisConfig | ShortCircuitConfig;
+  /** process config UUID */
+  uuid: string;
+  body: LoadFlowConfig | SecurityAnalysisConfig | ShortCircuitConfig;
 };
 export type DeleteProcessConfigApiResponse = unknown;
 export type DeleteProcessConfigApiArg = {
   /** process config UUID */
   uuid: string;
+  /** process config UUID */
+  uuid: string;
 };
 export type GetProcessConfigsApiResponse =
   /** status 200 The process configs of the given type were returned */ PersistedProcessConfig[];
+  /** status 200 The process configs of the given type were returned */ PersistedProcessConfig[];
 export type GetProcessConfigsApiArg = {
+  /** Process type */
+  processType: ProcessType;
   /** Process type */
   processType: ProcessType;
 };
 export type CreateProcessConfigApiResponse =
   /** status 200 process config was created */ string;
+export type CreateProcessConfigApiResponse =
+  /** status 200 process config was created */ string;
 export type CreateProcessConfigApiArg = {
   body: LoadFlowConfig | SecurityAnalysisConfig | ShortCircuitConfig;
+  body: LoadFlowConfig | SecurityAnalysisConfig | ShortCircuitConfig;
 };
+export type DuplicateProcessConfigApiResponse =
+  /** status 200 process config was duplicated */ string;
 export type DuplicateProcessConfigApiResponse =
   /** status 200 process config was duplicated */ string;
 export type DuplicateProcessConfigApiArg = {
   /** UUID of the process config to duplicate */
   uuid: string;
+  /** UUID of the process config to duplicate */
+  uuid: string;
+};
+export type ExportExecutionResultsCsvApiResponse = Blob;
+export type ExportExecutionResultsCsvApiArg = {
+  /** Execution UUID */
+  executionId: string;
+  resultType: string;
+  sort?: string[];
+  filters?: string;
+  body: object;
 };
 export type ExecuteProcessApiResponse =
   /** status 200 The process execution has been started */ string;
@@ -221,12 +273,21 @@ export type ExecuteProcessApiArg = {
   /** Process config uuid */
   processConfigUuid: string;
   isDebug?: boolean;
+  /** Case uuid */
+  caseUuid: string;
+  /** Process config uuid */
+  processConfigUuid: string;
+  isDebug?: boolean;
 };
 export type GetProcessConfigsMetadataApiResponse =
   /** status 200 process configs metadata were returned */ MetadataInfos[];
+  /** status 200 process configs metadata were returned */ MetadataInfos[];
 export type GetProcessConfigsMetadataApiArg = {
   ids: string[];
+  ids: string[];
 };
+export type CompareProcessConfigsApiResponse =
+  /** status 200 Comparison result returned */ ProcessConfigComparison;
 export type CompareProcessConfigsApiResponse =
   /** status 200 Comparison result returned */ ProcessConfigComparison;
 export type CompareProcessConfigsApiArg = {
@@ -234,44 +295,76 @@ export type CompareProcessConfigsApiArg = {
   uuid1: string;
   /** Second process config UUID */
   uuid2: string;
+  /** First process config UUID */
+  uuid1: string;
+  /** Second process config UUID */
+  uuid2: string;
 };
+export type GetProcessExecutionsApiResponse =
+  /** status 200 The process executions */ ProcessExecution[];
 export type GetProcessExecutionsApiResponse =
   /** status 200 The process executions */ ProcessExecution[];
 export type GetProcessExecutionsApiArg = void;
 export type GetExecutionApiResponse =
   /** status 200 The process execution */ ProcessExecution;
+export type GetExecutionApiResponse =
+  /** status 200 The process execution */ ProcessExecution;
 export type GetExecutionApiArg = {
+  /** Execution UUID */
+  executionId: string;
   /** Execution UUID */
   executionId: string;
 };
 export type DeleteExecutionApiResponse = unknown;
 export type DeleteExecutionApiArg = {
   executionId: string;
+  executionId: string;
 };
+export type GetStepsInfosApiResponse =
+  /** status 200 The execution steps statuses */ ProcessExecutionStep[];
 export type GetStepsInfosApiResponse =
   /** status 200 The execution steps statuses */ ProcessExecutionStep[];
 export type GetStepsInfosApiArg = {
   /** Execution UUID */
   executionId: string;
+  /** Execution UUID */
+  executionId: string;
 };
+export type GetExecutionResultsApiResponse =
+  /** status 200 The execution results */ string[];
 export type GetExecutionResultsApiResponse =
   /** status 200 The execution results */ string[];
 export type GetExecutionResultsApiArg = {
   /** Execution UUID */
   executionId: string;
+  resultType?: string;
+  page?: number;
+  size?: number;
+  sort?: string[];
+  filters?: string;
 };
+export type GetExecutionReportsApiResponse =
+  /** status 200 The execution reports */ Report;
 export type GetExecutionReportsApiResponse =
   /** status 200 The execution reports */ Report;
 export type GetExecutionReportsApiArg = {
   /** Execution UUID */
   executionId: string;
+  /** Execution UUID */
+  executionId: string;
 };
+export type GetExecutionReportsSeveritiesApiResponse =
+  /** status 200 The execution reports' severities */ string[];
 export type GetExecutionReportsSeveritiesApiResponse =
   /** status 200 The execution reports' severities */ string[];
 export type GetExecutionReportsSeveritiesApiArg = {
   /** Execution UUID */
   executionId: string;
+  /** Execution UUID */
+  executionId: string;
 };
+export type GetExecutionLogsApiResponse =
+  /** status 200 The execution logs */ ReportPage;
 export type GetExecutionLogsApiResponse =
   /** status 200 The execution logs */ ReportPage;
 export type GetExecutionLogsApiArg = {
@@ -285,10 +378,33 @@ export type GetExecutionLogsApiArg = {
   severityLevelsFilter?: string[];
   page?: number;
   size?: number;
+  /** Execution UUID */
+  executionId: string;
+  /** Report UUID */
+  reportId: string;
+  /** Filter on message. Will only return elements containing the filter message in them. */
+  messageFilter?: string;
+  /** Filter on severity levels */
+  severityLevelsFilter?: string[];
+  page?: number;
+  size?: number;
 };
 export type GetExecutionLogsSearchApiResponse =
   /** status 200 Get the positions of the search term matches in the logs */ MatchPosition[];
+  /** status 200 Get the positions of the search term matches in the logs */ MatchPosition[];
 export type GetExecutionLogsSearchApiArg = {
+  /** Execution UUID */
+  executionId: string;
+  /** Report UUID */
+  reportId: string;
+  /** Filter on message. Will only return elements containing the filter message in them. */
+  messageFilter?: string;
+  /** Filter on severity levels */
+  severityLevelsFilter?: string[];
+  /** The search term to look for in the logs */
+  searchTerm: string;
+  /** The page size for the search results */
+  pageSize: number;
   /** Execution UUID */
   executionId: string;
   /** Report UUID */
@@ -304,46 +420,75 @@ export type GetExecutionLogsSearchApiArg = {
 };
 export type GetDebugInfosApiResponse =
   /** status 200 Debug file downloaded */ string;
+export type GetDebugInfosApiResponse =
+  /** status 200 Debug file downloaded */ string;
 export type GetDebugInfosApiArg = {
+  /** Execution UUID */
+  executionId: string;
   /** Execution UUID */
   executionId: string;
 };
 export type ProcessConfigBase = {
+  processType: string;
   processType: string;
 };
 export type ModificationInfo = {
   modificationUuid?: string;
   description?: string;
   active?: boolean;
+  modificationUuid?: string;
+  description?: string;
+  active?: boolean;
 };
 export type LoadFlowConfig = {
+  processType: "LoadFlowConfig";
   processType: "LoadFlowConfig";
 } & ProcessConfigBase & {
     loadflowParametersUuid: string;
     modifications: ModificationInfo[];
   };
+    loadflowParametersUuid: string;
+    modifications: ModificationInfo[];
+  };
 export type SecurityAnalysisConfig = {
+  processType: "SecurityAnalysisConfig";
   processType: "SecurityAnalysisConfig";
 } & ProcessConfigBase & {
     securityAnalysisParametersUuid: string;
     modifications: ModificationInfo[];
     loadflowParametersUuid: string;
   };
+    securityAnalysisParametersUuid: string;
+    modifications: ModificationInfo[];
+    loadflowParametersUuid: string;
+  };
 export type ShortCircuitConfig = {
   processType: "ShortCircuitConfig";
+  processType: "ShortCircuitConfig";
 } & ProcessConfigBase & {
+    shortCircuitParametersUuid: string;
+    modifications: ModificationInfo[];
+  };
     shortCircuitParametersUuid: string;
     modifications: ModificationInfo[];
   };
 export type PersistedProcessConfig = {
   id?: string;
   processConfig?: LoadFlowConfig | SecurityAnalysisConfig | ShortCircuitConfig;
+  id?: string;
+  processConfig?: LoadFlowConfig | SecurityAnalysisConfig | ShortCircuitConfig;
 };
 export type MetadataInfos = {
   id?: string;
   type?: ProcessType;
+  id?: string;
+  type?: ProcessType;
 };
 export type ProcessConfigFieldComparison = {
+  field?: string;
+  identical?: boolean;
+  value1?: any;
+  value2?: any;
   field?: string;
   identical?: boolean;
   value1?: any;
@@ -354,8 +499,24 @@ export type ProcessConfigComparison = {
   processConfigUuid2?: string;
   identical?: boolean;
   differences?: ProcessConfigFieldComparison[];
+  processConfigUuid1?: string;
+  processConfigUuid2?: string;
+  identical?: boolean;
+  differences?: ProcessConfigFieldComparison[];
 };
 export type ProcessExecution = {
+  id: string;
+  type: string;
+  caseUuid: string;
+  processConfigId: string;
+  status: ProcessStatus;
+  executionEnvName: string;
+  scheduledAt?: string;
+  startedAt?: string;
+  completedAt?: string;
+  reportId?: string;
+  userId: string;
+  userIdentity?: string;
   id: string;
   type: string;
   caseUuid: string;
@@ -378,8 +539,22 @@ export type ProcessExecutionStep = {
   resultType?: ResultType;
   startedAt?: string;
   completedAt?: string;
+  id: string;
+  stepType: string;
+  stepOrder: number;
+  status: StepStatus;
+  resultId?: string;
+  resultType?: ResultType;
+  startedAt?: string;
+  completedAt?: string;
 };
 export type Report = {
+  id?: string;
+  parentId?: string;
+  message?: string;
+  severity?: Severity;
+  depth?: number;
+  subReports?: any[];
   id?: string;
   parentId?: string;
   message?: string;
@@ -392,8 +567,16 @@ export type ReportLog = {
   severity?: Severity;
   depth?: number;
   parentId?: string;
+  message?: string;
+  severity?: Severity;
+  depth?: number;
+  parentId?: string;
 };
 export type ReportPage = {
+  number?: number;
+  content?: ReportLog[];
+  totalElements?: number;
+  totalPages?: number;
   number?: number;
   content?: ReportLog[];
   totalElements?: number;
@@ -402,13 +585,22 @@ export type ReportPage = {
 export type MatchPosition = {
   page?: number;
   rowIndex?: number;
+  page?: number;
+  rowIndex?: number;
 };
 export enum ProcessType {
   SecurityAnalysis = "SECURITY_ANALYSIS",
   Loadflow = "LOADFLOW",
   ShortCircuit = "SHORT_CIRCUIT",
+  SecurityAnalysis = "SECURITY_ANALYSIS",
+  Loadflow = "LOADFLOW",
+  ShortCircuit = "SHORT_CIRCUIT",
 }
 export enum ProcessStatus {
+  Scheduled = "SCHEDULED",
+  Running = "RUNNING",
+  Completed = "COMPLETED",
+  Failed = "FAILED",
   Scheduled = "SCHEDULED",
   Running = "RUNNING",
   Completed = "COMPLETED",
@@ -420,8 +612,16 @@ export enum StepStatus {
   Completed = "COMPLETED",
   Failed = "FAILED",
   Skipped = "SKIPPED",
+  Scheduled = "SCHEDULED",
+  Running = "RUNNING",
+  Completed = "COMPLETED",
+  Failed = "FAILED",
+  Skipped = "SKIPPED",
 }
 export enum ResultType {
+  SecurityAnalysis = "SECURITY_ANALYSIS",
+  Loadflow = "LOADFLOW",
+  ShortCircuit = "SHORT_CIRCUIT",
   SecurityAnalysis = "SECURITY_ANALYSIS",
   Loadflow = "LOADFLOW",
   ShortCircuit = "SHORT_CIRCUIT",
@@ -435,7 +635,39 @@ export enum Severity {
   Warn = "WARN",
   Error = "ERROR",
   Fatal = "FATAL",
+  Unknown = "UNKNOWN",
+  Trace = "TRACE",
+  Debug = "DEBUG",
+  Detail = "DETAIL",
+  Info = "INFO",
+  Warn = "WARN",
+  Error = "ERROR",
+  Fatal = "FATAL",
 }
+export const useLazyGetProcessConfigQuery = () => {
+  const dispatch = useDispatch<any>();
+  const trigger = useCallback(
+    (arg: GetProcessConfigApiArg) => dispatch(injectedRtkApi.endpoints.getProcessConfig.initiate(arg)),
+    [dispatch]
+  );
+  return [trigger] as const;
+};
+export const useLazyGetExecutionLogsQuery = () => {
+  const dispatch = useDispatch<any>();
+  const trigger = useCallback(
+    (arg: GetExecutionLogsApiArg) => dispatch(injectedRtkApi.endpoints.getExecutionLogs.initiate(arg)),
+    [dispatch]
+  );
+  return [trigger] as const;
+};
+export const useLazyGetExecutionLogsSearchQuery = () => {
+  const dispatch = useDispatch<any>();
+  const trigger = useCallback(
+    (arg: GetExecutionLogsSearchApiArg) => dispatch(injectedRtkApi.endpoints.getExecutionLogsSearch.initiate(arg)),
+    [dispatch]
+  );
+  return [trigger] as const;
+};
 export const {
   useGetProcessConfigQuery,
   useUpdateProcessConfigMutation,
@@ -443,6 +675,7 @@ export const {
   useGetProcessConfigsQuery,
   useCreateProcessConfigMutation,
   useDuplicateProcessConfigMutation,
+  useExportExecutionResultsCsvMutation,
   useExecuteProcessMutation,
   useGetProcessConfigsMetadataQuery,
   useCompareProcessConfigsQuery,
