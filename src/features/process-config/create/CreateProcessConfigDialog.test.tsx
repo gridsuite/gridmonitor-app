@@ -50,12 +50,12 @@ vi.mock('shared/ui/AppDialog', () => ({
         ) : null,
 }));
 
-vi.mock('../../hooks/use-create-process-config', () => ({
+vi.mock('./hooks/use-create-process-config', () => ({
     useCreateProcessConfig: mocks.useCreateProcessConfig,
     useProcessConfigPrefill: mocks.useProcessConfigPrefill,
 }));
 
-vi.mock('../../hooks/useCreateProcessConfigSubmit', () => ({
+vi.mock('./hooks/useCreateProcessConfigSubmit', () => ({
     useCreateProcessConfigSubmit: mocks.useCreateProcessConfigSubmit,
 }));
 

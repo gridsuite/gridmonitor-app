@@ -15,7 +15,7 @@ const mocks = vi.hoisted(() => ({
     appSideBar: vi.fn(),
 }));
 
-vi.mock('features/top-bar/components/AppTopBar', () => ({
+vi.mock('features/top-bar/AppTopBar', () => ({
     default: () => <div>topbar</div>,
 }));
 
@@ -36,7 +36,7 @@ vi.mock('features/authentication/hooks/use-stable-user-profile', () => ({
     useStableUserProfile: mocks.useStableUserProfile,
 }));
 
-vi.mock('features/side-bar/components/AppSideBar', () => ({
+vi.mock('features/side-bar/AppSideBar', () => ({
     AppSideBar: (props: { onLogoutClick?: () => void }) => {
         mocks.appSideBar(props);
         return null;

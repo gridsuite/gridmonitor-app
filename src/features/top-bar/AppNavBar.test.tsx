@@ -25,11 +25,11 @@ vi.mock('@mui/material', async (importOriginal) => {
     };
 });
 
-vi.mock('../../../process/execute/components/LaunchSuccessDialog', () => ({
+vi.mock('../process-execution/launch/LaunchSuccessDialog', () => ({
     LaunchSuccessDialog: () => null,
 }));
 
-vi.mock('../../../process/execute/components/ExecuteProcessConfigDialog', () => ({
+vi.mock('../process-execution/launch/ExecuteProcessConfigDialog', () => ({
     ExecuteProcessConfigDialog: () => null,
 }));
 

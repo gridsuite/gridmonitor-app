@@ -16,12 +16,12 @@ import messagesEn from '../../shared/translations/en/common.json';
 import AppTopBar from './AppTopBar';
 import type { UserProfile } from '../authentication/store/authentication.type';
 
-vi.mock('../AppNavBar', () => ({
+vi.mock('./AppNavBar', () => ({
     SettingsTabs: () => <div role="tab">Configuration</div>,
     ExecuteButton: () => <a href="/execute">Execute process</a>,
 }));
 
-vi.mock('../ConfigurationModeToggle', () => ({
+vi.mock('./ConfigurationModeToggle', () => ({
     ConfigurationModeToggle: () => <button type="button">Toggle configuration mode</button>,
 }));
 

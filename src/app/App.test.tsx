@@ -18,7 +18,7 @@ vi.mock('@gridsuite/commons-ui', async (importOriginal) => ({
     useNotificationsListener: vi.fn(),
 }));
 
-vi.mock('features/side-bar/components/AppSideBar', () => ({
+vi.mock('features/side-bar/AppSideBar', () => ({
     AppSideBar: () => <nav aria-label="Sidebar" />,
 }));
 
