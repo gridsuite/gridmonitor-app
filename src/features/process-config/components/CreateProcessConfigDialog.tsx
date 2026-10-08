@@ -44,7 +44,7 @@ export function CreateProcessConfigDialog({ open, onClose }: Readonly<CreateProc
             title={<FormattedMessage id="processConfigCreateTitle" />}
         >
             <CustomFormProvider {...formMethods} validationSchema={formSchema}>
-                <ProcessConfigForm form={formMethods} mode="create" onFetchProcessConfig={fetchProcessConfigPrefill} />
+                <ProcessConfigForm mode="create" onFetchProcessConfig={fetchProcessConfigPrefill} />
             </CustomFormProvider>
         </AppDialog>
     );
