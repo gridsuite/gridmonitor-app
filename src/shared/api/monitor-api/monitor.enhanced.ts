@@ -5,9 +5,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import type { AppDispatch } from '../../../app/store/store';
 import { monitorGeneratedApi } from './monitor.generated';
 import { MonitorTags } from './monitor-base-api';
-import type { AppDispatch } from '../../../app/store/store';
+import type {
+    GetExecutionLogsApiResponse,
+    GetExecutionLogsSearchApiResponse,
+    GetProcessConfigApiResponse,
+} from './monitor.generated';
 
 export const monitorApi = monitorGeneratedApi.enhanceEndpoints({
     endpoints: {
@@ -25,17 +30,21 @@ export const monitorApi = monitorGeneratedApi.enhanceEndpoints({
             ],
         },
         getExecutionReports: {
-            providesTags: (result, error, { executionId }) => [
+            providesTags: (_result, _error, { executionId }) => [
                 { type: MonitorTags.ProcessExecutionReports, id: executionId },
             ],
         },
         getExecutionReportsSeverities: {
-            providesTags: (result, error, { executionId }) => [
+            providesTags: (_result, _error, { executionId }) => [
                 { type: MonitorTags.ProcessExecutionReportsSeverities, id: executionId },
             ],
         },
     },
 });
+
+export type LazyProcessConfigResponse = GetProcessConfigApiResponse;
+export type LazyExecutionLogsResponse = GetExecutionLogsApiResponse;
+export type LazyExecutionLogsSearchResponse = GetExecutionLogsSearchApiResponse;
 
 export const invalidateProcessExecutionsLists = (dispatch: AppDispatch) =>
     dispatch(monitorApi.util.invalidateTags([{ type: MonitorTags.ProcessExecutions, id: 'LIST' }]));
