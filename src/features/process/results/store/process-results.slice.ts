@@ -55,6 +55,8 @@ const initialState: ProcessTablesState = {
             [TableType.Logs]: {
                 ...initialLogsFilterState,
             },
+            [TableType.SecurityAnalysis]: {},
+            [TableType.ShortcircuitAnalysis]: {},
         },
     },
     tables: { uuid: null },

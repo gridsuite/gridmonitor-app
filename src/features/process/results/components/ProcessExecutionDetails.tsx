@@ -32,6 +32,7 @@ import { PROCESS_PATHS } from 'features/process/router/process-paths';
 import ResponsiveStepper from './ResponsiveStepper';
 import { ProcessStepModel } from '../models/process-result';
 import { InfoItem, InfoItemType } from './InfoItem';
+import { ExecutionResultPanel } from './ExecutionResultPanel';
 
 type ProcessExecutionDetailsProps = {
     execution: ProcessExecution;
@@ -39,7 +40,7 @@ type ProcessExecutionDetailsProps = {
 };
 
 export default function ProcessExecutionDetails({ execution, steps }: Readonly<ProcessExecutionDetailsProps>) {
-    const executionCompleted = execution.status === ProcessStatus.Completed;
+    const executionCompleted = execution.status?.toUpperCase() === ProcessStatus.Completed;
     const [isOpen, setIsOpen] = useState(!executionCompleted);
 
     const [names, setNames] = useState<Record<string, string>>({});
@@ -183,25 +184,24 @@ export default function ProcessExecutionDetails({ execution, steps }: Readonly<P
                         </Grid>
                     </AccordionDetails>
                 </Accordion>
-                <Stack
-                    sx={{
-                        padding: 5,
-                        bgcolor: boxBackground,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: 0.8,
-                    }}
-                >
-                    <RotateRightOutlined
+                {executionCompleted ? (
+                    <ExecutionResultPanel executionId={execution.id} processType={execution.type} />
+                ) : (
+                    <Stack
                         sx={{
-                            fontSize: 24,
+                            padding: 5,
+                            bgcolor: boxBackground,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: 0.8,
                         }}
-                    />
-
-                    <Typography variant="body1">
-                        <FormattedMessage id="resultsNotAvailable" />
-                    </Typography>
-                </Stack>
+                    >
+                        <RotateRightOutlined sx={{ fontSize: 24 }} />
+                        <Typography variant="body1">
+                            <FormattedMessage id="resultsNotAvailable" />
+                        </Typography>
+                    </Stack>
+                )}
             </Stack>
         </Box>
     );

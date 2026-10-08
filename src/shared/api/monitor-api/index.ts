@@ -6,6 +6,7 @@
  */
 
 export * from './monitor.enhanced';
+export * from './result-subtypes';
 export {
     useGetProcessConfigsQuery,
     useGetProcessConfigQuery,
@@ -15,6 +16,7 @@ export {
     useExecuteProcessMutation,
     useGetExecutionQuery,
     useGetExecutionResultsQuery,
+    useExportExecutionResultsCsvMutation,
     useGetExecutionReportsQuery,
     useGetExecutionReportsSeveritiesQuery,
     useGetExecutionLogsQuery,
@@ -23,6 +25,7 @@ export {
     useLazyGetExecutionLogsSearchQuery,
     ProcessType,
     ProcessStatus,
+    ResultType,
     Severity,
     StepStatus,
 } from './monitor.generated';
@@ -31,6 +34,9 @@ export type {
     ExecuteProcessApiResponse,
     ProcessExecution,
     ProcessExecutionStep,
+    GetExecutionResultsApiResponse,
+    ExportExecutionResultsCsvApiResponse,
+    ExportExecutionResultsCsvApiArg,
     ExecuteProcessApiArg,
 } from './monitor.generated';
 
