@@ -13,7 +13,7 @@ import { Loader } from 'shared/ui/Loader';
 import { Suspense } from 'react';
 import { PROCESS_CONFIG_PATHS } from 'features/process-config/router/process-config-paths';
 import { APP_PATHS } from './app-paths';
-import { processRoutes } from '../../features/process/router/process-routes';
+import { processRoutes } from '../../features/process-execution/router/process-routes';
 import { processConfigRoutes } from '../../features/process-config/router/process-config-routes';
 
 export function AppRouter() {
