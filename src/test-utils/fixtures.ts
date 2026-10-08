@@ -6,7 +6,7 @@
  */
 
 import { FieldConstants, ProcessType, type ProcessConfigFormValues } from '@gridsuite/commons-ui';
-import type { ExecuteProcessConfigFormData } from 'features/process/execute/components/ExecuteProcessConfigDialog';
+import type { ExecuteProcessConfigFormData } from '../features/process-execution/launch/ExecuteProcessConfigDialog';
 
 export function processConfigValues(overrides: Partial<ProcessConfigFormValues> = {}): ProcessConfigFormValues {
     return {

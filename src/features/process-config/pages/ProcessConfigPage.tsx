@@ -9,7 +9,7 @@ import { Box, Button, Grid, Stack, Typography } from '@mui/material';
 import { Add } from '@mui/icons-material';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { CreateProcessConfigDialog } from '../components/CreateProcessConfigDialog';
+import { CreateProcessConfigDialog } from '../create/CreateProcessConfigDialog';
 
 function ProcessConfigPage() {
     const [dialogOpen, setDialogOpen] = useState(false);
