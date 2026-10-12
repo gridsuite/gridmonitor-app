@@ -1,7 +1,8 @@
 /**
- * Copyright (c) 2026, RTE (http://www.rte-france.com).
+ * Copyright (c) 2026, RTE (http://www.rte-france.com)
  * This Source Code Form is subject to the terms of the Mozilla Public
- * License, version 2.0.
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
 import { useMemo } from 'react';
@@ -9,7 +10,7 @@ import { Box } from '@mui/material';
 import { useIntl } from 'react-intl';
 import type { ColDef } from 'ag-grid-community';
 import { LimitViolationResult, RunningStatus } from '@gridsuite/commons-ui';
-import { ProcessType, StepStatus } from 'shared/api/monitor-api';
+import { ProcessStatus, ProcessType } from 'shared/api/monitor-api';
 import { useExecutionResults } from '../hooks/use-execution-results';
 
 const RESULT_TYPE = 'LIMIT_VIOLATIONS_CURRENT';
@@ -29,8 +30,8 @@ const COLUMN_FIELDS = [
 
 export function LoadFlowExecutionResultTable({
     executionId,
-    resultStatus,
-}: Readonly<{ executionId: string; resultStatus?: StepStatus }>) {
+    executionStatus,
+}: Readonly<{ executionId: string; executionStatus?: ProcessStatus }>) {
     const intl = useIntl();
     const { result, isError, isFetching } = useExecutionResults(executionId, ProcessType.Loadflow, true, {
         resultType: RESULT_TYPE,
@@ -54,7 +55,9 @@ export function LoadFlowExecutionResultTable({
                     columnDefs={columns}
                     tableName={intl.formatMessage({ id: 'LoadFlowResultsCurrentViolations' })}
                     computationStatus={
-                        isError || resultStatus === StepStatus.Failed ? RunningStatus.FAILED : RunningStatus.SUCCEED
+                        isError || executionStatus === ProcessStatus.Failed
+                            ? RunningStatus.FAILED
+                            : RunningStatus.SUCCEED
                     }
                     computationSubType={RESULT_TYPE}
                     exportCsvResetKey={`${executionId}-${RESULT_TYPE}`}
