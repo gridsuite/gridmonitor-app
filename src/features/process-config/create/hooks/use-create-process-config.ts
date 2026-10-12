@@ -14,9 +14,9 @@ import {
     type FetchProcessConfigHandler,
     type ProcessConfigFormValues,
 } from '@gridsuite/commons-ui';
+import { UUID } from 'node:crypto';
 import { useLazyGetProcessConfigQuery } from '../../../../shared/api/monitor-api';
 import { useCreateProcessConfigMutation, type CreateProcessConfigApiArg } from '../../../../shared/api/explore-api';
-import { UUID } from 'node:crypto';
 
 export function toCreateProcessConfigApiArg(values: ProcessConfigFormValues): CreateProcessConfigApiArg {
     return {

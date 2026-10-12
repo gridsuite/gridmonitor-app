@@ -7,10 +7,10 @@
 
 import { CheckCircle } from '@mui/icons-material';
 import { Box, Link, Typography } from '@mui/material';
-import { PROCESS_PATHS } from '../router/process-paths';
 import { MouseEvent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Link as RouterLink, useNavigate } from 'react-router';
+import { PROCESS_PATHS } from '../router/process-paths';
 import { AppDialog } from '../../../shared/ui/AppDialog';
 
 export function LaunchSuccessDialog({

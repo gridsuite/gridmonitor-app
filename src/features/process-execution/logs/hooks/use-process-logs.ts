@@ -6,12 +6,12 @@
  */
 
 import { useMemo } from 'react';
+import { Report, SeverityLevel, sortSeverityList } from '@gridsuite/commons-ui';
 import {
     useGetExecutionQuery,
     useGetExecutionReportsQuery,
     useGetExecutionReportsSeveritiesQuery,
 } from '../../../../shared/api/monitor-api';
-import { Report, SeverityLevel, sortSeverityList } from '@gridsuite/commons-ui';
 
 export function useProcessLogs(executionId: string) {
     const skip = !executionId;

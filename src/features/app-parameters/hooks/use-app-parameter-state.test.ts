@@ -8,10 +8,10 @@
 import { renderHook, act, waitFor } from '@testing-library/react';
 import { describe, it, expect, beforeEach } from 'vitest';
 import { http, HttpResponse } from 'msw';
+import { DARK_THEME, LIGHT_THEME } from '@gridsuite/commons-ui';
 import { server } from '../../../test-utils/msw/server';
 import { createTestContext } from '../../../test-utils/create-test-context';
 import { useAppParameterState } from './use-app-parameter-state';
-import { DARK_THEME, LIGHT_THEME } from '@gridsuite/commons-ui';
 
 describe('useAppParameterState', () => {
     beforeEach(() => {

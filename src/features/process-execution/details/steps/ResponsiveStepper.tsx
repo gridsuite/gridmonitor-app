@@ -7,9 +7,9 @@
 
 import { Box, Step, StepLabel, Stepper, Typography } from '@mui/material';
 import { Error as ErrorIcon } from '@mui/icons-material';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { StepStatus } from '../../../../shared/api/monitor-api';
 import { formatCompletedAt, formatDuration } from '../../../../shared/lib/date-time-formatter';
-import { FormattedMessage, useIntl } from 'react-intl';
 import { ProcessStepModel } from '../../list/models/process-result';
 import { useElapsedTime } from './hooks/use-elapsed-time';
 import { useStepperOrientation } from './hooks/use-stepper-orientation';

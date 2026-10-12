@@ -11,8 +11,8 @@ import {
     PREFIX_MONITOR_NOTIFICATION_WS,
 } from '@gridsuite/commons-ui';
 import { renderHook } from '@testing-library/react';
-import { APP_NAME } from '../../../app/config/app-config';
 import { beforeEach, describe, expect, it } from 'vitest';
+import { APP_NAME } from '../../../app/config/app-config';
 import { useNotificationsUrlGenerator } from './use-notifications-url-generator';
 
 describe('useNotificationsUrlGenerator', () => {
