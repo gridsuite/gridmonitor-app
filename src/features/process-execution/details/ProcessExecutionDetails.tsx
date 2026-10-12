@@ -190,7 +190,11 @@ export default function ProcessExecutionDetails({ execution, steps }: Readonly<P
                     </AccordionDetails>
                 </Accordion>
                 {executionCompleted ? (
-                    <ExecutionResultPanel executionId={execution.id} processType={execution.type} />
+                    <ExecutionResultPanel
+                        executionId={execution.id}
+                        processType={execution.type}
+                        executionStatus={execution.status}
+                    />
                 ) : (
                     <Stack
                         sx={{

@@ -1,15 +1,16 @@
 /**
- * Copyright (c) 2026, RTE (http://www.rte-france.com).
+ * Copyright (c) 2026, RTE (http://www.rte-france.com)
  * This Source Code Form is subject to the terms of the Mozilla Public
- * License, version 2.0.
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useAppSelector } from 'app/store/store';
 import {
     TableType,
     RunningStatus,
-    ShortCircuitAnalysisResultTable,
+    ShortCircuitAnalysisResultView,
     ShortCircuitAnalysisType,
     ManagedExportCsvButton,
     snackWithFallback,
@@ -18,7 +19,7 @@ import {
 import { Box } from '@mui/material';
 import { useIntl } from 'react-intl';
 import type { DisplayedColumnsChangedEvent, GridReadyEvent, RowDataUpdatedEvent } from 'ag-grid-community';
-import { ProcessType, StepStatus, useExportExecutionResultsCsvMutation } from 'shared/api/monitor-api';
+import { ProcessStatus, ProcessType, useExportExecutionResultsCsvMutation } from 'shared/api/monitor-api';
 import { SHORT_CIRCUIT_RESULT_TYPES } from 'shared/api/monitor-api/result-subtypes';
 import { useExecutionResults } from '../hooks/use-execution-results';
 import { CustomAggridReduxProvider } from './custom-aggrid-redux-provider';
@@ -30,13 +31,13 @@ const noopDisplayedColumnsChanged = (_event: DisplayedColumnsChangedEvent) => un
 
 export function ShortCircuitExecutionResultTable({
     executionId,
-    resultStatus,
-}: Readonly<{ executionId: string; resultStatus?: StepStatus }>) {
+    executionStatus,
+}: Readonly<{ executionId: string; executionStatus?: ProcessStatus }>) {
     const intl = useIntl();
     const { snackError } = useSnackMessage();
     const [exportExecutionResultsCsv] = useExportExecutionResultsCsvMutation();
-    const page = 0;
-    const rowsPerPage = 25;
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(25);
     const sort = useAppSelector(
         (state) => state.processResults.tableSort[TableType.ShortcircuitAnalysis]?.[RESULT_TYPE] ?? []
     );
@@ -50,10 +51,12 @@ export function ShortCircuitExecutionResultTable({
         sort,
         filters,
     });
-    const rows = useMemo(() => {
-        if (Array.isArray(result)) return result;
-        return (result as { content?: unknown[] } | null)?.content ?? [];
-    }, [result]);
+    const resultPage = useMemo(
+        () => (result as { content?: unknown[]; totalElements?: number } | null) ?? {},
+        [result]
+    );
+    const rows = resultPage.content ?? [];
+    const count = resultPage.totalElements ?? 0;
     const isExportDisabled = isFetching || isError || rows.length === 0;
 
     const exportCsv = useCallback(async () => {
@@ -103,14 +106,26 @@ export function ShortCircuitExecutionResultTable({
                     />
                 </Box>
                 <Box sx={{ height: 500, minHeight: 0 }}>
-                    <ShortCircuitAnalysisResultTable
+                    <ShortCircuitAnalysisResultView
                         result={rows as never}
                         analysisType={ShortCircuitAnalysisType.ALL_BUSES}
                         isFetching={isFetching}
                         filterEnums={{}}
-                        shortCircuitAnalysisStatus={
-                            isError || resultStatus === StepStatus.Failed ? RunningStatus.FAILED : RunningStatus.SUCCEED
+                        analysisStatus={
+                            isError || executionStatus === ProcessStatus.Failed
+                                ? RunningStatus.FAILED
+                                : RunningStatus.SUCCEED
                         }
+                        pagination={{
+                            count,
+                            page,
+                            rowsPerPage,
+                            onPageChange: (_event, newPage) => setPage(newPage),
+                            onRowsPerPageChange: (event) => {
+                                setRowsPerPage(Number.parseInt(event.target.value, 10));
+                                setPage(0);
+                            },
+                        }}
                         onRowDataUpdated={noopRowDataUpdated}
                         onDisplayedColumnsChanged={noopDisplayedColumnsChanged}
                         onGridReady={noopGridReady}
