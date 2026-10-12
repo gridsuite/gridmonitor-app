@@ -25,7 +25,7 @@ import {
 } from 'shared/api/monitor-api/result-subtypes';
 import { Box, Tab, Tabs } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { ProcessType, StepStatus, useExportExecutionResultsCsvMutation } from 'shared/api/monitor-api';
+import { ProcessStatus, ProcessType, useExportExecutionResultsCsvMutation } from 'shared/api/monitor-api';
 import type { ColDef, GridReadyEvent } from 'ag-grid-community';
 import { useExecutionResults } from '../hooks/use-execution-results';
 
@@ -96,8 +96,8 @@ const COLUMN_FIELDS_BY_RESULT_TYPE: Record<NmkType, string[]> = {
 };
 
 const COLUMN_LABELS: Record<string, string> = {
-    contingencyId: 'Contingency',
-    status: 'ComputationStatus',
+    contingencyId: 'results.columns.contingencyId',
+    status: 'results.columns.status',
     subjectId: 'Equipment',
     locationId: 'Bus',
     limitType: 'ViolationType',
@@ -135,8 +135,8 @@ const RESULT_TYPES: Record<NmkType, SecurityAnalysisResultType> = {
 
 export function SecurityAnalysisExecutionResultTable({
     executionId,
-    resultStatus,
-}: Readonly<{ executionId: string; resultStatus?: StepStatus }>) {
+    executionStatus,
+}: Readonly<{ executionId: string; executionStatus?: ProcessStatus }>) {
     const intl = useIntl();
     const { snackError } = useSnackMessage();
     const [exportExecutionResultsCsv] = useExportExecutionResultsCsvMutation();
@@ -239,7 +239,9 @@ export function SecurityAnalysisExecutionResultTable({
                     onGridReady={noopGridReady}
                     resultStatusMessages={messages}
                     securityAnalysisStatus={
-                        isError || resultStatus === StepStatus.Failed ? RunningStatus.FAILED : RunningStatus.SUCCEED
+                        isError || executionStatus === ProcessStatus.Failed
+                            ? RunningStatus.FAILED
+                            : RunningStatus.SUCCEED
                     }
                     paginationProps={{
                         count,

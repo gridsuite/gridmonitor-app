@@ -18,7 +18,9 @@ export const MonitorTags = {
 
 export const monitorBaseApi = createApi({
     reducerPath: 'monitorApi',
-    baseQuery: createBaseQuery(`${import.meta.env.VITE_API_GATEWAY}/monitor`),
+    baseQuery: createBaseQuery(`${import.meta.env.VITE_API_GATEWAY}/monitor`, {
+        exportExecutionResultsCsv: (response) => response.blob(),
+    }),
     tagTypes: Object.values(MonitorTags),
     endpoints: () => ({}),
 });
