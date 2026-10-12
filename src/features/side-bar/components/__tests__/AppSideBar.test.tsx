@@ -48,8 +48,8 @@ vi.mock('shared/config/version', () => ({
     fetchVersion: mocks.fetchVersion,
 }));
 
-vi.mock('features/top-bar/api/get-servers-infos', () => ({
-    getServersInfos: mocks.getServersInfos,
+vi.mock('features/side-bar/hooks/use-get-servers-infos', () => ({
+    useGetServersInfos: () => mocks.getServersInfos,
 }));
 
 describe('AppSideBar', () => {
