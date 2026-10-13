@@ -27,7 +27,12 @@ export function useCreateProcessConfigSubmit({
         setIsSubmitting(true);
         try {
             await form.handleSubmit(async (values) => {
-                await createProcessConfig(values);
+                try {
+                    await createProcessConfig(values);
+                } catch {
+                    // API error already handled by RTK Query middleware
+                    return;
+                }
                 snackSuccess({
                     messageId: 'processConfigCreated',
                     messageValues: {

@@ -101,7 +101,6 @@ describe('useCreateProcessConfigSubmit', () => {
 
         await act(async () => result.current.submit());
 
-        expect(mocks.snackError).toHaveBeenCalledWith({ messageId: 'processConfigCreateError' });
         expect(mocks.snackSuccess).not.toHaveBeenCalled();
         expect(onClose).not.toHaveBeenCalled();
         expect(result.current.isSubmitting).toBe(false);
