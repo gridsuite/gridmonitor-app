@@ -20,14 +20,19 @@ export function useCreateProcessConfigSubmit({
     createProcessConfig,
     onClose,
 }: UseCreateProcessConfigSubmitParams) {
-    const { snackSuccess, snackError } = useSnackMessage();
+    const { snackSuccess } = useSnackMessage();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const submit = useCallback(async () => {
         setIsSubmitting(true);
         try {
             await form.handleSubmit(async (values) => {
-                await createProcessConfig(values);
+                try {
+                    await createProcessConfig(values);
+                } catch {
+                    // API error already handled by RTK Query middleware
+                    return;
+                }
                 snackSuccess({
                     messageId: 'processConfigCreated',
                     messageValues: {
@@ -36,12 +41,10 @@ export function useCreateProcessConfigSubmit({
                 });
                 onClose();
             })();
-        } catch {
-            snackError({ messageId: 'processConfigCreateError' });
         } finally {
             setIsSubmitting(false);
         }
-    }, [form, createProcessConfig, snackSuccess, snackError, onClose]);
+    }, [form, createProcessConfig, snackSuccess, onClose]);
 
     return { submit, isSubmitting };
 }
