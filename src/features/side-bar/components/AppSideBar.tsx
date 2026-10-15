@@ -25,7 +25,7 @@ import { APP_NAME } from '../../../app/config/app-config';
 import { getAppTheme } from '../../../app/config/app-theme';
 import { useStableUserProfile } from '../../authentication/hooks/use-stable-user-profile';
 import { fetchVersion } from '../../../shared/config/version';
-import { getServersInfos } from '../../top-bar/api/get-servers-infos';
+import { useGetServersInfos } from '../hooks/use-get-servers-infos';
 import AppPackage from '../../../../package.json';
 
 type SideBarProps = {
@@ -33,6 +33,7 @@ type SideBarProps = {
 };
 
 export function AppSideBar({ onLogoutClick }: Readonly<SideBarProps>) {
+    const getServersInfos = useGetServersInfos();
     const [currentTheme, setTheme] = useAppParameterState(PARAM_THEME);
     const [selectedLanguage, setSelectedLanguage] = useAppParameterState(PARAM_LANGUAGE);
     const [isDeveloperMode, handleChangeDeveloperMode] = useAppParameterState(PARAM_DEVELOPER_MODE);
