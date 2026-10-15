@@ -56,6 +56,21 @@ const injectedRtkApi = api.injectEndpoints({
         method: "POST",
       }),
     }),
+    exportExecutionResultsCsv: build.mutation<
+      ExportExecutionResultsCsvApiResponse,
+      ExportExecutionResultsCsvApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/v1/executions/${queryArg.executionId}/results/csv`,
+        method: "POST",
+        body: queryArg.body,
+        params: {
+          resultType: queryArg.resultType,
+          sort: queryArg.sort,
+          filters: queryArg.filters,
+        },
+      }),
+    }),
     executeProcess: build.mutation<
       ExecuteProcessApiResponse,
       ExecuteProcessApiArg
@@ -122,6 +137,13 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/v1/executions/${queryArg.executionId}/results`,
+        params: {
+          resultType: queryArg.resultType,
+          page: queryArg.page,
+          size: queryArg.size,
+          sort: queryArg.sort,
+          filters: queryArg.filters,
+        },
       }),
     }),
     getExecutionReports: build.query<
@@ -213,6 +235,15 @@ export type DuplicateProcessConfigApiArg = {
   /** UUID of the process config to duplicate */
   uuid: string;
 };
+export type ExportExecutionResultsCsvApiResponse = unknown;
+export type ExportExecutionResultsCsvApiArg = {
+  /** Execution UUID */
+  executionId: string;
+  resultType: string;
+  sort?: string[];
+  filters?: string;
+  body: object;
+};
 export type ExecuteProcessApiResponse =
   /** status 200 The process execution has been started */ string;
 export type ExecuteProcessApiArg = {
@@ -259,6 +290,11 @@ export type GetExecutionResultsApiResponse =
 export type GetExecutionResultsApiArg = {
   /** Execution UUID */
   executionId: string;
+  resultType?: string;
+  page?: number;
+  size?: number;
+  sort?: string[];
+  filters?: string;
 };
 export type GetExecutionReportsApiResponse =
   /** status 200 The execution reports */ Report;
@@ -443,6 +479,7 @@ export const {
   useGetProcessConfigsQuery,
   useCreateProcessConfigMutation,
   useDuplicateProcessConfigMutation,
+  useExportExecutionResultsCsvMutation,
   useExecuteProcessMutation,
   useGetProcessConfigsMetadataQuery,
   useCompareProcessConfigsQuery,

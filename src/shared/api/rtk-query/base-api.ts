@@ -6,10 +6,13 @@
  */
 
 import { fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import type { FetchArgs } from '@reduxjs/toolkit/query';
 import type { RootState } from '../../../app/store/store';
 
-export const createBaseQuery = (baseUrl: string) =>
-    fetchBaseQuery({
+type ResponseHandler = 'json' | 'text' | 'content-type' | ((response: Response) => Promise<unknown>);
+
+export const createBaseQuery = (baseUrl: string, responseHandlers: Record<string, ResponseHandler> = {}) => {
+    const baseQuery = fetchBaseQuery({
         baseUrl,
         prepareHeaders: (headers, { getState }) => {
             const state = getState() as RootState;
@@ -23,3 +26,16 @@ export const createBaseQuery = (baseUrl: string) =>
             return headers;
         },
     });
+
+    return (
+        args: string | FetchArgs,
+        api: Parameters<typeof baseQuery>[1],
+        extraOptions: Parameters<typeof baseQuery>[2]
+    ) => {
+        const responseHandler = responseHandlers[api.endpoint];
+        const queryArgs =
+            responseHandler && typeof args === 'object' && args !== null ? { ...args, responseHandler } : args;
+
+        return baseQuery(queryArgs, api, extraOptions);
+    };
+};
