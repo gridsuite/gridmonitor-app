@@ -11,8 +11,8 @@ import {
     AuthenticationRouter,
     CardErrorBoundary,
     initializeAuthenticationProd,
-    UserManagerState,
     logout,
+    UserManagerState,
 } from '@gridsuite/commons-ui';
 import {
     selectAuthenticationRouterError,
@@ -22,7 +22,6 @@ import {
 import { getErrorMessage } from 'shared/lib/error';
 import { fetchIdpSettings } from 'shared/config/idp-settings';
 import { useAppParametersInvalidationListener } from './notifications/use-app-parameters-invalidation-listener';
-import { useProcessInvalidationsListener } from './notifications/use-process-invalidation-listener';
 import { useAppDispatch, useAppSelector } from './store/store';
 import { AppRouter } from './router/AppRouter';
 import { useStableUserProfile } from '../features/authentication/hooks/use-stable-user-profile';
@@ -79,7 +78,6 @@ function App() {
     }, [initialMatchSigninCallbackUrl, initialMatchSilentRenewCallbackUrl, dispatch]);
 
     useAppParametersInvalidationListener();
-    useProcessInvalidationsListener();
 
     const onLogoutClick = () => logout(dispatch, userManager.instance)?.catch((err) => console.error(err));
 
