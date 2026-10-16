@@ -8,10 +8,10 @@
 import { Box, Button, Typography } from '@mui/material';
 import { Refresh as RefreshIcon } from '@mui/icons-material';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { ProcessResultsAlert } from '../../list/ProcessResultsAlert';
-import { ProcessResultsTable } from '../../list/ProcessResultsTable';
-import { useProcessResults } from '../../list/hooks/use-process-results';
-import { CustomAggridReduxProvider } from '../../list/custom-aggrid-redux-provider';
+import { ProcessResultsAlert } from '../list/ProcessResultsAlert';
+import { ProcessResultsTable } from '../list/ProcessResultsTable';
+import { useProcessResults } from '../list/hooks/use-process-results';
+import { CustomAggridReduxProvider } from '../list/custom-aggrid-redux-provider';
 
 function ProcessResultsPage() {
     const intl = useIntl();

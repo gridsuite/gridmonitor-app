@@ -8,7 +8,7 @@
 import { screen } from '@testing-library/react';
 import { Route, Routes } from 'react-router';
 import { expect, vi, afterEach, describe, it } from 'vitest';
-import { renderWithProviders } from '../../../../test-utils/render-with-providers';
+import { renderWithProviders } from '../../../test-utils/render-with-providers';
 import ProcessLogsPage from './ProcessLogsPage';
 
 const useProcessLogsMock = vi.hoisted(() => vi.fn());
