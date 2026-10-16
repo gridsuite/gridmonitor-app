@@ -5,4 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export { studyGeneratedApi as studyApi } from './study.generated';
+import { studyGeneratedApi } from './study.generated';
+
+export { studyGeneratedApi as studyApi };
+export const useLazyGetSuiteAboutInformationQuery = studyGeneratedApi.endpoints.getSuiteAboutInformation.useLazyQuery;
