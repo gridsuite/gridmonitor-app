@@ -5,41 +5,36 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { useCallback } from 'react';
 import { NotificationsUrlKeys, useNotificationsListener } from '@gridsuite/commons-ui';
-import { useAppDispatch } from '../store/store';
 import {
-    invalidateProcessExecutionsLists,
-    ProcessType,
     invalidateProcessExecution,
-    invalidateProcessExecutionSteps,
     invalidateProcessExecutionReports,
     invalidateProcessExecutionReportsSeverities,
-} from '../../shared/api/monitor-api';
-
-type MonitorNotificationData = {
-    headers?: {
-        updateType?: string;
-        processType?: ProcessType;
-        processExecutionId?: string;
-    };
-    payload?: any;
-};
+    invalidateProcessExecutionsLists,
+    invalidateProcessExecutionSteps,
+    isProcessExecutionUpdateNotification,
+} from 'shared/api/monitor-api';
+import { useAppDispatch } from '../store/store';
 
 export const useProcessInvalidationsListener = () => {
     const dispatch = useAppDispatch();
 
-    const invalidateProcess = (event: MessageEvent) => {
-        const eventData = JSON.parse(event.data) as MonitorNotificationData;
-        if (eventData.headers?.updateType === 'PROCESS_EXECUTION_UPDATED') {
-            invalidateProcessExecutionsLists(dispatch);
-            if (eventData.headers?.processExecutionId) {
-                invalidateProcessExecution(dispatch, eventData.headers.processExecutionId);
-                invalidateProcessExecutionSteps(dispatch, eventData.headers.processExecutionId);
-                invalidateProcessExecutionReports(dispatch, eventData.headers.processExecutionId);
-                invalidateProcessExecutionReportsSeverities(dispatch, eventData.headers.processExecutionId);
+    const invalidateProcess = useCallback(
+        (event: MessageEvent) => {
+            const eventData = JSON.parse(event.data);
+            if (isProcessExecutionUpdateNotification(eventData)) {
+                invalidateProcessExecutionsLists(dispatch);
+                if (eventData.headers?.processExecutionId) {
+                    invalidateProcessExecution(dispatch, eventData.headers.processExecutionId);
+                    invalidateProcessExecutionSteps(dispatch, eventData.headers.processExecutionId);
+                    invalidateProcessExecutionReports(dispatch, eventData.headers.processExecutionId);
+                    invalidateProcessExecutionReportsSeverities(dispatch, eventData.headers.processExecutionId);
+                }
             }
-        }
-    };
+        },
+        [dispatch]
+    );
 
     useNotificationsListener(NotificationsUrlKeys.MONITOR, {
         listenerCallbackMessage: invalidateProcess,
