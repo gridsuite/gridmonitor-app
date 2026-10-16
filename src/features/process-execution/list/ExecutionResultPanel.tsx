@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Alert } from '@mui/material';
+import { Alert, Box } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { ProcessStatus, ProcessType } from 'shared/api/monitor-api';
 import { LoadFlowExecutionResultTable } from './LoadFlowExecutionResult';
@@ -23,13 +23,17 @@ export function ExecutionResultPanel({
     processType,
     executionStatus,
 }: Readonly<ExecutionResultPanelProps>) {
+    let ResultTable;
     switch (processType) {
         case ProcessType.Loadflow:
-            return <LoadFlowExecutionResultTable executionId={executionId} executionStatus={executionStatus} />;
+            ResultTable = LoadFlowExecutionResultTable;
+            break;
         case ProcessType.SecurityAnalysis:
-            return <SecurityAnalysisExecutionResultTable executionId={executionId} executionStatus={executionStatus} />;
+            ResultTable = SecurityAnalysisExecutionResultTable;
+            break;
         case ProcessType.ShortCircuit:
-            return <ShortCircuitExecutionResultTable executionId={executionId} executionStatus={executionStatus} />;
+            ResultTable = ShortCircuitExecutionResultTable;
+            break;
         default:
             return (
                 <Alert severity="info">
@@ -37,4 +41,10 @@ export function ExecutionResultPanel({
                 </Alert>
             );
     }
+
+    return (
+        <Box sx={{ display: 'flex', flex: 1, minWidth: 0, minHeight: 0, width: '100%' }}>
+            <ResultTable executionId={executionId} executionStatus={executionStatus} />
+        </Box>
+    );
 }

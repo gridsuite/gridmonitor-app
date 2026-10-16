@@ -6,83 +6,102 @@
  */
 
 import { useMemo } from 'react';
-import { ProcessType, useGetExecutionResultsQuery, type GetExecutionResultsApiResponse } from 'shared/api/monitor-api';
-import type { MonitorResultSubtype } from 'shared/api/monitor-api/result-subtypes';
+import type {
+    FilterConfig,
+    OverloadedEquipment,
+    Page,
+    SCAFaultResult,
+    SecurityAnalysisNmkResult,
+} from '@gridsuite/commons-ui';
+import { useGetExecutionResultsQuery } from 'shared/api/monitor-api';
+import { SHORT_CIRCUIT_RESULT_TYPES, type SecurityAnalysisResultType } from 'shared/api/monitor-api/result-subtypes';
 
 export interface ExecutionResultsQuery {
-    resultType?: MonitorResultSubtype;
     page?: number;
     size?: number;
-    filters?: unknown[];
+    filters?: FilterConfig[];
     sort?: Array<{ colId: string; sort: string }>;
 }
 
-export const DEFAULT_EXECUTION_RESULTS_QUERY: ExecutionResultsQuery = {
-    resultType: '',
-    page: 0,
-    size: 25,
-};
+export interface LoadFlowExecutionResultsQuery extends ExecutionResultsQuery {
+    resultType: string;
+}
 
-export function parseExecutionResult<T>(raw?: string[]): T | null {
+export interface SecurityAnalysisExecutionResultsQuery extends ExecutionResultsQuery {
+    resultType: SecurityAnalysisResultType;
+}
+
+const DEFAULT_PAGE = 0;
+const DEFAULT_SIZE = 25;
+
+export function parseExecutionResult<Result>(raw?: string[]): Result | undefined {
     const serializedResult = raw?.[0];
     if (!serializedResult) {
-        return null;
+        return undefined;
     }
 
     try {
-        return JSON.parse(serializedResult) as T;
+        const result: unknown = JSON.parse(serializedResult);
+        return result == null ? undefined : (result as Result);
     } catch {
-        return null;
+        return undefined;
     }
 }
 
-export function isValidResultPage(value: unknown): value is { content: unknown[]; totalElements: number } {
-    return (
-        typeof value === 'object' &&
-        value !== null &&
-        Array.isArray((value as { content?: unknown }).content) &&
-        typeof (value as { totalElements?: unknown }).totalElements === 'number'
-    );
-}
-
-export function isLoadFlowResult(value: unknown): value is unknown[] {
-    return Array.isArray(value);
-}
-
-export function useExecutionResults(
+function useParsedExecutionResults<Result>(
     executionId: string,
-    processType: string,
     enabled: boolean,
-    query: ExecutionResultsQuery = {}
+    query: ExecutionResultsQuery & { resultType: string }
 ) {
-    const effectiveQuery = { ...DEFAULT_EXECUTION_RESULTS_QUERY, ...query };
     const { currentData, isError, isFetching } = useGetExecutionResultsQuery(
         {
             executionId,
-            resultType: effectiveQuery.resultType,
-            page: effectiveQuery.page,
-            size: effectiveQuery.size,
-            filters: effectiveQuery.filters?.length ? JSON.stringify(effectiveQuery.filters) : undefined,
-            sort: effectiveQuery.sort?.map(({ colId, sort }) => `${colId},${sort}`),
+            resultType: query.resultType,
+            page: query.page ?? DEFAULT_PAGE,
+            size: query.size ?? DEFAULT_SIZE,
+            filters: query.filters?.length ? JSON.stringify(query.filters) : undefined,
+            sort: query.sort?.map(({ colId, sort }) => `${colId},${sort}`),
         },
         { skip: !enabled }
     );
 
-    const parsedResult = useMemo(() => {
-        const result = parseExecutionResult<string[]>(currentData);
-        if (processType === ProcessType.Loadflow) {
-            return isLoadFlowResult(result) ? result : null;
-        }
-        return isValidResultPage(result) ? result : null;
-    }, [currentData, processType]);
-
-    const result = parsedResult;
+    const { result, hasResult } = useMemo(() => {
+        const parsedResult = parseExecutionResult<Result>(currentData);
+        return { result: parsedResult, hasResult: parsedResult !== undefined };
+    }, [currentData]);
 
     return {
         result,
-        isError: enabled && result === null && (isError || !isFetching),
-        isFetching: enabled && isFetching && parsedResult === null,
+        isError: enabled && !hasResult && (isError || !isFetching),
+        isFetching: enabled && isFetching && !hasResult,
     };
 }
 
-export type ExecutionResultsApiResponse = GetExecutionResultsApiResponse;
+export function useLoadFlowExecutionResults(
+    executionId: string,
+    enabled: boolean,
+    query: LoadFlowExecutionResultsQuery
+) {
+    return useParsedExecutionResults<OverloadedEquipment[]>(executionId, enabled, query);
+}
+
+export function useSecurityAnalysisExecutionResults(
+    executionId: string,
+    enabled: boolean,
+    query: SecurityAnalysisExecutionResultsQuery
+) {
+    return useParsedExecutionResults<SecurityAnalysisNmkResult>(executionId, enabled, query);
+}
+
+export type AllBusesShortCircuitResult = Page<SCAFaultResult>;
+
+export function useShortCircuitExecutionResults(
+    executionId: string,
+    enabled: boolean,
+    query: ExecutionResultsQuery = {}
+) {
+    return useParsedExecutionResults<AllBusesShortCircuitResult>(executionId, enabled, {
+        ...query,
+        resultType: SHORT_CIRCUIT_RESULT_TYPES.AllBuses,
+    });
+}

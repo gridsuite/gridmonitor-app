@@ -13,7 +13,6 @@ import {
     MuiStyles,
     NmkType,
     RunningStatus,
-    SecurityAnalysisNmkResult,
     SecurityAnalysisResultNmk,
     snackWithFallback,
     useIntlResultStatusMessages,
@@ -25,9 +24,13 @@ import {
 } from 'shared/api/monitor-api/result-subtypes';
 import { Box, Tab, Tabs } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { ProcessStatus, ProcessType, useExportExecutionResultsCsvMutation } from 'shared/api/monitor-api';
+import { ProcessStatus, useExportExecutionResultsCsvMutation } from 'shared/api/monitor-api';
 import type { ColDef, GridReadyEvent } from 'ag-grid-community';
-import { useExecutionResults } from '../hooks/use-execution-results';
+import { useSecurityAnalysisExecutionResults } from '../hooks/use-execution-results';
+import { useResultPagination } from '../hooks/use-result-pagination';
+import { CustomAggridReduxProvider } from './custom-aggrid-redux-provider';
+import { EMPTY_RESULT_FILTERS, EMPTY_RESULT_SORT, makeResultFilterColumn } from './result-column-filters';
+import { prepareSecurityAnalysisQuery, serializeResultQuery } from './result-query-adapters';
 
 const styles = {
     toolbarRow: {
@@ -115,10 +118,6 @@ const COLUMN_LABELS: Record<string, string> = {
     disconnectedGenerationActivePower: 'disconnectedGenerationActivePower',
 };
 
-function getPage(result: unknown): SecurityAnalysisNmkResult {
-    return (result as SecurityAnalysisNmkResult | null) ?? { content: [], totalElements: 0 };
-}
-
 const noopGridReady = (_event: GridReadyEvent) => undefined;
 
 export const NMK_SUBTABS = [
@@ -140,36 +139,50 @@ export function SecurityAnalysisExecutionResultTable({
     const intl = useIntl();
     const { snackError } = useSnackMessage();
     const [exportExecutionResultsCsv] = useExportExecutionResultsCsvMutation();
-    const [page, setPage] = useState(0);
     const [nmkType, setNmkType] = useState(NmkType.CONSTRAINTS_FROM_CONTINGENCIES);
-    const [rowsPerPage, setRowsPerPage] = useState(25);
     const resultType = RESULT_TYPES[nmkType];
-    const sort = useAppSelector((state) => state.processResults.tableSort[TableType.SecurityAnalysis]?.[nmkType] ?? []);
-    const filters = useAppSelector(
-        (state) => state.processResults.tableFilters.columnsFilters[TableType.SecurityAnalysis]?.[nmkType] ?? []
+    const sort = useAppSelector(
+        (state) => state.processResults.tableSort[TableType.SecurityAnalysis]?.[nmkType] ?? EMPTY_RESULT_SORT
     );
-    const { result, isError, isFetching } = useExecutionResults(executionId, ProcessType.SecurityAnalysis, true, {
+    const filters = useAppSelector(
+        (state) =>
+            state.processResults.tableFilters.columnsFilters[TableType.SecurityAnalysis]?.[nmkType] ??
+            EMPTY_RESULT_FILTERS
+    );
+    const query = useMemo(
+        () => prepareSecurityAnalysisQuery(filters, sort, resultType, intl),
+        [filters, sort, resultType, intl]
+    );
+    const { page, rowsPerPage, setPage, setRowsPerPage } = useResultPagination(
+        JSON.stringify([executionId, resultType, query])
+    );
+    const {
+        result: sourcePage,
+        isError,
+        isFetching,
+    } = useSecurityAnalysisExecutionResults(executionId, true, {
         resultType,
         page,
         size: rowsPerPage,
-        sort,
-        filters,
+        ...query,
     });
-    const sourcePage = useMemo(() => getPage(result), [result]);
-    const messages = useIntlResultStatusMessages(intl, true);
+    const resultPage = sourcePage ?? { content: [], totalElements: 0 };
+    const messages = useIntlResultStatusMessages(intl, true, filters.length > 0);
     const columns = useMemo<ColDef[]>(
         () =>
-            COLUMN_FIELDS_BY_RESULT_TYPE[nmkType].map((field) => ({
-                field,
-                headerName: intl.formatMessage({
-                    id: COLUMN_LABELS[field],
-                    defaultMessage: field,
-                }),
-            })),
+            COLUMN_FIELDS_BY_RESULT_TYPE[nmkType].map((field) =>
+                makeResultFilterColumn(
+                    field,
+                    intl.formatMessage({ id: COLUMN_LABELS[field], defaultMessage: field }),
+                    TableType.SecurityAnalysis,
+                    nmkType,
+                    intl
+                )
+            ),
         [intl, nmkType]
     );
-    const content = sourcePage.content ?? [];
-    const count = sourcePage.totalElements ?? content.length;
+    const content = resultPage.content ?? [];
+    const count = resultPage.totalElements ?? content.length;
     const isExportButtonDisabled = isFetching || isError || content.length === 0;
 
     const handleExportError = useCallback(
@@ -183,6 +196,7 @@ export function SecurityAnalysisExecutionResultTable({
         const response = await exportExecutionResultsCsv({
             executionId,
             resultType,
+            ...serializeResultQuery(query),
             body: {
                 headers: columns.map((column) => column.headerName ?? column.field ?? ''),
                 enumValueTranslations: {
@@ -196,13 +210,16 @@ export function SecurityAnalysisExecutionResultTable({
             },
         }).unwrap();
 
+        if (!(response instanceof Blob)) {
+            throw new Error('Invalid CSV export response');
+        }
         const url = URL.createObjectURL(response);
         const anchor = document.createElement('a');
         anchor.href = url;
         anchor.download = `${resultType}-results.zip`;
         anchor.click();
         URL.revokeObjectURL(url);
-    }, [columns, executionId, exportExecutionResultsCsv, intl, resultType]);
+    }, [columns, executionId, exportExecutionResultsCsv, intl, resultType, query]);
 
     const handleChangeNmkType = (_event: SyntheticEvent, newValue: NmkType) => {
         setPage(0);
@@ -210,51 +227,54 @@ export function SecurityAnalysisExecutionResultTable({
     };
 
     return (
-        <Box>
-            <Box sx={styles.toolbarRow}>
-                <Box sx={{ justifySelf: 'start' }}>
-                    <Tabs value={nmkType} onChange={handleChangeNmkType}>
-                        {NMK_SUBTABS.map(({ messageId, value }) => (
-                            <Tab key={value} label={<FormattedMessage id={messageId} />} value={value} />
-                        ))}
-                    </Tabs>
+        <CustomAggridReduxProvider>
+            <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, width: '100%' }}>
+                <Box sx={{ ...styles.toolbarRow, flexShrink: 0 }}>
+                    <Box sx={{ justifySelf: 'start' }}>
+                        <Tabs value={nmkType} onChange={handleChangeNmkType}>
+                            {NMK_SUBTABS.map(({ messageId, value }) => (
+                                <Tab key={value} label={<FormattedMessage id={messageId} />} value={value} />
+                            ))}
+                        </Tabs>
+                    </Box>
+                    <Box sx={styles.exportActions}>
+                        <ManagedExportCsvButton
+                            exportCsv={exportCsv}
+                            resetKey={nmkType}
+                            disabled={isExportButtonDisabled}
+                            onError={handleExportError}
+                        />
+                    </Box>
                 </Box>
-                <Box sx={styles.exportActions}>
-                    <ManagedExportCsvButton
-                        exportCsv={exportCsv}
-                        resetKey={nmkType}
-                        disabled={isExportButtonDisabled}
-                        onError={handleExportError}
+
+                <Box sx={{ flex: 1, minHeight: 0 }}>
+                    <SecurityAnalysisResultNmk
+                        key={nmkType}
+                        result={resultPage}
+                        count={count}
+                        columnDefs={columns}
+                        isLoadingResult={isFetching}
+                        nmkType={nmkType}
+                        onGridReady={noopGridReady}
+                        resultStatusMessages={messages}
+                        securityAnalysisStatus={
+                            isError || executionStatus === ProcessStatus.Failed
+                                ? RunningStatus.FAILED
+                                : RunningStatus.SUCCEED
+                        }
+                        paginationProps={{
+                            count,
+                            page,
+                            rowsPerPage,
+                            onPageChange: (_event, newPage) => setPage(newPage),
+                            onRowsPerPageChange: (event) => {
+                                setRowsPerPage(Number.parseInt(event.target.value, 10));
+                                setPage(0);
+                            },
+                        }}
                     />
                 </Box>
             </Box>
-
-            <Box sx={{ height: 400, minHeight: 0 }}>
-                <SecurityAnalysisResultNmk
-                    result={sourcePage}
-                    count={count}
-                    columnDefs={columns}
-                    isLoadingResult={isFetching}
-                    nmkType={nmkType}
-                    onGridReady={noopGridReady}
-                    resultStatusMessages={messages}
-                    securityAnalysisStatus={
-                        isError || executionStatus === ProcessStatus.Failed
-                            ? RunningStatus.FAILED
-                            : RunningStatus.SUCCEED
-                    }
-                    paginationProps={{
-                        count,
-                        page,
-                        rowsPerPage,
-                        onPageChange: (_event, newPage) => setPage(newPage),
-                        onRowsPerPageChange: (event) => {
-                            setRowsPerPage(Number.parseInt(event.target.value, 10));
-                            setPage(0);
-                        },
-                    }}
-                />
-            </Box>
-        </Box>
+        </CustomAggridReduxProvider>
     );
 }
