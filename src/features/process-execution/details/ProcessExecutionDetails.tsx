@@ -76,6 +76,13 @@ export default function ProcessExecutionDetails({ execution, steps }: Readonly<P
         <Box
             sx={{
                 p: 3,
+                boxSizing: 'border-box',
+                display: 'flex',
+                flexDirection: 'column',
+                height: '100%',
+                minHeight: 0,
+                minWidth: 0,
+                width: '100%',
             }}
         >
             <Breadcrumbs separator="/">
@@ -93,6 +100,9 @@ export default function ProcessExecutionDetails({ execution, steps }: Readonly<P
                 spacing={3}
                 sx={{
                     mt: 1,
+                    flex: 1,
+                    minHeight: 0,
+                    minWidth: 0,
                 }}
             >
                 <Stack
@@ -141,6 +151,7 @@ export default function ProcessExecutionDetails({ execution, steps }: Readonly<P
                     elevation={theme.palette.mode === 'dark' ? 0 : 1}
                     onChange={handleAccordionChange}
                     sx={{
+                        flexShrink: 0,
                         '&.Mui-expanded': {
                             mb: 0,
                         },
@@ -190,11 +201,13 @@ export default function ProcessExecutionDetails({ execution, steps }: Readonly<P
                     </AccordionDetails>
                 </Accordion>
                 {executionCompleted ? (
-                    <ExecutionResultPanel
-                        executionId={execution.id}
-                        processType={execution.type}
-                        executionStatus={execution.status}
-                    />
+                    <Box sx={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%', display: 'flex' }}>
+                        <ExecutionResultPanel
+                            executionId={execution.id}
+                            processType={execution.type}
+                            executionStatus={execution.status}
+                        />
+                    </Box>
                 ) : (
                     <Stack
                         sx={{

@@ -5,10 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useAppSelector } from 'app/store/store';
 import {
     TableType,
+    mappingTabs,
+    SHORTCIRCUIT_ANALYSIS_RESULT_SORT_STORE,
     RunningStatus,
     ShortCircuitAnalysisResultView,
     ShortCircuitAnalysisType,
@@ -19,12 +21,20 @@ import {
 import { Box } from '@mui/material';
 import { useIntl } from 'react-intl';
 import type { DisplayedColumnsChangedEvent, GridReadyEvent, RowDataUpdatedEvent } from 'ag-grid-community';
-import { ProcessStatus, ProcessType, useExportExecutionResultsCsvMutation } from 'shared/api/monitor-api';
+import { ProcessStatus, useExportExecutionResultsCsvMutation } from 'shared/api/monitor-api';
 import { SHORT_CIRCUIT_RESULT_TYPES } from 'shared/api/monitor-api/result-subtypes';
-import { useExecutionResults } from '../hooks/use-execution-results';
+import { useShortCircuitExecutionResults } from '../hooks/use-execution-results';
 import { CustomAggridReduxProvider } from './custom-aggrid-redux-provider';
+import { EMPTY_RESULT_FILTERS, EMPTY_RESULT_SORT } from './result-column-filters';
+import { prepareShortCircuitQuery, serializeResultQuery } from './result-query-adapters';
+import { useResultPagination } from '../hooks/use-result-pagination';
 
 const RESULT_TYPE = SHORT_CIRCUIT_RESULT_TYPES.AllBuses;
+const FILTER_TAB = mappingTabs(ShortCircuitAnalysisType.ALL_BUSES);
+const FILTER_ENUMS = {
+    faultType: ['BUS', 'BRANCH'],
+    limitType: ['LOW_SHORT_CIRCUIT_CURRENT', 'HIGH_SHORT_CIRCUIT_CURRENT'],
+};
 const noopGridReady = (_event: GridReadyEvent) => undefined;
 const noopRowDataUpdated = (_event: RowDataUpdatedEvent) => undefined;
 const noopDisplayedColumnsChanged = (_event: DisplayedColumnsChangedEvent) => undefined;
@@ -36,33 +46,33 @@ export function ShortCircuitExecutionResultTable({
     const intl = useIntl();
     const { snackError } = useSnackMessage();
     const [exportExecutionResultsCsv] = useExportExecutionResultsCsvMutation();
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(25);
     const sort = useAppSelector(
-        (state) => state.processResults.tableSort[TableType.ShortcircuitAnalysis]?.[RESULT_TYPE] ?? []
+        (state) =>
+            state.processResults.tableSort[SHORTCIRCUIT_ANALYSIS_RESULT_SORT_STORE]?.[FILTER_TAB] ?? EMPTY_RESULT_SORT
     );
     const filters = useAppSelector(
-        (state) => state.processResults.tableFilters.columnsFilters[TableType.ShortcircuitAnalysis]?.[RESULT_TYPE] ?? []
+        (state) =>
+            state.processResults.tableFilters.columnsFilters[TableType.ShortcircuitAnalysis]?.[FILTER_TAB] ??
+            EMPTY_RESULT_FILTERS
     );
-    const { result, isError, isFetching } = useExecutionResults(executionId, ProcessType.ShortCircuit, true, {
-        resultType: RESULT_TYPE,
+    const query = useMemo(() => prepareShortCircuitQuery(filters, sort), [filters, sort]);
+    const { page, rowsPerPage, setPage, setRowsPerPage } = useResultPagination(
+        JSON.stringify([executionId, RESULT_TYPE, query])
+    );
+    const { result, isError, isFetching } = useShortCircuitExecutionResults(executionId, true, {
         page,
         size: rowsPerPage,
-        sort,
-        filters,
+        ...query,
     });
-    const resultPage = useMemo(
-        () => (result as { content?: unknown[]; totalElements?: number } | null) ?? {},
-        [result]
-    );
-    const rows = resultPage.content ?? [];
-    const count = resultPage.totalElements ?? 0;
+    const rows = result?.content ?? [];
+    const count = result?.totalElements ?? 0;
     const isExportDisabled = isFetching || isError || rows.length === 0;
 
     const exportCsv = useCallback(async () => {
         const response = await exportExecutionResultsCsv({
             executionId,
             resultType: RESULT_TYPE,
+            ...serializeResultQuery(query),
             body: {
                 headers: [
                     'IDNode',
@@ -79,13 +89,16 @@ export function ShortCircuitExecutionResultTable({
                 language: intl.locale,
             },
         }).unwrap();
+        if (!(response instanceof Blob)) {
+            throw new Error('Invalid CSV export response');
+        }
         const url = URL.createObjectURL(response);
         const anchor = document.createElement('a');
         anchor.href = url;
         anchor.download = 'allBuses-results.zip';
         anchor.click();
         URL.revokeObjectURL(url);
-    }, [executionId, exportExecutionResultsCsv, intl.locale]);
+    }, [executionId, exportExecutionResultsCsv, intl.locale, query]);
 
     const handleExportError = useCallback(
         (error: unknown) => {
@@ -96,8 +109,18 @@ export function ShortCircuitExecutionResultTable({
 
     return (
         <CustomAggridReduxProvider>
-            <Box sx={{ height: 600, display: 'flex', flexDirection: 'column' }}>
-                <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 1 }}>
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    flex: 1,
+                    minWidth: 0,
+                    minHeight: 0,
+                    width: '100%',
+                    overflow: 'hidden',
+                }}
+            >
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end', flexShrink: 0, mb: 1 }}>
                     <ManagedExportCsvButton
                         exportCsv={exportCsv}
                         resetKey={`${executionId}-${RESULT_TYPE}`}
@@ -105,12 +128,38 @@ export function ShortCircuitExecutionResultTable({
                         onError={handleExportError}
                     />
                 </Box>
-                <Box sx={{ height: 500, minHeight: 0 }}>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        flex: 1,
+                        minWidth: 0,
+                        minHeight: 0,
+                        width: '100%',
+                        overflow: 'hidden',
+                        '& > .MuiBox-root:first-of-type': { flexShrink: 0 },
+                        '& > .MuiBox-root:nth-of-type(2)': {
+                            display: 'flex',
+                            flex: '1 1 0%',
+                            minWidth: 0,
+                            minHeight: 0,
+                            width: '100%',
+                            overflow: 'hidden',
+                        },
+                        '& > .MuiBox-root:nth-of-type(2) > .MuiBox-root': {
+                            flex: '1 1 0%',
+                            minWidth: 0,
+                            minHeight: 0,
+                            width: '100%',
+                        },
+                    }}
+                >
                     <ShortCircuitAnalysisResultView
-                        result={rows as never}
+                        result={rows}
                         analysisType={ShortCircuitAnalysisType.ALL_BUSES}
                         isFetching={isFetching}
-                        filterEnums={{}}
+                        filterEnums={FILTER_ENUMS}
+                        columnFilters={filters}
                         analysisStatus={
                             isError || executionStatus === ProcessStatus.Failed
                                 ? RunningStatus.FAILED

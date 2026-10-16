@@ -5,6 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { Box } from '@mui/material';
 import { useParams } from 'react-router';
 import { ProcessStepInfosAlert } from '../details/steps/ProcessStepInfosAlert';
 import { useExecutionWithSteps } from '../details/hooks/use-get-execution-with-steps';
@@ -15,7 +16,7 @@ function ProcessExecutionPage() {
     const { execution, steps, isMissingExecutionId, isLoading, isError, isEmpty } = useExecutionWithSteps(id);
 
     return (
-        <>
+        <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0, minWidth: 0 }}>
             <ProcessStepInfosAlert
                 isEmpty={isEmpty}
                 isError={isError}
@@ -23,9 +24,11 @@ function ProcessExecutionPage() {
                 isMissingExecutionId={isMissingExecutionId}
             />
             {execution !== undefined && steps.length > 0 && (
-                <ProcessExecutionDetails execution={execution} steps={steps} />
+                <Box sx={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
+                    <ProcessExecutionDetails execution={execution} steps={steps} />
+                </Box>
             )}
-        </>
+        </Box>
     );
 }
 
