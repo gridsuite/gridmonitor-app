@@ -25,7 +25,7 @@ function AppTopBar({ userProfile }: Readonly<AppTopBarProps>) {
             {userProfile !== null && (
                 <Toolbar
                     sx={{
-                        height: 56,
+                        minHeight: { xs: 56 },
                         px: 3,
                     }}
                 >

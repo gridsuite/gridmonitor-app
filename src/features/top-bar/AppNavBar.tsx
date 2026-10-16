@@ -78,9 +78,14 @@ export function ExecuteButton() {
                 sx={{
                     flexShrink: 0,
                     whiteSpace: 'nowrap',
+                    '& .MuiButton-startIcon': {
+                        mr: { xs: 0, sm: 1 },
+                    },
                 }}
             >
-                <FormattedMessage id="nav.executeProcess" />
+                <Typography sx={{ display: { xs: 'none', sm: 'inline' } }}>
+                    <FormattedMessage id="nav.executeProcess" />
+                </Typography>
             </Button>
 
             <ExecuteProcessConfigDialog
