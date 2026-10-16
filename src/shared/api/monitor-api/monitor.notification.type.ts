@@ -10,30 +10,19 @@ export enum NotificationType {
     PROCESS_EXECUTION_UPDATED = 'PROCESS_EXECUTION_UPDATED',
 }
 
-// Headers
-
-type CommonMonitorEventDataHeaders = {
-    updateType: NotificationType;
-};
-
-type MonitorExecutionEventDataHeaders = CommonMonitorEventDataHeaders & {
-    processType?: ProcessType;
-    processExecutionId: string;
-};
-
 // EventData
-type CommonMonitorEventData = {
-    headers: CommonMonitorEventDataHeaders;
-    payload?: any;
-};
-export type MonitorExecutionEventData = CommonMonitorEventData & {
-    headers: MonitorExecutionEventDataHeaders;
+
+export type MonitorExecutionEventData = {
+    headers: {
+        updateType: NotificationType;
+        processType: ProcessType;
+        processExecutionId: string;
+    };
+    payload?: unknown;
 };
 
 // Predicates
 
-export function isProcessExecutionUpdateNotification(
-    notif: CommonMonitorEventData
-): notif is MonitorExecutionEventData {
+export function isProcessExecutionUpdateNotification(notif: any): notif is MonitorExecutionEventData {
     return notif?.headers?.updateType === NotificationType.PROCESS_EXECUTION_UPDATED;
 }
