@@ -8,7 +8,7 @@
 import { useState } from 'react';
 import { Box, Button, Card, CardContent, Chip, Collapse, Divider, Paper, Stack, Typography } from '@mui/material';
 import type { ProcessExecutionStep } from '../../../../shared/api/monitor-api';
-import { ProcessStepModel } from '../../list/models/process-result';
+import { ProcessStepModel } from '../../models/process-result';
 
 type StepStatus = NonNullable<ProcessExecutionStep['status']>;
 

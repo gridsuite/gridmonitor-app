@@ -10,7 +10,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { ProcessStatus, StepStatus, type ProcessExecution } from '../../../shared/api/monitor-api';
 import { renderWithProviders } from '../../../test-utils/render-with-providers';
 import ProcessExecutionDetails from './ProcessExecutionDetails';
-import type { ProcessStepModel } from '../list/models/process-result';
+import type { ProcessStepModel } from '../models/process-result';
 
 vi.mock('@gridsuite/commons-ui', async (importOriginal) => {
     const actual = await importOriginal<typeof import('@gridsuite/commons-ui')>();

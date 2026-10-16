@@ -30,7 +30,7 @@ import { ProcessExecution, ProcessStatus } from '../../../shared/api/monitor-api
 import { getFormattedDate } from '../../../shared/lib/date-time-formatter';
 import { PROCESS_PATHS } from '../router/process-paths';
 import ResponsiveStepper from './steps/ResponsiveStepper';
-import { ProcessStepModel } from '../list/models/process-result';
+import { ProcessStepModel } from '../models/process-result';
 import { InfoItem, InfoItemType } from './InfoItem';
 
 type ProcessExecutionDetailsProps = {

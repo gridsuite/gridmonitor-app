@@ -6,7 +6,7 @@
  */
 
 import { ProcessExecution, useGetProcessExecutionsQuery } from '../../../../shared/api/monitor-api';
-import { ProcessExecutionInfos } from '../models/process-result';
+import { ProcessExecutionInfos } from '../../models/process-result';
 
 export const mapStepsInfos = (api: ProcessExecution): ProcessExecutionInfos => ({
     ...api,

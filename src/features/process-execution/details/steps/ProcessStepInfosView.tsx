@@ -7,7 +7,7 @@
 
 import { Box, Stack, Typography } from '@mui/material';
 import { ProcessStepInfosItem } from './ProcessStepInfosItem';
-import { ProcessStepModel } from '../../list/models/process-result';
+import { ProcessStepModel } from '../../models/process-result';
 
 type ProcessStepInfosProps = {
     executionId: string;
