@@ -48,8 +48,8 @@ export function LoadFlowExecutionResultTable({
     );
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'column', pt: 3 }}>
-            <Box sx={{ height: 600, minHeight: 0 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, minWidth: 0, width: '100%', pt: 3 }}>
+            <Box sx={{ height: 600, minHeight: 0, minWidth: 0, width: '100%' }}>
                 <LimitViolationResult
                     result={violations}
                     isLoadingResult={isFetching}

@@ -210,8 +210,8 @@ export function SecurityAnalysisExecutionResultTable({
     };
 
     return (
-        <Box>
-            <Box sx={styles.toolbarRow}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, width: '100%' }}>
+            <Box sx={{ ...styles.toolbarRow, flexShrink: 0 }}>
                 <Box sx={{ justifySelf: 'start' }}>
                     <Tabs value={nmkType} onChange={handleChangeNmkType}>
                         {NMK_SUBTABS.map(({ messageId, value }) => (
@@ -229,7 +229,7 @@ export function SecurityAnalysisExecutionResultTable({
                 </Box>
             </Box>
 
-            <Box sx={{ height: 400, minHeight: 0 }}>
+            <Box sx={{ flex: 1, minHeight: 0 }}>
                 <SecurityAnalysisResultNmk
                     result={sourcePage}
                     count={count}
