@@ -35,6 +35,7 @@ export function LoadFlowExecutionResultTable({
     const intl = useIntl();
     const { result, isError, isFetching } = useExecutionResults(executionId, ProcessType.Loadflow, true, {
         resultType: RESULT_TYPE,
+        filters: [{ column: 'limitType', dataType: 'text', type: 'equals', value: ['CURRENT'] }],
     });
     const violations = useMemo(() => (Array.isArray(result) ? result : []) as never, [result]);
     const columns = useMemo<ColDef[]>(
