@@ -7,8 +7,10 @@
 
 import { screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { http, HttpResponse } from 'msw';
 import { ProcessStatus, StepStatus, type ProcessExecution } from 'shared/api/monitor-api';
 import { renderWithProviders } from 'test-utils/render-with-providers';
+import { server } from 'test-utils/msw/server';
 import ProcessExecutionDetails from '../ProcessExecutionDetails';
 import type { ProcessStepModel } from '../../models/process-result';
 
@@ -16,10 +18,6 @@ vi.mock('@gridsuite/commons-ui', async (importOriginal) => {
     const actual = await importOriginal<typeof import('@gridsuite/commons-ui')>();
     return {
         ...actual,
-        fetchElementNames: vi.fn().mockResolvedValue({
-            'process-config-1': 'Load-flow configuration',
-            'case-1': 'Test case',
-        }),
         UserAvatar: ({ label }: { label: string }) => <span>{label}</span>,
     };
 });
@@ -76,6 +74,15 @@ const steps: ProcessStepModel[] = [
 describe('ProcessExecutionDetails', () => {
     beforeEach(() => {
         vi.stubGlobal('ResizeObserver', ResizeObserverMock);
+        server.use(
+            http.get('*/v1/explore/elements/name', ({ request }) => {
+                expect(new URL(request.url).searchParams.get('ids')).toBe('process-config-1,case-1');
+                return HttpResponse.json({
+                    'process-config-1': 'Load-flow configuration',
+                    'case-1': 'Test case',
+                });
+            })
+        );
     });
     it('renders the execution details of a running process', async () => {
         renderWithProviders(<ProcessExecutionDetails execution={execution} steps={steps} />);

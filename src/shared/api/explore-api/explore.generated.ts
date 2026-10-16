@@ -16,6 +16,17 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
+    getElementsName: build.query<
+      GetElementsNameApiResponse,
+      GetElementsNameApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/v1/explore/elements/name`,
+        params: {
+          ids: queryArg.ids,
+        },
+      }),
+    }),
   }),
   overrideExisting: false,
 });
@@ -28,4 +39,11 @@ export type CreateProcessConfigApiArg = {
   parentDirectoryUuid: string;
   body: string;
 };
-export const { useCreateProcessConfigMutation } = injectedRtkApi;
+export type GetElementsNameApiResponse = /** status 200 The elements names */ {
+  [key: string]: string;
+};
+export type GetElementsNameApiArg = {
+  ids: string[];
+};
+export const { useCreateProcessConfigMutation, useGetElementsNameQuery } =
+  injectedRtkApi;

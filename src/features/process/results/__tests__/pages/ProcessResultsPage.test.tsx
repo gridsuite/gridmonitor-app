@@ -18,10 +18,6 @@ vi.mock('@gridsuite/commons-ui', async (importOriginal) => {
     const actual = await importOriginal<typeof import('@gridsuite/commons-ui')>();
     return {
         ...actual,
-        fetchElementNames: vi.fn().mockResolvedValue({
-            'process-config-1': 'Security Analysis configuration',
-            'case-1': 'Test case',
-        }),
         UserAvatar: ({ label }: { label: string }) => <span>{label}</span>,
     };
 });
@@ -44,6 +40,12 @@ describe('ProcessResultsPage', () => {
             http.get('*/v1/executions/execution-1', () => HttpResponse.json(execution)),
             http.get('*/v1/executions/execution-1/step-infos', () =>
                 HttpResponse.json([{ id: 'step-1', stepOrder: 1, stepType: 'LOADFLOW', status: 'COMPLETED' }])
+            ),
+            http.get('*/v1/explore/elements/name', () =>
+                HttpResponse.json({
+                    'process-config-1': 'Security Analysis configuration',
+                    'case-1': 'Test case',
+                })
             )
         );
         const { user } = renderWithProviders(
