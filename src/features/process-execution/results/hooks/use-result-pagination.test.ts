@@ -7,7 +7,7 @@
 
 import { act, renderHook } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import { useResultPagination } from '../use-result-pagination';
+import { useResultPagination } from './use-result-pagination';
 
 describe('useResultPagination', () => {
     it('resets the page when filters, subtype, or execution change, retaining page size', () => {

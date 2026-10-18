@@ -32,7 +32,7 @@ import { PROCESS_PATHS } from '../router/process-paths';
 import ResponsiveStepper from './steps/ResponsiveStepper';
 import { ProcessStepModel } from '../models/process-result';
 import { InfoItem, InfoItemType } from './InfoItem';
-import { ExecutionResultPanel } from './ExecutionResultPanel';
+import { ExecutionResultPanel } from '../results/ExecutionResultPanel';
 
 type ProcessExecutionDetailsProps = {
     execution: ProcessExecution;

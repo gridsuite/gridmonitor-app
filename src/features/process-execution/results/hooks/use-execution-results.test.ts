@@ -14,7 +14,7 @@ import {
     useLoadFlowExecutionResults,
     useSecurityAnalysisExecutionResults,
     useShortCircuitExecutionResults,
-} from '../use-execution-results';
+} from './use-execution-results';
 
 const { getResults } = vi.hoisted(() => ({ getResults: vi.fn() }));
 

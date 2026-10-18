@@ -23,11 +23,11 @@ import { useIntl } from 'react-intl';
 import type { DisplayedColumnsChangedEvent, GridReadyEvent, RowDataUpdatedEvent } from 'ag-grid-community';
 import { ProcessStatus, useExportExecutionResultsCsvMutation } from 'shared/api/monitor-api';
 import { SHORT_CIRCUIT_RESULT_TYPES } from 'shared/api/monitor-api/result-subtypes';
-import { useShortCircuitExecutionResults } from '../hooks/use-execution-results';
-import { CustomAggridReduxProvider } from './custom-aggrid-redux-provider';
+import { useShortCircuitExecutionResults } from './hooks/use-execution-results';
+import { CustomAggridReduxProvider } from '../list/custom-aggrid-redux-provider';
 import { EMPTY_RESULT_FILTERS, EMPTY_RESULT_SORT } from './result-column-filters';
 import { prepareShortCircuitQuery, serializeResultQuery } from './result-query-adapters';
-import { useResultPagination } from '../hooks/use-result-pagination';
+import { useResultPagination } from './hooks/use-result-pagination';
 
 const RESULT_TYPE = SHORT_CIRCUIT_RESULT_TYPES.AllBuses;
 const FILTER_TAB = mappingTabs(ShortCircuitAnalysisType.ALL_BUSES);
