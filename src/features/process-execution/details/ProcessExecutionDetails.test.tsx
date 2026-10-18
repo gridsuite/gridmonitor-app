@@ -24,7 +24,7 @@ vi.mock('@gridsuite/commons-ui', async (importOriginal) => {
     };
 });
 
-vi.mock('../ExecutionResultPanel', () => ({
+vi.mock('../results/ExecutionResultPanel', () => ({
     ExecutionResultPanel: ({ processType }: { processType: string }) => (
         <div data-testid="execution-result-panel">{processType}</div>
     ),

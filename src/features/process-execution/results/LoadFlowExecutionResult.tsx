@@ -12,10 +12,10 @@ import type { ColDef } from 'ag-grid-community';
 import { LimitViolationResult, RunningStatus, TableType } from '@gridsuite/commons-ui';
 import { useAppSelector } from 'app/store/store';
 import { ProcessStatus } from 'shared/api/monitor-api';
-import { CustomAggridReduxProvider } from './custom-aggrid-redux-provider';
+import { CustomAggridReduxProvider } from '../list/custom-aggrid-redux-provider';
 import { EMPTY_RESULT_FILTERS, EMPTY_RESULT_SORT, makeResultFilterColumn } from './result-column-filters';
 import { prepareLoadFlowQuery } from './result-query-adapters';
-import { useLoadFlowExecutionResults } from '../hooks/use-execution-results';
+import { useLoadFlowExecutionResults } from './hooks/use-execution-results';
 
 const RESULT_TYPE = 'LIMIT_VIOLATIONS_CURRENT';
 const COLUMN_FIELDS = [
