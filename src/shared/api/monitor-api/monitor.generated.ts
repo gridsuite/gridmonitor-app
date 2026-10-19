@@ -66,7 +66,7 @@ const injectedRtkApi = api.injectEndpoints({
         body: queryArg.body,
         params: {
           resultType: queryArg.resultType,
-          sort: queryArg.sort,
+          pageable: queryArg.pageable,
           filters: queryArg.filters,
         },
       }),
@@ -139,9 +139,7 @@ const injectedRtkApi = api.injectEndpoints({
         url: `/v1/executions/${queryArg.executionId}/results`,
         params: {
           resultType: queryArg.resultType,
-          page: queryArg.page,
-          size: queryArg.size,
-          sort: queryArg.sort,
+          pageable: queryArg.pageable,
           filters: queryArg.filters,
         },
       }),
@@ -240,7 +238,8 @@ export type ExportExecutionResultsCsvApiArg = {
   /** Execution UUID */
   executionId: string;
   resultType: string;
-  sort?: string[];
+  /** Pagination parameters */
+  pageable: Pageable;
   filters?: string;
   body: object;
 };
@@ -291,9 +290,8 @@ export type GetExecutionResultsApiArg = {
   /** Execution UUID */
   executionId: string;
   resultType?: string;
-  page?: number;
-  size?: number;
-  sort?: string[];
+  /** Pagination parameters */
+  pageable: Pageable;
   filters?: string;
 };
 export type GetExecutionReportsApiResponse =
@@ -374,6 +372,11 @@ export type ShortCircuitConfig = {
 export type PersistedProcessConfig = {
   id?: string;
   processConfig?: LoadFlowConfig | SecurityAnalysisConfig | ShortCircuitConfig;
+};
+export type Pageable = {
+  page?: number;
+  size?: number;
+  sort?: string[];
 };
 export type MetadataInfos = {
   id?: string;

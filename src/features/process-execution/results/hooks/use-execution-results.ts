@@ -20,7 +20,7 @@ export interface ExecutionResultsQuery {
     page?: number;
     size?: number;
     filters?: FilterConfig[];
-    sort?: Array<{ colId: string; sort: string }>;
+    sort?: SortConfig[];
 }
 
 export interface LoadFlowExecutionResultsQuery extends ExecutionResultsQuery {
@@ -57,10 +57,12 @@ function useParsedExecutionResults<Result>(
         {
             executionId,
             resultType: query.resultType,
-            page: query.page ?? DEFAULT_PAGE,
-            size: query.size ?? DEFAULT_SIZE,
+            pageable: {
+                page: query.page ?? DEFAULT_PAGE,
+                size: query.size ?? DEFAULT_SIZE,
+                sort: query.sort?.map(({ colId, sort }) => `${colId},${sort}`),
+            },
             filters: query.filters?.length ? JSON.stringify(query.filters) : undefined,
-            sort: query.sort?.map(({ colId, sort }) => `${colId},${sort}`),
         },
         { skip: !enabled }
     );

@@ -128,6 +128,8 @@ export function prepareSecurityAnalysisQuery(
 export function serializeResultQuery(query: { filters: FilterConfig[]; sort: SortConfig[] }) {
     return {
         filters: query.filters.length ? JSON.stringify(query.filters) : undefined,
-        sort: query.sort.map(({ colId, sort }) => `${colId},${sort}`),
+        pageable: {
+            sort: query.sort.map(({ colId, sort }) => `${colId},${sort}`),
+        },
     };
 }
