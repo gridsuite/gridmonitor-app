@@ -47,6 +47,7 @@ export function makeResultFilterColumn(
     intl: IntlShape
 ): ColDef {
     const options = ENUM_OPTIONS[field];
+    const sortParams = { table: type, tab };
     if (options) {
         return makeAgGridCustomHeaderColumn<CustomAggridAutocompleteFilterParams>({
             field,
@@ -54,6 +55,7 @@ export function makeResultFilterColumn(
             headerName,
             filter: false,
             context: {
+                sortParams,
                 filterComponent: CustomAggridAutocompleteFilter,
                 filterComponentParams: {
                     filterParams: { type, tab, dataType: FilterDataTypes.TEXT },

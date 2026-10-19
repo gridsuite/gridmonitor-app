@@ -11,9 +11,14 @@ import type { RootState } from '../../../app/store/store';
 
 type ResponseHandler = 'json' | 'text' | 'content-type' | ((response: Response) => Promise<unknown>);
 
-export const createBaseQuery = (baseUrl: string, responseHandlers: Record<string, ResponseHandler> = {}) => {
+export const createBaseQuery = (
+    baseUrl: string,
+    responseHandlers: Record<string, ResponseHandler> = {},
+    paramsSerializer?: (params: Record<string, any>) => string
+) => {
     const baseQuery = fetchBaseQuery({
         baseUrl,
+        paramsSerializer,
         prepareHeaders: (headers, { getState }) => {
             const state = getState() as RootState;
 
