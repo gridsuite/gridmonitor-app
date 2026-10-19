@@ -16,7 +16,6 @@ import {
 } from '@gridsuite/commons-ui';
 import { SHORT_CIRCUIT_RESULT_TYPES, SECURITY_ANALYSIS_RESULT_TYPES } from 'shared/api/monitor-api/result-subtypes';
 import {
-    parseExecutionResult,
     useLoadFlowExecutionResults,
     useSecurityAnalysisExecutionResults,
     useShortCircuitExecutionResults,
@@ -26,18 +25,9 @@ const { getResults } = vi.hoisted(() => ({ getResults: vi.fn() }));
 
 vi.mock('shared/api/monitor-api', () => ({ useGetExecutionResultsQuery: getResults }));
 
-function mockResult(json: string, isFetching = false, isError = false) {
-    getResults.mockReturnValue({ currentData: [json], isFetching, isError });
+function mockResult(result: unknown, isFetching = false, isError = false) {
+    getResults.mockReturnValue({ currentData: result, isFetching, isError });
 }
-
-describe('parseExecutionResult', () => {
-    it('parses the first JSON result and returns undefined for absent or invalid payloads', () => {
-        expect(parseExecutionResult<{ content: number[] }>(['{"content":[1,2]}'])).toEqual({ content: [1, 2] });
-        expect(parseExecutionResult(['not-json'])).toBeUndefined();
-        expect(parseExecutionResult([])).toBeUndefined();
-        expect(parseExecutionResult(undefined)).toBeUndefined();
-    });
-});
 
 describe('calculation-specific execution result hooks', () => {
     it('returns load-flow rows and serializes its request without inspecting the payload shape', () => {
@@ -58,7 +48,7 @@ describe('calculation-specific execution result hooks', () => {
                 side: undefined,
             },
         ];
-        mockResult(JSON.stringify(rows));
+        mockResult(rows);
 
         const { result } = renderHook(() =>
             useLoadFlowExecutionResults('execution', true, {
@@ -92,7 +82,7 @@ describe('calculation-specific execution result hooks', () => {
             content: [[{ contingency: { contingencyId: 'CONTINGENCY_1' } }]],
             totalElements: 1,
         };
-        mockResult(JSON.stringify(page));
+        mockResult(page);
 
         const { result } = renderHook(() =>
             useSecurityAnalysisExecutionResults('execution', true, {
@@ -119,7 +109,7 @@ describe('calculation-specific execution result hooks', () => {
 
     it('fixes short-circuit results to the ALL_BUSES fault-result page', () => {
         const page: Page<SCAFaultResult> = { content: [], totalElements: 0 };
-        mockResult(JSON.stringify(page));
+        mockResult(page);
 
         const { result } = renderHook(() => useShortCircuitExecutionResults('execution', true));
 
@@ -140,8 +130,8 @@ describe('calculation-specific execution result hooks', () => {
         );
     });
 
-    it('reports malformed JSON as an error and keeps disabled queries skipped', () => {
-        mockResult('not-json');
+    it('reports request errors and keeps disabled queries skipped', () => {
+        getResults.mockReturnValue({ currentData: undefined, isFetching: false, isError: true });
         const enabled = renderHook(() =>
             useLoadFlowExecutionResults('execution', true, {
                 resultType: 'LIMIT_VIOLATIONS_CURRENT',

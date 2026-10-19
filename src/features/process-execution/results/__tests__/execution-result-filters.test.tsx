@@ -101,7 +101,7 @@ function lastQuery() {
 beforeEach(() => {
     getResults.mockReset();
     getResults.mockReturnValue({
-        currentData: ['{"content":[],"totalElements":0}'],
+        currentData: { content: [], totalElements: 0 },
         isError: false,
         isFetching: false,
     });
@@ -109,7 +109,7 @@ beforeEach(() => {
 
 describe('execution result column-filter request wiring', () => {
     it('sends load-flow user filters alongside CURRENT and retains only CURRENT after clearing', async () => {
-        getResults.mockReturnValue({ currentData: ['[]'], isError: false, isFetching: false });
+        getResults.mockReturnValue({ currentData: [], isError: false, isFetching: false });
         renderResults(<LoadFlowExecutionResultTable executionId="execution" />);
         fireEvent.click(screen.getByText('Filter'));
         await waitFor(() =>
