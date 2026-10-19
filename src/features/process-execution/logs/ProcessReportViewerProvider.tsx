@@ -5,14 +5,15 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { PropsWithChildren, useMemo, useState } from 'react';
+import { PropsWithChildren, useCallback, useMemo, useState } from 'react';
 import {
+    NotificationsUrlKeys,
     ReportFetcherContext,
     ReportFilterContext,
     ReportFilterContextValue,
-    NotificationsUrlKeys,
     useNotificationsListener,
 } from '@gridsuite/commons-ui';
+import { isProcessExecutionUpdateNotification } from 'shared/api/monitor-api';
 import { CustomAggridReduxProvider } from '../list/custom-aggrid-redux-provider';
 import { useReportViewerProvider } from './hooks/use-report-viewer-provider';
 
@@ -23,17 +24,22 @@ type ProcessReportViewerProviderProps = PropsWithChildren<{
 export function ProcessReportViewerProvider({ executionId, children }: Readonly<ProcessReportViewerProviderProps>) {
     const [refreshCounter, setRefreshCounter] = useState(0);
 
-    useNotificationsListener(NotificationsUrlKeys.MONITOR, {
-        listenerCallbackMessage: (event: MessageEvent) => {
+    const invalidateRefreshCounter = useCallback(
+        (event: MessageEvent) => {
             const eventData = JSON.parse(event.data);
             if (
                 executionId &&
-                eventData.headers?.processExecutionId === executionId &&
-                eventData.headers?.updateType === 'PROCESS_EXECUTION_UPDATED'
+                isProcessExecutionUpdateNotification(eventData) &&
+                eventData.headers.processExecutionId === executionId
             ) {
                 setRefreshCounter((prev) => prev + 1);
             }
         },
+        [executionId]
+    );
+
+    useNotificationsListener(NotificationsUrlKeys.MONITOR, {
+        listenerCallbackMessage: invalidateRefreshCounter,
     });
 
     const { fetchLogs, fetchLogMatches, filters, updateFilters, pagination, changePagination } =

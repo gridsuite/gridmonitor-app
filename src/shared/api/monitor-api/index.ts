@@ -32,3 +32,4 @@ export type {
 } from './monitor.generated';
 
 export type { PersistedProcessConfig, ProcessConfig } from './monitor.type';
+export * from './monitor.notification.type';
