@@ -42,7 +42,7 @@ See the [UI styling guidelines](STYLE_GUIDELINES.md) for this application's them
 - Redux Toolkit
 - RTK Query
 - React Hook Form
-- Zod
+- Yup
 
 ## Development Scripts
 
