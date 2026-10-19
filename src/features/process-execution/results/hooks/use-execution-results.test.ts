@@ -70,10 +70,12 @@ describe('calculation-specific execution result hooks', () => {
             {
                 executionId: 'execution',
                 resultType: 'LIMIT_VIOLATIONS_CURRENT',
-                page: 2,
-                size: 50,
+                pageable: {
+                    page: 2,
+                    size: 50,
+                    sort: ['subjectId,asc'],
+                },
                 filters: '[{"column":"subjectId","value":"LINE_1"}]',
-                sort: ['subjectId,asc'],
             },
             { skip: false }
         );
@@ -98,10 +100,12 @@ describe('calculation-specific execution result hooks', () => {
             {
                 executionId: 'execution',
                 resultType: SECURITY_ANALYSIS_RESULT_TYPES.NmkContingencies,
-                page: 0,
-                size: 25,
+                pageable: {
+                    page: 0,
+                    size: 25,
+                    sort: undefined,
+                },
                 filters: undefined,
-                sort: undefined,
             },
             { skip: false }
         );
@@ -119,10 +123,12 @@ describe('calculation-specific execution result hooks', () => {
             {
                 executionId: 'execution',
                 resultType: SHORT_CIRCUIT_RESULT_TYPES.AllBuses,
-                page: 0,
-                size: 25,
+                pageable: {
+                    page: 0,
+                    size: 25,
+                    sort: undefined,
+                },
                 filters: undefined,
-                sort: undefined,
             },
             { skip: false }
         );
