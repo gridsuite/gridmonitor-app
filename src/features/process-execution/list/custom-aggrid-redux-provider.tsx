@@ -27,7 +27,7 @@ function CustomAggridSortReduxProvider({ children }: Readonly<PropsWithChildren>
             if (!sortParams) {
                 return undefined;
             }
-            return tableSort[sortParams.table]?.[sortParams.tab];
+            return tableSort[sortParams.table]?.[sortParams.tab] ?? [];
         },
         [tableSort]
     );
