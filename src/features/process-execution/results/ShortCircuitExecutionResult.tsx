@@ -21,7 +21,7 @@ import {
 import { Box } from '@mui/material';
 import { useIntl } from 'react-intl';
 import type { DisplayedColumnsChangedEvent, GridReadyEvent, RowDataUpdatedEvent } from 'ag-grid-community';
-import { ProcessStatus, useExportExecutionResultsCsvMutation } from 'shared/api/monitor-api';
+import { ProcessStatus, downloadExecutionResultsCsv } from 'shared/api/monitor-api';
 import { SHORT_CIRCUIT_RESULT_TYPES } from 'shared/api/monitor-api/result-subtypes';
 import { useShortCircuitExecutionResults } from './hooks/use-execution-results';
 import { CustomAggridReduxProvider } from '../list/custom-aggrid-redux-provider';
@@ -45,7 +45,6 @@ export function ShortCircuitExecutionResultTable({
 }: Readonly<{ executionId: string; executionStatus?: ProcessStatus }>) {
     const intl = useIntl();
     const { snackError } = useSnackMessage();
-    const [exportExecutionResultsCsv] = useExportExecutionResultsCsvMutation();
     const sort = useAppSelector(
         (state) =>
             state.processResults.tableSort[SHORTCIRCUIT_ANALYSIS_RESULT_SORT_STORE]?.[FILTER_TAB] ?? EMPTY_RESULT_SORT
@@ -69,8 +68,9 @@ export function ShortCircuitExecutionResultTable({
     const isExportDisabled = isFetching || isError || rows.length === 0;
 
     const exportCsv = useCallback(async () => {
-        const response = await exportExecutionResultsCsv({
+        await downloadExecutionResultsCsv({
             executionId,
+            fileName: 'allBuses-results.zip',
             resultType: RESULT_TYPE,
             ...serializeResultQuery(query),
             body: {
@@ -88,17 +88,8 @@ export function ShortCircuitExecutionResultTable({
                 enumValueTranslations: {},
                 language: intl.locale,
             },
-        }).unwrap();
-        if (!(response instanceof Blob)) {
-            throw new Error('Invalid CSV export response');
-        }
-        const url = URL.createObjectURL(response);
-        const anchor = document.createElement('a');
-        anchor.href = url;
-        anchor.download = 'allBuses-results.zip';
-        anchor.click();
-        URL.revokeObjectURL(url);
-    }, [executionId, exportExecutionResultsCsv, intl.locale, query]);
+        });
+    }, [executionId, intl.locale, query]);
 
     const handleExportError = useCallback(
         (error: unknown) => {

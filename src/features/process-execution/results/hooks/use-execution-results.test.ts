@@ -7,7 +7,13 @@
 
 import { renderHook } from '@testing-library/react';
 import { describe, expect, expectTypeOf, it, vi } from 'vitest';
-import type { OverloadedEquipment, Page, SCAFaultResult, SecurityAnalysisNmkResult } from '@gridsuite/commons-ui';
+import {
+    SortWay,
+    type OverloadedEquipment,
+    type Page,
+    type SCAFaultResult,
+    type SecurityAnalysisNmkResult,
+} from '@gridsuite/commons-ui';
 import { SHORT_CIRCUIT_RESULT_TYPES, SECURITY_ANALYSIS_RESULT_TYPES } from 'shared/api/monitor-api/result-subtypes';
 import {
     parseExecutionResult,
@@ -60,7 +66,7 @@ describe('calculation-specific execution result hooks', () => {
                 page: 2,
                 size: 50,
                 filters: [{ column: 'subjectId', value: 'LINE_1' }],
-                sort: [{ colId: 'subjectId', sort: 'asc' }],
+                sort: [{ colId: 'subjectId', sort: SortWay.ASC }],
             })
         );
 

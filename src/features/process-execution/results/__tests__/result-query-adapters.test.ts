@@ -109,8 +109,12 @@ describe('result query adapters', () => {
     });
 
     it('serializes the same prepared query for exports, and omits filters after clearing', () => {
-        const query = prepareShortCircuitQuery([textFilter('faultType', ['BUS'])], []);
+        const query = prepareShortCircuitQuery(
+            [textFilter('faultType', ['BUS'])],
+            [{ colId: 'elementId', sort: SortWay.ASC }]
+        );
         expect(JSON.parse(serializeResultQuery(query).filters!)).toEqual(query.filters);
+        expect(serializeResultQuery(query).pageable.sort).toEqual(['fault.id,asc']);
         expect(serializeResultQuery(prepareShortCircuitQuery([], [])).filters).toBeUndefined();
     });
 });

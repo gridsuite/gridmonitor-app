@@ -12,6 +12,7 @@ import type {
     Page,
     SCAFaultResult,
     SecurityAnalysisNmkResult,
+    SortConfig,
 } from '@gridsuite/commons-ui';
 import { useGetExecutionResultsQuery } from 'shared/api/monitor-api';
 import { SHORT_CIRCUIT_RESULT_TYPES, type SecurityAnalysisResultType } from 'shared/api/monitor-api/result-subtypes';

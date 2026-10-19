@@ -15,15 +15,13 @@ import { LoadFlowExecutionResultTable } from '../LoadFlowExecutionResult';
 import { ShortCircuitExecutionResultTable } from '../ShortCircuitExecutionResult';
 import { SecurityAnalysisExecutionResultTable } from '../SecurityAnalysisExecutionResult';
 
-const { getResults, exportResults } = vi.hoisted(() => ({
+const { getResults } = vi.hoisted(() => ({
     getResults: vi.fn(),
-    exportResults: vi.fn(),
 }));
 
 vi.mock('shared/api/monitor-api', async (importOriginal) => ({
     ...(await importOriginal<typeof import('shared/api/monitor-api')>()),
     useGetExecutionResultsQuery: getResults,
-    useExportExecutionResultsCsvMutation: () => [exportResults],
 }));
 
 function FilterControls({ type, tab, column }: { type: TableType; tab: string; column: string }) {
