@@ -125,10 +125,10 @@ describe('execution result column-filter request wiring', () => {
     it('reads short-circuit allBuses filters, maps fields, resets pagination, and clears request filters', async () => {
         renderResults(<ShortCircuitExecutionResultTable executionId="execution" />);
         fireEvent.click(screen.getByText('Next page'));
-        expect(lastQuery().pageable.page).toBe(3);
+        expect(lastQuery().page).toBe(3);
         fireEvent.click(screen.getByText('Filter'));
         await waitFor(() => expect(JSON.parse(lastQuery().filters)[0].column).toBe('fault.voltageLevelId'));
-        expect(lastQuery()).toMatchObject({ resultType: 'ALL_BUSES', pageable: { page: 0 } });
+        expect(lastQuery()).toMatchObject({ resultType: 'ALL_BUSES', page: 0 });
         fireEvent.click(screen.getByText('Clear'));
         expect(lastQuery().filters).toBeUndefined();
     });
@@ -137,9 +137,7 @@ describe('execution result column-filter request wiring', () => {
         renderResults(<SecurityAnalysisExecutionResultTable executionId="execution" />);
         fireEvent.click(screen.getByText('Next page'));
         fireEvent.click(screen.getByText('Filter'));
-        await waitFor(() =>
-            expect(lastQuery()).toMatchObject({ resultType: 'NMK_CONTINGENCIES', pageable: { page: 0 } })
-        );
+        await waitFor(() => expect(lastQuery()).toMatchObject({ resultType: 'NMK_CONTINGENCIES', page: 0 }));
         expect(JSON.parse(lastQuery().filters)[0].column).toBe('contingencyId');
         fireEvent.click(screen.getAllByRole('tab')[1]);
         fireEvent.click(screen.getByText('Filter'));

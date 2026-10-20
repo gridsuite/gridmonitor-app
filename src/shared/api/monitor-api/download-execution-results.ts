@@ -11,7 +11,7 @@ import type { ExportExecutionResultsCsvApiArg } from './monitor.generated';
 
 export async function downloadExecutionResultsCsv({
     executionId,
-    body,
+    csvExportRequest,
     fileName,
     ...params
 }: ExportExecutionResultsCsvApiArg & { fileName: string }): Promise<void> {
@@ -20,7 +20,7 @@ export async function downloadExecutionResultsCsv({
         {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body),
+            body: JSON.stringify(csvExportRequest),
         }
     );
     const anchor = document.createElement('a');

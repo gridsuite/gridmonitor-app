@@ -40,11 +40,9 @@ function useExecutionResults<Result>(
         {
             executionId,
             resultType,
-            pageable: {
-                page,
-                size,
-                sort: sort?.map(({ colId, sort: direction }) => `${colId},${direction}`),
-            },
+            page,
+            size,
+            sort: sort?.map(({ colId, sort: direction }) => `${colId},${direction}`),
             filters: filters?.length ? JSON.stringify(filters) : undefined,
         },
         { skip: !enabled }

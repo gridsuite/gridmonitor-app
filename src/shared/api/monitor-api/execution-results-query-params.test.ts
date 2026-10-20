@@ -13,7 +13,9 @@ describe('getExecutionResultsQueryParams', () => {
         const filters = JSON.stringify([{ column: 'subjectId', value: 'LINE & BUS+1' }]);
         const params = getExecutionResultsQueryParams({
             resultType: 'NMK_CONTINGENCIES',
-            pageable: { page: 0, size: 25, sort: ['subjectId,asc', 'value,desc'] },
+            page: 0,
+            size: 25,
+            sort: ['subjectId,asc', 'value,desc'],
             filters,
         });
 
@@ -28,7 +30,7 @@ describe('getExecutionResultsQueryParams', () => {
     });
 
     it.each([undefined, []])('omits absent parameters with sort %j', (sort) => {
-        const params = getExecutionResultsQueryParams({ pageable: { sort } });
+        const params = getExecutionResultsQueryParams({ sort });
 
         expect([...params]).toEqual([]);
     });

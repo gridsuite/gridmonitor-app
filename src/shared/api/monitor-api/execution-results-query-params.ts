@@ -10,7 +10,9 @@ import type { GetExecutionResultsApiArg } from './monitor.generated';
 // Adapt the generated Pageable argument to the results API's flat query parameters
 export function getExecutionResultsQueryParams({
     resultType,
-    pageable: { page, size, sort },
+    page,
+    size,
+    sort,
     filters,
 }: Omit<GetExecutionResultsApiArg, 'executionId'>): URLSearchParams {
     const params = new URLSearchParams();

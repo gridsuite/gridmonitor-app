@@ -63,10 +63,12 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/v1/executions/${queryArg.executionId}/results/csv`,
         method: "POST",
-        body: queryArg.body,
+        body: queryArg.csvExportRequest,
         params: {
           resultType: queryArg.resultType,
-          pageable: queryArg.pageable,
+          page: queryArg.page,
+          size: queryArg.size,
+          sort: queryArg.sort,
           filters: queryArg.filters,
         },
       }),
@@ -139,7 +141,9 @@ const injectedRtkApi = api.injectEndpoints({
         url: `/v1/executions/${queryArg.executionId}/results`,
         params: {
           resultType: queryArg.resultType,
-          pageable: queryArg.pageable,
+          page: queryArg.page,
+          size: queryArg.size,
+          sort: queryArg.sort,
           filters: queryArg.filters,
         },
       }),
@@ -238,10 +242,14 @@ export type ExportExecutionResultsCsvApiArg = {
   /** Execution UUID */
   executionId: string;
   resultType: string;
-  /** Pagination parameters */
-  pageable: Pageable;
+  /** Zero-based page index (0..N) */
+  page?: number;
+  /** The size of the page to be returned */
+  size?: number;
+  /** Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported. */
+  sort?: string[];
   filters?: string;
-  body: object;
+  csvExportRequest: CsvExportRequest;
 };
 export type ExecuteProcessApiResponse =
   /** status 200 The process execution has been started */ string;
@@ -285,13 +293,17 @@ export type GetStepsInfosApiArg = {
   executionId: string;
 };
 export type GetExecutionResultsApiResponse =
-  /** status 200 The execution results */ any;
+  /** status 200 The execution results */ string;
 export type GetExecutionResultsApiArg = {
   /** Execution UUID */
   executionId: string;
   resultType?: string;
-  /** Pagination parameters */
-  pageable: Pageable;
+  /** Zero-based page index (0..N) */
+  page?: number;
+  /** The size of the page to be returned */
+  size?: number;
+  /** Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported. */
+  sort?: string[];
   filters?: string;
 };
 export type GetExecutionReportsApiResponse =
@@ -373,10 +385,13 @@ export type PersistedProcessConfig = {
   id?: string;
   processConfig?: LoadFlowConfig | SecurityAnalysisConfig | ShortCircuitConfig;
 };
-export type Pageable = {
-  page?: number;
-  size?: number;
-  sort?: string[];
+export type CsvExportRequest = {
+  headers?: string[];
+  enumValueTranslations?: {
+    [key: string]: string;
+  };
+  language?: string;
+  oneBusCase?: boolean;
 };
 export type MetadataInfos = {
   id?: string;

@@ -197,7 +197,7 @@ export function SecurityAnalysisExecutionResultTable({
             fileName: `${resultType}-results.zip`,
             resultType,
             ...serializeResultQuery(query),
-            body: {
+            csvExportRequest: {
                 headers: columns.map((column) => column.headerName ?? column.field ?? ''),
                 enumValueTranslations: {
                     CURRENT: intl.formatMessage({ id: 'CURRENT', defaultMessage: 'CURRENT' }),

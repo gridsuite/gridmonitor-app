@@ -73,7 +73,7 @@ export function ShortCircuitExecutionResultTable({
             fileName: 'allBuses-results.zip',
             resultType: RESULT_TYPE,
             ...serializeResultQuery(query),
-            body: {
+            csvExportRequest: {
                 headers: [
                     'IDNode',
                     'busVoltageLevel',
