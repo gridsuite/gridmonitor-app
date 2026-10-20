@@ -8,7 +8,7 @@
 import { backendFetchFile } from '@gridsuite/commons-ui';
 import type { ExportExecutionResultsCsvApiArg } from './monitor.generated';
 
-function getExecutionResultsQueryParams({
+function getQueryParams({
     resultType,
     sort,
     filters,
@@ -28,7 +28,7 @@ export async function downloadExecutionResultsCsv({
     ...params
 }: ExportExecutionResultsCsvApiArg & { fileName: string }): Promise<void> {
     const blob = await backendFetchFile(
-        `${import.meta.env.VITE_API_GATEWAY}/monitor/v1/executions/${encodeURIComponent(executionId)}/results/csv?${getExecutionResultsQueryParams(params)}`,
+        `${import.meta.env.VITE_API_GATEWAY}/monitor/v1/executions/${encodeURIComponent(executionId)}/results/csv?${getQueryParams(params)}`,
         {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
