@@ -9,7 +9,7 @@ import { screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { ProcessStatus, ProcessType } from 'shared/api/monitor-api';
 import { renderWithProviders } from 'test-utils/render-with-providers';
-import { ExecutionResultPanel } from '../ExecutionResultPanel';
+import { ExecutionResultPanel } from './ExecutionResultPanel';
 
 vi.mock('shared/api/monitor-api', async (importOriginal) => {
     const actual = await importOriginal<typeof import('shared/api/monitor-api')>();
@@ -23,13 +23,13 @@ vi.mock('shared/api/monitor-api', async (importOriginal) => {
     };
 });
 
-vi.mock('../LoadFlowExecutionResult', () => ({
+vi.mock('./LoadFlowExecutionResult', () => ({
     LoadFlowExecutionResultTable: () => <div data-testid="loadflow-result" />,
 }));
-vi.mock('../SecurityAnalysisExecutionResult', () => ({
+vi.mock('./SecurityAnalysisExecutionResult', () => ({
     SecurityAnalysisExecutionResultTable: () => <div data-testid="security-analysis-result" />,
 }));
-vi.mock('../ShortCircuitExecutionResult', () => ({
+vi.mock('./ShortCircuitExecutionResult', () => ({
     ShortCircuitExecutionResultTable: () => <div data-testid="short-circuit-result" />,
 }));
 

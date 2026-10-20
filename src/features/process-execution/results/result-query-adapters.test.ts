@@ -14,7 +14,7 @@ import {
     prepareSecurityAnalysisQuery,
     prepareShortCircuitQuery,
     serializeResultQuery,
-} from '../result-query-adapters';
+} from './result-query-adapters';
 
 const intl = createIntl({ locale: 'en', messages: { PermanentLimitName: 'Permanent', Undefined: 'Undefined' } });
 const textFilter = (column: string, value: unknown): FilterConfig => ({
@@ -114,7 +114,7 @@ describe('result query adapters', () => {
             [{ colId: 'elementId', sort: SortWay.ASC }]
         );
         expect(JSON.parse(serializeResultQuery(query).filters!)).toEqual(query.filters);
-        expect(serializeResultQuery(query).pageable.sort).toEqual(['fault.id,asc']);
+        expect(serializeResultQuery(query).sort).toEqual(['fault.id,asc']);
         expect(serializeResultQuery(prepareShortCircuitQuery([], [])).filters).toBeUndefined();
     });
 });

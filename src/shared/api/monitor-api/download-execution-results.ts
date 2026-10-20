@@ -6,8 +6,20 @@
  */
 
 import { backendFetchFile } from '@gridsuite/commons-ui';
-import { getExecutionResultsQueryParams } from './execution-results-query-params';
 import type { ExportExecutionResultsCsvApiArg } from './monitor.generated';
+
+function getExecutionResultsQueryParams({
+    resultType,
+    sort,
+    filters,
+}: Omit<ExportExecutionResultsCsvApiArg, 'executionId' | 'csvExportRequest'>): URLSearchParams {
+    const params = new URLSearchParams();
+    if (resultType !== undefined) params.set('resultType', resultType);
+    // The results API expects a separate sort parameter for each sorting criterion
+    sort?.forEach((value) => params.append('sort', value));
+    if (filters !== undefined) params.set('filters', filters);
+    return params;
+}
 
 export async function downloadExecutionResultsCsv({
     executionId,
