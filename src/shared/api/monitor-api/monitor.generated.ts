@@ -285,7 +285,7 @@ export type GetStepsInfosApiArg = {
   executionId: string;
 };
 export type GetExecutionResultsApiResponse =
-  /** status 200 The execution results */ string[];
+  /** status 200 The execution results */ any;
 export type GetExecutionResultsApiArg = {
   /** Execution UUID */
   executionId: string;
