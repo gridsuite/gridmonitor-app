@@ -24,7 +24,7 @@ import {
 } from 'shared/api/monitor-api/result-subtypes';
 import { Box, Tab, Tabs } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { ProcessStatus, useExportExecutionResultsCsvMutation } from 'shared/api/monitor-api';
+import { ProcessStatus, downloadExecutionResultsCsv } from 'shared/api/monitor-api';
 import type { ColDef, GridReadyEvent } from 'ag-grid-community';
 import { useSecurityAnalysisExecutionResults } from './hooks/use-execution-results';
 import { useResultPagination } from './hooks/use-result-pagination';
@@ -138,7 +138,6 @@ export function SecurityAnalysisExecutionResultTable({
 }: Readonly<{ executionId: string; executionStatus?: ProcessStatus }>) {
     const intl = useIntl();
     const { snackError } = useSnackMessage();
-    const [exportExecutionResultsCsv] = useExportExecutionResultsCsvMutation();
     const [nmkType, setNmkType] = useState(NmkType.CONSTRAINTS_FROM_CONTINGENCIES);
     const resultType = RESULT_TYPES[nmkType];
     const sort = useAppSelector(
@@ -193,8 +192,9 @@ export function SecurityAnalysisExecutionResultTable({
     );
 
     const exportCsv = useCallback(async () => {
-        const response = await exportExecutionResultsCsv({
+        await downloadExecutionResultsCsv({
             executionId,
+            fileName: `${resultType}-results.zip`,
             resultType,
             ...serializeResultQuery(query),
             body: {
@@ -208,18 +208,8 @@ export function SecurityAnalysisExecutionResultTable({
                 },
                 language: intl.locale,
             },
-        }).unwrap();
-
-        if (!(response instanceof Blob)) {
-            throw new Error('Invalid CSV export response');
-        }
-        const url = URL.createObjectURL(response);
-        const anchor = document.createElement('a');
-        anchor.href = url;
-        anchor.download = `${resultType}-results.zip`;
-        anchor.click();
-        URL.revokeObjectURL(url);
-    }, [columns, executionId, exportExecutionResultsCsv, intl, resultType, query]);
+        });
+    }, [columns, executionId, intl, resultType, query]);
 
     const handleChangeNmkType = (_event: SyntheticEvent, newValue: NmkType) => {
         setPage(0);

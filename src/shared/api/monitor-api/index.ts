@@ -7,6 +7,7 @@
 
 export * from './monitor.enhanced';
 export * from './result-subtypes';
+export { downloadExecutionResultsCsv } from './download-execution-results';
 export {
     useGetProcessConfigsQuery,
     useGetProcessConfigQuery,
@@ -15,7 +16,6 @@ export {
     useExecuteProcessMutation,
     useGetExecutionQuery,
     useGetExecutionResultsQuery,
-    useExportExecutionResultsCsvMutation,
     useGetExecutionReportsQuery,
     useGetExecutionReportsSeveritiesQuery,
     useGetExecutionLogsQuery,

@@ -7,10 +7,17 @@
 
 import { monitorGeneratedApi } from './monitor.generated';
 import { MonitorTags } from './monitor-base-api';
+import { getExecutionResultsQueryParams } from './execution-results-query-params';
 import type { AppDispatch } from '../../../app/store/store';
 
 export const monitorApi = monitorGeneratedApi.enhanceEndpoints({
     endpoints: {
+        getExecutionResults: {
+            query: ({ executionId, ...params }) => ({
+                url: `/v1/executions/${executionId}/results`,
+                params: getExecutionResultsQueryParams(params),
+            }),
+        },
         getProcessExecutions: {
             providesTags: [{ type: MonitorTags.ProcessExecutions, id: 'LIST' }],
         },

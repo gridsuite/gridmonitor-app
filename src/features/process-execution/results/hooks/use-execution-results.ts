@@ -5,13 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useMemo } from 'react';
 import type {
     FilterConfig,
     OverloadedEquipment,
     Page,
     SCAFaultResult,
     SecurityAnalysisNmkResult,
+    SortConfig,
 } from '@gridsuite/commons-ui';
 import { useGetExecutionResultsQuery } from 'shared/api/monitor-api';
 import { SHORT_CIRCUIT_RESULT_TYPES, type SecurityAnalysisResultType } from 'shared/api/monitor-api/result-subtypes';
@@ -31,51 +31,31 @@ export interface SecurityAnalysisExecutionResultsQuery extends ExecutionResultsQ
     resultType: SecurityAnalysisResultType;
 }
 
-const DEFAULT_PAGE = 0;
-const DEFAULT_SIZE = 25;
-
-export function parseExecutionResult<Result>(raw?: string[]): Result | undefined {
-    const serializedResult = raw?.[0];
-    if (!serializedResult) {
-        return undefined;
-    }
-
-    try {
-        const result: unknown = JSON.parse(serializedResult);
-        return result == null ? undefined : (result as Result);
-    } catch {
-        return undefined;
-    }
-}
-
-function useParsedExecutionResults<Result>(
+function useExecutionResults<Result>(
     executionId: string,
     enabled: boolean,
-    query: ExecutionResultsQuery & { resultType: string }
+    { resultType, page = 0, size = 25, filters, sort }: ExecutionResultsQuery & { resultType: string }
 ) {
     const { currentData, isError, isFetching } = useGetExecutionResultsQuery(
         {
             executionId,
-            resultType: query.resultType,
+            resultType,
             pageable: {
-                page: query.page ?? DEFAULT_PAGE,
-                size: query.size ?? DEFAULT_SIZE,
-                sort: query.sort?.map(({ colId, sort }) => `${colId},${sort}`),
+                page,
+                size,
+                sort: sort?.map(({ colId, sort: direction }) => `${colId},${direction}`),
             },
-            filters: query.filters?.length ? JSON.stringify(query.filters) : undefined,
+            filters: filters?.length ? JSON.stringify(filters) : undefined,
         },
         { skip: !enabled }
     );
 
-    const { result, hasResult } = useMemo(() => {
-        const parsedResult = parseExecutionResult<Result>(currentData);
-        return { result: parsedResult, hasResult: parsedResult !== undefined };
-    }, [currentData]);
+    const result = (currentData ?? undefined) as Result | undefined;
 
     return {
         result,
-        isError: enabled && !hasResult && (isError || !isFetching),
-        isFetching: enabled && isFetching && !hasResult,
+        isError: enabled && result === undefined && (isError || !isFetching),
+        isFetching: enabled && result === undefined && isFetching,
     };
 }
 
@@ -84,7 +64,7 @@ export function useLoadFlowExecutionResults(
     enabled: boolean,
     query: LoadFlowExecutionResultsQuery
 ) {
-    return useParsedExecutionResults<OverloadedEquipment[]>(executionId, enabled, query);
+    return useExecutionResults<OverloadedEquipment[]>(executionId, enabled, query);
 }
 
 export function useSecurityAnalysisExecutionResults(
@@ -92,7 +72,7 @@ export function useSecurityAnalysisExecutionResults(
     enabled: boolean,
     query: SecurityAnalysisExecutionResultsQuery
 ) {
-    return useParsedExecutionResults<SecurityAnalysisNmkResult>(executionId, enabled, query);
+    return useExecutionResults<SecurityAnalysisNmkResult>(executionId, enabled, query);
 }
 
 export type AllBusesShortCircuitResult = Page<SCAFaultResult>;
@@ -102,7 +82,7 @@ export function useShortCircuitExecutionResults(
     enabled: boolean,
     query: ExecutionResultsQuery = {}
 ) {
-    return useParsedExecutionResults<AllBusesShortCircuitResult>(executionId, enabled, {
+    return useExecutionResults<AllBusesShortCircuitResult>(executionId, enabled, {
         ...query,
         resultType: SHORT_CIRCUIT_RESULT_TYPES.AllBuses,
     });
