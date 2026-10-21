@@ -94,6 +94,9 @@ const lightTheme: Theme = createTheme({
     aggrid: {
         theme: 'ag-theme-alpine',
     },
+    selectedRow: {
+        background: grey[500],
+    },
     components: {
         ...componentsStyleOverrides(),
     },
@@ -136,6 +139,9 @@ const darkTheme: Theme = createTheme({
     },
     aggrid: {
         theme: 'ag-theme-alpine-dark',
+    },
+    selectedRow: {
+        background: grey[700],
     },
     components: {
         MuiCssBaseline: {

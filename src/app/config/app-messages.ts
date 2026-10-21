@@ -40,11 +40,14 @@ import type { IntlConfig } from 'react-intl';
 import pluginMessagesEn from 'plugins/translations/en.json';
 import pluginMessagesFr from 'plugins/translations/fr.json';
 import messagesEn from 'shared/translations/en/common.json';
+import resultsEn from 'shared/translations/en/results.json';
 import messagesFr from 'shared/translations/fr/common.json';
+import resultsFr from 'shared/translations/fr/results.json';
 
 export const appMessages: Record<GsLangUser, IntlConfig['messages']> = {
     en: {
         ...messagesEn,
+        ...resultsEn,
         ...loginEn,
         ...topBarEn,
         ...cardErrorBoundaryEn,
@@ -63,6 +66,7 @@ export const appMessages: Record<GsLangUser, IntlConfig['messages']> = {
     },
     fr: {
         ...messagesFr,
+        ...resultsFr,
         ...loginFr,
         ...topBarFr,
         ...cardErrorBoundaryFr,

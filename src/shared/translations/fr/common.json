@@ -69,6 +69,7 @@
     "processLaunchHistory": "Historique d’exécution des chaînes",
     "analysisProgress": "Avancement de l’analyse",
     "resultsNotAvailable": "Résultat non disponible.",
+    "executionResultsError": "Les résultats de l’exécution n’ont pas pu être chargés.",
 
     "APPLY_MODIFICATIONS": "Application des modifications",
     "LOAD_NETWORK": "Récupération de la situation",
