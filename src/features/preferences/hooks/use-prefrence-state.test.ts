@@ -11,9 +11,9 @@ import { http, HttpResponse } from 'msw';
 import { DARK_THEME, LIGHT_THEME } from '@gridsuite/commons-ui';
 import { server } from '../../../test-utils/msw/server';
 import { createTestContext } from '../../../test-utils/create-test-context';
-import { useAppParameterState } from './use-app-parameter-state';
+import { usePreferenceState } from './use-preference-state';
 
-describe('useAppParameterState', () => {
+describe('usePreferenceState', () => {
     beforeEach(() => {
         server.use(
             http.get('*/config/v1/applications/*/parameters/theme', () =>
@@ -34,7 +34,7 @@ describe('useAppParameterState', () => {
             })
         );
         const { wrapper } = createTestContext();
-        const { result } = renderHook(() => useAppParameterState('theme'), { wrapper });
+        const { result } = renderHook(() => usePreferenceState('theme'), { wrapper });
 
         // check state before updating
         await waitFor(() => {
@@ -74,7 +74,7 @@ describe('useAppParameterState', () => {
         );
 
         const { wrapper } = createTestContext();
-        const { result } = renderHook(() => useAppParameterState('theme'), { wrapper });
+        const { result } = renderHook(() => usePreferenceState('theme'), { wrapper });
 
         // check state before updating
         await waitFor(() => {

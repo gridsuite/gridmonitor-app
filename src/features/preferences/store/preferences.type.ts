@@ -7,10 +7,10 @@
 
 import { GsLang, GsTheme } from '@gridsuite/commons-ui';
 
-export type AppParameters = {
+export type Preferences = {
     language: GsLang;
     theme: GsTheme;
     isDeveloperMode: boolean;
 };
 
-export type AppParametersKey = keyof AppParameters;
+export type PreferencesKey = keyof Preferences;

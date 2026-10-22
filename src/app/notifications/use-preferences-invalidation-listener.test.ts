@@ -8,7 +8,7 @@
 import { renderHook } from '@testing-library/react';
 import { NotificationsUrlKeys, useNotificationsListener } from '@gridsuite/commons-ui';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { useAppParametersInvalidationListener } from './use-app-parameters-invalidation-listener';
+import { usePreferencesInvalidationListener } from './use-preferences-invalidation-listener';
 import { invalidateConfigQueries } from '../../shared/api/config-api';
 import { createTestContext } from '../../test-utils/create-test-context';
 
@@ -30,7 +30,7 @@ vi.mock('@gridsuite/commons-ui', async (importOriginal) => {
     };
 });
 
-describe('useAppParametersInvalidationListener', () => {
+describe('usePrefrencesInvalidationListener', () => {
     let listenerCallbackMessage: ((event: MessageEvent) => void) | undefined;
 
     beforeEach(() => {
@@ -46,7 +46,7 @@ describe('useAppParametersInvalidationListener', () => {
         const { wrapper } = createTestContext();
 
         expect(listenerCallbackMessage).not.toBeDefined();
-        renderHook(() => useAppParametersInvalidationListener(), { wrapper });
+        renderHook(() => usePreferencesInvalidationListener(), { wrapper });
 
         expect(useNotificationsListener).toHaveBeenCalledWith(NotificationsUrlKeys.CONFIG, {
             listenerCallbackMessage: expect.any(Function),
@@ -57,7 +57,7 @@ describe('useAppParametersInvalidationListener', () => {
     it('invalidates config queries when receiving a parameter name', () => {
         const { wrapper } = createTestContext();
 
-        renderHook(() => useAppParametersInvalidationListener(), { wrapper });
+        renderHook(() => usePreferencesInvalidationListener(), { wrapper });
 
         listenerCallbackMessage?.({
             data: JSON.stringify({
@@ -72,7 +72,7 @@ describe('useAppParametersInvalidationListener', () => {
     it('does nothing when parameterName is missing', () => {
         const { wrapper } = createTestContext();
 
-        renderHook(() => useAppParametersInvalidationListener(), { wrapper });
+        renderHook(() => usePreferencesInvalidationListener(), { wrapper });
 
         listenerCallbackMessage?.({
             data: JSON.stringify({
@@ -86,7 +86,7 @@ describe('useAppParametersInvalidationListener', () => {
     it('throws on invalid JSON payloads', () => {
         const { wrapper } = createTestContext();
 
-        renderHook(() => useAppParametersInvalidationListener(), { wrapper });
+        renderHook(() => usePreferencesInvalidationListener(), { wrapper });
 
         expect(() => {
             listenerCallbackMessage?.({

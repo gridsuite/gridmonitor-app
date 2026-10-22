@@ -15,10 +15,10 @@ type ConfigNotificationData = {
     };
 };
 
-export const useAppParametersInvalidationListener = () => {
+export const usePreferencesInvalidationListener = () => {
     const dispatch = useAppDispatch();
 
-    const invalidateAppParameter = (event: MessageEvent) => {
+    const invalidatePreference = (event: MessageEvent) => {
         const eventData = JSON.parse(event.data) as ConfigNotificationData;
         if (eventData.headers?.parameterName) {
             invalidateConfigQueries(dispatch, eventData.headers.parameterName);
@@ -26,6 +26,6 @@ export const useAppParametersInvalidationListener = () => {
     };
 
     useNotificationsListener(NotificationsUrlKeys.CONFIG, {
-        listenerCallbackMessage: invalidateAppParameter,
+        listenerCallbackMessage: invalidatePreference,
     });
 };

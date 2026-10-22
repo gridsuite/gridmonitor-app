@@ -10,7 +10,7 @@ import type { AppDispatch } from 'app/store/store';
 import {
     saveLocalStorageLanguage,
     saveLocalStorageTheme,
-} from 'features/app-parameters/store/app-parameters.local-storage';
+} from '../../../features/preferences/store/preferences.local-storage';
 import { ConfigTags } from './config-base-api';
 import { configGeneratedApi } from './config.generated';
 

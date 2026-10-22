@@ -12,7 +12,7 @@ import { http, HttpResponse } from 'msw';
 import { useGetConfigParameterWithFallback } from './use-get-config-parameter-with-fallback';
 import { server } from '../../../test-utils/msw/server';
 import { createTestContext } from '../../../test-utils/create-test-context';
-import { saveLocalStorageTheme } from '../store/app-parameters.local-storage';
+import { saveLocalStorageTheme } from '../store/preferences.local-storage';
 
 beforeEach(() => localStorage.clear());
 

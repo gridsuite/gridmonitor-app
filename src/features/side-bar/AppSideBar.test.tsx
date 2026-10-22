@@ -15,7 +15,7 @@ const mocks = vi.hoisted(() => ({
     fetchAppsMetadata: vi.fn(),
     fetchVersion: vi.fn(),
     getServersInfos: vi.fn(),
-    useAppParameterState: vi.fn(),
+    usePreferenceState: vi.fn(),
     useStableUserProfile: vi.fn(),
 }));
 
@@ -32,8 +32,8 @@ vi.mock('@gridsuite/commons-ui', async (importOriginal) => {
     };
 });
 
-vi.mock('features/app-parameters/hooks/use-app-parameter-state', () => ({
-    useAppParameterState: mocks.useAppParameterState,
+vi.mock('features/preferences/hooks/use-preference-state', () => ({
+    usePreferenceState: mocks.usePreferenceState,
 }));
 
 vi.mock('features/authentication/hooks/use-stable-user-profile', () => ({
@@ -63,7 +63,7 @@ describe('AppSideBar', () => {
         mocks.getServersInfos.mockResolvedValue([]);
         mocks.useStableUserProfile.mockReturnValue(null);
 
-        mocks.useAppParameterState.mockImplementation((paramName: string) => {
+        mocks.usePreferenceState.mockImplementation((paramName: string) => {
             switch (paramName) {
                 case PARAM_THEME:
                     return [LIGHT_THEME, vi.fn()];
@@ -95,7 +95,7 @@ describe('AppSideBar', () => {
     });
 
     it('passes the inverted light theme when the application theme is dark', () => {
-        mocks.useAppParameterState.mockImplementation((paramName: string) => {
+        mocks.usePreferenceState.mockImplementation((paramName: string) => {
             switch (paramName) {
                 case PARAM_THEME:
                     return ['Dark', vi.fn()];

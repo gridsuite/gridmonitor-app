@@ -8,7 +8,7 @@
 import { Box, Stack } from '@mui/material';
 import { PropsWithChildren } from 'react';
 import { DevModeBanner, PARAM_DEVELOPER_MODE } from '@gridsuite/commons-ui';
-import { useAppParameterState } from 'features/app-parameters/hooks/use-app-parameter-state';
+import { usePreferenceState } from '../../features/preferences/hooks/use-preference-state';
 import { useStableUserProfile } from 'features/authentication/hooks/use-stable-user-profile';
 import AppTopBar from '../../features/top-bar/AppTopBar';
 import { AppSideBar } from '../../features/side-bar/AppSideBar';
@@ -18,7 +18,7 @@ export type AppTopBarProps = {
 };
 
 export function AppLayout({ onLogoutClick, children }: Readonly<PropsWithChildren<AppTopBarProps>>) {
-    const [isDeveloperMode] = useAppParameterState(PARAM_DEVELOPER_MODE);
+    const [isDeveloperMode] = usePreferenceState(PARAM_DEVELOPER_MODE);
     const userProfile = useStableUserProfile();
 
     return (
