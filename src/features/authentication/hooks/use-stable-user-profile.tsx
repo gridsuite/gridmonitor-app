@@ -4,9 +4,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { RootState, useAppSelector } from '../../../app/store/store';
+import type { RootState } from '../../../app/store/store';
 import { selectAuthentication } from '../store/authentication.selectors';
 import { UserProfile } from '../store/authentication.type';
+import { useAppSelector } from '../../../app/store/hooks';
 
 const selectUserProfile = (state: RootState) => selectAuthentication(state).user?.profile ?? null;
 

@@ -5,19 +5,33 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { getAppName } from '@gridsuite/commons-ui';
-import { APP_NAME } from 'app/config/app-config';
+import { getAppName, PARAM_DEVELOPER_MODE } from '@gridsuite/commons-ui';
 import { useGetParameterQuery } from 'shared/api/config-api';
-import { getInitialPreferencesState } from '../store/preferences.default';
-import { PreferencesKey } from '../store/preferences.type';
-import { mapRawParamValue } from '../../../shared/api/config-api/config.mapping';
+import { APP_NAME } from '../../../shared/config/application';
+import { Preferences, PreferencesKey } from '../store/preferences.type';
 import { useStableUserProfile } from '../../authentication/hooks/use-stable-user-profile';
+import { getLocalStorageLanguage, getLocalStorageTheme } from '../store/preferences.local-storage';
+
+function parsePreferenceValue<K extends PreferencesKey>(paramName: K, rawValue: string): Preferences[K] {
+    if (paramName === PARAM_DEVELOPER_MODE) {
+        return (rawValue === 'true') as Preferences[K];
+    }
+    return rawValue as Preferences[K];
+}
+
+function getPreferencesFallbacks(): Preferences {
+    return {
+        language: getLocalStorageLanguage(),
+        theme: getLocalStorageTheme(),
+        isDeveloperMode: false,
+    };
+}
 
 /**
  * This data is fetched from AppTopBar, which is displayed before user is authenticated
  * If user is not authenticated, or before the fetch request has responded, we use data from initialPreferencesState
  */
-export const useGetConfigParameterWithFallback = <K extends PreferencesKey>(paramName: K) => {
+export const usePreferenceWithFallback = <K extends PreferencesKey>(paramName: K) => {
     const userProfile = useStableUserProfile();
 
     return useGetParameterQuery(
@@ -26,7 +40,7 @@ export const useGetConfigParameterWithFallback = <K extends PreferencesKey>(para
             skip: !userProfile,
             selectFromResult: (result) => {
                 const rawData = result.data?.value;
-                const data = rawData ? mapRawParamValue(paramName, rawData) : getInitialPreferencesState()[paramName];
+                const data = rawData ? parsePreferenceValue(paramName, rawData) : getPreferencesFallbacks()[paramName];
 
                 return {
                     ...result,

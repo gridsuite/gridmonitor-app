@@ -17,9 +17,9 @@ import {
     SeverityLevel,
     TableType,
 } from '@gridsuite/commons-ui';
-import { useAppDispatch, useAppSelector } from '../../../../app/store/store';
 import { useLazyGetExecutionLogsQuery, useLazyGetExecutionLogsSearchQuery } from '../../../../shared/api/monitor-api';
 import { setTableFilters } from '../../list/store/process-results.slice';
+import { useAppDispatch, useAppSelector } from '../../../../app/store/hooks';
 
 const DEFAULT_PAGE_SIZE = 30;
 

@@ -20,8 +20,8 @@ import { blueGrey, deepPurple } from '@mui/material/colors';
 import { useEffect, useMemo, useState } from 'react';
 import GridmonitorLogoLight from 'assets/images/gridmonitor_logo_light.svg?react';
 import GridmonitorLogoDark from 'assets/images/gridmonitor_logo_dark.svg?react';
-import { usePreferenceState } from '../preferences/hooks/use-preference-state';
-import { APP_NAME } from '../../app/config/app-config';
+import { usePreference } from '../preferences/hooks/use-preference';
+import { APP_NAME } from '../../shared/config/application';
 import { getAppTheme } from '../../app/config/app-theme';
 import { useStableUserProfile } from '../authentication/hooks/use-stable-user-profile';
 import { fetchVersion } from '../../shared/config/version';
@@ -34,9 +34,9 @@ type SideBarProps = {
 
 export function AppSideBar({ onLogoutClick }: Readonly<SideBarProps>) {
     const getServersInfos = useGetServersInfos();
-    const [currentTheme, setTheme] = usePreferenceState(PARAM_THEME);
-    const [selectedLanguage, setSelectedLanguage] = usePreferenceState(PARAM_LANGUAGE);
-    const [isDeveloperMode, handleChangeDeveloperMode] = usePreferenceState(PARAM_DEVELOPER_MODE);
+    const [currentTheme, setTheme] = usePreference(PARAM_THEME);
+    const [selectedLanguage, setSelectedLanguage] = usePreference(PARAM_LANGUAGE);
+    const [isDeveloperMode, handleChangeDeveloperMode] = usePreference(PARAM_DEVELOPER_MODE);
     const userProfile = useStableUserProfile() ?? undefined;
     const [appsAndUrls, setAppsAndUrls] = useState<Metadata[]>([]);
     const isDarkMode = currentTheme === DARK_THEME;

@@ -6,7 +6,7 @@
  */
 
 import { fetchEnv } from '@gridsuite/commons-ui';
-import { getErrorMessage } from 'shared/lib/error';
+import { getErrorMessage } from '../lib/get-error-message';
 
 export type VersionJson = {
     deployVersion?: string;

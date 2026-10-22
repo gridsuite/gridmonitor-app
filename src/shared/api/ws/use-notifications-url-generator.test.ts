@@ -12,7 +12,7 @@ import {
 } from '@gridsuite/commons-ui';
 import { renderHook } from '@testing-library/react';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { APP_NAME } from '../../../app/config/app-config';
+import { APP_NAME } from '../../config/application';
 import { useNotificationsUrlGenerator } from './use-notifications-url-generator';
 
 describe('useNotificationsUrlGenerator', () => {

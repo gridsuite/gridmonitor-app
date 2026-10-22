@@ -8,11 +8,11 @@
 import { getAppName } from '@gridsuite/commons-ui';
 import { useUpdateParameterMutation } from 'shared/api/config-api';
 import { Preferences, PreferencesKey } from '../store/preferences.type';
-import { useGetConfigParameterWithFallback } from './use-get-config-parameter-with-fallback';
-import { APP_NAME } from '../../../app/config/app-config';
+import { usePreferenceWithFallback } from './use-preference-with-fallback';
+import { APP_NAME } from '../../../shared/config/application';
 
-export function usePreferenceState<K extends PreferencesKey>(paramName: K) {
-    const { data: paramValue } = useGetConfigParameterWithFallback(paramName);
+export function usePreference<K extends PreferencesKey>(paramName: K) {
+    const { data: paramValue } = usePreferenceWithFallback(paramName);
     const [updateConfigParameter] = useUpdateParameterMutation();
 
     const setValue = async (newValue: Preferences[K]) => {

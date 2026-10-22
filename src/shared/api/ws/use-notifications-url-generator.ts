@@ -9,8 +9,8 @@ import {
     PREFIX_CONFIG_NOTIFICATION_WS,
     PREFIX_MONITOR_NOTIFICATION_WS,
 } from '@gridsuite/commons-ui';
-import { APP_NAME } from 'app/config/app-config';
 import { useMemo } from 'react';
+import { APP_NAME } from '../../config/application';
 
 export const useNotificationsUrlGenerator = (): Partial<Record<NotificationsUrlKeys, string | undefined>> => {
     // The websocket API doesn't allow relative urls

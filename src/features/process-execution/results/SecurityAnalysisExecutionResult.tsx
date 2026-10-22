@@ -6,7 +6,6 @@
  */
 
 import { SyntheticEvent, useCallback, useMemo, useState } from 'react';
-import { useAppSelector } from 'app/store/store';
 import {
     TableType,
     ManagedExportCsvButton,
@@ -31,6 +30,7 @@ import { useResultPagination } from './hooks/use-result-pagination';
 import { CustomAggridReduxProvider } from '../list/custom-aggrid-redux-provider';
 import { EMPTY_RESULT_FILTERS, EMPTY_RESULT_SORT, makeResultFilterColumn } from './result-column-filters';
 import { prepareSecurityAnalysisQuery, serializeResultQuery } from './result-query-adapters';
+import { useAppSelector } from '../../../app/store/hooks';
 
 const styles = {
     toolbarRow: {
