@@ -23,6 +23,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 const paperSx = {
     width: { xs: '95%', sm: '50%' },
+    minWidth: { sm: 'calc(767px * 0.95)' },
     m: 0,
 } as const;
 
@@ -126,8 +127,7 @@ export function AppDialog({
             <DialogActions
                 sx={{
                     justifyContent: 'space-between',
-                    px: 3,
-                    pb: 2,
+                    p: 1,
                 }}
             >
                 {onBack && (
