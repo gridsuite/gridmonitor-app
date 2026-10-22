@@ -69,6 +69,7 @@
     "processLaunchHistory": "Process launch history",
     "analysisProgress": "Analysis Progress",
     "resultsNotAvailable": "Results not available.",
+    "executionResultsError": "The execution results could not be loaded.",
 
     "APPLY_MODIFICATIONS": "Apply modifications",
     "LOAD_NETWORK": "Load case",

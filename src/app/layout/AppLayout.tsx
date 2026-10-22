@@ -32,6 +32,7 @@ export function AppLayout({ onLogoutClick, children }: Readonly<PropsWithChildre
                 direction="row"
                 sx={{
                     flex: 1,
+                    minHeight: 0,
                     overflow: 'hidden',
                 }}
             >
@@ -39,6 +40,7 @@ export function AppLayout({ onLogoutClick, children }: Readonly<PropsWithChildre
                 <Stack
                     sx={{
                         flex: 1,
+                        minHeight: 0,
                         overflow: 'hidden',
                     }}
                 >
@@ -46,6 +48,7 @@ export function AppLayout({ onLogoutClick, children }: Readonly<PropsWithChildre
                     <Box
                         sx={{
                             flex: 1,
+                            minHeight: 0,
                             overflowY: 'auto',
                             overflowX: 'hidden',
                         }}

@@ -56,6 +56,23 @@ const injectedRtkApi = api.injectEndpoints({
         method: "POST",
       }),
     }),
+    exportExecutionResultsCsv: build.mutation<
+      ExportExecutionResultsCsvApiResponse,
+      ExportExecutionResultsCsvApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/v1/executions/${queryArg.executionId}/results/csv`,
+        method: "POST",
+        body: queryArg.csvExportRequest,
+        params: {
+          resultType: queryArg.resultType,
+          page: queryArg.page,
+          size: queryArg.size,
+          sort: queryArg.sort,
+          filters: queryArg.filters,
+        },
+      }),
+    }),
     executeProcess: build.mutation<
       ExecuteProcessApiResponse,
       ExecuteProcessApiArg
@@ -122,6 +139,13 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/v1/executions/${queryArg.executionId}/results`,
+        params: {
+          resultType: queryArg.resultType,
+          page: queryArg.page,
+          size: queryArg.size,
+          sort: queryArg.sort,
+          filters: queryArg.filters,
+        },
       }),
     }),
     getExecutionReports: build.query<
@@ -213,6 +237,20 @@ export type DuplicateProcessConfigApiArg = {
   /** UUID of the process config to duplicate */
   uuid: string;
 };
+export type ExportExecutionResultsCsvApiResponse = unknown;
+export type ExportExecutionResultsCsvApiArg = {
+  /** Execution UUID */
+  executionId: string;
+  resultType: string;
+  /** Zero-based page index (0..N) */
+  page?: number;
+  /** The size of the page to be returned */
+  size?: number;
+  /** Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported. */
+  sort?: string[];
+  filters?: string;
+  csvExportRequest: CsvExportRequest;
+};
 export type ExecuteProcessApiResponse =
   /** status 200 The process execution has been started */ string;
 export type ExecuteProcessApiArg = {
@@ -255,10 +293,18 @@ export type GetStepsInfosApiArg = {
   executionId: string;
 };
 export type GetExecutionResultsApiResponse =
-  /** status 200 The execution results */ string[];
+  /** status 200 The execution results */ string;
 export type GetExecutionResultsApiArg = {
   /** Execution UUID */
   executionId: string;
+  resultType?: string;
+  /** Zero-based page index (0..N) */
+  page?: number;
+  /** The size of the page to be returned */
+  size?: number;
+  /** Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported. */
+  sort?: string[];
+  filters?: string;
 };
 export type GetExecutionReportsApiResponse =
   /** status 200 The execution reports */ Report;
@@ -338,6 +384,14 @@ export type ShortCircuitConfig = {
 export type PersistedProcessConfig = {
   id?: string;
   processConfig?: LoadFlowConfig | SecurityAnalysisConfig | ShortCircuitConfig;
+};
+export type CsvExportRequest = {
+  headers?: string[];
+  enumValueTranslations?: {
+    [key: string]: string;
+  };
+  language?: string;
+  oneBusCase?: boolean;
 };
 export type MetadataInfos = {
   id?: string;
@@ -443,6 +497,7 @@ export const {
   useGetProcessConfigsQuery,
   useCreateProcessConfigMutation,
   useDuplicateProcessConfigMutation,
+  useExportExecutionResultsCsvMutation,
   useExecuteProcessMutation,
   useGetProcessConfigsMetadataQuery,
   useCompareProcessConfigsQuery,

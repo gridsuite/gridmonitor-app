@@ -32,6 +32,9 @@ declare module '@mui/material/styles' {
             currentHighlightColor: string;
             textColor?: string;
         };
+        selectedRow: {
+            background: string;
+        };
     };
     export interface Theme extends MuiTheme, ThemeExtension {}
     // allow configuration using `createTheme`

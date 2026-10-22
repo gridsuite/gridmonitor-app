@@ -15,7 +15,7 @@ import { AgGridReact } from 'ag-grid-react';
 import { GridApi, RowStyle } from 'ag-grid-community';
 import { useAppSelector } from '../../../app/store/store';
 import { ProcessExecutionInfos } from '../models/process-result';
-import { processResultsColumnsDefinition } from './ProcessResultsUtil';
+import { processResultsColumnsDefinition } from '../results/ProcessResultsUtil';
 import { PROCESS_PATHS } from '../router/process-paths';
 import { PROCESS_EXECUTION_HISTORY_SORT_STORE } from './store/process-results.constants';
 import { AGGRID_LOCALES } from '../../../shared/translations/not-intl/aggrid-locales';

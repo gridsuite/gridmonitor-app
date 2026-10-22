@@ -32,6 +32,7 @@ import { PROCESS_PATHS } from '../router/process-paths';
 import ResponsiveStepper from './steps/ResponsiveStepper';
 import { ProcessStepModel } from '../models/process-result';
 import { InfoItem, InfoItemType } from './InfoItem';
+import { ExecutionResultPanel } from '../results/ExecutionResultPanel';
 
 type ProcessExecutionDetailsProps = {
     execution: ProcessExecution;
@@ -39,7 +40,7 @@ type ProcessExecutionDetailsProps = {
 };
 
 export default function ProcessExecutionDetails({ execution, steps }: Readonly<ProcessExecutionDetailsProps>) {
-    const executionCompleted = execution.status === ProcessStatus.Completed;
+    const executionCompleted = execution.status?.toUpperCase() === ProcessStatus.Completed;
     const [isOpen, setIsOpen] = useState(!executionCompleted);
 
     const [names, setNames] = useState<Record<string, string>>({});
@@ -75,6 +76,13 @@ export default function ProcessExecutionDetails({ execution, steps }: Readonly<P
         <Box
             sx={{
                 p: 3,
+                boxSizing: 'border-box',
+                display: 'flex',
+                flexDirection: 'column',
+                height: '100%',
+                minHeight: 0,
+                minWidth: 0,
+                width: '100%',
             }}
         >
             <Breadcrumbs separator="/">
@@ -92,6 +100,9 @@ export default function ProcessExecutionDetails({ execution, steps }: Readonly<P
                 spacing={3}
                 sx={{
                     mt: 1,
+                    flex: 1,
+                    minHeight: 0,
+                    minWidth: 0,
                 }}
             >
                 <Stack
@@ -140,6 +151,7 @@ export default function ProcessExecutionDetails({ execution, steps }: Readonly<P
                     elevation={theme.palette.mode === 'dark' ? 0 : 1}
                     onChange={handleAccordionChange}
                     sx={{
+                        flexShrink: 0,
                         '&.Mui-expanded': {
                             mb: 0,
                         },
@@ -188,25 +200,30 @@ export default function ProcessExecutionDetails({ execution, steps }: Readonly<P
                         </Grid>
                     </AccordionDetails>
                 </Accordion>
-                <Stack
-                    sx={{
-                        padding: 5,
-                        bgcolor: boxBackground,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: 0.8,
-                    }}
-                >
-                    <RotateRightOutlined
+                {executionCompleted ? (
+                    <Box sx={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%', display: 'flex' }}>
+                        <ExecutionResultPanel
+                            executionId={execution.id}
+                            processType={execution.type}
+                            executionStatus={execution.status}
+                        />
+                    </Box>
+                ) : (
+                    <Stack
                         sx={{
-                            fontSize: 24,
+                            padding: 5,
+                            bgcolor: boxBackground,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: 0.8,
                         }}
-                    />
-
-                    <Typography variant="body1">
-                        <FormattedMessage id="resultsNotAvailable" />
-                    </Typography>
-                </Stack>
+                    >
+                        <RotateRightOutlined sx={{ fontSize: 24 }} />
+                        <Typography variant="body1">
+                            <FormattedMessage id="resultsNotAvailable" />
+                        </Typography>
+                    </Stack>
+                )}
             </Stack>
         </Box>
     );
