@@ -9,7 +9,7 @@ import { screen } from '@testing-library/react';
 import { Route, Routes } from 'react-router';
 import { expect, vi, afterEach, describe, it } from 'vitest';
 import { renderWithProviders } from '../../../test-utils/render-with-providers';
-import ProcessLogsPage from './ProcessLogsPage';
+import { ProcessLogs } from './ProcessLogs';
 
 const useProcessLogsMock = vi.hoisted(() => vi.fn());
 
@@ -35,7 +35,7 @@ vi.mock('@gridsuite/commons-ui', async (importOriginal) => {
 function renderLogsPage(executionId = 'execution-1') {
     return renderWithProviders(
         <Routes>
-            <Route path="/process/results/:id/logs" element={<ProcessLogsPage />} />
+            <Route path="/process/results/:id/logs" element={<ProcessLogs />} />
         </Routes>,
         {
             initialEntries: [`/process/results/${executionId}/logs`],
@@ -43,7 +43,7 @@ function renderLogsPage(executionId = 'execution-1') {
     );
 }
 
-describe('ProcessLogsPage', () => {
+describe('ProcessLogs', () => {
     afterEach(() => {
         vi.clearAllMocks();
     });

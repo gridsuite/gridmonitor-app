@@ -8,8 +8,8 @@
 import { screen } from '@testing-library/react';
 import { Route, Routes } from 'react-router';
 import { describe, expect, it } from 'vitest';
-import { APP_PATHS } from '../../app/router/app-paths';
-import { PROCESS_CONFIG_PATHS } from '../process-config/router/process-config-paths';
+import { APP_PATHS } from '../../app/router/routes/app?paths';
+import { PROCESS_CONFIG_PATHS } from '../../app/router/routes/process-config/process-config.paths';
 import { renderWithProviders } from '../../test-utils/render-with-providers';
 import { ConfigurationModeToggle } from './ConfigurationModeToggle';
 

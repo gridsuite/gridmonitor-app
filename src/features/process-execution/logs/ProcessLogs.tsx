@@ -7,15 +7,14 @@
 import { PROCESS_EXECUTION, ReportViewer } from '@gridsuite/commons-ui';
 import { FormattedMessage } from 'react-intl';
 import { Box, Breadcrumbs, Link, Stack, Typography } from '@mui/material';
-import { Link as RouterLink, useParams } from 'react-router';
-import { ProcessReportViewerProvider } from '../logs/ProcessReportViewerProvider';
-import { useProcessLogs } from '../logs/hooks/use-process-logs';
-import { PROCESS_PATHS } from '../router/process-paths';
+import { Link as RouterLink } from 'react-router';
+import { ProcessReportViewerProvider } from './ProcessReportViewerProvider';
+import { useProcessLogs } from './hooks/use-process-logs';
+import { PROCESS_PATHS } from '../../../app/router/routes/process/process.paths';
 import { ExecutionStatus } from '../../../shared/ui/ExecutionStatus';
-import { ProcessLogsAlert } from '../logs/ProcessLogsAlert';
+import { ProcessLogsAlert } from './ProcessLogsAlert';
 
-function ProcessLogsPage() {
-    const { id: executionId = '' } = useParams<{ id: string }>();
+export function ProcessLogs({ executionId = '' }: { executionId?: string }) {
     const { execution, report, severities, isError, isEmpty, isLoading } = useProcessLogs(executionId);
 
     if (!execution) {
@@ -66,5 +65,3 @@ function ProcessLogsPage() {
         </Stack>
     );
 }
-
-export default ProcessLogsPage;

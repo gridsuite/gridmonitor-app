@@ -10,8 +10,8 @@ import { NavLink, useLocation } from 'react-router';
 import { PlayArrow, MiscellaneousServices, ListAlt } from '@mui/icons-material';
 import { useState, type ReactNode } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { PROCESS_PATHS } from '../process-execution/router/process-paths';
-import { PROCESS_CONFIG_PATHS } from '../process-config/router/process-config-paths';
+import { PROCESS_PATHS } from '../../app/router/routes/process/process.paths';
+import { PROCESS_CONFIG_PATHS } from '../../app/router/routes/process-config/process-config.paths';
 import { LaunchSuccessDialog } from '../process-execution/launch/LaunchSuccessDialog';
 import { ExecuteProcessConfigDialog } from '../process-execution/launch/ExecuteProcessConfigDialog';
 

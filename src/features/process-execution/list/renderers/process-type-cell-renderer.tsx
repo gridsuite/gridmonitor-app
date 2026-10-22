@@ -7,7 +7,7 @@
 
 import { useIntl } from 'react-intl';
 import { Link } from 'react-router';
-import { PROCESS_PATHS } from '../../router/process-paths';
+import { PROCESS_PATHS } from '../../../../app/router/routes/process/process.paths';
 
 export type ProcessTypeCellRendererProps = { value: string; id: string };
 

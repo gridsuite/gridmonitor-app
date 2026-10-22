@@ -11,10 +11,10 @@ import { FormattedMessage } from 'react-intl';
 import { Routes, Route, Navigate, Outlet } from 'react-router';
 import { Loader } from 'shared/ui/Loader';
 import { Suspense } from 'react';
-import { PROCESS_CONFIG_PATHS } from 'features/process-config/router/process-config-paths';
-import { APP_PATHS } from './app-paths';
-import { processRoutes } from '../../features/process-execution/router/process-routes';
-import { processConfigRoutes } from '../../features/process-config/router/process-config-routes';
+import { PROCESS_CONFIG_PATHS } from './routes/process-config/process-config.paths';
+import { APP_PATHS } from './routes/app?paths';
+import { processRoutes } from './routes/process/process-routes';
+import { processConfigRoutes } from './routes/process-config/process-config-routes';
 
 export function AppRouter() {
     return (

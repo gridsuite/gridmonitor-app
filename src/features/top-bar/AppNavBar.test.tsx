@@ -9,8 +9,8 @@ import { render, screen } from '@testing-library/react';
 import { IntlProvider } from 'react-intl';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import { describe, expect, it, vi, afterEach } from 'vitest';
-import { PROCESS_PATHS } from '../process-execution/router/process-paths';
-import { PROCESS_CONFIG_PATHS } from '../process-config/router/process-config-paths';
+import { PROCESS_PATHS } from '../../app/router/routes/process/process.paths';
+import { PROCESS_CONFIG_PATHS } from '../../app/router/routes/process-config/process-config.paths';
 import messagesEn from '../../shared/translations/en/common.json';
 import { SettingsTabs, ExecuteButton } from './AppNavBar';
 

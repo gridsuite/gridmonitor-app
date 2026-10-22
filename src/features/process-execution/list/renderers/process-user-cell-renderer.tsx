@@ -7,7 +7,7 @@
 import { Box } from '@mui/material';
 import { UserAvatar } from '@gridsuite/commons-ui';
 import { Link } from 'react-router';
-import { PROCESS_PATHS } from '../../router/process-paths';
+import { PROCESS_PATHS } from '../../../../app/router/routes/process/process.paths';
 
 export type ProcessUserCellRendererProps = { value: string; backgroundColor: string; id: string };
 

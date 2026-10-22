@@ -11,8 +11,8 @@ import { describe, expect, it, vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { renderWithProviders } from '../../../test-utils/render-with-providers';
 import { server } from '../../../test-utils/msw/server';
-import ProcessResultsPage from './ProcessResultsPage';
-import ProcessExecutionPage from './ProcessExecutionPage';
+import { ProcessResults } from './ProcessResults';
+import { ProcessExecutionDetails } from '../details/ProcessExecutionDetails';
 
 vi.mock('@gridsuite/commons-ui', async (importOriginal) => {
     const actual = await importOriginal<typeof import('@gridsuite/commons-ui')>();
@@ -48,8 +48,8 @@ describe('ProcessResultsPage', () => {
         );
         const { user } = renderWithProviders(
             <Routes>
-                <Route path="/" element={<ProcessResultsPage />} />
-                <Route path="/process/results/:id" element={<ProcessExecutionPage />} />
+                <Route path="/" element={<ProcessResults />} />
+                <Route path="/process/results/:id" element={<ProcessExecutionDetails />} />
             </Routes>
         );
         expect(await screen.findByText('Security analysis')).toBeVisible();
@@ -67,7 +67,7 @@ describe('ProcessResultsPage', () => {
                 return HttpResponse.json([]);
             })
         );
-        renderWithProviders(<ProcessResultsPage />);
+        renderWithProviders(<ProcessResults />);
         expect(screen.getByText('Loading process executions...')).toBeVisible();
         response.resolve();
         expect(await screen.findByText('No process executions found.')).toBeVisible();
@@ -76,13 +76,13 @@ describe('ProcessResultsPage', () => {
 
     it('displays the error state', async () => {
         server.use(http.get('*/v1/executions', () => HttpResponse.error()));
-        renderWithProviders(<ProcessResultsPage />);
+        renderWithProviders(<ProcessResults />);
         expect(await screen.findByText('Unable to load process executions.')).toBeVisible();
     });
 
     it('refreshes the execution status', async () => {
         server.use(http.get('*/v1/executions', () => HttpResponse.json([execution])));
-        const { user } = renderWithProviders(<ProcessResultsPage />);
+        const { user } = renderWithProviders(<ProcessResults />);
         expect(await screen.findByRole('link', { name: 'Failed' })).toBeVisible();
         server.use(http.get('*/v1/executions', () => HttpResponse.json([{ ...execution, status: 'COMPLETED' }])));
         await user.click(screen.getByRole('button', { name: 'Refresh' }));

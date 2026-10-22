@@ -8,7 +8,7 @@ import { useIntl } from 'react-intl';
 import { Box, Tooltip } from '@mui/material';
 import { Link } from 'react-router';
 import { getFormattedDate } from '../../../../shared/lib/date-time-formatter';
-import { PROCESS_PATHS } from '../../router/process-paths';
+import { PROCESS_PATHS } from '../../../../app/router/routes/process/process.paths';
 
 export type ProcessDateCellRendererProps = { value: string; id: string };
 

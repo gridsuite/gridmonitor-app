@@ -8,12 +8,12 @@
 import { Box, Button, Typography } from '@mui/material';
 import { Refresh as RefreshIcon } from '@mui/icons-material';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { ProcessResultsAlert } from '../list/ProcessResultsAlert';
-import { ProcessResultsTable } from '../list/ProcessResultsTable';
-import { useProcessResults } from '../list/hooks/use-process-results';
-import { CustomAggridReduxProvider } from '../list/custom-aggrid-redux-provider';
+import { ProcessResultsAlert } from './ProcessResultsAlert';
+import { ProcessResultsTable } from './ProcessResultsTable';
+import { useProcessResults } from './hooks/use-process-results';
+import { CustomAggridReduxProvider } from './custom-aggrid-redux-provider';
 
-function ProcessResultsPage() {
+export function ProcessResults() {
     const intl = useIntl();
     const { executions, isEmpty, isError, isLoading, refresh } = useProcessResults();
 
@@ -44,5 +44,3 @@ function ProcessResultsPage() {
         </CustomAggridReduxProvider>
     );
 }
-
-export default ProcessResultsPage;

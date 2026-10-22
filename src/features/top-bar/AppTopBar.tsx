@@ -9,7 +9,7 @@ import { AppBar, Divider, Grid, Toolbar } from '@mui/material';
 import { useLocation } from 'react-router';
 import { ExecuteButton, SettingsTabs } from './AppNavBar';
 import { ConfigurationModeToggle } from './ConfigurationModeToggle';
-import { isConfigurationPath } from '../../app/router/app-paths';
+import { isConfigurationPath } from '../../app/router/routes/app.paths';
 import { UserProfile } from '../authentication/store/authentication.type';
 
 export type AppTopBarProps = {

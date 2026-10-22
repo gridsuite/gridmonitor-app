@@ -9,7 +9,7 @@ import { screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { ProcessStatus, StepStatus, type ProcessExecution } from '../../../shared/api/monitor-api';
 import { renderWithProviders } from '../../../test-utils/render-with-providers';
-import ProcessExecutionDetails from './ProcessExecutionDetails';
+import { ProcessExecutionDetailsView } from './ProcessExecutionDetailsView';
 import type { ProcessStepModel } from '../models/process-result';
 
 vi.mock('@gridsuite/commons-ui', async (importOriginal) => {
@@ -79,12 +79,12 @@ const steps: ProcessStepModel[] = [
     },
 ];
 
-describe('ProcessExecutionDetails', () => {
+describe('ProcessExecutionDetailsView', () => {
     beforeEach(() => {
         vi.stubGlobal('ResizeObserver', ResizeObserverMock);
     });
     it('renders the execution details of a running process', async () => {
-        renderWithProviders(<ProcessExecutionDetails execution={execution} steps={steps} />);
+        renderWithProviders(<ProcessExecutionDetailsView execution={execution} steps={steps} />);
 
         expect(screen.getAllByText('LoadFlow')[0]).toBeInTheDocument();
         expect(screen.getByText('Running')).toBeInTheDocument();
@@ -101,7 +101,7 @@ describe('ProcessExecutionDetails', () => {
 
     it('renders the execution details of a finished', async () => {
         renderWithProviders(
-            <ProcessExecutionDetails execution={{ ...execution, status: ProcessStatus.Completed }} steps={steps} />
+            <ProcessExecutionDetailsView execution={{ ...execution, status: ProcessStatus.Completed }} steps={steps} />
         );
 
         expect(screen.getAllByText('LoadFlow')[0]).toBeInTheDocument();
@@ -113,7 +113,7 @@ describe('ProcessExecutionDetails', () => {
 
     it('renders the execution details of a failed process', async () => {
         renderWithProviders(
-            <ProcessExecutionDetails execution={{ ...execution, status: ProcessStatus.Failed }} steps={steps} />
+            <ProcessExecutionDetailsView execution={{ ...execution, status: ProcessStatus.Failed }} steps={steps} />
         );
 
         expect(screen.getAllByText('LoadFlow')[0]).toBeInTheDocument();

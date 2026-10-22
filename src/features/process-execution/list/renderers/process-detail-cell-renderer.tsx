@@ -8,7 +8,7 @@
 import { IconButton } from '@mui/material';
 import { ArrowForwardIos as ArrowForwardIosIcon } from '@mui/icons-material';
 import { Link } from 'react-router';
-import { PROCESS_PATHS } from '../../router/process-paths';
+import { PROCESS_PATHS } from '../../../../app/router/routes/process/process.paths';
 
 export type ProcessDetailCellRendererProps = { value: string };
 
