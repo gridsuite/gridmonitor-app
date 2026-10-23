@@ -9,10 +9,10 @@ import { render, screen } from '@testing-library/react';
 import { IntlProvider } from 'react-intl';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import { describe, expect, vi, it } from 'vitest';
-import { APP_PATHS } from '../../app/router/paths';
-import messagesEn from '../../shared/translations/en/common.json';
+import { APP_PATHS } from '../../router/paths';
+import messagesEn from '../../../shared/translations/en/common.json';
 import AppTopBar from './AppTopBar';
-import type { UserProfile } from '../authentication/store/authentication.type';
+import type { UserProfile } from '../../../features/authentication/store/authentication.type';
 
 vi.mock('./AppNavBar', () => ({
     SettingsTabs: () => <div role="tab">Configuration</div>,

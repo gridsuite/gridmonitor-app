@@ -8,8 +8,8 @@
 import { act, renderHook } from '@testing-library/react';
 import { http, HttpResponse } from 'msw';
 import { describe, expect, it } from 'vitest';
-import { createTestProviders } from '../../../test-utils/render-with-providers';
-import { server } from '../../../test-utils/msw/server';
+import { createTestProviders } from '../../../../test-utils/render-with-providers';
+import { server } from '../../../../test-utils/msw/server';
 import { useGetServersInfos } from './use-get-servers-infos';
 
 describe('useGetServersInfos', () => {

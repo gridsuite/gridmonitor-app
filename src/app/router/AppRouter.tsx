@@ -11,7 +11,7 @@ import { FormattedMessage } from 'react-intl';
 import { Routes, Route, Navigate, Outlet } from 'react-router';
 import { Loader } from 'shared/ui/Loader';
 import { Suspense } from 'react';
-import { APP_PATHS } from './routes/app.paths';
+import { APP_PATHS } from './paths';
 import { processRoutes } from './routes/process-routes';
 import { processConfigRoutes } from './routes/process-config-routes';
 

@@ -9,8 +9,8 @@ import { screen } from '@testing-library/react';
 import { Route, Routes } from 'react-router';
 import { describe, expect, it } from 'vitest';
 import { ConfigurationModeToggle } from './ConfigurationModeToggle';
-import { renderWithProviders } from '../../test-utils/render-with-providers';
-import { APP_PATHS } from '../../app/router/paths';
+import { renderWithProviders } from '../../../test-utils/render-with-providers';
+import { APP_PATHS } from '../../router/paths';
 
 describe('ConfigurationModeToggle', () => {
     it.each([false, true])('reflects configuration mode %s', (isConfigurationMode) => {

@@ -9,7 +9,7 @@ import { FormControlLabel, Switch } from '@mui/material';
 import type { ChangeEvent } from 'react';
 import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router';
-import { APP_PATHS } from '../../app/router/paths';
+import { APP_PATHS } from '../../router/paths';
 
 export function ConfigurationModeToggle({ isConfigurationMode }: { readonly isConfigurationMode: boolean }) {
     const intl = useIntl();

@@ -9,8 +9,8 @@ import { render, screen } from '@testing-library/react';
 import { IntlProvider } from 'react-intl';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import { describe, expect, it, vi, afterEach } from 'vitest';
-import { APP_PATHS } from '../../app/router/paths';
-import messagesEn from '../../shared/translations/en/common.json';
+import { APP_PATHS } from '../../router/paths';
+import messagesEn from '../../../shared/translations/en/common.json';
 import { SettingsTabs, ExecuteButton } from './AppNavBar';
 
 // Control variable for useMediaQuery mock – default false (non-xs viewport)
@@ -24,11 +24,11 @@ vi.mock('@mui/material', async (importOriginal) => {
     };
 });
 
-vi.mock('../process-execution/launch/LaunchSuccessDialog', () => ({
+vi.mock('features/process-execution/launch/LaunchSuccessDialog', () => ({
     LaunchSuccessDialog: () => null,
 }));
 
-vi.mock('../process-execution/launch/ExecuteProcessConfigDialog', () => ({
+vi.mock('features/process-execution/launch/ExecuteProcessConfigDialog', () => ({
     ExecuteProcessConfigDialog: () => null,
 }));
 
