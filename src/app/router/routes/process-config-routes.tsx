@@ -5,6 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export const PROCESS_CONFIG_PATHS = {
-    root: '/process-config',
-} as const;
+import { lazy } from 'react';
+import { Route } from 'react-router';
+
+const ProcessConfigPage = lazy(() => import('../../pages/process-config/ProcessConfigPage'));
+
+export const processConfigRoutes = <Route path="process-config" element={<ProcessConfigPage />} />;

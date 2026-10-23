@@ -7,7 +7,7 @@
 
 import { useIntl } from 'react-intl';
 import { Link } from 'react-router';
-import { PROCESS_PATHS } from '../../../../app/router/routes/process/process.paths';
+import { APP_PATHS } from '../../../../app/router/paths';
 
 export type ProcessTypeCellRendererProps = { value: string; id: string };
 
@@ -19,7 +19,7 @@ export function ProcessTypeCellRenderer({ value, id }: Readonly<ProcessTypeCellR
         textDecoration: 'none',
     };
     return (
-        <Link to={PROCESS_PATHS.stepInfos(id ?? '')} onClick={(event) => event.stopPropagation()} style={linkStyle}>
+        <Link to={APP_PATHS.process.stepInfos(id ?? '')} onClick={(event) => event.stopPropagation()} style={linkStyle}>
             {intl.formatMessage({ id: value })}
         </Link>
     );

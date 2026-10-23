@@ -13,11 +13,11 @@ import { ProcessLogs } from './ProcessLogs';
 
 const useProcessLogsMock = vi.hoisted(() => vi.fn());
 
-vi.mock('../logs/hooks/use-process-logs', () => ({
+vi.mock('./hooks/use-process-logs', () => ({
     useProcessLogs: useProcessLogsMock,
 }));
 
-vi.mock('../logs/ProcessReportViewerProvider', () => ({
+vi.mock('./ProcessReportViewerProvider', () => ({
     ProcessReportViewerProvider: ({ children }: { children: React.ReactNode }) => (
         <div data-testid="report-viewer-provider">{children}</div>
     ),
@@ -33,14 +33,7 @@ vi.mock('@gridsuite/commons-ui', async (importOriginal) => {
 });
 
 function renderLogsPage(executionId = 'execution-1') {
-    return renderWithProviders(
-        <Routes>
-            <Route path="/process/results/:id/logs" element={<ProcessLogs />} />
-        </Routes>,
-        {
-            initialEntries: [`/process/results/${executionId}/logs`],
-        }
-    );
+    return renderWithProviders(<ProcessLogs executionId={executionId} />);
 }
 
 describe('ProcessLogs', () => {

@@ -212,12 +212,12 @@ const projectConfig = [
                     zones: [
                         {
                             target: ['./src/features', './src/shared'],
-                            from: './src/app/**/*',
+                            from: './src/app',
                             except: [
-                                '**/src/app/store/hooks.ts',
-                                '**/src/app/store/store.ts',
-                                '**/src/app/**/*.paths.ts',
-                                '**/src/app/config/app-theme.ts',
+                                'app/store/hooks.ts',
+                                'app/store/store.ts',
+                                'app/router/paths.ts',
+                                'app/config/app-theme.ts',
                             ],
                             message:
                                 'Features and shared may import app paths and approved Redux utilities, but not application wiring.',

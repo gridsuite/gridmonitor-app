@@ -8,10 +8,9 @@
 import { screen } from '@testing-library/react';
 import { Route, Routes } from 'react-router';
 import { describe, expect, it } from 'vitest';
-import { APP_PATHS } from '../../app/router/routes/app?paths';
-import { PROCESS_CONFIG_PATHS } from '../../app/router/routes/process-config/process-config.paths';
-import { renderWithProviders } from '../../test-utils/render-with-providers';
 import { ConfigurationModeToggle } from './ConfigurationModeToggle';
+import { renderWithProviders } from '../../test-utils/render-with-providers';
+import { APP_PATHS } from '../../app/router/paths';
 
 describe('ConfigurationModeToggle', () => {
     it.each([false, true])('reflects configuration mode %s', (isConfigurationMode) => {
@@ -23,8 +22,8 @@ describe('ConfigurationModeToggle', () => {
     });
 
     it.each([
-        { from: APP_PATHS.home, to: PROCESS_CONFIG_PATHS.root, checked: false },
-        { from: PROCESS_CONFIG_PATHS.root, to: APP_PATHS.home, checked: true },
+        { from: APP_PATHS.home, to: APP_PATHS.processConfig.root, checked: false },
+        { from: APP_PATHS.processConfig.root, to: APP_PATHS.home, checked: true },
     ])('navigates from $from to $to', async ({ from, to, checked }) => {
         const { user } = renderWithProviders(
             <Routes>

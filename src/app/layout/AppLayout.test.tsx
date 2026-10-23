@@ -10,7 +10,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { AppLayout } from './AppLayout';
 
 const mocks = vi.hoisted(() => ({
-    usePreferenceState: vi.fn(),
+    usePreference: vi.fn(),
     useStableUserProfile: vi.fn(),
     appSideBar: vi.fn(),
 }));
@@ -28,8 +28,8 @@ vi.mock('@gridsuite/commons-ui', async (importOriginal) => {
     };
 });
 
-vi.mock('features/preferences/hooks/use-preference-state', () => ({
-    usePreferenceState: mocks.usePreferenceState,
+vi.mock('features/preferences/hooks/use-preference', () => ({
+    usePreference: mocks.usePreference,
 }));
 
 vi.mock('features/authentication/hooks/use-stable-user-profile', () => ({
@@ -46,7 +46,7 @@ vi.mock('features/side-bar/AppSideBar', () => ({
 describe('AppLayout', () => {
     beforeEach(() => {
         vi.clearAllMocks();
-        mocks.usePreferenceState.mockImplementation((paramName: string) => {
+        mocks.usePreference.mockImplementation((paramName: string) => {
             if (paramName === 'isDeveloperMode') {
                 return [false];
             }
@@ -74,7 +74,7 @@ describe('AppLayout', () => {
     });
 
     it('displays the developer mode banner for an authenticated user when developer mode is enabled', () => {
-        mocks.usePreferenceState.mockImplementation((paramName: string) => {
+        mocks.usePreference.mockImplementation((paramName: string) => {
             if (paramName === 'isDeveloperMode') {
                 return [true];
             }
@@ -94,7 +94,7 @@ describe('AppLayout', () => {
     });
 
     it('does not display the developer mode banner without an authenticated user', () => {
-        mocks.usePreferenceState.mockImplementation((paramName: string) => {
+        mocks.usePreference.mockImplementation((paramName: string) => {
             if (paramName === 'isDeveloperMode') {
                 return [true];
             }

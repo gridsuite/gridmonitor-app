@@ -9,7 +9,7 @@ import { Box } from '@mui/material';
 import { Link } from 'react-router';
 import { ProcessStatus } from '../../../../shared/api/monitor-api';
 import { ExecutionStatus } from '../../../../shared/ui/ExecutionStatus';
-import { PROCESS_PATHS } from '../../../../app/router/routes/process/process.paths';
+import { APP_PATHS } from '../../../../app/router/paths';
 
 export type ProcessStatusCellRendererProps = { value: ProcessStatus; id: string };
 
@@ -23,13 +23,17 @@ export function ProcessStatusCellRenderer({ value, id }: Readonly<ProcessStatusC
 
     if (value !== ProcessStatus.Completed) {
         return (
-            <Link to={PROCESS_PATHS.stepInfos(id ?? '')} onClick={(event) => event.stopPropagation()} style={linkStyle}>
+            <Link
+                to={APP_PATHS.process.stepInfos(id ?? '')}
+                onClick={(event) => event.stopPropagation()}
+                style={linkStyle}
+            >
                 <Box sx={{ display: 'inline-flex', verticalAlign: 'middle' }}>{executionStatus}</Box>
             </Link>
         );
     }
     return (
-        <Link to={PROCESS_PATHS.stepInfos(id ?? '')} onClick={(event) => event.stopPropagation()} style={linkStyle}>
+        <Link to={APP_PATHS.process.stepInfos(id ?? '')} onClick={(event) => event.stopPropagation()} style={linkStyle}>
             {executionStatus}
         </Link>
     );

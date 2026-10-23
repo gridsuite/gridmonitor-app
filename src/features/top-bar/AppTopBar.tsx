@@ -9,8 +9,13 @@ import { AppBar, Divider, Grid, Toolbar } from '@mui/material';
 import { useLocation } from 'react-router';
 import { ExecuteButton, SettingsTabs } from './AppNavBar';
 import { ConfigurationModeToggle } from './ConfigurationModeToggle';
-import { isConfigurationPath } from '../../app/router/routes/app.paths';
 import { UserProfile } from '../authentication/store/authentication.type';
+import { APP_PATHS } from '../../app/router/paths';
+
+/** Returns true when the current pathname is a configuration sub-route (toggle ON state) */
+export function isConfigurationPath(pathname: string): boolean {
+    return pathname.startsWith(APP_PATHS.process.root) || pathname.startsWith(APP_PATHS.processConfig.root);
+}
 
 export type AppTopBarProps = {
     userProfile: UserProfile | null;

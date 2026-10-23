@@ -8,17 +8,18 @@
 export const APP_PATHS = {
     home: '/',
     gridmonitor: '',
-    gridmonitorConfigBase: '/process',
-    gridmonitorConfigProcessConfig: '/process-config',
     signInCallback: '/sign-in-callback',
     logoutCallback: '/logout-callback',
     notFound: '*',
-};
 
-/** Returns true when the current pathname is a configuration sub-route (toggle ON state) */
-export function isConfigurationPath(pathname: string): boolean {
-    return (
-        pathname.startsWith(APP_PATHS.gridmonitorConfigBase) ||
-        pathname.startsWith(APP_PATHS.gridmonitorConfigProcessConfig)
-    );
-}
+    process: {
+        root: '/process',
+        results: '/process/results',
+        stepInfos: (id: string) => `/process/results/${id}`,
+        logs: (id: string) => `/process/results/${id}/logs`,
+    },
+
+    processConfig: {
+        root: '/process-config',
+    },
+} as const;

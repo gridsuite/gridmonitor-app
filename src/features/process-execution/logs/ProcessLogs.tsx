@@ -10,7 +10,7 @@ import { Box, Breadcrumbs, Link, Stack, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router';
 import { ProcessReportViewerProvider } from './ProcessReportViewerProvider';
 import { useProcessLogs } from './hooks/use-process-logs';
-import { PROCESS_PATHS } from '../../../app/router/routes/process/process.paths';
+import { APP_PATHS } from '../../../app/router/paths';
 import { ExecutionStatus } from '../../../shared/ui/ExecutionStatus';
 import { ProcessLogsAlert } from './ProcessLogsAlert';
 
@@ -31,13 +31,13 @@ export function ProcessLogs({ executionId = '' }: { executionId?: string }) {
     return (
         <Stack sx={{ p: 3, height: '100%' }}>
             <Breadcrumbs separator="/">
-                <Link component={RouterLink} to={PROCESS_PATHS.results} underline="hover">
+                <Link component={RouterLink} to={APP_PATHS.process.results} underline="hover">
                     <Typography variant="subtitle1">
                         <FormattedMessage id="processLaunchHistory" />
                     </Typography>
                 </Link>
 
-                <Link component={RouterLink} to={PROCESS_PATHS.stepInfos(executionId)} underline="hover">
+                <Link component={RouterLink} to={APP_PATHS.process.stepInfos(executionId)} underline="hover">
                     <Typography variant="subtitle1">
                         <FormattedMessage id={execution.type} />
                     </Typography>

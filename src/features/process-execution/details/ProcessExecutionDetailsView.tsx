@@ -28,7 +28,7 @@ import { fetchElementNames } from '@gridsuite/commons-ui';
 import { ExecutionStatus } from '../../../shared/ui/ExecutionStatus';
 import { ProcessExecution, ProcessStatus } from '../../../shared/api/monitor-api';
 import { getFormattedDate } from '../../../shared/lib/date-time-formatter';
-import { PROCESS_PATHS } from '../../../app/router/routes/process/process.paths';
+import { APP_PATHS } from '../../../app/router/paths';
 import ResponsiveStepper from './steps/ResponsiveStepper';
 import { ProcessStepModel } from '../models/process-result';
 import { InfoItem, InfoItemType } from './InfoItem';
@@ -86,7 +86,7 @@ export function ProcessExecutionDetailsView({ execution, steps }: Readonly<Proce
             }}
         >
             <Breadcrumbs separator="/">
-                <Link component={RouterLink} to={PROCESS_PATHS.results} underline="hover">
+                <Link component={RouterLink} to={APP_PATHS.process.results} underline="hover">
                     <Typography variant="subtitle1">
                         <FormattedMessage id="processLaunchHistory" />
                     </Typography>

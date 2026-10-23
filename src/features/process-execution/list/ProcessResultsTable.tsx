@@ -15,7 +15,7 @@ import { AgGridReact } from 'ag-grid-react';
 import { GridApi, RowStyle } from 'ag-grid-community';
 import { ProcessExecutionInfos } from '../models/process-result';
 import { processResultsColumnsDefinition } from '../results/ProcessResultsUtil';
-import { PROCESS_PATHS } from '../../../app/router/routes/process/process.paths';
+import { APP_PATHS } from '../../../app/router/paths';
 import { PROCESS_EXECUTION_HISTORY_SORT_STORE } from './store/process-results.constants';
 import { AGGRID_LOCALES } from '../../../shared/translations/not-intl/aggrid-locales';
 import { useAppSelector } from '../../../app/store/hooks';
@@ -137,7 +137,7 @@ export function ProcessResultsTable({ executions }: Readonly<ProcessResultsListP
                     applyTableState(api);
                 }}
                 onRowClicked={({ data }) => {
-                    navigate(PROCESS_PATHS.stepInfos(data.id ?? ''));
+                    navigate(APP_PATHS.process.stepInfos(data.id ?? ''));
                 }}
                 onModelUpdated={({ api }) => {
                     if (api.getDisplayedRowCount()) {

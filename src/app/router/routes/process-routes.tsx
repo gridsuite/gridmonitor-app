@@ -8,9 +8,9 @@
 import { lazy } from 'react';
 import { Navigate, Route } from 'react-router';
 
-const ProcessResultsPage = lazy(() => import('../../../pages/process-execution/ProcessResultsPage'));
-const ProcessExecutionPage = lazy(() => import('../../../pages/process-execution/ProcessExecutionPage'));
-const ProcessLogsPage = lazy(() => import('../../../pages/process-execution/ProcessLogsPage'));
+const ProcessResultsPage = lazy(() => import('../../pages/process-execution/ProcessResultsPage'));
+const ProcessExecutionPage = lazy(() => import('../../pages/process-execution/ProcessExecutionPage'));
+const ProcessLogsPage = lazy(() => import('../../pages/process-execution/ProcessLogsPage'));
 
 export const processRoutes = (
     <Route path="process">

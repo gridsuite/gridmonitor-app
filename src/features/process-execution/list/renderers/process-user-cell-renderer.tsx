@@ -7,14 +7,14 @@
 import { Box } from '@mui/material';
 import { UserAvatar } from '@gridsuite/commons-ui';
 import { Link } from 'react-router';
-import { PROCESS_PATHS } from '../../../../app/router/routes/process/process.paths';
+import { APP_PATHS } from '../../../../app/router/paths';
 
 export type ProcessUserCellRendererProps = { value: string; backgroundColor: string; id: string };
 
 export function ProcessUserCellRenderer({ value, backgroundColor, id }: Readonly<ProcessUserCellRendererProps>) {
     return (
         <Link
-            to={PROCESS_PATHS.stepInfos(id ?? '')}
+            to={APP_PATHS.process.stepInfos(id ?? '')}
             onClick={(event) => event.stopPropagation()}
             style={{
                 display: 'inline-flex',

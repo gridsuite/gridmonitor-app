@@ -9,9 +9,7 @@ import { render, screen } from '@testing-library/react';
 import { IntlProvider } from 'react-intl';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import { describe, expect, vi, it } from 'vitest';
-import { PROCESS_PATHS } from '../../app/router/routes/process/process.paths';
-import { PROCESS_CONFIG_PATHS } from '../../app/router/routes/process-config/process-config.paths';
-import { APP_PATHS } from '../../app/router/routes/app.paths';
+import { APP_PATHS } from '../../app/router/paths';
 import messagesEn from '../../shared/translations/en/common.json';
 import AppTopBar from './AppTopBar';
 import type { UserProfile } from '../authentication/store/authentication.type';
@@ -54,14 +52,14 @@ describe('AppTopBar', () => {
     });
 
     it('renders the toolbar content when userProfile is provided', () => {
-        renderTopBar(PROCESS_CONFIG_PATHS.root);
+        renderTopBar(APP_PATHS.processConfig.root);
 
         expect(screen.getByRole('tab', { name: /Configuration/i })).toBeInTheDocument();
         expect(screen.getByRole('link', { name: /Execute process/i })).toBeInTheDocument();
     });
 
     it('renders the divider when on a configuration path (isConfigurationMode = true)', () => {
-        renderTopBar(PROCESS_CONFIG_PATHS.root);
+        renderTopBar(APP_PATHS.processConfig.root);
 
         // MUI Divider renders as <hr>
         expect(screen.getByRole('separator')).toBeInTheDocument();
@@ -74,13 +72,13 @@ describe('AppTopBar', () => {
     });
 
     it('renders the divider when on the gridmonitorConfigBase path (first branch of isConfigurationPath)', () => {
-        renderTopBar(PROCESS_PATHS.root);
+        renderTopBar(APP_PATHS.process.root);
 
         expect(screen.getByRole('separator')).toBeInTheDocument();
     });
 
     it('renders the divider when on the gridmonitorConfigProcessConfig path (second branch of isConfigurationPath)', () => {
-        renderTopBar(PROCESS_CONFIG_PATHS.root);
+        renderTopBar(APP_PATHS.processConfig.root);
 
         expect(screen.getByRole('separator')).toBeInTheDocument();
     });

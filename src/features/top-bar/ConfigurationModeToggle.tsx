@@ -9,15 +9,14 @@ import { FormControlLabel, Switch } from '@mui/material';
 import type { ChangeEvent } from 'react';
 import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router';
-import { APP_PATHS } from '../../app/router/routes/app.paths';
-import { PROCESS_CONFIG_PATHS } from '../../app/router/routes/process-config/process-config.paths';
+import { APP_PATHS } from '../../app/router/paths';
 
 export function ConfigurationModeToggle({ isConfigurationMode }: { readonly isConfigurationMode: boolean }) {
     const intl = useIntl();
     const navigate = useNavigate();
 
     const handleToggle = (_event: ChangeEvent<HTMLInputElement>, checked: boolean) => {
-        navigate(checked ? PROCESS_CONFIG_PATHS.root : APP_PATHS.home, { replace: true });
+        navigate(checked ? APP_PATHS.processConfig.root : APP_PATHS.home, { replace: true });
     };
 
     return (

@@ -10,8 +10,7 @@ import { NavLink, useLocation } from 'react-router';
 import { PlayArrow, MiscellaneousServices, ListAlt } from '@mui/icons-material';
 import { useState, type ReactNode } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { PROCESS_PATHS } from '../../app/router/routes/process/process.paths';
-import { PROCESS_CONFIG_PATHS } from '../../app/router/routes/process-config/process-config.paths';
+import { APP_PATHS } from '../../app/router/paths';
 import { LaunchSuccessDialog } from '../process-execution/launch/LaunchSuccessDialog';
 import { ExecuteProcessConfigDialog } from '../process-execution/launch/ExecuteProcessConfigDialog';
 
@@ -22,8 +21,8 @@ interface NavBarTab {
 }
 
 const leftTabs: NavBarTab[] = [
-    { icon: <MiscellaneousServices />, labelId: 'nav.configuration', path: PROCESS_CONFIG_PATHS.root },
-    { icon: <ListAlt />, labelId: 'nav.launchHistory', path: PROCESS_PATHS.results },
+    { icon: <MiscellaneousServices />, labelId: 'nav.configuration', path: APP_PATHS.processConfig.root },
+    { icon: <ListAlt />, labelId: 'nav.launchHistory', path: APP_PATHS.process.results },
 ];
 
 function TabLabel({ icon, label }: { readonly icon: ReactNode; readonly label: string }) {

@@ -6,13 +6,12 @@
  */
 
 import { screen, waitFor } from '@testing-library/react';
-import { Route, Routes } from 'react-router';
 import { describe, expect, it, vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { renderWithProviders } from '../../../test-utils/render-with-providers';
 import { server } from '../../../test-utils/msw/server';
 import { ProcessResults } from './ProcessResults';
-import { ProcessExecutionDetails } from '../details/ProcessExecutionDetails';
+import { LOCATION_OBSERVER_TEST_ID, LocationObserver } from '../../../test-utils/create-test-context';
 
 vi.mock('@gridsuite/commons-ui', async (importOriginal) => {
     const actual = await importOriginal<typeof import('@gridsuite/commons-ui')>();
@@ -47,16 +46,16 @@ describe('ProcessResultsPage', () => {
             )
         );
         const { user } = renderWithProviders(
-            <Routes>
-                <Route path="/" element={<ProcessResults />} />
-                <Route path="/process/results/:id" element={<ProcessExecutionDetails />} />
-            </Routes>
+            <>
+                <ProcessResults />
+                <LocationObserver />
+            </>
         );
         expect(await screen.findByText('Security analysis')).toBeVisible();
         expect(screen.getByRole('link', { name: 'Failed' })).toBeVisible();
         expect(screen.getByRole('columnheader', { name: /^Status/ })).toBeInTheDocument();
         await user.click(screen.getByRole('link', { name: 'Failed' }));
-        expect(await screen.findByText('Analysis Progress')).toBeVisible();
+        expect(screen.getByTestId(LOCATION_OBSERVER_TEST_ID)).toHaveTextContent('/process/results/execution-1');
     });
 
     it('shows loading until the request resolves, then shows the empty state', async () => {
