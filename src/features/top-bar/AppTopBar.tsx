@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { AppBar, Divider, Grid, Toolbar } from '@mui/material';
+import { AppBar, Divider, Grid, Toolbar, useTheme } from '@mui/material';
 import { useLocation } from 'react-router';
 import { ExecuteButton, SettingsTabs } from './AppNavBar';
 import { ConfigurationModeToggle } from './ConfigurationModeToggle';
@@ -17,6 +17,7 @@ export type AppTopBarProps = {
 };
 
 function AppTopBar({ userProfile }: Readonly<AppTopBarProps>) {
+    const theme = useTheme();
     const location = useLocation();
     const isConfigurationMode = isConfigurationPath(location.pathname);
 
@@ -27,6 +28,7 @@ function AppTopBar({ userProfile }: Readonly<AppTopBarProps>) {
                     sx={{
                         minHeight: { xs: 56 },
                         px: 3,
+                        bgcolor: theme.topBar[isConfigurationMode ? 'configurationMode' : 'automationMode'].bgColor,
                     }}
                 >
                     <Grid
