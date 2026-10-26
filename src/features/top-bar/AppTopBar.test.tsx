@@ -5,16 +5,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { render, screen } from '@testing-library/react';
-import { IntlProvider } from 'react-intl';
-import { MemoryRouter, Route, Routes } from 'react-router';
-import { describe, expect, vi, it } from 'vitest';
+import { screen } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
 import { PROCESS_PATHS } from '../process-execution/router/process-paths';
 import { PROCESS_CONFIG_PATHS } from '../process-config/router/process-config-paths';
 import { APP_PATHS } from '../../app/router/app-paths';
-import messagesEn from '../../shared/translations/en/common.json';
 import AppTopBar from './AppTopBar';
 import type { UserProfile } from '../authentication/store/authentication.type';
+import { renderWithProviders } from '../../test-utils/render-with-providers';
 
 vi.mock('./AppNavBar', () => ({
     SettingsTabs: () => <div role="tab">Configuration</div>,
@@ -34,15 +32,7 @@ const userProfile = {
 } as UserProfile;
 
 function renderTopBar(initialPath: string, profile: UserProfile | null = userProfile) {
-    return render(
-        <IntlProvider locale="en" messages={messagesEn}>
-            <MemoryRouter initialEntries={[initialPath]}>
-                <Routes>
-                    <Route path="*" element={<AppTopBar userProfile={profile} />} />
-                </Routes>
-            </MemoryRouter>
-        </IntlProvider>
-    );
+    return renderWithProviders(<AppTopBar userProfile={profile} />, { initialEntries: [initialPath] });
 }
 
 describe('AppTopBar', () => {
