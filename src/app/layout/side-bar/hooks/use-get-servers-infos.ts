@@ -6,8 +6,8 @@
  */
 
 import { useCallback } from 'react';
-import { AboutInfo, Type, useLazyGetSuiteAboutInformationQuery } from '../../../../shared/api/study-api';
 import { GridSuiteModule } from '@gridsuite/commons-ui';
+import { AboutInfo, Type, useLazyGetSuiteAboutInformationQuery } from '../../../../shared/api/study-api';
 
 // TODO: remove this function once the backend is fixed with actual types
 const toGridSuiteModule = (aboutInfos: AboutInfo[]): GridSuiteModule[] => {
