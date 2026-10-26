@@ -10,7 +10,7 @@ import { Box, Link, Typography } from '@mui/material';
 import { MouseEvent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Link as RouterLink, useNavigate } from 'react-router';
-import { PROCESS_PATHS } from '../router/process-paths';
+import { APP_PATHS } from '../../../app/router/paths';
 import { AppDialog } from '../../../shared/ui/AppDialog';
 
 export function LaunchSuccessDialog({
@@ -24,7 +24,7 @@ export function LaunchSuccessDialog({
 }) {
     const intl = useIntl();
     const navigate = useNavigate();
-    const path = PROCESS_PATHS.stepInfos(executionId);
+    const path = APP_PATHS.process.stepInfos(executionId);
     const title = intl.formatMessage({ id: 'analysisLaunched' });
 
     const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {

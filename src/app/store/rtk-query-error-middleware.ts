@@ -7,8 +7,8 @@
 
 import { parseError, snackWithFallback } from '@gridsuite/commons-ui';
 import { Middleware, isRejectedWithValue } from '@reduxjs/toolkit';
-import { getErrorMessage } from 'shared/lib/error';
 import { snackRef } from 'shared/lib/snack-ref';
+import { getErrorMessage } from '../../shared/lib/get-error-message';
 
 function hasData(payload: unknown): payload is { data: unknown } {
     return typeof payload === 'object' && payload !== null && 'data' in payload;

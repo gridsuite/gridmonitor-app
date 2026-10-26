@@ -8,7 +8,7 @@
 import { IconButton } from '@mui/material';
 import { ArrowForwardIos as ArrowForwardIosIcon } from '@mui/icons-material';
 import { Link } from 'react-router';
-import { PROCESS_PATHS } from '../../router/process-paths';
+import { APP_PATHS } from '../../../../app/router/paths';
 
 export type ProcessDetailCellRendererProps = { value: string };
 
@@ -18,7 +18,7 @@ export function ProcessDetailCellRenderer({ value }: Readonly<ProcessDetailCellR
             component={Link}
             className="row-action-button"
             size="small"
-            to={PROCESS_PATHS.stepInfos(value ?? '')}
+            to={APP_PATHS.process.stepInfos(value ?? '')}
         >
             <ArrowForwardIosIcon fontSize="small" />
         </IconButton>

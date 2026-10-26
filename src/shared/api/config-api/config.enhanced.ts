@@ -7,10 +7,7 @@
 
 import { GsLang, GsTheme, PARAM_LANGUAGE, PARAM_THEME } from '@gridsuite/commons-ui';
 import type { AppDispatch } from 'app/store/store';
-import {
-    saveLocalStorageLanguage,
-    saveLocalStorageTheme,
-} from 'features/app-parameters/store/app-parameters.local-storage';
+import { saveLocalStorageLanguage, saveLocalStorageTheme } from '../../lib/preferences.local-storage';
 import { ConfigTags } from './config-base-api';
 import { configGeneratedApi } from './config.generated';
 

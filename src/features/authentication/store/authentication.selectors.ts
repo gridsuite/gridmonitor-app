@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { RootState } from 'app/store/store';
+import type { RootState } from 'app/store/store';
 
 export const selectAuthentication = (state: RootState) => state.authentication;
 export const selectSignInCallbackError = (state: RootState) => selectAuthentication(state).signInCallbackError;

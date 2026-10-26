@@ -11,10 +11,9 @@ import { FormattedMessage } from 'react-intl';
 import { Routes, Route, Navigate, Outlet } from 'react-router';
 import { Loader } from 'shared/ui/Loader';
 import { Suspense } from 'react';
-import { PROCESS_CONFIG_PATHS } from 'features/process-config/router/process-config-paths';
-import { APP_PATHS } from './app-paths';
-import { processRoutes } from '../../features/process-execution/router/process-routes';
-import { processConfigRoutes } from '../../features/process-config/router/process-config-routes';
+import { APP_PATHS } from './paths';
+import { processRoutes } from './routes/process-routes';
+import { processConfigRoutes } from './routes/process-config-routes';
 
 export function AppRouter() {
     return (
@@ -35,7 +34,7 @@ export function AppRouter() {
                             </Box>
                         }
                     />
-                    <Route path="configuration" element={<Navigate to={PROCESS_CONFIG_PATHS.root} replace />} />
+                    <Route path="configuration" element={<Navigate to={APP_PATHS.processConfig.root} replace />} />
                     <Route element={<Outlet />}>
                         {processRoutes}
                         {processConfigRoutes}
