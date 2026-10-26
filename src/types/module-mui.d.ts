@@ -6,7 +6,7 @@
  */
 
 // https://mui.com/material-ui/customization/theming/#typescript
-import { Theme as MuiTheme, ThemeOptions as MuiThemeOptions, CSSObject } from '@mui/material';
+import { CSSObject, Theme as MuiTheme, ThemeOptions as MuiThemeOptions } from '@mui/material';
 
 declare module '@mui/material/styles' {
     export interface BreakpointOverrides {
@@ -34,6 +34,14 @@ declare module '@mui/material/styles' {
         };
         selectedRow: {
             background: string;
+        };
+        topBar: {
+            configurationMode: {
+                bgColor: string;
+            };
+            automationMode: {
+                bgColor: string;
+            };
         };
     };
     export interface Theme extends MuiTheme, ThemeExtension {}

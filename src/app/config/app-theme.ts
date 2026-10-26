@@ -6,8 +6,8 @@
  */
 
 import { LIGHT_THEME } from '@gridsuite/commons-ui';
-import { createTheme, Theme } from '@mui/material';
-import { amber, blue, common, green, grey, red, teal } from '@mui/material/colors';
+import { alpha, createTheme, Theme } from '@mui/material';
+import { amber, blue, common, deepPurple, green, grey, red, teal } from '@mui/material/colors';
 
 function breakPoints(): { values: { xs: number; sm: number } } {
     return {
@@ -104,6 +104,14 @@ const lightTheme: Theme = createTheme({
         highlightColor: amber[200],
         currentHighlightColor: teal[100],
     },
+    topBar: {
+        configurationMode: {
+            bgColor: alpha(deepPurple.A100, 0.1),
+        },
+        automationMode: {
+            bgColor: grey[100],
+        },
+    },
 });
 
 const darkTheme: Theme = createTheme({
@@ -153,6 +161,14 @@ const darkTheme: Theme = createTheme({
         highlightColor: amber[200],
         currentHighlightColor: teal[100],
         textColor: common.black,
+    },
+    topBar: {
+        configurationMode: {
+            bgColor: alpha(deepPurple[400], 0.1),
+        },
+        automationMode: {
+            bgColor: grey[800],
+        },
     },
 });
 
