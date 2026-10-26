@@ -17,14 +17,16 @@ import {
     DialogTitle,
     IconButton,
     Typography,
+    Theme,
 } from '@mui/material';
 import { ChevronLeft as ChevronLeftIcon, Close as CloseIcon } from '@mui/icons-material';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-const paperSx = {
+const paperSx = (theme: Theme) => ({
     width: { xs: '95%', sm: '50%' },
+    minWidth: { sm: `calc(${theme.breakpoints.values.sm}px * 0.95)` },
     m: 0,
-} as const;
+});
 
 export type AppDialogProps = {
     open: boolean;
@@ -126,8 +128,7 @@ export function AppDialog({
             <DialogActions
                 sx={{
                     justifyContent: 'space-between',
-                    px: 3,
-                    pb: 2,
+                    p: 1,
                 }}
             >
                 {onBack && (
