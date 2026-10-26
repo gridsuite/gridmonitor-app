@@ -10,7 +10,7 @@ import { useGetParameterQuery } from 'shared/api/config-api';
 import { APP_NAME } from '../../../shared/config/application';
 import { Preferences, PreferencesKey } from '../store/preferences.type';
 import { useStableUserProfile } from '../../authentication/hooks/use-stable-user-profile';
-import { getLocalStorageLanguage, getLocalStorageTheme } from '../store/preferences.local-storage';
+import { getLocalStorageLanguage, getLocalStorageTheme } from '../../../shared/lib/preferences.local-storage';
 
 function parsePreferenceValue<K extends PreferencesKey>(paramName: K, rawValue: string): Preferences[K] {
     if (paramName === PARAM_DEVELOPER_MODE) {

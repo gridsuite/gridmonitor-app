@@ -15,8 +15,8 @@ export function ConfigurationModeToggle({ isConfigurationMode }: { readonly isCo
     const intl = useIntl();
     const navigate = useNavigate();
 
-    const handleToggle = async (_event: ChangeEvent<HTMLInputElement>, checked: boolean) => {
-        await navigate(checked ? APP_PATHS.processConfig.root : APP_PATHS.home, { replace: true });
+    const handleToggle = (_event: ChangeEvent<HTMLInputElement>, checked: boolean) => {
+        navigate(checked ? APP_PATHS.processConfig.root : APP_PATHS.home, { replace: true }); // NOSONAR : with BrowserRouter, navigate is a synchronous function
     };
 
     return (

@@ -12,7 +12,7 @@ import { http, HttpResponse } from 'msw';
 import { usePreferenceWithFallback } from './use-preference-with-fallback';
 import { server } from '../../../test-utils/msw/server';
 import { createTestContext } from '../../../test-utils/create-test-context';
-import { saveLocalStorageTheme } from '../store/preferences.local-storage';
+import { saveLocalStorageTheme } from '../../../shared/lib/preferences.local-storage';
 
 beforeEach(() => localStorage.clear());
 
