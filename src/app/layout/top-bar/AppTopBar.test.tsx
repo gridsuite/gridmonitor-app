@@ -5,15 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { render, screen } from '@testing-library/react';
-import { IntlProvider } from 'react-intl';
-import { MemoryRouter, Route, Routes } from 'react-router';
-import { describe, expect, vi, it } from 'vitest';
+import { screen } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
+import type { UserProfile } from 'features/authentication/store/authentication.type';
+import { renderWithProviders } from 'test-utils/render-with-providers';
 import { APP_PATHS } from '../../router/paths';
-import messagesEn from '../../../shared/translations/en/common.json';
 import AppTopBar from './AppTopBar';
-import type { UserProfile } from '../../../features/authentication/store/authentication.type';
-import { renderWithProviders } from '../../../test-utils/render-with-providers';
 
 vi.mock('./AppNavBar', () => ({
     SettingsTabs: () => <div role="tab">Configuration</div>,
