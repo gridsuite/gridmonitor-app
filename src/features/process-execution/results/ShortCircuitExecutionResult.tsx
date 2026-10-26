@@ -6,7 +6,6 @@
  */
 
 import { useCallback, useMemo } from 'react';
-import { useAppSelector } from 'app/store/store';
 import {
     TableType,
     mappingTabs,
@@ -28,6 +27,7 @@ import { CustomAggridReduxProvider } from '../list/custom-aggrid-redux-provider'
 import { EMPTY_RESULT_FILTERS, EMPTY_RESULT_SORT } from './result-column-filters';
 import { prepareShortCircuitQuery, serializeResultQuery } from './result-query-adapters';
 import { useResultPagination } from './hooks/use-result-pagination';
+import { useAppSelector } from '../../../app/store/hooks';
 
 const RESULT_TYPE = SHORT_CIRCUIT_RESULT_TYPES.AllBuses;
 const FILTER_TAB = mappingTabs(ShortCircuitAnalysisType.ALL_BUSES);

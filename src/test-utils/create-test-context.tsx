@@ -9,6 +9,7 @@ import React, { PropsWithChildren } from 'react';
 import { Provider } from 'react-redux';
 import { setupStore, type RootState } from 'app/store/store';
 import { AuthenticationState } from 'features/authentication/store/authentication.type';
+import { useLocation } from 'react-router';
 
 export const defaultAuthTestState: AuthenticationState = {
     user: { id_token: 'test-token', profile: { sub: 'test-sub' } } as AuthenticationState['user'],
@@ -41,4 +42,16 @@ export function createTestContext(overrides?: TestOverrides) {
         store,
         wrapper,
     };
+}
+
+export const LOCATION_OBSERVER_TEST_ID = 'location-observer-pathname';
+
+export function LocationObserver() {
+    const { pathname } = useLocation();
+
+    return (
+        <span data-testid={LOCATION_OBSERVER_TEST_ID} hidden>
+            {pathname}
+        </span>
+    );
 }

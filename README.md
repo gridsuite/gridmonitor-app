@@ -54,6 +54,31 @@ See the [UI styling guidelines](STYLE_GUIDELINES.md) for this application's them
 - **`npm run build`** - Builds the application. This automatically runs `npm run prebuild` first.
 - **`npm run prebuild`** - Runs linting and type checking before the build. This script is executed automatically by npm before `npm run build` and ensures that the build is not executed if linting or type checking fails. You do not need to call this manually unless you want to verify code quality without building.
 
+## Architecture
+
+The application follows a feature-based architecture, separating application setup, business features, and reusable code.
+
+### Directory structure
+
+```text
+src/
+├── app/          # Application setup, routing, pages, layout, providers and Redux store
+├── features/     # Business features and their components, hooks and logic
+├── shared/       # Reusable components, utilities, API clients and configuration
+├── plugins/      # Plugin registration and translations
+├── assets/       # Static assets
+├── types/        # Global TypeScript declarations
+└── test-utils/   # Shared testing utilities, fixtures and MSW setup
+```
+
+### Architecture rules
+
+- Features and shared modules must not depend on application wiring (routing configuration, providers, store initialization, etc.).
+- From `shared` and `features` directories, a limited set of imports from `app/` is allowed, including route paths, typed Redux hooks and store types. See `eslint.config.js` for the enforced boundaries.
+- Import store types using `import type`. Do not import the runtime store from features or shared modules.
+- Do not import generated RTK Query APIs directly. Use the enhanced API entry points instead.
+- Keep unit tests close to the code they test, using `*.test.ts` or `*.test.tsx`. See [unit test guidelines](UNIT_TEST_GUIDELINES.md).
+
 ## Testing
 
 - **`npm run test`** - Runs Vitest in watch mode.

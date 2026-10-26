@@ -15,7 +15,8 @@ import {
     invalidateProcessExecutionSteps,
     isProcessExecutionUpdateNotification,
 } from 'shared/api/monitor-api';
-import { useAppDispatch } from '../store/store';
+
+import { useAppDispatch } from '../store/hooks';
 
 export const useProcessInvalidationsListener = () => {
     const dispatch = useAppDispatch();

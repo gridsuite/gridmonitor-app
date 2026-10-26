@@ -4,21 +4,21 @@
 
 - Test application behavior, not React, MUI, or RTK Query internals. Choose the smallest boundary that proves the behavior. Do not duplicate the same scenario at every layer.
 - Test pure mappings, filters, and validation directly. Test hooks independently when they have their own contract. Otherwise, cover them through the component or workflow that uses them.
-- Put tests in the relevant `__tests__` directory. Name each case for its condition and expected outcome, such as `rolls back the update when the request fails`.
-- Cover relevant boundaries and failures, not just successful rendering. 
+- Colocate tests with the code they cover, using `*.test.ts` or `*.test.tsx`. Name each case for its condition and expected outcome, such as `rolls back the update when the request fails`.
+- Cover relevant boundaries and failures, not just successful rendering.
 
-| Behavior          | What to prove                                                                                 |
-| ----------------- | --------------------------------------------------------------------------------------------- |
-| Data fetching     | Loaded content, pending state, empty response, handled error                                  |
-| Form submission   | Correct request, invalid input blocks submission, pending state prevents duplicate submission |
-| Optimistic update | Immediate change, persistence on success, rollback on failure                                 |
-| Navigation        | User action displays the expected destination content                                         |
+| Behavior          | What to prove                                                                                     |
+| ----------------- | ------------------------------------------------------------------------------------------------- |
+| Data fetching     | Loaded content, pending state, empty response, handled error                                      |
+| Form submission   | Correct request, invalid input blocks submission, pending state prevents duplicate submission     |
+| Optimistic update | Immediate change, persistence on success, rollback on failure                                     |
+| Navigation        | User action displays the expected destination content (using `LocationObserver` when appropriate) |
 
 ## Shared helpers
 
 - Use `renderWithProviders` from `test-utils/render-with-providers` for app UI, and `createTestProviders` for hooks needing the full provider tree. Use `createTestContext` from `test-utils/create-test-context` for Redux-only hooks.
 - Reuse these helpers instead of duplicating provider trees. They create a fresh store and default to an authenticated user. The full provider tree includes routing, the app theme, English messages, and snackbars.
-- Set `initialEntries` for routes and `state` for Redux overrides. 
+- Set `initialEntries` for routes and `state` for Redux overrides.
 - Use fixtures from `test-utils/fixtures.ts` and override only fields relevant to the scenario.
 
 ## Mocking boundaries
@@ -73,7 +73,7 @@ it('calls the confirmation callback when the user confirms', async () => {
 });
 ```
 
-Keep the real component and mock only its public callbacks. Calling `onConfirm()` directly would test the mock, not the button wiring. 
+Keep the real component and mock only its public callbacks. Calling `onConfirm()` directly would test the mock, not the button wiring.
 
 ### Feature: keep fetching and rendering real
 

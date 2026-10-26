@@ -6,7 +6,6 @@
  */
 
 import { configureStore } from '@reduxjs/toolkit';
-import { useDispatch, useSelector } from 'react-redux';
 import { monitorApi } from 'shared/api/monitor-api';
 import { exploreApi } from 'shared/api/explore-api';
 import { studyApi } from 'shared/api/study-api';
@@ -38,8 +37,6 @@ setCommonStore({
     subscribe: (listener) => store.subscribe(listener),
     getState: () => store.getState().authentication,
 });
-export const useAppDispatch = useDispatch.withTypes<AppDispatch>();
-export const useAppSelector = useSelector.withTypes<RootState>();
 
 if (import.meta.env.DEV && import.meta.hot) {
     import.meta.hot.accept('./reducer', () => {

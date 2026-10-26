@@ -19,14 +19,14 @@ import {
     selectShowAuthenticationRouterLogin,
     selectSignInCallbackError,
 } from 'features/authentication/store/authentication.selectors';
-import { getErrorMessage } from 'shared/lib/error';
 import { fetchIdpSettings } from 'shared/config/idp-settings';
-import { useAppParametersInvalidationListener } from './notifications/use-app-parameters-invalidation-listener';
+import { getErrorMessage } from '../shared/lib/get-error-message';
+import { usePreferencesInvalidationListener } from './notifications/use-preferences-invalidation-listener';
 import { useProcessInvalidationsListener } from './notifications/use-process-invalidation-listener';
-import { useAppDispatch, useAppSelector } from './store/store';
 import { AppRouter } from './router/AppRouter';
 import { useStableUserProfile } from '../features/authentication/hooks/use-stable-user-profile';
 import { AppLayout } from './layout/AppLayout';
+import { useAppDispatch, useAppSelector } from './store/hooks';
 
 function App() {
     const userProfile = useStableUserProfile();
@@ -78,7 +78,7 @@ function App() {
         // Note: dispatch and initialMatchSilentRenewCallbackUrl won't change
     }, [initialMatchSigninCallbackUrl, initialMatchSilentRenewCallbackUrl, dispatch]);
 
-    useAppParametersInvalidationListener();
+    usePreferencesInvalidationListener();
     useProcessInvalidationsListener();
 
     const onLogoutClick = () => logout(dispatch, userManager.instance)?.catch((err) => console.error(err));

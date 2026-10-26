@@ -8,7 +8,7 @@ import { useIntl } from 'react-intl';
 import { Box, Tooltip } from '@mui/material';
 import { Link } from 'react-router';
 import { getFormattedDate } from '../../../../shared/lib/date-time-formatter';
-import { PROCESS_PATHS } from '../../router/process-paths';
+import { APP_PATHS } from '../../../../app/router/paths';
 
 export type ProcessDateCellRendererProps = { value: string; id: string };
 
@@ -20,7 +20,7 @@ export function ProcessDateCellRenderer({ value, id }: Readonly<ProcessDateCellR
         <Box>
             <Tooltip title={fullDate}>
                 <Link
-                    to={PROCESS_PATHS.stepInfos(id)}
+                    to={APP_PATHS.process.stepInfos(id)}
                     onClick={(event) => event.stopPropagation()}
                     style={{
                         color: 'inherit',

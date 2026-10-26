@@ -195,9 +195,49 @@ const projectConfig = [
                         // Generated RTK Query API should not be imported directly, otherwise all enhancements are ignored
                         {
                             group: ['*.generated', '**/*.generated'],
-                            message: 'Do not import generated APIs directly. Use the enhanced API instead.',
+                            message: 'Do not import generated APIs directly. Use the public API entry point instead.',
                         },
                     ],
+                },
+            ],
+        },
+    },
+    {
+        name: 'project/dependency-boundaries',
+        files: ['src/**/*.{ts,tsx}'],
+        rules: {
+            'import-x/no-restricted-paths': [
+                'error',
+                {
+                    zones: [
+                        {
+                            target: './src/shared',
+                            from: ['./src/app', './src/features'],
+                            except: ['store/store.ts'],
+                            message:
+                                'Shared code may import store type, otherwise it must be independent of application and feature code.',
+                        },
+                        {
+                            target: ['./src/features'],
+                            from: './src/app',
+                            except: ['store/hooks.ts', 'store/store.ts', 'router/paths.ts'],
+                            message:
+                                'Features may use typed Redux hooks, store types and app paths, but not application wiring..',
+                        },
+                    ],
+                },
+            ],
+        },
+    },
+    {
+        name: 'project/feature-store-types',
+        files: ['src/features/**/*.{ts,tsx}', 'src/shared/**/*.{ts,tsx}'],
+        rules: {
+            'no-restricted-syntax': [
+                'error',
+                {
+                    selector: String.raw`ImportDeclaration[source.value=/app\/store\/store$/][importKind!="type"]`,
+                    message: 'Import store types with import type; features must not import the runtime store.',
                 },
             ],
         },
