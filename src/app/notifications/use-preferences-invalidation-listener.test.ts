@@ -30,7 +30,7 @@ vi.mock('@gridsuite/commons-ui', async (importOriginal) => {
     };
 });
 
-describe('usePrefrencesInvalidationListener', () => {
+describe('usePreferencesInvalidationListener', () => {
     let listenerCallbackMessage: ((event: MessageEvent) => void) | undefined;
 
     beforeEach(() => {
