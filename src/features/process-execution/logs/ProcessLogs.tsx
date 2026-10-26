@@ -14,7 +14,7 @@ import { APP_PATHS } from '../../../app/router/paths';
 import { ExecutionStatus } from '../../../shared/ui/ExecutionStatus';
 import { ProcessLogsAlert } from './ProcessLogsAlert';
 
-export function ProcessLogs({ executionId = '' }: { executionId?: string }) {
+export function ProcessLogs({ executionId = '' }: Readonly<{ executionId?: string }>) {
     const { execution, report, severities, isError, isEmpty, isLoading } = useProcessLogs(executionId);
 
     if (!execution) {
