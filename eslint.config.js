@@ -213,12 +213,7 @@ const projectConfig = [
                         {
                             target: ['./src/features', './src/shared'],
                             from: './src/app',
-                            except: [
-                                'app/store/hooks.ts',
-                                'app/store/store.ts',
-                                'app/router/paths.ts',
-                                'app/config/app-theme.ts',
-                            ],
+                            except: ['app/store/hooks.ts', 'app/store/store.ts', 'app/router/paths.ts'],
                             message:
                                 'Features and shared may import app paths and approved Redux utilities, but not application wiring.',
                         },
