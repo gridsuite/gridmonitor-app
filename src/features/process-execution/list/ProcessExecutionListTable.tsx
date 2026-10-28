@@ -10,13 +10,18 @@ import { yellow } from '@mui/material/colors';
 import { useIntl } from 'react-intl';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router';
-import { CustomAGGrid, DefaultCellRenderer, TableType, updateAgGridFilters } from '@gridsuite/commons-ui';
+import {
+    CustomAGGrid,
+    DefaultCellRenderer,
+    PROCESS_EXECUTION_LIST_SORT_STORE,
+    TableType,
+    updateAgGridFilters,
+} from '@gridsuite/commons-ui';
 import { AgGridReact } from 'ag-grid-react';
 import { GridApi, RowStyle } from 'ag-grid-community';
 import { ProcessExecutionInfos } from '../models/process-result';
 import { processExecutionListColumnsDefinition } from '../results/ProcessExecutionListUtil';
 import { APP_PATHS } from '../../../app/router/paths';
-import { PROCESS_EXECUTION_HISTORY_SORT_STORE } from './store/process-execution-list.constants';
 import { AGGRID_LOCALES } from '../../../shared/translations/not-intl/aggrid-locales';
 import { useAppSelector } from '../../../app/store/hooks';
 
@@ -39,23 +44,21 @@ export function ProcessExecutionListTable({ executions }: Readonly<ProcessExecut
 
     const applyTableState = useCallback(
         (api: GridApi) => {
-            const sortState = tableSort[PROCESS_EXECUTION_HISTORY_SORT_STORE]?.[PROCESS_EXECUTION_HISTORY_SORT_STORE];
+            const sortState = tableSort[PROCESS_EXECUTION_LIST_SORT_STORE]?.[PROCESS_EXECUTION_LIST_SORT_STORE];
             api.applyColumnState({
                 state: sortState ?? [],
                 defaultState: { sort: null },
             });
 
             const filters =
-                tableFilters.columnsFilters?.[TableType.ProcessExecutionHistory]?.[
-                    PROCESS_EXECUTION_HISTORY_SORT_STORE
-                ];
+                tableFilters.columnsFilters?.[TableType.ProcessExecutionList]?.[PROCESS_EXECUTION_LIST_SORT_STORE];
             updateAgGridFilters(api, filters);
         },
         [tableSort, tableFilters]
     );
 
     useEffect(() => {
-        const sortState = tableSort[PROCESS_EXECUTION_HISTORY_SORT_STORE]?.[PROCESS_EXECUTION_HISTORY_SORT_STORE];
+        const sortState = tableSort[PROCESS_EXECUTION_LIST_SORT_STORE]?.[PROCESS_EXECUTION_LIST_SORT_STORE];
         gridRef.current?.api?.applyColumnState({
             state: sortState ?? [],
             defaultState: { sort: null },
@@ -64,7 +67,7 @@ export function ProcessExecutionListTable({ executions }: Readonly<ProcessExecut
 
     useEffect(() => {
         const filters =
-            tableFilters.columnsFilters?.[TableType.ProcessExecutionHistory]?.[PROCESS_EXECUTION_HISTORY_SORT_STORE];
+            tableFilters.columnsFilters?.[TableType.ProcessExecutionList]?.[PROCESS_EXECUTION_LIST_SORT_STORE];
         updateAgGridFilters(gridRef.current?.api, filters);
     }, [tableFilters]);
 

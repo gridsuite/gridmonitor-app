@@ -9,12 +9,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
     FilterConfig,
     PROCESS_EXECUTION,
+    PROCESS_EXECUTION_LIST_SORT_STORE,
     SortConfig,
     SortWay,
     TableSortConfig,
     TableType,
 } from '@gridsuite/commons-ui';
-import { PROCESS_EXECUTION_HISTORY_SORT_STORE } from './process-execution-list.constants';
 import { ProcessTablesState } from './process-execution-list.type';
 
 type SetTableSortPayload = {
@@ -30,11 +30,11 @@ type SetTableFiltersPayload = {
 };
 
 const initialSortState: TableSortConfig = {
-    [PROCESS_EXECUTION_HISTORY_SORT_STORE]: [{ colId: 'processScheduledAt', sort: SortWay.DESC }],
+    [PROCESS_EXECUTION_LIST_SORT_STORE]: [{ colId: 'processScheduledAt', sort: SortWay.DESC }],
 };
 
-const initialProcessExecutionHistoryFilterState = {
-    [PROCESS_EXECUTION_HISTORY_SORT_STORE]: [],
+const initialProcessExecutionListFilterState = {
+    [PROCESS_EXECUTION_LIST_SORT_STORE]: [],
 };
 
 const initialLogsFilterState = {
@@ -43,14 +43,14 @@ const initialLogsFilterState = {
 
 const initialState: ProcessTablesState = {
     tableSort: {
-        [PROCESS_EXECUTION_HISTORY_SORT_STORE]: {
+        [PROCESS_EXECUTION_LIST_SORT_STORE]: {
             ...initialSortState,
         },
     },
     tableFilters: {
         columnsFilters: {
-            [TableType.ProcessExecutionHistory]: {
-                ...initialProcessExecutionHistoryFilterState,
+            [TableType.ProcessExecutionList]: {
+                ...initialProcessExecutionListFilterState,
             },
             [TableType.Logs]: {
                 ...initialLogsFilterState,

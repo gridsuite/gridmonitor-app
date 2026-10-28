@@ -16,6 +16,7 @@ import {
     CustomAggridComparatorFilter,
     FilterTextComparators,
     CustomAggridAutocompleteFilterParams,
+    PROCESS_EXECUTION_LIST_SORT_STORE,
 } from '@gridsuite/commons-ui';
 import { IntlShape } from 'react-intl';
 import { ProcessStatusCellRenderer } from '../list/renderers/process-status-cell-renderer';
@@ -23,7 +24,6 @@ import { ProcessDetailCellRenderer } from '../list/renderers/process-detail-cell
 import { ProcessDateCellRenderer } from '../list/renderers/process-date-cell-renderer';
 import { ProcessTypeCellRenderer } from '../list/renderers/process-type-cell-renderer';
 import { ProcessUserCellRenderer } from '../list/renderers/process-user-cell-renderer';
-import { PROCESS_EXECUTION_HISTORY_SORT_STORE } from '../list/store/process-execution-list.constants';
 
 interface TableParams {
     sortParams: SortParams;
@@ -36,12 +36,12 @@ interface TableParams {
 const createTableParams = (): TableParams => {
     return {
         sortParams: {
-            table: PROCESS_EXECUTION_HISTORY_SORT_STORE,
-            tab: PROCESS_EXECUTION_HISTORY_SORT_STORE,
+            table: PROCESS_EXECUTION_LIST_SORT_STORE,
+            tab: PROCESS_EXECUTION_LIST_SORT_STORE,
         },
         filterParams: {
-            type: TableType.ProcessExecutionHistory,
-            tab: PROCESS_EXECUTION_HISTORY_SORT_STORE,
+            type: TableType.ProcessExecutionList,
+            tab: PROCESS_EXECUTION_LIST_SORT_STORE,
         },
     };
 };
