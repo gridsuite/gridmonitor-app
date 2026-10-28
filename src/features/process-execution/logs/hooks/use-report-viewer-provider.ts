@@ -18,7 +18,7 @@ import {
     TableType,
 } from '@gridsuite/commons-ui';
 import { useLazyGetExecutionLogsQuery, useLazyGetExecutionLogsSearchQuery } from '../../../../shared/api/monitor-api';
-import { setTableFilters } from '../../history/store/process-history.slice';
+import { setTableFilters } from '../../store/process-tables.slice';
 import { useAppDispatch, useAppSelector } from '../../../../app/store/hooks';
 
 const DEFAULT_PAGE_SIZE = 30;
@@ -51,7 +51,7 @@ export const mapReportLogs = (reportLogs: RawReportLog[] = []): Log[] => {
 export function useReportViewerProvider(executionId: string | undefined) {
     const dispatch = useAppDispatch();
     const filters = useAppSelector(
-        (state) => state.processHistory.tableFilters.columnsFilters?.[TableType.Logs]?.[PROCESS_EXECUTION] ?? []
+        (state) => state.processTables.tableFilters.columnsFilters?.[TableType.Logs]?.[PROCESS_EXECUTION] ?? []
     );
 
     const [pagination, setPagination] = useState<PaginationConfig>({ page: 0, rowsPerPage: DEFAULT_PAGE_SIZE });

@@ -54,7 +54,7 @@ describe('useReportViewerProvider', () => {
 
         const { wrapper } = createTestProviders({
             state: {
-                processHistory: {
+                processTables: {
                     tableSort: {},
                     tableFilters: {
                         columnsFilters: {
@@ -170,7 +170,7 @@ describe('useReportViewerProvider', () => {
 
         await waitFor(() => {
             expect(
-                store.getState().processHistory.tableFilters.columnsFilters?.[TableType.Logs]?.[PROCESS_EXECUTION]
+                store.getState().processTables.tableFilters.columnsFilters?.[TableType.Logs]?.[PROCESS_EXECUTION]
             ).toEqual(filters);
         });
     });

@@ -34,8 +34,8 @@ export function ProcessHistoryTable({ executions }: Readonly<ProcessHistoryTable
     const gridRef = useRef<AgGridReact>(null);
     const intl = useIntl();
     const navigate = useNavigate();
-    const tableSort = useAppSelector((state) => state.processHistory.tableSort);
-    const tableFilters = useAppSelector((state) => state.processHistory.tableFilters);
+    const tableSort = useAppSelector((state) => state.processTables.tableSort);
+    const tableFilters = useAppSelector((state) => state.processTables.tableFilters);
 
     const applyTableState = useCallback(
         (api: GridApi) => {

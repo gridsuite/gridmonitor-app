@@ -14,7 +14,7 @@ import {
     useNotificationsListener,
 } from '@gridsuite/commons-ui';
 import { isProcessExecutionUpdateNotification } from 'shared/api/monitor-api';
-import { CustomAggridReduxProvider } from '../history/custom-aggrid-redux-provider';
+import { CustomAggridReduxProvider } from '../providers/custom-aggrid-redux-provider';
 import { useReportViewerProvider } from './hooks/use-report-viewer-provider';
 
 type ProcessReportViewerProviderProps = PropsWithChildren<{

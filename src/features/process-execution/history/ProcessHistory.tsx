@@ -11,7 +11,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { ProcessHistoryAlert } from './ProcessHistoryAlert';
 import { ProcessHistoryTable } from './ProcessHistoryTable';
 import { useProcessHistory } from './hooks/use-process-history';
-import { CustomAggridReduxProvider } from './custom-aggrid-redux-provider';
+import { CustomAggridReduxProvider } from '../providers/custom-aggrid-redux-provider';
 
 export function ProcessHistory() {
     const intl = useIntl();

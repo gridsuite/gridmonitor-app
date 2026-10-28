@@ -14,8 +14,8 @@ import {
     TableSortConfig,
     TableType,
 } from '@gridsuite/commons-ui';
-import { PROCESS_EXECUTION_HISTORY_SORT_STORE } from './process-history.constants';
-import { ProcessTablesState } from './process-history.type';
+import { PROCESS_EXECUTION_HISTORY_SORT_STORE } from '../history/store/process-history.constants';
+import { ProcessTablesState } from './process-tables.type';
 
 type SetTableSortPayload = {
     table: string;
@@ -62,8 +62,8 @@ const initialState: ProcessTablesState = {
     tables: { uuid: null },
 };
 
-const processHistorySlice = createSlice({
-    name: 'processHistory',
+const processTablesSlice = createSlice({
+    name: 'processTables',
     initialState,
     reducers: {
         setTableSort: (state, action: PayloadAction<SetTableSortPayload>) => {
@@ -79,6 +79,6 @@ const processHistorySlice = createSlice({
     },
 });
 
-export const { setTableSort, setTableFilters } = processHistorySlice.actions;
+export const { setTableSort, setTableFilters } = processTablesSlice.actions;
 
-export const processHistoryReducer = processHistorySlice.reducer;
+export const processTablesReducer = processTablesSlice.reducer;

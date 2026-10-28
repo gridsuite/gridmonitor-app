@@ -23,7 +23,7 @@ import type { DisplayedColumnsChangedEvent, GridReadyEvent, RowDataUpdatedEvent 
 import { ProcessStatus, downloadExecutionResultsCsv } from 'shared/api/monitor-api';
 import { SHORT_CIRCUIT_RESULT_TYPES } from 'shared/api/monitor-api/result-subtypes';
 import { useShortCircuitExecutionResults } from './hooks/use-execution-results';
-import { CustomAggridReduxProvider } from '../history/custom-aggrid-redux-provider';
+import { CustomAggridReduxProvider } from '../providers/custom-aggrid-redux-provider';
 import { EMPTY_RESULT_FILTERS, EMPTY_RESULT_SORT } from './result-column-filters';
 import { prepareShortCircuitQuery, serializeResultQuery } from './result-query-adapters';
 import { useResultPagination } from './hooks/use-result-pagination';
@@ -47,11 +47,11 @@ export function ShortCircuitExecutionResultTable({
     const { snackError } = useSnackMessage();
     const sort = useAppSelector(
         (state) =>
-            state.processHistory.tableSort[SHORTCIRCUIT_ANALYSIS_RESULT_SORT_STORE]?.[FILTER_TAB] ?? EMPTY_RESULT_SORT
+            state.processTables.tableSort[SHORTCIRCUIT_ANALYSIS_RESULT_SORT_STORE]?.[FILTER_TAB] ?? EMPTY_RESULT_SORT
     );
     const filters = useAppSelector(
         (state) =>
-            state.processHistory.tableFilters.columnsFilters[TableType.ShortcircuitAnalysis]?.[FILTER_TAB] ??
+            state.processTables.tableFilters.columnsFilters[TableType.ShortcircuitAnalysis]?.[FILTER_TAB] ??
             EMPTY_RESULT_FILTERS
     );
     const query = useMemo(() => prepareShortCircuitQuery(filters, sort), [filters, sort]);

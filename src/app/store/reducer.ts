@@ -11,13 +11,13 @@ import { configApi } from 'shared/api/config-api';
 import { exploreApi } from 'shared/api/explore-api';
 import { studyApi } from 'shared/api/study-api';
 import { monitorApi } from 'shared/api/monitor-api';
-import { processHistoryReducer } from '../../features/process-execution/history/store/process-history.slice';
+import { processTablesReducer } from '../../features/process-execution/store/process-tables.slice';
 
 export const reducer = combineReducers({
     authentication: authenticationReducer,
     [monitorApi.reducerPath]: monitorApi.reducer,
     [configApi.reducerPath]: configApi.reducer,
     [studyApi.reducerPath]: studyApi.reducer,
-    processHistory: processHistoryReducer,
+    processTables: processTablesReducer,
     [exploreApi.reducerPath]: exploreApi.reducer,
 });
