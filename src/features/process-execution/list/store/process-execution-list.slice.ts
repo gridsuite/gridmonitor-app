@@ -6,29 +6,28 @@
  */
 
 import { createSlice } from '@reduxjs/toolkit';
-import { SortWay, TableSortConfig, TableType } from '@gridsuite/commons-ui';
+import { PROCESS_EXECUTION_LIST_SORT_STORE, SortWay, TableSortConfig, TableType } from '@gridsuite/commons-ui';
 import type { TableState } from 'shared/types/table-state';
 import { tableStateReducers } from 'shared/store/table-state-reducers';
-import { PROCESS_EXECUTION_HISTORY_SORT_STORE } from './process-execution-list.constants';
 
 const initialSortState: TableSortConfig = {
-    [PROCESS_EXECUTION_HISTORY_SORT_STORE]: [{ colId: 'processScheduledAt', sort: SortWay.DESC }],
+    [PROCESS_EXECUTION_LIST_SORT_STORE]: [{ colId: 'processScheduledAt', sort: SortWay.DESC }],
 };
 
-const initialProcessExecutionHistoryFilterState = {
-    [PROCESS_EXECUTION_HISTORY_SORT_STORE]: [],
+const initialProcessExecutionListFilterState = {
+    [PROCESS_EXECUTION_LIST_SORT_STORE]: [],
 };
 
 const initialState: TableState = {
     tableSort: {
-        [PROCESS_EXECUTION_HISTORY_SORT_STORE]: {
+        [PROCESS_EXECUTION_LIST_SORT_STORE]: {
             ...initialSortState,
         },
     },
     tableFilters: {
         columnsFilters: {
-            [TableType.ProcessExecutionHistory]: {
-                ...initialProcessExecutionHistoryFilterState,
+            [TableType.ProcessExecutionList]: {
+                ...initialProcessExecutionListFilterState,
             },
         },
     },
