@@ -23,7 +23,7 @@ import { ProcessDetailCellRenderer } from '../list/renderers/process-detail-cell
 import { ProcessDateCellRenderer } from '../list/renderers/process-date-cell-renderer';
 import { ProcessTypeCellRenderer } from '../list/renderers/process-type-cell-renderer';
 import { ProcessUserCellRenderer } from '../list/renderers/process-user-cell-renderer';
-import { PROCESS_EXECUTION_HISTORY_SORT_STORE } from '../list/store/process-results.constants';
+import { PROCESS_EXECUTION_HISTORY_SORT_STORE } from '../list/store/process-execution-list.constants';
 
 interface TableParams {
     sortParams: SortParams;
@@ -66,7 +66,7 @@ const createEnumFilterParams = (): any => {
     };
 };
 
-export const processResultsColumnsDefinition = (
+export const processExecutionListColumnsDefinition = (
     intl: IntlShape,
     filterEnums: FilterEnumsType,
     getEnumLabel: (value: string) => string // Used for translation of enum values in the filter

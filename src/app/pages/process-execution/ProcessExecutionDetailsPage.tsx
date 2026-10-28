@@ -6,12 +6,12 @@
  */
 
 import { useParams } from 'react-router';
-import { ProcessLogs } from '../../../features/process-execution/logs/ProcessLogs';
+import { ProcessExecutionDetails } from '../../../features/process-execution/details/ProcessExecutionDetails';
 
-function ProcessLogsPage() {
+function ProcessExecutionDetailsPage() {
     const { id } = useParams<{ id: string }>();
 
-    return <ProcessLogs executionId={id} />;
+    return <ProcessExecutionDetails processExecutionId={id} />;
 }
 
-export default ProcessLogsPage;
+export default ProcessExecutionDetailsPage;

@@ -7,13 +7,23 @@
 
 import { Alert, Paper, Typography } from '@mui/material';
 
-type ProcessResultsResultProps = {
+type ProcessExecutionLogsProps = {
     isEmpty: boolean;
     isError: boolean;
     isLoading: boolean;
+    isMissingExecutionId: boolean;
 };
 
-export function ProcessResultsAlert({ isEmpty, isError, isLoading }: Readonly<ProcessResultsResultProps>) {
+export function ProcessExecutionLogsAlert({
+    isEmpty,
+    isError,
+    isLoading,
+    isMissingExecutionId,
+}: Readonly<ProcessExecutionLogsProps>) {
+    if (isMissingExecutionId) {
+        return <Alert severity="warning">No execution ID provided.</Alert>;
+    }
+
     if (isLoading) {
         return (
             <Paper sx={{ p: 3 }}>
@@ -23,18 +33,18 @@ export function ProcessResultsAlert({ isEmpty, isError, isLoading }: Readonly<Pr
                         color: 'text.secondary',
                     }}
                 >
-                    Loading process executions...
+                    Loading process logs...
                 </Typography>
             </Paper>
         );
     }
 
     if (isError) {
-        return <Alert severity="error">Unable to load process executions.</Alert>;
+        return <Alert severity="error">Unable to load process logs.</Alert>;
     }
 
     if (isEmpty) {
-        return <Alert severity="info">No process executions found.</Alert>;
+        return <Alert severity="info">No process logs found for this execution.</Alert>;
     }
 
     return null;
