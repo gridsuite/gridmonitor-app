@@ -11,7 +11,7 @@ import { useIntl } from 'react-intl';
 import type { ColDef } from 'ag-grid-community';
 import { LimitViolationResult, RunningStatus, TableType } from '@gridsuite/commons-ui';
 import { ProcessStatus } from 'shared/api/monitor-api';
-import { ExecutionResultsTableProvider } from './providers/ExecutionResultsTableProvider';
+import { ProcessExecutionResultsTableProvider } from './providers/ProcessExecutionResultsTableProvider';
 import { EMPTY_RESULT_FILTERS, EMPTY_RESULT_SORT, makeResultFilterColumn } from './result-column-filters';
 import { prepareLoadFlowQuery } from './result-query-adapters';
 import { useLoadFlowExecutionResults } from './hooks/use-execution-results';
@@ -39,11 +39,11 @@ export function LoadFlowExecutionResultTable({
     const intl = useIntl();
     const filters = useAppSelector(
         (state) =>
-            state.executionResults.tableFilters.columnsFilters[TableType.Loadflow]?.[RESULT_TYPE] ??
+            state.processExecutionResults.tableFilters.columnsFilters[TableType.Loadflow]?.[RESULT_TYPE] ??
             EMPTY_RESULT_FILTERS
     );
     const sort = useAppSelector(
-        (state) => state.executionResults.tableSort[TableType.Loadflow]?.[RESULT_TYPE] ?? EMPTY_RESULT_SORT
+        (state) => state.processExecutionResults.tableSort[TableType.Loadflow]?.[RESULT_TYPE] ?? EMPTY_RESULT_SORT
     );
     const query = useMemo(() => prepareLoadFlowQuery(filters, sort, intl), [filters, sort, intl]);
     const {
@@ -69,7 +69,7 @@ export function LoadFlowExecutionResultTable({
     );
 
     return (
-        <ExecutionResultsTableProvider>
+        <ProcessExecutionResultsTableProvider>
             <Box
                 sx={{
                     display: 'flex',
@@ -100,6 +100,6 @@ export function LoadFlowExecutionResultTable({
                     />
                 </Box>
             </Box>
-        </ExecutionResultsTableProvider>
+        </ProcessExecutionResultsTableProvider>
     );
 }

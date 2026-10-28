@@ -14,7 +14,7 @@ import {
     useNotificationsListener,
 } from '@gridsuite/commons-ui';
 import { isProcessExecutionUpdateNotification } from 'shared/api/monitor-api';
-import { ExecutionLogsTableProvider } from './providers/ExecutionLogsTableProvider';
+import { ProcessExecutionLogsTableProvider } from './providers/ProcessExecutionLogsTableProvider';
 import { useReportViewerProvider } from './hooks/use-report-viewer-provider';
 
 type ProcessReportViewerProviderProps = PropsWithChildren<{
@@ -56,10 +56,10 @@ export function ProcessReportViewerProvider({ executionId, children }: Readonly<
     );
 
     return (
-        <ExecutionLogsTableProvider>
+        <ProcessExecutionLogsTableProvider>
             <ReportFetcherContext.Provider value={fetcherContextValue}>
                 <ReportFilterContext.Provider value={filterContextValue}>{children}</ReportFilterContext.Provider>
             </ReportFetcherContext.Provider>
-        </ExecutionLogsTableProvider>
+        </ProcessExecutionLogsTableProvider>
     );
 }

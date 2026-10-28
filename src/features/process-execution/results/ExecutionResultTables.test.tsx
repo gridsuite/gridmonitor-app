@@ -89,7 +89,7 @@ describe('execution result tables', () => {
 
         renderWithProviders(<Component executionId="execution-1" />, {
             state: {
-                executionResults: {
+                processExecutionResults: {
                     tableSort: { [table]: { [tab]: [{ colId: column, sort: SortWay.DESC }] } },
                     tableFilters: { columnsFilters: {} },
                 },

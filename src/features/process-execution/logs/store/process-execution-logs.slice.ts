@@ -20,8 +20,8 @@ const initialState: TableState = {
     },
 };
 
-const executionLogsSlice = createSlice({
-    name: 'executionLogs',
+const processExecutionLogsSlice = createSlice({
+    name: 'processExecutionLogs',
     initialState,
     reducers: {
         setTableSort: (state, action: PayloadAction<TableSortUpdate>) => {
@@ -37,6 +37,6 @@ const executionLogsSlice = createSlice({
     },
 });
 
-export const { setTableSort, setTableFilters } = executionLogsSlice.actions;
+export const { setTableSort, setTableFilters } = processExecutionLogsSlice.actions;
 
-export const executionLogsReducer = executionLogsSlice.reducer;
+export const processExecutionLogsReducer = processExecutionLogsSlice.reducer;

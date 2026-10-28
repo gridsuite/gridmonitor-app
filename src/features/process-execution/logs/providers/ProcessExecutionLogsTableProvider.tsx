@@ -9,11 +9,11 @@ import { PropsWithChildren, useCallback } from 'react';
 import { useAppDispatch, useAppSelector } from 'app/store/hooks';
 import { AgGridTableProvider } from 'shared/ui/ag-grid/AgGridTableProvider';
 import type { TableFiltersUpdate, TableSortUpdate } from 'shared/types/table-state';
-import { setTableFilters, setTableSort } from '../store/execution-logs.slice';
+import { setTableFilters, setTableSort } from '../store/process-execution-logs.slice';
 
-export function ExecutionLogsTableProvider({ children }: Readonly<PropsWithChildren>) {
+export function ProcessExecutionLogsTableProvider({ children }: Readonly<PropsWithChildren>) {
     const dispatch = useAppDispatch();
-    const { tableSort, tableFilters } = useAppSelector((state) => state.executionLogs);
+    const { tableSort, tableFilters } = useAppSelector((state) => state.processExecutionLogs);
     const updateSort = useCallback(
         (update: TableSortUpdate) => {
             dispatch(setTableSort(update));

@@ -23,7 +23,7 @@ import type { DisplayedColumnsChangedEvent, GridReadyEvent, RowDataUpdatedEvent 
 import { ProcessStatus, downloadExecutionResultsCsv } from 'shared/api/monitor-api';
 import { SHORT_CIRCUIT_RESULT_TYPES } from 'shared/api/monitor-api/result-subtypes';
 import { useShortCircuitExecutionResults } from './hooks/use-execution-results';
-import { ExecutionResultsTableProvider } from './providers/ExecutionResultsTableProvider';
+import { ProcessExecutionResultsTableProvider } from './providers/ProcessExecutionResultsTableProvider';
 import { EMPTY_RESULT_FILTERS, EMPTY_RESULT_SORT } from './result-column-filters';
 import { prepareShortCircuitQuery, serializeResultQuery } from './result-query-adapters';
 import { useResultPagination } from './hooks/use-result-pagination';
@@ -47,11 +47,12 @@ export function ShortCircuitExecutionResultTable({
     const { snackError } = useSnackMessage();
     const sort = useAppSelector(
         (state) =>
-            state.executionResults.tableSort[SHORTCIRCUIT_ANALYSIS_RESULT_SORT_STORE]?.[FILTER_TAB] ?? EMPTY_RESULT_SORT
+            state.processExecutionResults.tableSort[SHORTCIRCUIT_ANALYSIS_RESULT_SORT_STORE]?.[FILTER_TAB] ??
+            EMPTY_RESULT_SORT
     );
     const filters = useAppSelector(
         (state) =>
-            state.executionResults.tableFilters.columnsFilters[TableType.ShortcircuitAnalysis]?.[FILTER_TAB] ??
+            state.processExecutionResults.tableFilters.columnsFilters[TableType.ShortcircuitAnalysis]?.[FILTER_TAB] ??
             EMPTY_RESULT_FILTERS
     );
     const query = useMemo(() => prepareShortCircuitQuery(filters, sort), [filters, sort]);
@@ -99,7 +100,7 @@ export function ShortCircuitExecutionResultTable({
     );
 
     return (
-        <ExecutionResultsTableProvider>
+        <ProcessExecutionResultsTableProvider>
             <Box
                 sx={{
                     display: 'flex',
@@ -172,6 +173,6 @@ export function ShortCircuitExecutionResultTable({
                     />
                 </Box>
             </Box>
-        </ExecutionResultsTableProvider>
+        </ProcessExecutionResultsTableProvider>
     );
 }
