@@ -19,7 +19,7 @@ import {
 } from '@gridsuite/commons-ui';
 import { AgGridReact } from 'ag-grid-react';
 import { GridApi, RowStyle } from 'ag-grid-community';
-import { ProcessExecutionInfos } from '../models/process-result';
+import { ProcessExecutionInfos } from '../models/process-execution';
 import { processExecutionListColumnsDefinition } from './ProcessExecutionListUtil';
 import { APP_PATHS } from '../../../app/router/paths';
 import { AGGRID_LOCALES } from '../../../shared/translations/not-intl/aggrid-locales';
