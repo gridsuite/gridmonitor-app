@@ -5,9 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { PROCESS_EXECUTION, TableType } from '@gridsuite/commons-ui';
-import type { TableFiltersUpdate, TableSortUpdate, TableState } from 'shared/types/table-state';
+import type { TableState } from 'shared/types/table-state';
+import { tableStateReducers } from 'shared/store/table-state-reducers';
 
 const initialState: TableState = {
     tableSort: {},
@@ -23,20 +24,11 @@ const initialState: TableState = {
 const executionLogsSlice = createSlice({
     name: 'executionLogs',
     initialState,
-    reducers: {
-        setTableSort: (state, action: PayloadAction<TableSortUpdate>) => {
-            const { table, tab, sorts } = action.payload;
-            state.tableSort[table] ??= {};
-            state.tableSort[table][tab] = sorts;
-        },
-        setTableFilters: (state, action: PayloadAction<TableFiltersUpdate>) => {
-            const { filterType, filterSubType, filters } = action.payload;
-            state.tableFilters.columnsFilters[filterType] ??= {};
-            state.tableFilters.columnsFilters[filterType][filterSubType] = filters;
-        },
-    },
+    reducers: tableStateReducers,
 });
 
-export const { setTableSort, setTableFilters } = executionLogsSlice.actions;
+export const executionLogsTableActions = executionLogsSlice.actions;
+
+export const { setTableSort, setTableFilters } = executionLogsTableActions;
 
 export const executionLogsReducer = executionLogsSlice.reducer;

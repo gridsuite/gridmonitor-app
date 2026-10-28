@@ -5,35 +5,19 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { PropsWithChildren, useCallback } from 'react';
+import { PropsWithChildren, useMemo } from 'react';
+import { bindActionCreators } from '@reduxjs/toolkit';
 import { useAppDispatch, useAppSelector } from 'app/store/hooks';
 import { AgGridTableProvider } from 'shared/ui/ag-grid/AgGridTableProvider';
-import type { TableFiltersUpdate, TableSortUpdate } from 'shared/types/table-state';
-import { setTableFilters, setTableSort } from '../store/execution-results.slice';
+import { executionResultsTableActions } from '../store/execution-results.slice';
 
 export function ExecutionResultsTableProvider({ children }: Readonly<PropsWithChildren>) {
     const dispatch = useAppDispatch();
-    const { tableSort, tableFilters } = useAppSelector((state) => state.executionResults);
-    const updateSort = useCallback(
-        (update: TableSortUpdate) => {
-            dispatch(setTableSort(update));
-        },
-        [dispatch]
-    );
-    const updateFilters = useCallback(
-        (update: TableFiltersUpdate) => {
-            dispatch(setTableFilters(update));
-        },
-        [dispatch]
-    );
+    const tableState = useAppSelector((state) => state.executionResults);
+    const actions = useMemo(() => bindActionCreators(executionResultsTableActions, dispatch), [dispatch]);
 
     return (
-        <AgGridTableProvider
-            tableSort={tableSort}
-            columnFilters={tableFilters.columnsFilters}
-            onSortChange={updateSort}
-            onFiltersChange={updateFilters}
-        >
+        <AgGridTableProvider {...tableState} {...actions}>
             {children}
         </AgGridTableProvider>
     );
