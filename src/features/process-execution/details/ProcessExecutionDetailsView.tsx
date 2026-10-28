@@ -86,7 +86,7 @@ export function ProcessExecutionDetailsView({ execution, steps }: Readonly<Proce
             }}
         >
             <Breadcrumbs separator="/">
-                <Link component={RouterLink} to={APP_PATHS.process.results} underline="hover">
+                <Link component={RouterLink} to={APP_PATHS.process.history} underline="hover">
                     <Typography variant="subtitle1">
                         <FormattedMessage id="processLaunchHistory" />
                     </Typography>

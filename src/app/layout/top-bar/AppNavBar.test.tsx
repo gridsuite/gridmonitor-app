@@ -67,7 +67,7 @@ describe('SettingsTabs', () => {
     });
 
     it('marks the Execution history tab as selected when on the results path', () => {
-        renderWithRouter(<SettingsTabs />, APP_PATHS.process.results);
+        renderWithRouter(<SettingsTabs />, APP_PATHS.process.history);
 
         const historyTab = screen.getByRole('tab', { name: 'Launch history' });
         expect(historyTab).toHaveAttribute('aria-selected', 'true');
@@ -80,7 +80,7 @@ describe('SettingsTabs', () => {
             'href',
             APP_PATHS.processConfig.root
         );
-        expect(screen.getByRole('tab', { name: 'Launch history' })).toHaveAttribute('href', APP_PATHS.process.results);
+        expect(screen.getByRole('tab', { name: 'Launch history' })).toHaveAttribute('href', APP_PATHS.process.history);
     });
 
     it('renders tabs when on the gridmonitorConfigProcessConfig path (second branch of isConfigurationPath)', () => {
@@ -123,7 +123,7 @@ describe('ExecuteButton', () => {
     });
 
     it('renders an "Execute process" button on the results path', () => {
-        renderWithRouter(<ExecuteButton />, APP_PATHS.process.results);
+        renderWithRouter(<ExecuteButton />, APP_PATHS.process.history);
 
         expect(screen.getByRole('button', { name: /Execute process/i })).toBeInTheDocument();
     });

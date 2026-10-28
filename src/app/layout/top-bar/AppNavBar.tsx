@@ -22,7 +22,7 @@ interface NavBarTab {
 
 const leftTabs: NavBarTab[] = [
     { icon: <MiscellaneousServices />, labelId: 'nav.configuration', path: APP_PATHS.processConfig.root },
-    { icon: <ListAlt />, labelId: 'nav.launchHistory', path: APP_PATHS.process.results },
+    { icon: <ListAlt />, labelId: 'nav.launchHistory', path: APP_PATHS.process.history },
 ];
 
 function TabLabel({ icon, label }: { readonly icon: ReactNode; readonly label: string }) {

@@ -14,28 +14,28 @@ import { CustomAGGrid, DefaultCellRenderer, TableType, updateAgGridFilters } fro
 import { AgGridReact } from 'ag-grid-react';
 import { GridApi, RowStyle } from 'ag-grid-community';
 import { ProcessExecutionInfos } from '../models/process-result';
-import { processResultsColumnsDefinition } from '../results/ProcessResultsUtil';
+import { processHistoryColumnsDefinition } from './ProcessHistoryUtil';
 import { APP_PATHS } from '../../../app/router/paths';
-import { PROCESS_EXECUTION_HISTORY_SORT_STORE } from './store/process-results.constants';
+import { PROCESS_EXECUTION_HISTORY_SORT_STORE } from './store/process-history.constants';
 import { AGGRID_LOCALES } from '../../../shared/translations/not-intl/aggrid-locales';
 import { useAppSelector } from '../../../app/store/hooks';
 
-type ProcessResultsListProps = {
+type ProcessHistoryTableProps = {
     executions: ProcessExecutionInfos[];
 };
 
-export const ProcessResultsEnumsType = {
+export const ProcessHistoryEnumsType = {
     processType: ['SECURITY_ANALYSIS', 'LOADFLOW', 'SHORT_CIRCUIT'],
     processStatus: ['SCHEDULED', 'RUNNING', 'FAILED', 'COMPLETED'],
 };
 
-export function ProcessResultsTable({ executions }: Readonly<ProcessResultsListProps>) {
+export function ProcessHistoryTable({ executions }: Readonly<ProcessHistoryTableProps>) {
     const theme = useTheme();
     const gridRef = useRef<AgGridReact>(null);
     const intl = useIntl();
     const navigate = useNavigate();
-    const tableSort = useAppSelector((state) => state.processResults.tableSort);
-    const tableFilters = useAppSelector((state) => state.processResults.tableFilters);
+    const tableSort = useAppSelector((state) => state.processHistory.tableSort);
+    const tableFilters = useAppSelector((state) => state.processHistory.tableFilters);
 
     const applyTableState = useCallback(
         (api: GridApi) => {
@@ -92,7 +92,7 @@ export function ProcessResultsTable({ executions }: Readonly<ProcessResultsListP
     );
 
     const columns = useMemo(() => {
-        return processResultsColumnsDefinition(intl, ProcessResultsEnumsType, getEnumLabel);
+        return processHistoryColumnsDefinition(intl, ProcessHistoryEnumsType, getEnumLabel);
     }, [intl, getEnumLabel]);
 
     const getCustomRowStyle = useCallback(

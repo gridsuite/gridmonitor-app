@@ -7,13 +7,13 @@
 
 import { Alert, Paper, Typography } from '@mui/material';
 
-type ProcessResultsResultProps = {
+type ProcessHistoryAlertProps = {
     isEmpty: boolean;
     isError: boolean;
     isLoading: boolean;
 };
 
-export function ProcessResultsAlert({ isEmpty, isError, isLoading }: Readonly<ProcessResultsResultProps>) {
+export function ProcessHistoryAlert({ isEmpty, isError, isLoading }: Readonly<ProcessHistoryAlertProps>) {
     if (isLoading) {
         return (
             <Paper sx={{ p: 3 }}>

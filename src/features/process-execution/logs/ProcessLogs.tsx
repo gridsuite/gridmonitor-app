@@ -31,7 +31,7 @@ export function ProcessLogs({ executionId = '' }: Readonly<{ executionId?: strin
     return (
         <Stack sx={{ p: 3, height: '100%' }}>
             <Breadcrumbs separator="/">
-                <Link component={RouterLink} to={APP_PATHS.process.results} underline="hover">
+                <Link component={RouterLink} to={APP_PATHS.process.history} underline="hover">
                     <Typography variant="subtitle1">
                         <FormattedMessage id="processLaunchHistory" />
                     </Typography>

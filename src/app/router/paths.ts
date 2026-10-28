@@ -14,7 +14,7 @@ export const APP_PATHS = {
 
     process: {
         root: '/process',
-        results: '/process/results',
+        history: '/process/results',
         stepInfos: (id: string) => `/process/results/${id}`,
         logs: (id: string) => `/process/results/${id}/logs`,
     },

@@ -11,7 +11,7 @@ import { useIntl } from 'react-intl';
 import type { ColDef } from 'ag-grid-community';
 import { LimitViolationResult, RunningStatus, TableType } from '@gridsuite/commons-ui';
 import { ProcessStatus } from 'shared/api/monitor-api';
-import { CustomAggridReduxProvider } from '../list/custom-aggrid-redux-provider';
+import { CustomAggridReduxProvider } from '../history/custom-aggrid-redux-provider';
 import { EMPTY_RESULT_FILTERS, EMPTY_RESULT_SORT, makeResultFilterColumn } from './result-column-filters';
 import { prepareLoadFlowQuery } from './result-query-adapters';
 import { useLoadFlowExecutionResults } from './hooks/use-execution-results';
@@ -39,10 +39,10 @@ export function LoadFlowExecutionResultTable({
     const intl = useIntl();
     const filters = useAppSelector(
         (state) =>
-            state.processResults.tableFilters.columnsFilters[TableType.Loadflow]?.[RESULT_TYPE] ?? EMPTY_RESULT_FILTERS
+            state.processHistory.tableFilters.columnsFilters[TableType.Loadflow]?.[RESULT_TYPE] ?? EMPTY_RESULT_FILTERS
     );
     const sort = useAppSelector(
-        (state) => state.processResults.tableSort[TableType.Loadflow]?.[RESULT_TYPE] ?? EMPTY_RESULT_SORT
+        (state) => state.processHistory.tableSort[TableType.Loadflow]?.[RESULT_TYPE] ?? EMPTY_RESULT_SORT
     );
     const query = useMemo(() => prepareLoadFlowQuery(filters, sort, intl), [filters, sort, intl]);
     const {

@@ -15,7 +15,7 @@ export const mapStepsInfos = (api: ProcessExecution): ProcessExecutionInfos => (
     scheduledAt: api.scheduledAt ? new Date(api.scheduledAt) : undefined,
 });
 
-export function useProcessResults() {
+export function useProcessHistory() {
     const { data = [], isError, isLoading, isSuccess, refetch } = useGetProcessExecutionsQuery();
 
     const mappedData = data.map(mapStepsInfos);
