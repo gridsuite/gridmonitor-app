@@ -19,11 +19,11 @@ import {
     PROCESS_EXECUTION_LIST_SORT_STORE,
 } from '@gridsuite/commons-ui';
 import { IntlShape } from 'react-intl';
-import { ProcessStatusCellRenderer } from '../list/renderers/process-status-cell-renderer';
-import { ProcessDetailCellRenderer } from '../list/renderers/process-detail-cell-renderer';
-import { ProcessDateCellRenderer } from '../list/renderers/process-date-cell-renderer';
-import { ProcessTypeCellRenderer } from '../list/renderers/process-type-cell-renderer';
-import { ProcessUserCellRenderer } from '../list/renderers/process-user-cell-renderer';
+import { ProcessStatusCellRenderer } from './renderers/process-status-cell-renderer';
+import { ProcessDetailCellRenderer } from './renderers/process-detail-cell-renderer';
+import { ProcessDateCellRenderer } from './renderers/process-date-cell-renderer';
+import { ProcessTypeCellRenderer } from './renderers/process-type-cell-renderer';
+import { ProcessUserCellRenderer } from './renderers/process-user-cell-renderer';
 
 interface TableParams {
     sortParams: SortParams;
