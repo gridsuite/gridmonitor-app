@@ -54,7 +54,7 @@ describe('useReportViewerProvider', () => {
 
         const { wrapper } = createTestProviders({
             state: {
-                processExecutionList: {
+                executionLogs: {
                     tableSort: {},
                     tableFilters: {
                         columnsFilters: {
@@ -63,7 +63,6 @@ describe('useReportViewerProvider', () => {
                             },
                         },
                     },
-                    tables: { uuid: null },
                 },
             },
         });
@@ -170,7 +169,7 @@ describe('useReportViewerProvider', () => {
 
         await waitFor(() => {
             expect(
-                store.getState().processExecutionList.tableFilters.columnsFilters?.[TableType.Logs]?.[PROCESS_EXECUTION]
+                store.getState().executionLogs.tableFilters.columnsFilters?.[TableType.Logs]?.[PROCESS_EXECUTION]
             ).toEqual(filters);
         });
     });

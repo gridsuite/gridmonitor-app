@@ -12,6 +12,8 @@ import { exploreApi } from 'shared/api/explore-api';
 import { studyApi } from 'shared/api/study-api';
 import { monitorApi } from 'shared/api/monitor-api';
 import { processExecutionListReducer } from '../../features/process-execution/list/store/process-execution-list.slice';
+import { executionResultsReducer } from '../../features/process-execution/results/store/execution-results.slice';
+import { executionLogsReducer } from '../../features/process-execution/logs/store/execution-logs.slice';
 
 export const reducer = combineReducers({
     authentication: authenticationReducer,
@@ -19,5 +21,7 @@ export const reducer = combineReducers({
     [configApi.reducerPath]: configApi.reducer,
     [studyApi.reducerPath]: studyApi.reducer,
     processExecutionList: processExecutionListReducer,
+    executionResults: executionResultsReducer,
+    executionLogs: executionLogsReducer,
     [exploreApi.reducerPath]: exploreApi.reducer,
 });
