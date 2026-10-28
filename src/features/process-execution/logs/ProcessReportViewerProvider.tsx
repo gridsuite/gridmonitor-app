@@ -14,7 +14,7 @@ import {
     useNotificationsListener,
 } from '@gridsuite/commons-ui';
 import { isProcessExecutionUpdateNotification } from 'shared/api/monitor-api';
-import { CustomAggridReduxProvider } from '../list/custom-aggrid-redux-provider';
+import { ProcessExecutionLogsTableProvider } from './providers/ProcessExecutionLogsTableProvider';
 import { useReportViewerProvider } from './hooks/use-report-viewer-provider';
 
 type ProcessReportViewerProviderProps = PropsWithChildren<{
@@ -56,10 +56,10 @@ export function ProcessReportViewerProvider({ executionId, children }: Readonly<
     );
 
     return (
-        <CustomAggridReduxProvider>
+        <ProcessExecutionLogsTableProvider>
             <ReportFetcherContext.Provider value={fetcherContextValue}>
                 <ReportFilterContext.Provider value={filterContextValue}>{children}</ReportFilterContext.Provider>
             </ReportFetcherContext.Provider>
-        </CustomAggridReduxProvider>
+        </ProcessExecutionLogsTableProvider>
     );
 }

@@ -5,29 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {
-    FilterConfig,
-    PROCESS_EXECUTION,
-    PROCESS_EXECUTION_LIST_SORT_STORE,
-    SortConfig,
-    SortWay,
-    TableSortConfig,
-    TableType,
-} from '@gridsuite/commons-ui';
-import { ProcessTablesState } from './process-execution-list.type';
-
-type SetTableSortPayload = {
-    table: string;
-    tab: string;
-    sorts: SortConfig[];
-};
-
-type SetTableFiltersPayload = {
-    filterType: TableType;
-    filterSubType: string;
-    filters: FilterConfig[];
-};
+import { createSlice } from '@reduxjs/toolkit';
+import { SortWay, TableSortConfig, TableType } from '@gridsuite/commons-ui';
+import type { TableState } from 'shared/types/table-state';
 
 const initialSortState: TableSortConfig = {
     [PROCESS_EXECUTION_LIST_SORT_STORE]: [{ colId: 'processScheduledAt', sort: SortWay.DESC }],
@@ -37,11 +17,7 @@ const initialProcessExecutionListFilterState = {
     [PROCESS_EXECUTION_LIST_SORT_STORE]: [],
 };
 
-const initialLogsFilterState = {
-    [PROCESS_EXECUTION]: [],
-};
-
-const initialState: ProcessTablesState = {
+const initialState: TableState = {
     tableSort: {
         [PROCESS_EXECUTION_LIST_SORT_STORE]: {
             ...initialSortState,
@@ -52,26 +28,20 @@ const initialState: ProcessTablesState = {
             [TableType.ProcessExecutionList]: {
                 ...initialProcessExecutionListFilterState,
             },
-            [TableType.Logs]: {
-                ...initialLogsFilterState,
-            },
-            [TableType.SecurityAnalysis]: {},
-            [TableType.ShortcircuitAnalysis]: {},
         },
     },
-    tables: { uuid: null },
 };
 
 const processExecutionListSlice = createSlice({
     name: 'processExecutionList',
     initialState,
     reducers: {
-        setTableSort: (state, action: PayloadAction<SetTableSortPayload>) => {
+        setTableSort: (state, action: PayloadAction<TableSortUpdate>) => {
             const { table, tab, sorts } = action.payload;
             state.tableSort[table] ??= {};
             state.tableSort[table][tab] = sorts;
         },
-        setTableFilters: (state, action: PayloadAction<SetTableFiltersPayload>) => {
+        setTableFilters: (state, action: PayloadAction<TableFiltersUpdate>) => {
             const { filterType, filterSubType, filters } = action.payload;
             state.tableFilters.columnsFilters[filterType] ??= {};
             state.tableFilters.columnsFilters[filterType][filterSubType] = filters;

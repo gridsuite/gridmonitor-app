@@ -11,14 +11,14 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { ProcessExecutionListAlert } from './ProcessExecutionListAlert';
 import { ProcessExecutionListTable } from './ProcessExecutionListTable';
 import { useProcessExecutionList } from './hooks/use-process-execution-list';
-import { CustomAggridReduxProvider } from './custom-aggrid-redux-provider';
+import { ProcessExecutionListTableProvider } from './providers/ProcessExecutionListTableProvider';
 
 export function ProcessExecutionList() {
     const intl = useIntl();
     const { executions, isEmpty, isError, isLoading, refresh } = useProcessExecutionList();
 
     return (
-        <CustomAggridReduxProvider>
+        <ProcessExecutionListTableProvider>
             <ProcessExecutionListAlert isEmpty={isEmpty} isError={isError} isLoading={isLoading} />
             {!isError && (
                 <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', px: 3 }}>
@@ -41,6 +41,6 @@ export function ProcessExecutionList() {
                     <ProcessExecutionListTable executions={executions} />
                 </Box>
             )}
-        </CustomAggridReduxProvider>
+        </ProcessExecutionListTableProvider>
     );
 }
