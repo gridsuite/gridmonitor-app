@@ -14,24 +14,25 @@ import {
     FilterParams,
     SortConfig,
     SortParams,
+    TableColumnFilter,
+    TableSort,
 } from '@gridsuite/commons-ui';
-import type { TableFiltersUpdate, TableSortUpdate, TableState } from '../../types/table-state';
+import type { TableFiltersUpdate, TableSortUpdate } from '../../types/table-state';
 
-type AgGridTableProviderProps = PropsWithChildren<
-    TableState & {
-        setTableSort: (update: TableSortUpdate) => void;
-        setTableFilters: (update: TableFiltersUpdate) => void;
-    }
->;
+type AgGridTableProviderProps = PropsWithChildren<{
+    tableSort: TableSort;
+    columnFilters: TableColumnFilter;
+    onSortChange: (update: TableSortUpdate) => void;
+    onFiltersChange: (update: TableFiltersUpdate) => void;
+}>;
 
 export function AgGridTableProvider({
     tableSort,
-    tableFilters,
-    setTableSort: onSortChange,
-    setTableFilters: onFiltersChange,
+    columnFilters,
+    onSortChange,
+    onFiltersChange,
     children,
 }: Readonly<AgGridTableProviderProps>) {
-    const columnFilters = tableFilters.columnsFilters;
     const getSortConfig = useCallback(
         (sortParams: SortParams | undefined): SortConfig[] | undefined => {
             if (!sortParams) {

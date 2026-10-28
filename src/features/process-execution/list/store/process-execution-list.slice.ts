@@ -6,9 +6,8 @@
  */
 
 import { createSlice } from '@reduxjs/toolkit';
-import { PROCESS_EXECUTION_LIST_SORT_STORE, SortWay, TableSortConfig, TableType } from '@gridsuite/commons-ui';
+import { SortWay, TableSortConfig, TableType } from '@gridsuite/commons-ui';
 import type { TableState } from 'shared/types/table-state';
-import { tableStateReducers } from 'shared/store/table-state-reducers';
 
 const initialSortState: TableSortConfig = {
     [PROCESS_EXECUTION_LIST_SORT_STORE]: [{ colId: 'processScheduledAt', sort: SortWay.DESC }],
@@ -36,11 +35,20 @@ const initialState: TableState = {
 const processExecutionListSlice = createSlice({
     name: 'processExecutionList',
     initialState,
-    reducers: tableStateReducers,
+    reducers: {
+        setTableSort: (state, action: PayloadAction<TableSortUpdate>) => {
+            const { table, tab, sorts } = action.payload;
+            state.tableSort[table] ??= {};
+            state.tableSort[table][tab] = sorts;
+        },
+        setTableFilters: (state, action: PayloadAction<TableFiltersUpdate>) => {
+            const { filterType, filterSubType, filters } = action.payload;
+            state.tableFilters.columnsFilters[filterType] ??= {};
+            state.tableFilters.columnsFilters[filterType][filterSubType] = filters;
+        },
+    },
 });
 
-export const executionListTableActions = processExecutionListSlice.actions;
-
-export const { setTableSort, setTableFilters } = executionListTableActions;
+export const { setTableSort, setTableFilters } = processExecutionListSlice.actions;
 
 export const processExecutionListReducer = processExecutionListSlice.reducer;
