@@ -9,13 +9,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
     FilterConfig,
     PROCESS_EXECUTION,
-    PROCESS_EXECUTION_LIST_SORT_STORE,
     SortConfig,
     SortWay,
     TableSortConfig,
     TableType,
 } from '@gridsuite/commons-ui';
 import { ProcessTablesState } from './process-execution-list.type';
+import { PROCESS_EXECUTION_LIST_SORT_STORE } from './process-execution-list.constants';
 
 type SetTableSortPayload = {
     table: string;

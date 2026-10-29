@@ -10,13 +10,7 @@ import { yellow } from '@mui/material/colors';
 import { useIntl } from 'react-intl';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router';
-import {
-    CustomAGGrid,
-    DefaultCellRenderer,
-    PROCESS_EXECUTION_LIST_SORT_STORE,
-    TableType,
-    updateAgGridFilters,
-} from '@gridsuite/commons-ui';
+import { CustomAGGrid, DefaultCellRenderer, TableType, updateAgGridFilters } from '@gridsuite/commons-ui';
 import { AgGridReact } from 'ag-grid-react';
 import { GridApi, RowStyle } from 'ag-grid-community';
 import { ProcessExecutionInfos } from '../models/process-execution';
@@ -24,6 +18,7 @@ import { processExecutionListColumnsDefinition } from './ProcessExecutionListUti
 import { APP_PATHS } from '../../../app/router/paths';
 import { AGGRID_LOCALES } from '../../../shared/translations/not-intl/aggrid-locales';
 import { useAppSelector } from '../../../app/store/hooks';
+import { PROCESS_EXECUTION_LIST_SORT_STORE } from './store/process-execution-list.constants';
 
 type ProcessExecutionListTableProps = {
     executions: ProcessExecutionInfos[];
