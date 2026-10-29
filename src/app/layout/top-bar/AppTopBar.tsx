@@ -7,6 +7,7 @@
 
 import { AppBar, Divider, Grid, Toolbar, useTheme } from '@mui/material';
 import { useLocation } from 'react-router';
+import { mergeSx } from '@gridsuite/commons-ui';
 import { ExecuteButton, SettingsTabs } from './AppNavBar';
 import { ConfigurationModeToggle } from './ConfigurationModeToggle';
 import { UserProfile } from '../../../features/authentication/store/authentication.type';
@@ -30,11 +31,13 @@ function AppTopBar({ userProfile }: Readonly<AppTopBarProps>) {
         <AppBar position="sticky" color="default" elevation={0}>
             {userProfile !== null && (
                 <Toolbar
-                    sx={{
-                        minHeight: { xs: 56 },
-                        px: 3,
-                        bgcolor: theme.topBar[isConfigurationMode ? 'configurationMode' : 'automationMode'].bgColor,
-                    }}
+                    sx={mergeSx(
+                        {
+                            minHeight: { xs: 56 },
+                            px: 3,
+                        },
+                        theme.topBar[isConfigurationMode ? 'configurationMode' : 'automationMode']
+                    )}
                 >
                     <Grid
                         container
