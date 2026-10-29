@@ -6,7 +6,7 @@
  */
 
 import { ProcessExecution, useGetProcessExecutionsQuery } from '../../../../shared/api/monitor-api';
-import { ProcessExecutionInfos } from '../../models/process-result';
+import { ProcessExecutionInfos } from '../../models/process-execution';
 
 export const mapStepsInfos = (api: ProcessExecution): ProcessExecutionInfos => ({
     ...api,
@@ -15,7 +15,7 @@ export const mapStepsInfos = (api: ProcessExecution): ProcessExecutionInfos => (
     scheduledAt: api.scheduledAt ? new Date(api.scheduledAt) : undefined,
 });
 
-export function useProcessResults() {
+export function useProcessExecutionList() {
     const { data = [], isError, isLoading, isSuccess, refetch } = useGetProcessExecutionsQuery();
 
     const mappedData = data.map(mapStepsInfos);

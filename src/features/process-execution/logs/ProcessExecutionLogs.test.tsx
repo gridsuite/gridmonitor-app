@@ -8,12 +8,12 @@
 import { screen } from '@testing-library/react';
 import { expect, vi, afterEach, describe, it } from 'vitest';
 import { renderWithProviders } from '../../../test-utils/render-with-providers';
-import { ProcessLogs } from './ProcessLogs';
+import { ProcessExecutionLogs } from './ProcessExecutionLogs';
 
-const useProcessLogsMock = vi.hoisted(() => vi.fn());
+const useProcessExecutionLogsMock = vi.hoisted(() => vi.fn());
 
-vi.mock('./hooks/use-process-logs', () => ({
-    useProcessLogs: useProcessLogsMock,
+vi.mock('./hooks/use-process-execution-logs', () => ({
+    useProcessExecutionLogs: useProcessExecutionLogsMock,
 }));
 
 vi.mock('./ProcessReportViewerProvider', () => ({
@@ -32,16 +32,16 @@ vi.mock('@gridsuite/commons-ui', async (importOriginal) => {
 });
 
 function renderLogsPage(executionId = 'execution-1') {
-    return renderWithProviders(<ProcessLogs executionId={executionId} />);
+    return renderWithProviders(<ProcessExecutionLogs executionId={executionId} />);
 }
 
-describe('ProcessLogs', () => {
+describe('ProcessExecutionLogs', () => {
     afterEach(() => {
         vi.clearAllMocks();
     });
 
     it('displays the loading state while logs are being fetched', () => {
-        useProcessLogsMock.mockReturnValue({
+        useProcessExecutionLogsMock.mockReturnValue({
             execution: undefined,
             report: undefined,
             severities: undefined,
@@ -56,7 +56,7 @@ describe('ProcessLogs', () => {
     });
 
     it('displays the empty state when no report is available', () => {
-        useProcessLogsMock.mockReturnValue({
+        useProcessExecutionLogsMock.mockReturnValue({
             execution: undefined,
             report: undefined,
             severities: undefined,
@@ -71,7 +71,7 @@ describe('ProcessLogs', () => {
     });
 
     it('displays the error state when fetching logs fails', () => {
-        useProcessLogsMock.mockReturnValue({
+        useProcessExecutionLogsMock.mockReturnValue({
             execution: undefined,
             report: undefined,
             severities: undefined,
@@ -86,7 +86,7 @@ describe('ProcessLogs', () => {
     });
 
     it('displays the execution information and report viewer when logs are available', () => {
-        useProcessLogsMock.mockReturnValue({
+        useProcessExecutionLogsMock.mockReturnValue({
             execution: {
                 id: 'execution-1',
                 type: 'LOADFLOW',
@@ -115,7 +115,7 @@ describe('ProcessLogs', () => {
     });
 
     it('does not render the report viewer when the report is missing', () => {
-        useProcessLogsMock.mockReturnValue({
+        useProcessExecutionLogsMock.mockReturnValue({
             execution: {
                 id: 'execution-1',
                 type: 'LOADFLOW',
