@@ -36,7 +36,7 @@ function AppTopBar({ userProfile }: Readonly<AppTopBarProps>) {
                             minHeight: { xs: 56 },
                             px: 3,
                         },
-                        theme.topBar[isConfigurationMode ? 'configurationMode' : 'automationMode']
+                        theme.topBar[isConfigurationMode ? 'configurationMode' : 'automationMode'].background
                     )}
                 >
                     <Grid

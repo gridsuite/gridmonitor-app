@@ -36,11 +36,15 @@ declare module '@mui/material/styles' {
             background: string;
         };
         topBar: {
-            configurationMode: (theme: Theme) => {
-                bgcolor: string;
+            configurationMode: {
+                background: (theme: Theme) => {
+                    bgcolor: string;
+                };
             };
             automationMode: {
-                bgcolor: string;
+                background: {
+                    bgcolor: string;
+                };
             };
         };
     };

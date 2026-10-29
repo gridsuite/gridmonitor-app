@@ -63,7 +63,7 @@ const componentsStyleOverrides = () => {
     };
 };
 
-const configurationModeStyles = (theme: Theme) => ({
+const configurationModeBackgroundStyles = (theme: Theme) => ({
     bgcolor: alpha(theme.palette.secondary.main, theme.palette.action.selectedOpacity),
 });
 
@@ -109,9 +109,11 @@ const lightTheme: Theme = createTheme({
         currentHighlightColor: teal[100],
     },
     topBar: {
-        configurationMode: configurationModeStyles,
+        configurationMode: { background: configurationModeBackgroundStyles },
         automationMode: {
-            bgcolor: grey[100],
+            background: {
+                bgcolor: grey[100],
+            },
         },
     },
 });
@@ -165,9 +167,13 @@ const darkTheme: Theme = createTheme({
         textColor: common.black,
     },
     topBar: {
-        configurationMode: configurationModeStyles,
+        configurationMode: {
+            background: configurationModeBackgroundStyles,
+        },
         automationMode: {
-            bgcolor: grey[800],
+            background: {
+                bgcolor: grey[800],
+            },
         },
     },
 });
