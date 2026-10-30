@@ -18,32 +18,6 @@ function breakPoints(): { values: { xs: number; sm: number } } {
     };
 }
 
-const darkScrollbarStyles = (theme: Theme) => {
-    const trackColor = theme.palette.grey[800];
-    const thumbColor = theme.palette.grey[500];
-
-    return {
-        '*': {
-            scrollbarColor: `${thumbColor} ${trackColor}`,
-
-            '&::-webkit-scrollbar': {
-                width: '12px',
-                height: '12px',
-            },
-
-            '&::-webkit-scrollbar-track': {
-                backgroundColor: trackColor,
-            },
-
-            '&::-webkit-scrollbar-thumb': {
-                backgroundColor: thumbColor,
-                borderRadius: '8px',
-                border: `3px solid ${trackColor}`,
-            },
-        },
-    };
-};
-
 const componentsStyleOverrides = () => {
     return {
         MuiButton: {
@@ -152,9 +126,6 @@ const darkTheme: Theme = createTheme({
         background: grey[700],
     },
     components: {
-        MuiCssBaseline: {
-            styleOverrides: darkScrollbarStyles,
-        },
         ...componentsStyleOverrides(),
     },
     searchedText: {

@@ -9,17 +9,17 @@ import { FormattedMessage } from 'react-intl';
 import { Box, Breadcrumbs, Link, Stack, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router';
 import { ProcessReportViewerProvider } from './ProcessReportViewerProvider';
-import { useProcessExecutionLogs } from './hooks/use-process-execution-logs';
+import { useProcessLogs } from './hooks/use-process-logs';
 import { APP_PATHS } from '../../../app/router/paths';
 import { ExecutionStatus } from '../../../shared/ui/ExecutionStatus';
-import { ProcessExecutionLogsAlert } from './ProcessExecutionLogsAlert';
+import { ProcessLogsAlert } from './ProcessLogsAlert';
 
-export function ProcessExecutionLogs({ executionId = '' }: Readonly<{ executionId?: string }>) {
-    const { execution, report, severities, isError, isEmpty, isLoading } = useProcessExecutionLogs(executionId);
+export function ProcessLogs({ executionId = '' }: Readonly<{ executionId?: string }>) {
+    const { execution, report, severities, isError, isEmpty, isLoading } = useProcessLogs(executionId);
 
     if (!execution) {
         return (
-            <ProcessExecutionLogsAlert
+            <ProcessLogsAlert
                 isEmpty={isEmpty}
                 isError={isError}
                 isLoading={isLoading}

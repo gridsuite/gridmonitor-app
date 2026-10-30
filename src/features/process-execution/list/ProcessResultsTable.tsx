@@ -13,47 +13,49 @@ import { useNavigate } from 'react-router';
 import { CustomAGGrid, DefaultCellRenderer, TableType, updateAgGridFilters } from '@gridsuite/commons-ui';
 import { AgGridReact } from 'ag-grid-react';
 import { GridApi, RowStyle } from 'ag-grid-community';
-import { ProcessExecutionInfos } from '../models/process-execution';
-import { processExecutionListColumnsDefinition } from './ProcessExecutionListUtil';
+import { ProcessExecutionInfos } from '../models/process-result';
+import { processResultsColumnsDefinition } from '../results/ProcessResultsUtil';
 import { APP_PATHS } from '../../../app/router/paths';
+import { PROCESS_EXECUTION_HISTORY_SORT_STORE } from './store/process-results.constants';
 import { AGGRID_LOCALES } from '../../../shared/translations/not-intl/aggrid-locales';
 import { useAppSelector } from '../../../app/store/hooks';
-import { PROCESS_EXECUTION_LIST_SORT_STORE } from './store/process-execution-list.constants';
 
-type ProcessExecutionListTableProps = {
+type ProcessResultsListProps = {
     executions: ProcessExecutionInfos[];
 };
 
-export const ProcessExecutionListEnumsType = {
+export const ProcessResultsEnumsType = {
     processType: ['SECURITY_ANALYSIS', 'LOADFLOW', 'SHORT_CIRCUIT'],
     processStatus: ['SCHEDULED', 'RUNNING', 'FAILED', 'COMPLETED'],
 };
 
-export function ProcessExecutionListTable({ executions }: Readonly<ProcessExecutionListTableProps>) {
+export function ProcessResultsTable({ executions }: Readonly<ProcessResultsListProps>) {
     const theme = useTheme();
     const gridRef = useRef<AgGridReact>(null);
     const intl = useIntl();
     const navigate = useNavigate();
-    const tableSort = useAppSelector((state) => state.processExecutionList.tableSort);
-    const tableFilters = useAppSelector((state) => state.processExecutionList.tableFilters);
+    const tableSort = useAppSelector((state) => state.processResults.tableSort);
+    const tableFilters = useAppSelector((state) => state.processResults.tableFilters);
 
     const applyTableState = useCallback(
         (api: GridApi) => {
-            const sortState = tableSort[PROCESS_EXECUTION_LIST_SORT_STORE]?.[PROCESS_EXECUTION_LIST_SORT_STORE];
+            const sortState = tableSort[PROCESS_EXECUTION_HISTORY_SORT_STORE]?.[PROCESS_EXECUTION_HISTORY_SORT_STORE];
             api.applyColumnState({
                 state: sortState ?? [],
                 defaultState: { sort: null },
             });
 
             const filters =
-                tableFilters.columnsFilters?.[TableType.ProcessExecutionList]?.[PROCESS_EXECUTION_LIST_SORT_STORE];
+                tableFilters.columnsFilters?.[TableType.ProcessExecutionHistory]?.[
+                    PROCESS_EXECUTION_HISTORY_SORT_STORE
+                ];
             updateAgGridFilters(api, filters);
         },
         [tableSort, tableFilters]
     );
 
     useEffect(() => {
-        const sortState = tableSort[PROCESS_EXECUTION_LIST_SORT_STORE]?.[PROCESS_EXECUTION_LIST_SORT_STORE];
+        const sortState = tableSort[PROCESS_EXECUTION_HISTORY_SORT_STORE]?.[PROCESS_EXECUTION_HISTORY_SORT_STORE];
         gridRef.current?.api?.applyColumnState({
             state: sortState ?? [],
             defaultState: { sort: null },
@@ -62,7 +64,7 @@ export function ProcessExecutionListTable({ executions }: Readonly<ProcessExecut
 
     useEffect(() => {
         const filters =
-            tableFilters.columnsFilters?.[TableType.ProcessExecutionList]?.[PROCESS_EXECUTION_LIST_SORT_STORE];
+            tableFilters.columnsFilters?.[TableType.ProcessExecutionHistory]?.[PROCESS_EXECUTION_HISTORY_SORT_STORE];
         updateAgGridFilters(gridRef.current?.api, filters);
     }, [tableFilters]);
 
@@ -90,7 +92,7 @@ export function ProcessExecutionListTable({ executions }: Readonly<ProcessExecut
     );
 
     const columns = useMemo(() => {
-        return processExecutionListColumnsDefinition(intl, ProcessExecutionListEnumsType, getEnumLabel);
+        return processResultsColumnsDefinition(intl, ProcessResultsEnumsType, getEnumLabel);
     }, [intl, getEnumLabel]);
 
     const getCustomRowStyle = useCallback(

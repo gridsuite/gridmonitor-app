@@ -47,12 +47,11 @@ export function ShortCircuitExecutionResultTable({
     const { snackError } = useSnackMessage();
     const sort = useAppSelector(
         (state) =>
-            state.processExecutionList.tableSort[SHORTCIRCUIT_ANALYSIS_RESULT_SORT_STORE]?.[FILTER_TAB] ??
-            EMPTY_RESULT_SORT
+            state.processResults.tableSort[SHORTCIRCUIT_ANALYSIS_RESULT_SORT_STORE]?.[FILTER_TAB] ?? EMPTY_RESULT_SORT
     );
     const filters = useAppSelector(
         (state) =>
-            state.processExecutionList.tableFilters.columnsFilters[TableType.ShortcircuitAnalysis]?.[FILTER_TAB] ??
+            state.processResults.tableFilters.columnsFilters[TableType.ShortcircuitAnalysis]?.[FILTER_TAB] ??
             EMPTY_RESULT_FILTERS
     );
     const query = useMemo(() => prepareShortCircuitQuery(filters, sort), [filters, sort]);

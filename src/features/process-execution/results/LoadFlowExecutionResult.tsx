@@ -39,11 +39,10 @@ export function LoadFlowExecutionResultTable({
     const intl = useIntl();
     const filters = useAppSelector(
         (state) =>
-            state.processExecutionList.tableFilters.columnsFilters[TableType.Loadflow]?.[RESULT_TYPE] ??
-            EMPTY_RESULT_FILTERS
+            state.processResults.tableFilters.columnsFilters[TableType.Loadflow]?.[RESULT_TYPE] ?? EMPTY_RESULT_FILTERS
     );
     const sort = useAppSelector(
-        (state) => state.processExecutionList.tableSort[TableType.Loadflow]?.[RESULT_TYPE] ?? EMPTY_RESULT_SORT
+        (state) => state.processResults.tableSort[TableType.Loadflow]?.[RESULT_TYPE] ?? EMPTY_RESULT_SORT
     );
     const query = useMemo(() => prepareLoadFlowQuery(filters, sort, intl), [filters, sort, intl]);
     const {

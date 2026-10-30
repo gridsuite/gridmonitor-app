@@ -14,8 +14,8 @@ import {
     TableSortConfig,
     TableType,
 } from '@gridsuite/commons-ui';
-import { ProcessTablesState } from './process-execution-list.type';
-import { PROCESS_EXECUTION_LIST_SORT_STORE } from './process-execution-list.constants';
+import { PROCESS_EXECUTION_HISTORY_SORT_STORE } from './process-results.constants';
+import { ProcessTablesState } from './process-results.type';
 
 type SetTableSortPayload = {
     table: string;
@@ -30,11 +30,11 @@ type SetTableFiltersPayload = {
 };
 
 const initialSortState: TableSortConfig = {
-    [PROCESS_EXECUTION_LIST_SORT_STORE]: [{ colId: 'processScheduledAt', sort: SortWay.DESC }],
+    [PROCESS_EXECUTION_HISTORY_SORT_STORE]: [{ colId: 'processScheduledAt', sort: SortWay.DESC }],
 };
 
-const initialProcessExecutionListFilterState = {
-    [PROCESS_EXECUTION_LIST_SORT_STORE]: [],
+const initialProcessExecutionHistoryFilterState = {
+    [PROCESS_EXECUTION_HISTORY_SORT_STORE]: [],
 };
 
 const initialLogsFilterState = {
@@ -43,14 +43,14 @@ const initialLogsFilterState = {
 
 const initialState: ProcessTablesState = {
     tableSort: {
-        [PROCESS_EXECUTION_LIST_SORT_STORE]: {
+        [PROCESS_EXECUTION_HISTORY_SORT_STORE]: {
             ...initialSortState,
         },
     },
     tableFilters: {
         columnsFilters: {
-            [TableType.ProcessExecutionList]: {
-                ...initialProcessExecutionListFilterState,
+            [TableType.ProcessExecutionHistory]: {
+                ...initialProcessExecutionHistoryFilterState,
             },
             [TableType.Logs]: {
                 ...initialLogsFilterState,
@@ -62,8 +62,8 @@ const initialState: ProcessTablesState = {
     tables: { uuid: null },
 };
 
-const processExecutionListSlice = createSlice({
-    name: 'processExecutionList',
+const processResultsSlice = createSlice({
+    name: 'processResults',
     initialState,
     reducers: {
         setTableSort: (state, action: PayloadAction<SetTableSortPayload>) => {
@@ -79,6 +79,6 @@ const processExecutionListSlice = createSlice({
     },
 });
 
-export const { setTableSort, setTableFilters } = processExecutionListSlice.actions;
+export const { setTableSort, setTableFilters } = processResultsSlice.actions;
 
-export const processExecutionListReducer = processExecutionListSlice.reducer;
+export const processResultsReducer = processResultsSlice.reducer;

@@ -5,4 +5,4 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export const PROCESS_EXECUTION_LIST_SORT_STORE = 'processExecutionList';
+export const PROCESS_EXECUTION_HISTORY_SORT_STORE = 'processExecutionHistory';

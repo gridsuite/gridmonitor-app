@@ -5,10 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { ProcessExecutionList } from '../../../features/process-execution/list/ProcessExecutionList';
+import { ProcessResults } from '../../../features/process-execution/list/ProcessResults';
 
-function ProcessExecutionListPage() {
-    return <ProcessExecutionList />;
+function ProcessResultsPage() {
+    return <ProcessResults />;
 }
 
-export default ProcessExecutionListPage;
+export default ProcessResultsPage;

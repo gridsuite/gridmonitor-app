@@ -13,7 +13,7 @@ import {
     useGetExecutionReportsSeveritiesQuery,
 } from '../../../../shared/api/monitor-api';
 
-export function useProcessExecutionLogs(executionId: string) {
+export function useProcessLogs(executionId: string) {
     const skip = !executionId;
 
     const { currentData: execution, isError: isExecutionError } = useGetExecutionQuery({ executionId }, { skip });

@@ -15,12 +15,12 @@ import {
     SortConfig,
     SortParams,
 } from '@gridsuite/commons-ui';
-import { setTableFilters, setTableSort } from './store/process-execution-list.slice';
+import { setTableFilters, setTableSort } from './store/process-results.slice';
 import { useAppDispatch, useAppSelector } from '../../../app/store/hooks';
 
 function CustomAggridSortReduxProvider({ children }: Readonly<PropsWithChildren>) {
     const dispatch = useAppDispatch();
-    const tableSort = useAppSelector((state) => state.processExecutionList.tableSort);
+    const tableSort = useAppSelector((state) => state.processResults.tableSort);
 
     const getSortConfig = useCallback(
         (sortParams: SortParams | undefined): SortConfig[] | undefined => {
@@ -55,7 +55,7 @@ function CustomAggridSortReduxProvider({ children }: Readonly<PropsWithChildren>
 
 function CustomAggridFilterReduxProvider({ children }: Readonly<PropsWithChildren>) {
     const dispatch = useAppDispatch();
-    const tableFilters = useAppSelector((state) => state.processExecutionList.tableFilters);
+    const tableFilters = useAppSelector((state) => state.processResults.tableFilters);
 
     const getFilters = useCallback(
         ({ type, tab }: Pick<FilterParams, 'type' | 'tab'>): FilterConfig[] => {

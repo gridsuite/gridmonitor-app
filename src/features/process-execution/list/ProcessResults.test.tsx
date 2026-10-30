@@ -10,7 +10,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { renderWithProviders } from '../../../test-utils/render-with-providers';
 import { server } from '../../../test-utils/msw/server';
-import { ProcessExecutionList } from './ProcessExecutionList';
+import { ProcessResults } from './ProcessResults';
 import { LOCATION_OBSERVER_TEST_ID, LocationObserver } from '../../../test-utils/create-test-context';
 
 vi.mock('@gridsuite/commons-ui', async (importOriginal) => {
@@ -36,7 +36,7 @@ const execution = {
     processConfigId: 'process-config-1',
 };
 
-describe('ProcessExecutionListPage', () => {
+describe('ProcessResultsPage', () => {
     it('displays execution data and opens the selected execution details', async () => {
         server.use(
             http.get('*/v1/executions', () => HttpResponse.json([execution])),
@@ -47,7 +47,7 @@ describe('ProcessExecutionListPage', () => {
         );
         const { user } = renderWithProviders(
             <>
-                <ProcessExecutionList />
+                <ProcessResults />
                 <LocationObserver />
             </>
         );
@@ -66,7 +66,7 @@ describe('ProcessExecutionListPage', () => {
                 return HttpResponse.json([]);
             })
         );
-        renderWithProviders(<ProcessExecutionList />);
+        renderWithProviders(<ProcessResults />);
         expect(screen.getByText('Loading process executions...')).toBeVisible();
         response.resolve();
         expect(await screen.findByText('No process executions found.')).toBeVisible();
@@ -75,13 +75,13 @@ describe('ProcessExecutionListPage', () => {
 
     it('displays the error state', async () => {
         server.use(http.get('*/v1/executions', () => HttpResponse.error()));
-        renderWithProviders(<ProcessExecutionList />);
+        renderWithProviders(<ProcessResults />);
         expect(await screen.findByText('Unable to load process executions.')).toBeVisible();
     });
 
     it('refreshes the execution status', async () => {
         server.use(http.get('*/v1/executions', () => HttpResponse.json([execution])));
-        const { user } = renderWithProviders(<ProcessExecutionList />);
+        const { user } = renderWithProviders(<ProcessResults />);
         expect(await screen.findByRole('link', { name: 'Failed' })).toBeVisible();
         server.use(http.get('*/v1/executions', () => HttpResponse.json([{ ...execution, status: 'COMPLETED' }])));
         await user.click(screen.getByRole('button', { name: 'Refresh' }));

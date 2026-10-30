@@ -18,12 +18,12 @@ import {
     CustomAggridAutocompleteFilterParams,
 } from '@gridsuite/commons-ui';
 import { IntlShape } from 'react-intl';
-import { ProcessStatusCellRenderer } from './renderers/process-status-cell-renderer';
-import { ProcessDetailCellRenderer } from './renderers/process-detail-cell-renderer';
-import { ProcessDateCellRenderer } from './renderers/process-date-cell-renderer';
-import { ProcessTypeCellRenderer } from './renderers/process-type-cell-renderer';
-import { ProcessUserCellRenderer } from './renderers/process-user-cell-renderer';
-import { PROCESS_EXECUTION_LIST_SORT_STORE } from './store/process-execution-list.constants';
+import { ProcessStatusCellRenderer } from '../list/renderers/process-status-cell-renderer';
+import { ProcessDetailCellRenderer } from '../list/renderers/process-detail-cell-renderer';
+import { ProcessDateCellRenderer } from '../list/renderers/process-date-cell-renderer';
+import { ProcessTypeCellRenderer } from '../list/renderers/process-type-cell-renderer';
+import { ProcessUserCellRenderer } from '../list/renderers/process-user-cell-renderer';
+import { PROCESS_EXECUTION_HISTORY_SORT_STORE } from '../list/store/process-results.constants';
 
 interface TableParams {
     sortParams: SortParams;
@@ -36,12 +36,12 @@ interface TableParams {
 const createTableParams = (): TableParams => {
     return {
         sortParams: {
-            table: PROCESS_EXECUTION_LIST_SORT_STORE,
-            tab: PROCESS_EXECUTION_LIST_SORT_STORE,
+            table: PROCESS_EXECUTION_HISTORY_SORT_STORE,
+            tab: PROCESS_EXECUTION_HISTORY_SORT_STORE,
         },
         filterParams: {
-            type: TableType.ProcessExecutionList,
-            tab: PROCESS_EXECUTION_LIST_SORT_STORE,
+            type: TableType.ProcessExecutionHistory,
+            tab: PROCESS_EXECUTION_HISTORY_SORT_STORE,
         },
     };
 };
@@ -66,7 +66,7 @@ const createEnumFilterParams = (): any => {
     };
 };
 
-export const processExecutionListColumnsDefinition = (
+export const processResultsColumnsDefinition = (
     intl: IntlShape,
     filterEnums: FilterEnumsType,
     getEnumLabel: (value: string) => string // Used for translation of enum values in the filter
