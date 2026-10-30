@@ -8,18 +8,18 @@
 import { Box, Button, Typography } from '@mui/material';
 import { Refresh as RefreshIcon } from '@mui/icons-material';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { ProcessResultsAlert } from './ProcessResultsAlert';
-import { ProcessResultsTable } from './ProcessResultsTable';
-import { useProcessResults } from './hooks/use-process-results';
+import { ProcessExecutionListAlert } from './ProcessExecutionListAlert';
+import { ProcessExecutionListTable } from './ProcessExecutionListTable';
+import { useProcessExecutionList } from './hooks/use-process-execution-list';
 import { CustomAggridReduxProvider } from './custom-aggrid-redux-provider';
 
-export function ProcessResults() {
+export function ProcessExecutionList() {
     const intl = useIntl();
-    const { executions, isEmpty, isError, isLoading, refresh } = useProcessResults();
+    const { executions, isEmpty, isError, isLoading, refresh } = useProcessExecutionList();
 
     return (
         <CustomAggridReduxProvider>
-            <ProcessResultsAlert isEmpty={isEmpty} isError={isError} isLoading={isLoading} />
+            <ProcessExecutionListAlert isEmpty={isEmpty} isError={isError} isLoading={isLoading} />
             {!isError && (
                 <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', px: 3 }}>
                     <Box
@@ -38,7 +38,7 @@ export function ProcessResults() {
                             {intl.formatMessage({ id: 'Refresh' })}
                         </Button>
                     </Box>
-                    <ProcessResultsTable executions={executions} />
+                    <ProcessExecutionListTable executions={executions} />
                 </Box>
             )}
         </CustomAggridReduxProvider>

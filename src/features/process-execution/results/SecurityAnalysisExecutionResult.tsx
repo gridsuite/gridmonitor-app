@@ -141,11 +141,11 @@ export function SecurityAnalysisExecutionResultTable({
     const [nmkType, setNmkType] = useState(NmkType.CONSTRAINTS_FROM_CONTINGENCIES);
     const resultType = RESULT_TYPES[nmkType];
     const sort = useAppSelector(
-        (state) => state.processResults.tableSort[TableType.SecurityAnalysis]?.[nmkType] ?? EMPTY_RESULT_SORT
+        (state) => state.processExecutionList.tableSort[TableType.SecurityAnalysis]?.[nmkType] ?? EMPTY_RESULT_SORT
     );
     const filters = useAppSelector(
         (state) =>
-            state.processResults.tableFilters.columnsFilters[TableType.SecurityAnalysis]?.[nmkType] ??
+            state.processExecutionList.tableFilters.columnsFilters[TableType.SecurityAnalysis]?.[nmkType] ??
             EMPTY_RESULT_FILTERS
     );
     const query = useMemo(

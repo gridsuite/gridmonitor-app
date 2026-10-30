@@ -21,9 +21,10 @@ export function ConfigurationModeToggle({ isConfigurationMode }: { readonly isCo
 
     return (
         <FormControlLabel
-            control={<Switch checked={isConfigurationMode} onChange={handleToggle} />}
+            control={<Switch color="secondary" checked={isConfigurationMode} onChange={handleToggle} />}
             label={intl.formatMessage({ id: 'configurationMode' })}
             labelPlacement="start"
+            slotProps={{ typography: { sx: { color: 'secondary.main' } } }}
             sx={{ mx: 0, flexShrink: 0, whiteSpace: 'nowrap' }}
         />
     );

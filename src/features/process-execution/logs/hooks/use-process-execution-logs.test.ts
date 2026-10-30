@@ -9,10 +9,10 @@ import { http, HttpResponse } from 'msw';
 import { renderHook, waitFor } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { createTestProviders } from '../../../../test-utils/render-with-providers';
-import { useProcessLogs } from './use-process-logs';
+import { useProcessExecutionLogs } from './use-process-execution-logs';
 import { server } from '../../../../test-utils/msw/server';
 
-describe('useProcessLogs', () => {
+describe('useProcessExecutionLogs', () => {
     it('returns the execution, report and severities when all requests succeed', async () => {
         const execution = {
             id: 'execution-1',
@@ -33,7 +33,7 @@ describe('useProcessLogs', () => {
         );
 
         const { wrapper } = createTestProviders();
-        const { result } = renderHook(() => useProcessLogs('execution-1'), { wrapper });
+        const { result } = renderHook(() => useProcessExecutionLogs('execution-1'), { wrapper });
 
         await waitFor(() => {
             expect(result.current.execution).toEqual(execution);
@@ -66,7 +66,7 @@ describe('useProcessLogs', () => {
         );
 
         const { wrapper } = createTestProviders();
-        const { result } = renderHook(() => useProcessLogs('execution-1'), { wrapper });
+        const { result } = renderHook(() => useProcessExecutionLogs('execution-1'), { wrapper });
 
         await waitFor(() => {
             expect(result.current.isLoading).toBe(true);
@@ -96,7 +96,7 @@ describe('useProcessLogs', () => {
         );
 
         const { wrapper } = createTestProviders();
-        const { result } = renderHook(() => useProcessLogs('execution-1'), { wrapper });
+        const { result } = renderHook(() => useProcessExecutionLogs('execution-1'), { wrapper });
 
         await waitFor(() => {
             expect(result.current.isEmpty).toBe(true);
@@ -116,7 +116,7 @@ describe('useProcessLogs', () => {
         );
 
         const { wrapper } = createTestProviders();
-        const { result } = renderHook(() => useProcessLogs('execution-1'), { wrapper });
+        const { result } = renderHook(() => useProcessExecutionLogs('execution-1'), { wrapper });
 
         await waitFor(() => {
             expect(result.current.isError).toBe(true);
@@ -140,7 +140,7 @@ describe('useProcessLogs', () => {
         );
 
         const { wrapper } = createTestProviders();
-        const { result } = renderHook(() => useProcessLogs('execution-1'), { wrapper });
+        const { result } = renderHook(() => useProcessExecutionLogs('execution-1'), { wrapper });
 
         await waitFor(() => {
             expect(result.current.isError).toBe(true);
@@ -151,7 +151,7 @@ describe('useProcessLogs', () => {
 
     it('does not fetch data when the execution id is missing', async () => {
         const { wrapper } = createTestProviders();
-        const { result } = renderHook(() => useProcessLogs(''), { wrapper });
+        const { result } = renderHook(() => useProcessExecutionLogs(''), { wrapper });
 
         expect(result.current.execution).toBeUndefined();
         expect(result.current.report).toBeUndefined();

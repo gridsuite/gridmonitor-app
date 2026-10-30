@@ -7,7 +7,7 @@
 
 import { LIGHT_THEME } from '@gridsuite/commons-ui';
 import { alpha, createTheme, Theme } from '@mui/material';
-import { amber, blue, common, deepPurple, green, grey, red, teal } from '@mui/material/colors';
+import { amber, blue, common, green, grey, red, teal } from '@mui/material/colors';
 
 function breakPoints(): { values: { xs: number; sm: number } } {
     return {
@@ -63,6 +63,10 @@ const componentsStyleOverrides = () => {
     };
 };
 
+const configurationModeBackgroundStyles = (theme: Theme) => ({
+    bgcolor: alpha(theme.palette.secondary.main, theme.palette.action.selectedOpacity),
+});
+
 const lightTheme: Theme = createTheme({
     palette: {
         mode: 'light',
@@ -105,11 +109,11 @@ const lightTheme: Theme = createTheme({
         currentHighlightColor: teal[100],
     },
     topBar: {
-        configurationMode: {
-            bgColor: alpha(deepPurple.A100, 0.1),
-        },
+        configurationMode: { background: configurationModeBackgroundStyles },
         automationMode: {
-            bgColor: grey[100],
+            background: {
+                bgcolor: grey[100],
+            },
         },
     },
 });
@@ -164,10 +168,12 @@ const darkTheme: Theme = createTheme({
     },
     topBar: {
         configurationMode: {
-            bgColor: alpha(deepPurple[400], 0.1),
+            background: configurationModeBackgroundStyles,
         },
         automationMode: {
-            bgColor: grey[800],
+            background: {
+                bgcolor: grey[800],
+            },
         },
     },
 });
