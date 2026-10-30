@@ -28,7 +28,7 @@ npm start
 
 If you are a developer and you want to update or enhance components used from the GridSuite `commons-ui` library, click [here](https://github.com/gridsuite/commons-ui) and follow the instructions.
 
-See the [UI styling guidelines](STYLE_GUIDELINES.md) for this application's theme, colors, spacing, and responsive layout conventions.
+See the [UI styling guidelines](docs/STYLE_GUIDELINES.md) for this application's theme, colors, spacing, and responsive layout conventions.
 
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
@@ -77,7 +77,7 @@ src/
 - From `shared` and `features` directories, a limited set of imports from `app/` is allowed, including route paths, typed Redux hooks and store types. See `eslint.config.js` for the enforced boundaries.
 - Import store types using `import type`. Do not import the runtime store from features or shared modules.
 - Do not import generated RTK Query APIs directly. Use the enhanced API entry points instead.
-- Keep unit tests close to the code they test, using `*.test.ts` or `*.test.tsx`. See [unit test guidelines](UNIT_TEST_GUIDELINES.md).
+- Keep unit tests close to the code they test, using `*.test.ts` or `*.test.tsx`. See [unit test guidelines](docs/UNIT_TEST_GUIDELINES.md).
 
 ## Testing
 
@@ -85,7 +85,7 @@ src/
 - **`npm run test:run`** - Runs the complete test suite once.
 - **`npm run test:coverage`** - Runs the test suite and generates text and LCOV coverage reports.
 
-See the [unit test guidelines](UNIT_TEST_GUIDELINES.md) for test scope, shared helpers, mocking boundaries, and examples.
+See the [unit test guidelines](docs/UNIT_TEST_GUIDELINES.md) for test scope, shared helpers, mocking boundaries, and examples.
 
 ## OpenAPI Code Generation
 
