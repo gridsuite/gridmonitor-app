@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) 2026, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
 import { useNotificationsListener, NotificationsUrlKeys } from '@gridsuite/commons-ui';
 import { useAppDispatch } from 'app/store/hooks';
 import { invalidateAllQueries as invalidateAllConfigQueries } from 'shared/api/config-api';
@@ -13,7 +20,6 @@ export const useGlobalInvalidationListener = () => {
     const dispatch = useAppDispatch();
 
     const invalidateAllQueries = () => {
-        console.log('DISCONNECTED');
         invalidateAllConfigQueries(dispatch);
         invalidateAllMonitorQueries(dispatch);
         invalidateAllStudyQueries(dispatch);
@@ -25,7 +31,6 @@ export const useGlobalInvalidationListener = () => {
     });
 
     useNotificationsListener(NotificationsUrlKeys.MONITOR, {
-        listenerCallbackMessage: (event) => console.log('CONNECTED', event),
         listenerCallbackOnReopen: invalidateAllQueries,
     });
 };
