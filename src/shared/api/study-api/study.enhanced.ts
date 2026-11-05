@@ -5,7 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import type { AppDispatch } from 'app/store/store';
 import { studyGeneratedApi } from './study.generated';
 
-export { studyGeneratedApi as studyApi };
+export const studyApi = studyGeneratedApi;
 export const useLazyGetSuiteAboutInformationQuery = studyGeneratedApi.endpoints.getSuiteAboutInformation.useLazyQuery;
+
+export const invalidateAllQueries = (dispatch: AppDispatch) => {
+    dispatch(studyApi.util.resetApiState());
+};
