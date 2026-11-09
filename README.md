@@ -111,7 +111,7 @@ When a WebSocket reconnects, RTK Query queries tagged for backend notification-b
 
 Each WebSocket invalidates only its associated queries (config or monitor). Untagged queries are not affected.
 
-**Important:** When adding a new WebSocket connection, update `useGlobalInvalidation` to handle its associated tags.
+**Important:** When adding a new WebSocket connection, update `useGlobalInvalidationListener` to handle its associated tags.
 
 ## License Headers and Dependencies Checking
 
