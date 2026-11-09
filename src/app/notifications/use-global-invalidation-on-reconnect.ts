@@ -11,8 +11,10 @@ import { invalidateAllQueries as invalidateAllConfigQueries } from 'shared/api/c
 import { invalidateAllQueries as invalidateAllMonitorQueries } from 'shared/api/monitor-api';
 
 /**
- * To complete if this app starts to listen to another websocket URL
- * Invalidate all RTK queries states if any websocket disconnects
+ * On WebSocket disconnection, invalidate only tagged RTK queries associated
+ * with that WebSocket (config or monitor), as backend notifications may have been missed.
+ * Untagged queries are excluded since they don't rely on WebSocket notifications.
+ * Update this mapping if a new WebSocket URL is added.
  */
 export const useGlobalInvalidationListener = () => {
     const dispatch = useAppDispatch();
