@@ -64,7 +64,7 @@ export const invalidateConfigQueries = (dispatch: AppDispatch, paramName: string
 };
 
 export const invalidateAllQueries = (dispatch: AppDispatch) => {
-    dispatch(configApi.util.resetApiState());
+    dispatch(configApi.util.invalidateTags(Object.values(ConfigTags)));
 };
 
 export const { useGetParameterQuery, useUpdateParameterMutation } = configApi;

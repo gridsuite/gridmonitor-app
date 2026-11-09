@@ -5,11 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import type { AppDispatch } from 'app/store/store';
 import { exploreGeneratedApi } from './explore.generated';
 
 export const exploreApi = exploreGeneratedApi;
-
-export const invalidateAllQueries = (dispatch: AppDispatch) => {
-    dispatch(exploreApi.util.resetApiState());
-};

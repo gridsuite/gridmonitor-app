@@ -9,8 +9,6 @@ import { useNotificationsListener, NotificationsUrlKeys } from '@gridsuite/commo
 import { useAppDispatch } from 'app/store/hooks';
 import { invalidateAllQueries as invalidateAllConfigQueries } from 'shared/api/config-api';
 import { invalidateAllQueries as invalidateAllMonitorQueries } from 'shared/api/monitor-api';
-import { invalidateAllQueries as invalidateAllStudyQueries } from 'shared/api/study-api';
-import { invalidateAllQueries as invalidateAllExploreQueries } from 'shared/api/explore-api';
 
 /**
  * To complete if this app starts to listen to another websocket URL
@@ -19,18 +17,11 @@ import { invalidateAllQueries as invalidateAllExploreQueries } from 'shared/api/
 export const useGlobalInvalidationListener = () => {
     const dispatch = useAppDispatch();
 
-    const invalidateAllQueries = () => {
-        invalidateAllConfigQueries(dispatch);
-        invalidateAllMonitorQueries(dispatch);
-        invalidateAllStudyQueries(dispatch);
-        invalidateAllExploreQueries(dispatch);
-    };
-
     useNotificationsListener(NotificationsUrlKeys.CONFIG, {
-        listenerCallbackOnReopen: invalidateAllQueries,
+        listenerCallbackOnReopen: () => invalidateAllConfigQueries(dispatch),
     });
 
     useNotificationsListener(NotificationsUrlKeys.MONITOR, {
-        listenerCallbackOnReopen: invalidateAllQueries,
+        listenerCallbackOnReopen: () => invalidateAllMonitorQueries(dispatch),
     });
 };
