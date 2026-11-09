@@ -5,6 +5,4 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { exploreGeneratedApi } from './explore.generated';
-
-export const exploreApi = exploreGeneratedApi;
+export { exploreGeneratedApi as exploreApi } from './explore.generated';

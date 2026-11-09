@@ -7,5 +7,5 @@
 
 import { studyGeneratedApi } from './study.generated';
 
-export const studyApi = studyGeneratedApi;
+export { studyGeneratedApi as studyApi };
 export const useLazyGetSuiteAboutInformationQuery = studyGeneratedApi.endpoints.getSuiteAboutInformation.useLazyQuery;
