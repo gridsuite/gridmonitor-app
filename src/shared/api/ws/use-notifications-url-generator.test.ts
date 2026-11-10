@@ -29,7 +29,7 @@ describe('useNotificationsUrlGenerator', () => {
 
         expect(result.current).toEqual({
             [NotificationsUrlKeys.CONFIG]: `wss://gridapp.test/${PREFIX_CONFIG_NOTIFICATION_WS}/notify?${params}`,
-            [NotificationsUrlKeys.MONITOR]: `wss://gridapp.test/${PREFIX_MONITOR_NOTIFICATION_WS}/notify?${params}`,
+            [NotificationsUrlKeys.MONITOR]: `wss://gridapp.test/${PREFIX_MONITOR_NOTIFICATION_WS}`,
         });
     });
 
@@ -43,7 +43,7 @@ describe('useNotificationsUrlGenerator', () => {
 
         expect(result.current).toEqual({
             [NotificationsUrlKeys.CONFIG]: `ws://gridapp.test/${PREFIX_CONFIG_NOTIFICATION_WS}/notify?${params}`,
-            [NotificationsUrlKeys.MONITOR]: `ws://gridapp.test/${PREFIX_MONITOR_NOTIFICATION_WS}/notify?${params}`,
+            [NotificationsUrlKeys.MONITOR]: `ws://gridapp.test/${PREFIX_MONITOR_NOTIFICATION_WS}`,
         });
     });
 });
