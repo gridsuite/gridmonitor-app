@@ -105,6 +105,14 @@ Do not manually modify generated files, as they are automatically generated and 
 The `tsconfig.json` file defines the application TypeScript configuration used by Vite, Vitest, ESLint, and Prettier.
 Some property values have been changed to meet the project needs, such as `target`, `baseUrl`, and module resolution.
 
+## RTK Query invalidation on WebSocket disconnection
+
+When a WebSocket reconnects, RTK Query queries tagged for backend notification-based invalidation are invalidated, as notifications may have been missed.
+
+Each WebSocket invalidates only its associated queries (config or monitor). Untagged queries are not affected.
+
+**Important:** When adding a new WebSocket connection, update `useGlobalInvalidationListener` to handle its associated tags.
+
 ## License Headers and Dependencies Checking
 
 To check dependencies license compatibility with this project locally, run:
