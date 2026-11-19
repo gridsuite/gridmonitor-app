@@ -25,11 +25,7 @@ export const useNotificationsUrlGenerator = (): Partial<Record<NotificationsUrlK
                     appName: APP_NAME,
                 }
             )}`,
-            [NotificationsUrlKeys.MONITOR]: `${webSocketBaseUrl}${PREFIX_MONITOR_NOTIFICATION_WS}/notify?${new URLSearchParams(
-                {
-                    appName: APP_NAME,
-                }
-            )}`,
+            [NotificationsUrlKeys.MONITOR]: `${webSocketBaseUrl}${PREFIX_MONITOR_NOTIFICATION_WS}/notify`,
         }),
         [webSocketBaseUrl]
     );

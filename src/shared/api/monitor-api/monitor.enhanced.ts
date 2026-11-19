@@ -56,6 +56,10 @@ export const invalidateProcessExecutionReportsSeverities = (dispatch: AppDispatc
         ])
     );
 
+export const invalidateAllQueries = (dispatch: AppDispatch) => {
+    dispatch(monitorApi.util.invalidateTags(Object.values(MonitorTags)));
+};
+
 export const useLazyGetProcessConfigQuery = monitorApi.endpoints.getProcessConfig.useLazyQuery;
 export const useLazyGetExecutionLogsQuery = monitorApi.endpoints.getExecutionLogs.useLazyQuery;
 export const useLazyGetExecutionLogsSearchQuery = monitorApi.endpoints.getExecutionLogsSearch.useLazyQuery;

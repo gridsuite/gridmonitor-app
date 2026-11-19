@@ -6,7 +6,7 @@
  */
 
 import { ProcessExecutionStep, useGetExecutionQuery, useGetStepsInfosQuery } from '../../../../shared/api/monitor-api';
-import { ProcessStepModel } from '../../models/process-result';
+import { ProcessStepModel } from '../../models/process-execution';
 
 export const mapStepsInfos = (api: ProcessExecutionStep): ProcessStepModel => ({
     ...api,

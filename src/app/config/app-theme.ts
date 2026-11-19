@@ -7,7 +7,7 @@
 
 import { LIGHT_THEME } from '@gridsuite/commons-ui';
 import { alpha, createTheme, Theme } from '@mui/material';
-import { amber, blue, common, deepPurple, green, grey, red, teal } from '@mui/material/colors';
+import { amber, blue, common, green, grey, red, teal } from '@mui/material/colors';
 
 function breakPoints(): { values: { xs: number; sm: number } } {
     return {
@@ -17,32 +17,6 @@ function breakPoints(): { values: { xs: number; sm: number } } {
         },
     };
 }
-
-const darkScrollbarStyles = (theme: Theme) => {
-    const trackColor = theme.palette.grey[800];
-    const thumbColor = theme.palette.grey[500];
-
-    return {
-        '*': {
-            scrollbarColor: `${thumbColor} ${trackColor}`,
-
-            '&::-webkit-scrollbar': {
-                width: '12px',
-                height: '12px',
-            },
-
-            '&::-webkit-scrollbar-track': {
-                backgroundColor: trackColor,
-            },
-
-            '&::-webkit-scrollbar-thumb': {
-                backgroundColor: thumbColor,
-                borderRadius: '8px',
-                border: `3px solid ${trackColor}`,
-            },
-        },
-    };
-};
 
 const componentsStyleOverrides = () => {
     return {
@@ -62,6 +36,10 @@ const componentsStyleOverrides = () => {
         },
     };
 };
+
+const configurationModeBackgroundStyles = (theme: Theme) => ({
+    bgcolor: alpha(theme.palette.secondary.main, theme.palette.action.selectedOpacity),
+});
 
 const lightTheme: Theme = createTheme({
     palette: {
@@ -105,11 +83,11 @@ const lightTheme: Theme = createTheme({
         currentHighlightColor: teal[100],
     },
     topBar: {
-        configurationMode: {
-            bgColor: alpha(deepPurple.A100, 0.1),
-        },
+        configurationMode: { background: configurationModeBackgroundStyles },
         automationMode: {
-            bgColor: grey[100],
+            background: {
+                bgcolor: grey[100],
+            },
         },
     },
 });
@@ -152,9 +130,6 @@ const darkTheme: Theme = createTheme({
         background: grey[700],
     },
     components: {
-        MuiCssBaseline: {
-            styleOverrides: darkScrollbarStyles,
-        },
         ...componentsStyleOverrides(),
     },
     searchedText: {
@@ -164,10 +139,12 @@ const darkTheme: Theme = createTheme({
     },
     topBar: {
         configurationMode: {
-            bgColor: alpha(deepPurple[400], 0.1),
+            background: configurationModeBackgroundStyles,
         },
         automationMode: {
-            bgColor: grey[800],
+            background: {
+                bgcolor: grey[800],
+            },
         },
     },
 });

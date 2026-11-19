@@ -41,7 +41,7 @@ function AppProvidersWithStore() {
                     <ThemeProvider theme={getAppTheme(theme)}>
                         <SnackbarProvider hideIconVariant={false}>
                             <SnackRefRegisterer />
-                            <CssBaseline />
+                            <CssBaseline enableColorScheme />
                             <CardErrorBoundary>
                                 <NotificationsProvider urls={urlMapper}>
                                     <App />

@@ -24,6 +24,10 @@ type ProcessReportViewerProviderProps = PropsWithChildren<{
 export function ProcessReportViewerProvider({ executionId, children }: Readonly<ProcessReportViewerProviderProps>) {
     const [refreshCounter, setRefreshCounter] = useState(0);
 
+    const incrementCounter = () => {
+        setRefreshCounter((prev) => prev + 1);
+    };
+
     const invalidateRefreshCounter = useCallback(
         (event: MessageEvent) => {
             const eventData = JSON.parse(event.data);
@@ -32,7 +36,7 @@ export function ProcessReportViewerProvider({ executionId, children }: Readonly<
                 isProcessExecutionUpdateNotification(eventData) &&
                 eventData.headers.processExecutionId === executionId
             ) {
-                setRefreshCounter((prev) => prev + 1);
+                incrementCounter();
             }
         },
         [executionId]
@@ -40,6 +44,7 @@ export function ProcessReportViewerProvider({ executionId, children }: Readonly<
 
     useNotificationsListener(NotificationsUrlKeys.MONITOR, {
         listenerCallbackMessage: invalidateRefreshCounter,
+        listenerCallbackOnReopen: incrementCounter,
     });
 
     const { fetchLogs, fetchLogMatches, filters, updateFilters, pagination, changePagination } =

@@ -107,6 +107,33 @@ describe('ProcessReportViewerProvider', () => {
         expect(screen.getByTestId('refresh-counter')).toHaveTextContent('1');
     });
 
+    it('increments the refresh counter when the websocket is reconnecting', () => {
+        let listenerCallbackOnReopen: () => void | undefined;
+
+        useNotificationsListenerMock.mockImplementation(
+            (
+                _urlKey: unknown,
+                options: {
+                    listenerCallbackOnReopen: () => void;
+                }
+            ) => {
+                listenerCallbackOnReopen = options.listenerCallbackOnReopen;
+            }
+        );
+
+        renderWithProviders(
+            <ProcessReportViewerProvider executionId="execution-1">
+                <RefreshCounterConsumer />
+            </ProcessReportViewerProvider>
+        );
+
+        act(() => {
+            listenerCallbackOnReopen();
+        });
+
+        expect(screen.getByTestId('refresh-counter')).toHaveTextContent('1');
+    });
+
     it('does not refresh when the notification belongs to another execution', () => {
         let listenerCallback: ((event: MessageEvent) => void) | undefined;
 

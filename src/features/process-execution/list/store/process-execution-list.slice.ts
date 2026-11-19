@@ -5,9 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { SortWay, TableSortConfig, TableType } from '@gridsuite/commons-ui';
-import type { TableState } from 'shared/types/table-state';
+import type { TableFiltersUpdate, TableSortUpdate, TableState } from 'shared/types/table-state';
+import { PROCESS_EXECUTION_LIST_SORT_STORE } from './process-execution-list.constants';
 
 const initialSortState: TableSortConfig = {
     [PROCESS_EXECUTION_LIST_SORT_STORE]: [{ colId: 'processScheduledAt', sort: SortWay.DESC }],

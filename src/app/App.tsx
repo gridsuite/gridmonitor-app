@@ -27,6 +27,7 @@ import { AppRouter } from './router/AppRouter';
 import { useStableUserProfile } from '../features/authentication/hooks/use-stable-user-profile';
 import { AppLayout } from './layout/AppLayout';
 import { useAppDispatch, useAppSelector } from './store/hooks';
+import { useGlobalInvalidationListener } from './notifications/use-global-invalidation-on-reconnect';
 
 function App() {
     const userProfile = useStableUserProfile();
@@ -80,6 +81,7 @@ function App() {
 
     usePreferencesInvalidationListener();
     useProcessInvalidationsListener();
+    useGlobalInvalidationListener();
 
     const onLogoutClick = () => logout(dispatch, userManager.instance)?.catch((err) => console.error(err));
 

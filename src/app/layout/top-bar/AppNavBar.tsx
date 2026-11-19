@@ -5,10 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Tabs, Tab, Box, Button, Typography, Tooltip, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, Tab, Tabs, Tooltip, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { NavLink, useLocation } from 'react-router';
-import { PlayArrow, MiscellaneousServices, ListAlt } from '@mui/icons-material';
-import { useState, type ReactNode } from 'react';
+import { ListAlt, MiscellaneousServices, PlayArrow } from '@mui/icons-material';
+import { type ReactNode, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { LaunchSuccessDialog } from 'features/process-execution/launch/LaunchSuccessDialog';
 import { ExecuteProcessConfigDialog } from 'features/process-execution/launch/ExecuteProcessConfigDialog';
@@ -48,7 +48,7 @@ export function SettingsTabs() {
     const currentTab = leftTabs.find((t) => location.pathname.startsWith(t.path))?.path ?? false;
 
     return (
-        <Tabs value={currentTab}>
+        <Tabs value={currentTab} textColor="secondary" indicatorColor="secondary">
             {leftTabs.map((tab) => (
                 <Tab
                     key={tab.path}
@@ -70,7 +70,7 @@ export function ExecuteButton() {
     return (
         <>
             <Button
-                color="primary"
+                color="secondary"
                 variant="contained"
                 startIcon={<PlayArrow />}
                 onClick={() => setWizardOpen(true)}
