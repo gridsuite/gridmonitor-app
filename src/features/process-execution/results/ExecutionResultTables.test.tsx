@@ -7,7 +7,15 @@
 
 import { screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import { RunningStatus } from '@gridsuite/commons-ui';
+import {
+    NmkType,
+    RunningStatus,
+    ShortCircuitAnalysisType,
+    SHORTCIRCUIT_ANALYSIS_RESULT_SORT_STORE,
+    SortWay,
+    TableType,
+    mappingTabs,
+} from '@gridsuite/commons-ui';
 import { ProcessStatus } from 'shared/api/monitor-api';
 import { renderWithProviders } from 'test-utils/render-with-providers';
 import { LoadFlowExecutionResultTable } from './LoadFlowExecutionResult';
@@ -51,6 +59,50 @@ vi.mock('@gridsuite/commons-ui', async (importOriginal) => {
 });
 
 describe('execution result tables', () => {
+    it.each([
+        {
+            Component: LoadFlowExecutionResultTable,
+            results: loadFlowResults,
+            table: TableType.Loadflow,
+            tab: 'LIMIT_VIOLATIONS_CURRENT',
+            column: 'subjectId',
+            backendColumn: 'subjectId',
+        },
+        {
+            Component: SecurityAnalysisExecutionResultTable,
+            results: securityAnalysisResults,
+            table: TableType.SecurityAnalysis,
+            tab: NmkType.CONSTRAINTS_FROM_CONTINGENCIES,
+            column: 'contingencyId',
+            backendColumn: 'contingencyId',
+        },
+        {
+            Component: ShortCircuitExecutionResultTable,
+            results: shortCircuitResults,
+            table: SHORTCIRCUIT_ANALYSIS_RESULT_SORT_STORE,
+            tab: mappingTabs(ShortCircuitAnalysisType.ALL_BUSES),
+            column: 'elementId',
+            backendColumn: 'fault.id',
+        },
+    ])('reads $table sorting from the results slice', ({ Component, results, table, tab, column, backendColumn }) => {
+        results.mockReturnValue({ result: undefined, isError: false, isFetching: false });
+
+        renderWithProviders(<Component executionId="execution-1" />, {
+            state: {
+                processExecutionResults: {
+                    tableSort: { [table]: { [tab]: [{ colId: column, sort: SortWay.DESC }] } },
+                    tableFilters: { columnsFilters: {} },
+                },
+            },
+        });
+
+        expect(results).toHaveBeenLastCalledWith(
+            'execution-1',
+            true,
+            expect.objectContaining({ sort: [{ colId: backendColumn, sort: SortWay.DESC }] })
+        );
+    });
+
     it('shows load-flow violations and marks a failed execution as failed', () => {
         loadFlowResults.mockReturnValue({
             result: [{ subjectId: 'LINE_1' }],

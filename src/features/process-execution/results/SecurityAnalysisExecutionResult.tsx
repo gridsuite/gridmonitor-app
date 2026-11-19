@@ -27,7 +27,7 @@ import { ProcessStatus, downloadExecutionResultsCsv } from 'shared/api/monitor-a
 import type { ColDef, GridReadyEvent } from 'ag-grid-community';
 import { useSecurityAnalysisExecutionResults } from './hooks/use-execution-results';
 import { useResultPagination } from './hooks/use-result-pagination';
-import { CustomAggridReduxProvider } from '../list/custom-aggrid-redux-provider';
+import { ProcessExecutionResultsTableProvider } from './providers/ProcessExecutionResultsTableProvider';
 import { EMPTY_RESULT_FILTERS, EMPTY_RESULT_SORT, makeResultFilterColumn } from './result-column-filters';
 import { prepareSecurityAnalysisQuery, serializeResultQuery } from './result-query-adapters';
 import { useAppSelector } from '../../../app/store/hooks';
@@ -141,11 +141,11 @@ export function SecurityAnalysisExecutionResultTable({
     const [nmkType, setNmkType] = useState(NmkType.CONSTRAINTS_FROM_CONTINGENCIES);
     const resultType = RESULT_TYPES[nmkType];
     const sort = useAppSelector(
-        (state) => state.processExecutionList.tableSort[TableType.SecurityAnalysis]?.[nmkType] ?? EMPTY_RESULT_SORT
+        (state) => state.processExecutionResults.tableSort[TableType.SecurityAnalysis]?.[nmkType] ?? EMPTY_RESULT_SORT
     );
     const filters = useAppSelector(
         (state) =>
-            state.processExecutionList.tableFilters.columnsFilters[TableType.SecurityAnalysis]?.[nmkType] ??
+            state.processExecutionResults.tableFilters.columnsFilters[TableType.SecurityAnalysis]?.[nmkType] ??
             EMPTY_RESULT_FILTERS
     );
     const query = useMemo(
@@ -217,7 +217,7 @@ export function SecurityAnalysisExecutionResultTable({
     };
 
     return (
-        <CustomAggridReduxProvider>
+        <ProcessExecutionResultsTableProvider>
             <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, width: '100%' }}>
                 <Box sx={{ ...styles.toolbarRow, flexShrink: 0 }}>
                     <Box sx={{ justifySelf: 'start' }}>
@@ -265,6 +265,6 @@ export function SecurityAnalysisExecutionResultTable({
                     />
                 </Box>
             </Box>
-        </CustomAggridReduxProvider>
+        </ProcessExecutionResultsTableProvider>
     );
 }
