@@ -88,10 +88,10 @@ const nameColumn = ({ intl, tab }: ColumnsArgs): ColDef => {
     return makeAgGridCustomHeaderColumn({
         headerName: intl.formatMessage({ id: 'Name' }),
         colId: 'processConfigName',
-        field: 'processConfigUuid',
+        field: 'processConfigName',
         minWidth: 300,
         context: textFilterContext(sortParams, filterParams),
-        valueGetter: (params) => params.data.processConfigUuid,
+        valueGetter: (params) => params.data.processConfigName,
     });
 };
 

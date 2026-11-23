@@ -508,6 +508,7 @@ export type MatchPosition = {
 };
 export type AutomaticProcessConfigInfos = {
   processConfigUuid?: string;
+  processConfigName?: string;
   processType?: ProcessType;
   changedAt?: string;
   changedBy?: string;
