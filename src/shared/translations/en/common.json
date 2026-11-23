@@ -45,6 +45,12 @@
     "nav.launchHistory": "Launch history",
     "createConfig": "Create a configuration",
     "referenceConfigs": "Reference Configurations",
+    "activeConfigs": "Actives",
+    "configsHistory": "History",
+    "AnalysisType": "Analysis type",
+    "Name": "Name",
+    "Since": "Since",
+    "ModifiedBy": "Modified by",
 
     "configuration": "Configuration",
     "case": "Case",

@@ -10,9 +10,14 @@ import { Add } from '@mui/icons-material';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { CreateProcessConfigDialog } from './create/CreateProcessConfigDialog';
+import { ProcessConfigListProvider } from './list/ProcessConfigListProvider';
+import { ActiveProcessConfigTable } from './list/ActiveProcessConfigTable';
+import { HistoryProcessConfigTable } from './list/HistoryProcessConfigTable';
+import { useProcessConfigLists } from './list/hooks/use-process-config-lists';
 
 function ProcessConfig() {
     const [dialogOpen, setDialogOpen] = useState(false);
+    const { activeConfigs, historyConfigs } = useProcessConfigLists();
 
     return (
         <Box sx={{ p: 3 }}>
@@ -31,6 +36,16 @@ function ProcessConfig() {
                         <FormattedMessage id="createConfig" />
                     </Button>
                 </Grid>
+                <ProcessConfigListProvider>
+                    <Typography variant="h6" sx={{ mt: 3, mb: 1 }}>
+                        <FormattedMessage id="activeConfigs" />
+                    </Typography>
+                    <ActiveProcessConfigTable configs={activeConfigs} />
+                    <Typography variant="h6" sx={{ mt: 3, mb: 1 }}>
+                        <FormattedMessage id="configsHistory" />
+                    </Typography>
+                    <HistoryProcessConfigTable configs={historyConfigs} />
+                </ProcessConfigListProvider>
                 <CreateProcessConfigDialog open={dialogOpen} onClose={() => setDialogOpen(false)} />
             </Stack>
         </Box>

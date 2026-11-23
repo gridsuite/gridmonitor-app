@@ -11,6 +11,8 @@ export { downloadExecutionResultsCsv } from './download-execution-results';
 export {
     useGetProcessConfigsQuery,
     useGetProcessConfigQuery,
+    useGetAutomaticProcessConfigsQuery,
+    useGetAutomaticProcessConfigsHistoryQuery,
     useGetStepsInfosQuery,
     useGetProcessExecutionsQuery,
     useExecuteProcessMutation,
@@ -35,6 +37,7 @@ export type {
     ExportExecutionResultsCsvApiResponse,
     ExportExecutionResultsCsvApiArg,
     ExecuteProcessApiArg,
+    AutomaticProcessConfigInfos,
 } from './monitor.generated';
 
 export type { PersistedProcessConfig, ProcessConfig } from './monitor.type';

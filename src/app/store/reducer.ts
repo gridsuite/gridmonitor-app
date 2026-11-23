@@ -11,6 +11,7 @@ import { configApi } from 'shared/api/config-api';
 import { exploreApi } from 'shared/api/explore-api';
 import { studyApi } from 'shared/api/study-api';
 import { monitorApi } from 'shared/api/monitor-api';
+import { processConfigListReducer } from '../../features/process-config/list/store/process-config-list.slice';
 import { processExecutionListReducer } from '../../features/process-execution/list/store/process-execution-list.slice';
 
 export const reducer = combineReducers({
@@ -19,5 +20,6 @@ export const reducer = combineReducers({
     [configApi.reducerPath]: configApi.reducer,
     [studyApi.reducerPath]: studyApi.reducer,
     processExecutionList: processExecutionListReducer,
+    processConfigList: processConfigListReducer,
     [exploreApi.reducerPath]: exploreApi.reducer,
 });
