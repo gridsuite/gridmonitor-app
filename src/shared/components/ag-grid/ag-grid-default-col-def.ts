@@ -8,15 +8,10 @@
 import { DefaultCellRenderer } from '@gridsuite/commons-ui';
 import { ColDef } from 'ag-grid-community';
 
-export const BASE_DEFAULT_COL_DEF: ColDef = {
+export const MONITOR_DEFAULT_COL_DEF: ColDef = {
     wrapHeaderText: true,
     autoHeaderHeight: true,
     cellRenderer: DefaultCellRenderer,
-};
-
-export const SORTABLE_COL_DEF: ColDef = {
-    filter: true,
-    sortable: true,
-    resizable: true,
+    suppressMovable: true,
     lockPinned: true,
 };

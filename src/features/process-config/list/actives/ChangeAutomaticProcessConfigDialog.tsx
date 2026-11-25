@@ -17,8 +17,8 @@ import {
     ElementType,
     YUP_REQUIRED,
 } from '@gridsuite/commons-ui';
-import { AppDialog } from '../../../shared/ui/AppDialog';
-import { ProcessType, useUpdateAutomaticProcessConfigMutation } from '../../../shared/api/monitor-api';
+import { AppDialog } from '../../../../shared/ui/AppDialog';
+import { ProcessType, useUpdateAutomaticProcessConfigMutation } from '../../../../shared/api/monitor-api';
 
 const validationSchema = yup.object({
     processConfig: yup

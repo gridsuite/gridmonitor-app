@@ -51,7 +51,7 @@ export const mapReportLogs = (reportLogs: RawReportLog[] = []): Log[] => {
 export function useReportViewerProvider(executionId: string | undefined) {
     const dispatch = useAppDispatch();
     const filters = useAppSelector(
-        (state) => state.processExecutionList.tableFilters.columnsFilters?.[TableType.Logs]?.[PROCESS_EXECUTION] ?? []
+        (state) => state.processExecutionList.tableFilters?.[TableType.Logs]?.[PROCESS_EXECUTION] ?? []
     );
 
     const [pagination, setPagination] = useState<PaginationConfig>({ page: 0, rowsPerPage: DEFAULT_PAGE_SIZE });

@@ -5,44 +5,26 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { FilterConfig, SortConfig, TableColumnFilter, TableSort, TableType } from '@gridsuite/commons-ui';
-import {
-    PROCESS_CONFIG_ACTIVE_TAB,
-    PROCESS_CONFIG_HISTORY_TAB,
-    PROCESS_CONFIG_LIST_SORT_STORE,
-} from './process-config-list.constants';
-
-type SetTableSortPayload = {
-    table: string;
-    tab: string;
-    sorts: SortConfig[];
-};
-
-type SetTableFiltersPayload = {
-    filterType: TableType;
-    filterSubType: string;
-    filters: FilterConfig[];
-};
+import { createSlice } from '@reduxjs/toolkit';
+import { SortWay, TableColumnFilter, TableSort } from '@gridsuite/commons-ui';
+import { tableStateReducers } from '../../../../shared/lib/aggrid-table-state/table-state.reducers';
+import { PROCESS_CONFIG_ACTIVE, PROCESS_CONFIG_HISTORY, PROCESS_CONFIG_LIST } from './process-config-list.constants';
 
 export interface ProcessConfigListState {
     tableSort: TableSort;
-    tableFilters: { columnsFilters: TableColumnFilter };
+    tableFilters: TableColumnFilter;
 }
 
 const initialState: ProcessConfigListState = {
     tableSort: {
-        [PROCESS_CONFIG_LIST_SORT_STORE]: {
-            [PROCESS_CONFIG_ACTIVE_TAB]: [],
-            [PROCESS_CONFIG_HISTORY_TAB]: [],
+        [PROCESS_CONFIG_LIST]: {
+            [PROCESS_CONFIG_ACTIVE]: [{ colId: 'processType', sort: SortWay.ASC }],
+            [PROCESS_CONFIG_HISTORY]: [],
         },
     },
     tableFilters: {
-        columnsFilters: {
-            [TableType.ProcessExecutionList]: {
-                [PROCESS_CONFIG_ACTIVE_TAB]: [],
-                [PROCESS_CONFIG_HISTORY_TAB]: [],
-            },
+        [PROCESS_CONFIG_LIST]: {
+            [PROCESS_CONFIG_HISTORY]: [],
         },
     },
 };
@@ -50,18 +32,7 @@ const initialState: ProcessConfigListState = {
 const processConfigListSlice = createSlice({
     name: 'processConfigList',
     initialState,
-    reducers: {
-        setTableSort: (state, action: PayloadAction<SetTableSortPayload>) => {
-            const { table, tab, sorts } = action.payload;
-            state.tableSort[table] ??= {};
-            state.tableSort[table][tab] = sorts;
-        },
-        setTableFilters: (state, action: PayloadAction<SetTableFiltersPayload>) => {
-            const { filterType, filterSubType, filters } = action.payload;
-            state.tableFilters.columnsFilters[filterType] ??= {};
-            state.tableFilters.columnsFilters[filterType][filterSubType] = filters;
-        },
-    },
+    reducers: { ...tableStateReducers },
 });
 
 export const { setTableSort, setTableFilters } = processConfigListSlice.actions;

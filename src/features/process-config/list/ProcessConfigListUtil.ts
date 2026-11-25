@@ -12,23 +12,24 @@ import {
     CustomAggridComparatorFilter,
     FilterDataTypes,
     FilterEnumsType,
+    FilterParams,
     FilterTextComparators,
     makeAgGridCustomHeaderColumn,
-    TableType,
+    SortParams,
 } from '@gridsuite/commons-ui';
 import { IntlShape } from 'react-intl';
-import { ConfigDateCellRenderer } from './renderers/config-date-cell-renderer';
-import { ConfigUserCellRenderer } from './renderers/config-user-cell-renderer';
-import { ConfigModifyCellRenderer } from './renderers/config-modify-cell-renderer';
+import { ConfigDateCellRenderer } from './cell-renderers/config-date-cell-renderer';
+import { ConfigUserCellRenderer } from './cell-renderers/config-user-cell-renderer';
+import { ConfigModifyCellRenderer } from './cell-renderers/config-modify-cell-renderer';
 import { AutomaticProcessConfigInfos } from '../../../shared/api/monitor-api';
-import { PROCESS_CONFIG_LIST_SORT_STORE } from './store/process-config-list.constants';
+import { PROCESS_CONFIG_HISTORY, PROCESS_CONFIG_LIST } from './store/process-config-list.constants';
 
-const createTableParams = (tab: string) => ({
-    sortParams: { table: PROCESS_CONFIG_LIST_SORT_STORE, tab },
-    filterParams: { type: TableType.ProcessExecutionList, tab },
-});
+const sortAndFilterParams = {
+    sortParams: { table: PROCESS_CONFIG_LIST, tab: PROCESS_CONFIG_HISTORY },
+    filterParams: { type: PROCESS_CONFIG_LIST, tab: PROCESS_CONFIG_HISTORY },
+};
 
-const createEnumFilterParams = (): any => ({
+const createEnumFilterParams = () => ({
     filterOptions: [
         {
             displayKey: 'customInRange',
@@ -44,7 +45,7 @@ const createEnumFilterParams = (): any => ({
     ] as IFilterOptionDef[],
 });
 
-const textFilterContext = (sortParams: any, filterParams: any) => ({
+const textFilterContext = (sortParams: SortParams, filterParams: FilterParams) => ({
     sortParams,
     filterComponent: CustomAggridComparatorFilter,
     filterComponentParams: {
@@ -57,29 +58,36 @@ const textFilterContext = (sortParams: any, filterParams: any) => ({
     },
 });
 
-type ColumnsArgs = {
+type NotFilterableColumnArgs = {
+    intl: IntlShape;
+    getEnumLabel: (value: string) => string;
+    isSortableAndFilterable?: false;
+};
+
+type FilterableColumnArgs = {
     intl: IntlShape;
     filterEnums: FilterEnumsType;
     getEnumLabel: (value: string) => string;
-    tab?: string;
+    isSortableAndFilterable: true;
 };
 
-// Without a tab, columns are neither sortable nor filterable through the store: no context, no filterParams
-const typeColumn = ({ intl, filterEnums, getEnumLabel, tab }: ColumnsArgs): ColDef => {
-    const params = tab ? createTableParams(tab) : undefined;
+type ColumnsArgs = FilterableColumnArgs | NotFilterableColumnArgs;
+
+const typeColumn = (columnsArgs: ColumnsArgs): ColDef => {
+    const { intl, isSortableAndFilterable, getEnumLabel } = columnsArgs;
     return makeAgGridCustomHeaderColumn<CustomAggridAutocompleteFilterParams>({
         headerName: intl.formatMessage({ id: 'AnalysisType' }),
         colId: 'processType',
         field: 'processType',
         pinned: true,
         minWidth: 210,
-        ...(params && {
+        ...(isSortableAndFilterable && {
             filterParams: createEnumFilterParams(),
             context: {
                 filterComponent: CustomAggridAutocompleteFilter,
                 filterComponentParams: {
-                    filterParams: { dataType: FilterDataTypes.TEXT, ...params.filterParams },
-                    options: filterEnums.processType ?? [],
+                    filterParams: { dataType: FilterDataTypes.TEXT, ...sortAndFilterParams.filterParams },
+                    options: columnsArgs.filterEnums.processType ?? [],
                     getOptionLabel: getEnumLabel,
                 },
             },
@@ -89,45 +97,42 @@ const typeColumn = ({ intl, filterEnums, getEnumLabel, tab }: ColumnsArgs): ColD
     });
 };
 
-const nameColumn = ({ intl, tab }: ColumnsArgs): ColDef => {
-    const params = tab ? createTableParams(tab) : undefined;
+const nameColumn = ({ intl, isSortableAndFilterable = false }: ColumnsArgs): ColDef => {
     return makeAgGridCustomHeaderColumn({
         headerName: intl.formatMessage({ id: 'Name' }),
         colId: 'processConfigName',
         field: 'processConfigName',
         minWidth: 300,
-        ...(params && { context: textFilterContext(params.sortParams, params.filterParams) }),
+        ...(isSortableAndFilterable && {
+            context: textFilterContext(sortAndFilterParams.sortParams, sortAndFilterParams.filterParams),
+        }),
         valueGetter: (p) => p.data.processConfigName,
     });
 };
 
-const sinceColumn = ({ intl, tab }: ColumnsArgs): ColDef => {
-    const params = tab ? createTableParams(tab) : undefined;
+const sinceColumn = ({ intl, isSortableAndFilterable = false }: ColumnsArgs): ColDef => {
     return makeAgGridCustomHeaderColumn({
         headerName: intl.formatMessage({ id: 'Since' }),
         colId: 'processConfigChangedAt',
         field: 'changedAt',
-        minWidth: 183,
-        maxWidth: 183,
-        resizable: false,
+        minWidth: 180,
         cellRenderer: ConfigDateCellRenderer,
-        ...(params && { context: { sortParams: params.sortParams } }),
+        ...(isSortableAndFilterable && { context: { sortParams: sortAndFilterParams.sortParams } }),
         valueGetter: (p) => p.data.changedAt,
     });
 };
 
-const modifiedByColumn = ({ intl, tab }: ColumnsArgs): ColDef => {
-    const params = tab ? createTableParams(tab) : undefined;
+const modifiedByColumn = ({ intl, isSortableAndFilterable = false }: ColumnsArgs): ColDef => {
     return makeAgGridCustomHeaderColumn({
         headerName: intl.formatMessage({ id: 'ModifiedBy' }),
         colId: 'processConfigChangedBy',
         field: 'changedBy',
-        minWidth: 174,
-        maxWidth: 174,
-        resizable: false,
+        minWidth: 170,
         cellRenderer: ConfigUserCellRenderer,
         cellRendererParams: { backgroundColor: 'text.secondary' },
-        ...(params && { context: textFilterContext(params.sortParams, params.filterParams) }),
+        ...(isSortableAndFilterable && {
+            context: textFilterContext(sortAndFilterParams.sortParams, sortAndFilterParams.filterParams),
+        }),
         valueGetter: (p) => p.data.changedBy,
     });
 };
@@ -135,11 +140,7 @@ const modifiedByColumn = ({ intl, tab }: ColumnsArgs): ColDef => {
 const modifyColumn = (onModify: (config: AutomaticProcessConfigInfos) => void): ColDef => ({
     colId: 'modify',
     headerName: '',
-    sortable: false,
-    filter: false,
-    resizable: false,
     minWidth: 130,
-    maxWidth: 130,
     cellRenderer: ConfigModifyCellRenderer,
     cellRendererParams: { onModify },
 });
@@ -155,11 +156,10 @@ const fullWidthColumn = (): ColDef => ({
 
 export const getActiveColumns = (
     intl: IntlShape,
-    filterEnums: FilterEnumsType,
     getEnumLabel: (value: string) => string,
     onModify: (config: AutomaticProcessConfigInfos) => void
 ): ColDef[] => {
-    const args = { intl, filterEnums, getEnumLabel };
+    const args = { intl, getEnumLabel };
     return [
         typeColumn(args),
         nameColumn(args),
@@ -173,9 +173,8 @@ export const getActiveColumns = (
 export const getHistoryColumns = (
     intl: IntlShape,
     filterEnums: FilterEnumsType,
-    getEnumLabel: (value: string) => string,
-    tab: string
+    getEnumLabel: (value: string) => string
 ): ColDef[] => {
-    const args = { intl, filterEnums, getEnumLabel, tab };
+    const args = { intl, filterEnums, getEnumLabel, isSortableAndFilterable: true };
     return [typeColumn(args), nameColumn(args), sinceColumn(args), modifiedByColumn(args), fullWidthColumn()];
 };

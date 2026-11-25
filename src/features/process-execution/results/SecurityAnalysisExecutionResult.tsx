@@ -27,7 +27,7 @@ import { ProcessStatus, downloadExecutionResultsCsv } from 'shared/api/monitor-a
 import type { ColDef, GridReadyEvent } from 'ag-grid-community';
 import { useSecurityAnalysisExecutionResults } from './hooks/use-execution-results';
 import { useResultPagination } from './hooks/use-result-pagination';
-import { CustomAggridReduxProvider } from '../list/custom-aggrid-redux-provider';
+import { ProcessExecutionListProvider } from '../list/process-execution-list-provider';
 import { EMPTY_RESULT_FILTERS, EMPTY_RESULT_SORT, makeResultFilterColumn } from './result-column-filters';
 import { prepareSecurityAnalysisQuery, serializeResultQuery } from './result-query-adapters';
 import { useAppSelector } from '../../../app/store/hooks';
@@ -145,8 +145,7 @@ export function SecurityAnalysisExecutionResultTable({
     );
     const filters = useAppSelector(
         (state) =>
-            state.processExecutionList.tableFilters.columnsFilters[TableType.SecurityAnalysis]?.[nmkType] ??
-            EMPTY_RESULT_FILTERS
+            state.processExecutionList.tableFilters[TableType.SecurityAnalysis]?.[nmkType] ?? EMPTY_RESULT_FILTERS
     );
     const query = useMemo(
         () => prepareSecurityAnalysisQuery(filters, sort, resultType, intl),
@@ -217,7 +216,7 @@ export function SecurityAnalysisExecutionResultTable({
     };
 
     return (
-        <CustomAggridReduxProvider>
+        <ProcessExecutionListProvider>
             <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, width: '100%' }}>
                 <Box sx={{ ...styles.toolbarRow, flexShrink: 0 }}>
                     <Box sx={{ justifySelf: 'start' }}>
@@ -265,6 +264,6 @@ export function SecurityAnalysisExecutionResultTable({
                     />
                 </Box>
             </Box>
-        </CustomAggridReduxProvider>
+        </ProcessExecutionListProvider>
     );
 }

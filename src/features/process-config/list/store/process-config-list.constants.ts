@@ -5,6 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export const PROCESS_CONFIG_LIST_SORT_STORE = 'processConfigList';
-export const PROCESS_CONFIG_ACTIVE_TAB = 'processConfigActive';
-export const PROCESS_CONFIG_HISTORY_TAB = 'processConfigHistory';
+import { TableType } from '@gridsuite/commons-ui';
+
+// TODO: fix this, I think commons-ui should not be aware of all local states of all apps. Maybe change TableType by simple string ?
+export const PROCESS_CONFIG_LIST = 'processConfigList' as unknown as TableType;
+export const PROCESS_CONFIG_ACTIVE = 'processConfigActive';
+export const PROCESS_CONFIG_HISTORY = 'processConfigHistory';

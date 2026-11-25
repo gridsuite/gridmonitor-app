@@ -5,20 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Button, Grid, Stack, Typography } from '@mui/material';
-import { Add } from '@mui/icons-material';
-import { useState } from 'react';
+import { Box, Grid, Stack, Typography } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { CreateProcessConfigDialog } from './create/CreateProcessConfigDialog';
-import { ProcessConfigListProvider } from './list/ProcessConfigListProvider';
-import { ActiveProcessConfigTable } from './list/ActiveProcessConfigTable';
-import { HistoryProcessConfigTable } from './list/HistoryProcessConfigTable';
-import { useProcessConfigLists } from './list/hooks/use-process-config-lists';
+import { ActiveProcessConfigTable } from './list/actives/ActiveProcessConfigTable';
+import { HistoryProcessConfigTable } from './list/history/HistoryProcessConfigTable';
+import { CreateProcessConfigButton } from './create/CreateProcessConfigButton';
 
 function ProcessConfig() {
-    const [dialogOpen, setDialogOpen] = useState(false);
-    const { activeConfigs, historyConfigs } = useProcessConfigLists();
-
     return (
         <Box sx={{ p: 3 }}>
             <Stack>
@@ -32,21 +25,10 @@ function ProcessConfig() {
                     <Typography variant="h5">
                         <FormattedMessage id="autoRunConfig" />
                     </Typography>
-                    <Button variant="contained" onClick={() => setDialogOpen(true)} startIcon={<Add />}>
-                        <FormattedMessage id="createConfig" />
-                    </Button>
+                    <CreateProcessConfigButton />
                 </Grid>
-                <ProcessConfigListProvider>
-                    <Typography variant="h6" sx={{ mt: 3, mb: 1 }}>
-                        <FormattedMessage id="activeConfigs" />
-                    </Typography>
-                    <ActiveProcessConfigTable configs={activeConfigs} />
-                    <Typography variant="h6" sx={{ mt: 3, mb: 1 }}>
-                        <FormattedMessage id="configsHistory" />
-                    </Typography>
-                    <HistoryProcessConfigTable configs={historyConfigs} />
-                </ProcessConfigListProvider>
-                <CreateProcessConfigDialog open={dialogOpen} onClose={() => setDialogOpen(false)} />
+                <ActiveProcessConfigTable />
+                <HistoryProcessConfigTable />
             </Stack>
         </Box>
     );

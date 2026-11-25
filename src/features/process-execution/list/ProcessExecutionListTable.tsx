@@ -15,20 +15,19 @@ import { APP_PATHS } from '../../../app/router/paths';
 import { useAppSelector } from '../../../app/store/hooks';
 import { PROCESS_EXECUTION_LIST_SORT_STORE } from './store/process-execution-list.constants';
 import { MonitorAGGrid } from '../../../shared/components/ag-grid/MonitorAGGrid';
-import { BASE_DEFAULT_COL_DEF, SORTABLE_COL_DEF } from '../../../shared/components/ag-grid/ag-grid-default-col-def';
+import { MONITOR_DEFAULT_COL_DEF } from '../../../shared/components/ag-grid/ag-grid-default-col-def';
 import { useAgGridTableState } from '../../../shared/hooks/use-ag-grid-table-state';
 import { useEnumLabel } from '../../../shared/hooks/use-enum-label';
+import { monitorProcessConfigs } from '../../../shared/lib/process-configs';
 
 type ProcessExecutionListTableProps = {
     executions: ProcessExecutionInfos[];
 };
 
 export const ProcessExecutionListEnumsType = {
-    processType: ['SECURITY_ANALYSIS', 'LOADFLOW', 'SHORT_CIRCUIT'],
+    processType: monitorProcessConfigs,
     processStatus: ['SCHEDULED', 'RUNNING', 'FAILED', 'COMPLETED'],
 };
-
-const DEFAULT_COL_DEF = { ...BASE_DEFAULT_COL_DEF, ...SORTABLE_COL_DEF };
 
 const GRID_SX = {
     '& .row-action-button': {
@@ -68,7 +67,7 @@ export function ProcessExecutionListTable({ executions }: Readonly<ProcessExecut
             gridRef={gridRef}
             rowData={executions}
             columnDefs={columns}
-            defaultColDef={DEFAULT_COL_DEF}
+            defaultColDef={MONITOR_DEFAULT_COL_DEF}
             onGridReady={onGridReady}
             onRowClicked={({ data }) => navigate(APP_PATHS.process.stepInfos(data?.id ?? ''))}
             sx={GRID_SX}

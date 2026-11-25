@@ -5,6 +5,4 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export const ProcessConfigEnumsType = {
-    processType: ['SECURITY_ANALYSIS', 'LOADFLOW', 'SHORT_CIRCUIT'],
-};
+export const monitorProcessConfigs = ['SECURITY_ANALYSIS', 'LOADFLOW', 'SHORT_CIRCUIT'];

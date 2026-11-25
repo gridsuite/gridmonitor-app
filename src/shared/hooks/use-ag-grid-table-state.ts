@@ -6,22 +6,22 @@
  */
 
 import { RefObject, useCallback, useEffect } from 'react';
-import { TableType, updateAgGridFilters } from '@gridsuite/commons-ui';
+import { updateAgGridFilters } from '@gridsuite/commons-ui';
 import { AgGridReact } from 'ag-grid-react';
 import { ColumnState, GridApi } from 'ag-grid-community';
 
 type UseAgGridTableStateArgs = {
     gridRef: RefObject<AgGridReact | null>;
-    tableSort: Record<string, Record<string, ColumnState[]> | undefined>;
-    tableFilters: { columnsFilters?: Record<string, Record<string, any> | undefined> };
+    tableSort?: Record<string, Record<string, ColumnState[]> | undefined>;
+    tableFilters?: Record<string, Record<string, any> | undefined>;
     sortStore: string;
     tab: string;
 };
 
 export function useAgGridTableState({ gridRef, tableSort, tableFilters, sortStore, tab }: UseAgGridTableStateArgs) {
-    const sortState = tableSort[sortStore]?.[tab];
-    const filters = tableFilters.columnsFilters?.[TableType.ProcessExecutionList]?.[tab];
-
+    const sortState = tableSort?.[sortStore]?.[tab];
+    const filters = tableFilters?.[sortStore]?.[tab];
+    console.log('SORT STATE', sortState);
     const onGridReady = useCallback(
         ({ api }: { api: GridApi }) => {
             api.applyColumnState({ state: sortState ?? [], defaultState: { sort: null } });
