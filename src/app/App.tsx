@@ -21,8 +21,8 @@ import {
 } from 'features/authentication/store/authentication.selectors';
 import { fetchIdpSettings } from 'shared/config/idp-settings';
 import { getErrorMessage } from '../shared/lib/get-error-message';
-import { usePreferencesInvalidationListener } from './notifications/use-preferences-invalidation-listener';
-import { useProcessInvalidationsListener } from './notifications/use-process-invalidation-listener';
+import { useConfigDataInvalidationListener } from './notifications/use-config-data-invalidation-listener';
+import { useMonitorDataInvalidationsListener } from './notifications/use-monitor-data-invalidation-listener';
 import { AppRouter } from './router/AppRouter';
 import { useStableUserProfile } from '../features/authentication/hooks/use-stable-user-profile';
 import { AppLayout } from './layout/AppLayout';
@@ -79,8 +79,8 @@ function App() {
         // Note: dispatch and initialMatchSilentRenewCallbackUrl won't change
     }, [initialMatchSigninCallbackUrl, initialMatchSilentRenewCallbackUrl, dispatch]);
 
-    usePreferencesInvalidationListener();
-    useProcessInvalidationsListener();
+    useConfigDataInvalidationListener();
+    useMonitorDataInvalidationsListener();
     useGlobalInvalidationListener();
 
     const onLogoutClick = () => logout(dispatch, userManager.instance)?.catch((err) => console.error(err));

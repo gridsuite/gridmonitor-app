@@ -8,12 +8,13 @@
 import { Box, useTheme } from '@mui/material';
 import { yellow } from '@mui/material/colors';
 import { useIntl } from 'react-intl';
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { CustomAGGrid, DefaultCellRenderer, TableType, updateAgGridFilters } from '@gridsuite/commons-ui';
 import { AgGridReact } from 'ag-grid-react';
 import { GridApi, RowStyle } from 'ag-grid-community';
-import { AutomaticProcessConfigInfos } from '../../../shared/api/monitor-api';
+import { AutomaticProcessConfigInfos, ProcessType } from '../../../shared/api/monitor-api';
 import { getActiveColumns } from './ProcessConfigListUtil';
+import { ChangeAutomaticProcessConfigDialog } from './ChangeAutomaticProcessConfigDialog';
 import { AGGRID_LOCALES } from '../../../shared/translations/not-intl/aggrid-locales';
 import { useAppSelector } from '../../../app/store/hooks';
 import { PROCESS_CONFIG_ACTIVE_TAB, PROCESS_CONFIG_LIST_SORT_STORE } from './store/process-config-list.constants';
@@ -30,6 +31,7 @@ export function ActiveProcessConfigTable({ configs }: Readonly<ActiveProcessConf
     const theme = useTheme();
     const gridRef = useRef<AgGridReact>(null);
     const intl = useIntl();
+    const [editedProcessType, setEditedProcessType] = useState<ProcessType | undefined>();
     const tableSort = useAppSelector((state) => state.processConfigList.tableSort);
     const tableFilters = useAppSelector((state) => state.processConfigList.tableFilters);
 
@@ -69,6 +71,7 @@ export function ActiveProcessConfigTable({ configs }: Readonly<ActiveProcessConf
             lockPinned: true,
             wrapHeaderText: true,
             autoHeaderHeight: true,
+            suppressMovable: true,
             cellRenderer: DefaultCellRenderer,
         }),
         []
@@ -79,9 +82,13 @@ export function ActiveProcessConfigTable({ configs }: Readonly<ActiveProcessConf
         [intl]
     );
 
+    const handleModify = useCallback((config: AutomaticProcessConfigInfos) => {
+        setEditedProcessType(config.processType);
+    }, []);
+
     const columns = useMemo(
-        () => getActiveColumns(intl, ProcessConfigEnumsType, getEnumLabel, PROCESS_CONFIG_ACTIVE_TAB),
-        [intl, getEnumLabel]
+        () => getActiveColumns(intl, ProcessConfigEnumsType, getEnumLabel, PROCESS_CONFIG_ACTIVE_TAB, handleModify),
+        [intl, getEnumLabel, handleModify]
     );
 
     const getCustomRowStyle = useCallback(() => {
@@ -110,6 +117,13 @@ export function ActiveProcessConfigTable({ configs }: Readonly<ActiveProcessConf
                 }}
                 getRowStyle={getCustomRowStyle}
             />
+            {editedProcessType && (
+                <ChangeAutomaticProcessConfigDialog
+                    open
+                    processType={editedProcessType}
+                    onClose={() => setEditedProcessType(undefined)}
+                />
+            )}
         </Box>
     );
 }

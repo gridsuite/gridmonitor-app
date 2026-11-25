@@ -16,7 +16,7 @@ import {
     invalidateProcessExecutionSteps,
 } from '../../shared/api/monitor-api';
 import { createTestContext } from '../../test-utils/create-test-context';
-import { useProcessInvalidationsListener } from './use-process-invalidation-listener';
+import { useMonitorDataInvalidationsListener } from './use-monitor-data-invalidation-listener';
 
 vi.mock('shared/api/monitor-api', async (importOriginal) => {
     const actual = await importOriginal<typeof import('../../shared/api/monitor-api')>();
@@ -56,7 +56,7 @@ describe('useProcessInvalidationListener', () => {
         const { wrapper } = createTestContext();
 
         expect(listenerCallbackMessage).not.toBeDefined();
-        renderHook(() => useProcessInvalidationsListener(), { wrapper });
+        renderHook(() => useMonitorDataInvalidationsListener(), { wrapper });
 
         expect(useNotificationsListener).toHaveBeenCalledWith(NotificationsUrlKeys.MONITOR, {
             listenerCallbackMessage: expect.any(Function),
@@ -67,7 +67,7 @@ describe('useProcessInvalidationListener', () => {
     it('invalidates process execution lists when receiving a matching update type', () => {
         const { wrapper } = createTestContext();
 
-        renderHook(() => useProcessInvalidationsListener(), { wrapper });
+        renderHook(() => useMonitorDataInvalidationsListener(), { wrapper });
 
         listenerCallbackMessage?.({
             data: JSON.stringify({
@@ -81,7 +81,7 @@ describe('useProcessInvalidationListener', () => {
     it('invalidates process execution and steps when receiving a matching update type and executionId', () => {
         const { wrapper } = createTestContext();
 
-        renderHook(() => useProcessInvalidationsListener(), { wrapper });
+        renderHook(() => useMonitorDataInvalidationsListener(), { wrapper });
 
         listenerCallbackMessage?.({
             data: JSON.stringify({
@@ -116,7 +116,7 @@ describe('useProcessInvalidationListener', () => {
     it('does nothing when updateType is not matching', () => {
         const { wrapper } = createTestContext();
 
-        renderHook(() => useProcessInvalidationsListener(), { wrapper });
+        renderHook(() => useMonitorDataInvalidationsListener(), { wrapper });
 
         listenerCallbackMessage?.({
             data: JSON.stringify({
@@ -132,7 +132,7 @@ describe('useProcessInvalidationListener', () => {
     it('does nothing when updateType is missing', () => {
         const { wrapper } = createTestContext();
 
-        renderHook(() => useProcessInvalidationsListener(), { wrapper });
+        renderHook(() => useMonitorDataInvalidationsListener(), { wrapper });
 
         listenerCallbackMessage?.({
             data: JSON.stringify({
@@ -146,7 +146,7 @@ describe('useProcessInvalidationListener', () => {
     it('throws on invalid JSON payloads', () => {
         const { wrapper } = createTestContext();
 
-        renderHook(() => useProcessInvalidationsListener(), { wrapper });
+        renderHook(() => useMonitorDataInvalidationsListener(), { wrapper });
 
         expect(() => {
             listenerCallbackMessage?.({

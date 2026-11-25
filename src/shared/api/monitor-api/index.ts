@@ -16,6 +16,7 @@ export {
     useGetStepsInfosQuery,
     useGetProcessExecutionsQuery,
     useExecuteProcessMutation,
+    useUpdateAutomaticProcessConfigMutation,
     useGetExecutionQuery,
     useGetExecutionResultsQuery,
     useGetExecutionReportsQuery,

@@ -8,17 +8,19 @@
 import { useCallback } from 'react';
 import { NotificationsUrlKeys, useNotificationsListener } from '@gridsuite/commons-ui';
 import {
+    invalidateAllAutomaticProcessConfigs,
     invalidateProcessExecution,
     invalidateProcessExecutionReports,
     invalidateProcessExecutionReportsSeverities,
     invalidateProcessExecutionsLists,
     invalidateProcessExecutionSteps,
+    isAutomaticProcessConfigUpdateNotification,
     isProcessExecutionUpdateNotification,
 } from 'shared/api/monitor-api';
 
 import { useAppDispatch } from '../store/hooks';
 
-export const useProcessInvalidationsListener = () => {
+export const useMonitorDataInvalidationsListener = () => {
     const dispatch = useAppDispatch();
 
     const invalidateProcess = useCallback(
@@ -32,6 +34,8 @@ export const useProcessInvalidationsListener = () => {
                     invalidateProcessExecutionReports(dispatch, eventData.headers.processExecutionId);
                     invalidateProcessExecutionReportsSeverities(dispatch, eventData.headers.processExecutionId);
                 }
+            } else if (isAutomaticProcessConfigUpdateNotification(eventData)) {
+                invalidateAllAutomaticProcessConfigs(dispatch);
             }
         },
         [dispatch]

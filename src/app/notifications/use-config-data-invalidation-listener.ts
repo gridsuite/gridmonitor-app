@@ -16,7 +16,7 @@ type ConfigNotificationData = {
     };
 };
 
-export const usePreferencesInvalidationListener = () => {
+export const useConfigDataInvalidationListener = () => {
     const dispatch = useAppDispatch();
 
     const invalidatePreference = (event: MessageEvent) => {

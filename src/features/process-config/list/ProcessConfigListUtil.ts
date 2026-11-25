@@ -19,6 +19,8 @@ import {
 import { IntlShape } from 'react-intl';
 import { ConfigDateCellRenderer } from './renderers/config-date-cell-renderer';
 import { ConfigUserCellRenderer } from './renderers/config-user-cell-renderer';
+import { ConfigModifyCellRenderer } from './renderers/config-modify-cell-renderer';
+import { AutomaticProcessConfigInfos } from '../../../shared/api/monitor-api';
 import { PROCESS_CONFIG_LIST_SORT_STORE } from './store/process-config-list.constants';
 
 const createTableParams = (tab: string) => ({
@@ -68,6 +70,7 @@ const typeColumn = ({ intl, filterEnums, getEnumLabel, tab }: ColumnsArgs): ColD
         headerName: intl.formatMessage({ id: 'AnalysisType' }),
         colId: 'processType',
         field: 'processType',
+        pinned: true,
         minWidth: 210,
         filterParams: createEnumFilterParams(),
         context: {
@@ -126,14 +129,43 @@ const modifiedByColumn = ({ intl, tab }: ColumnsArgs): ColDef => {
     });
 };
 
+const modifyColumn = (onModify: (config: AutomaticProcessConfigInfos) => void): ColDef => ({
+    colId: 'modify',
+    headerName: '',
+    sortable: false,
+    filter: false,
+    resizable: false,
+    minWidth: 130,
+    maxWidth: 130,
+    cellRenderer: ConfigModifyCellRenderer,
+    cellRendererParams: { onModify },
+});
+
+// this column is to make the row full width and to keep other column left aligned
+// using sizeColumnsToFit makes columns too large
+const fullWidthColumn = (): ColDef => ({
+    flex: 1,
+    sortable: false,
+    filter: false,
+    resizable: false,
+});
+
 export const getActiveColumns = (
     intl: IntlShape,
     filterEnums: FilterEnumsType,
     getEnumLabel: (value: string) => string,
-    tab: string
+    tab: string,
+    onModify: (config: AutomaticProcessConfigInfos) => void
 ): ColDef[] => {
     const args = { intl, filterEnums, getEnumLabel, tab };
-    return [typeColumn(args), nameColumn(args), sinceColumn(args), modifiedByColumn(args)];
+    return [
+        typeColumn(args),
+        nameColumn(args),
+        sinceColumn(args),
+        modifiedByColumn(args),
+        modifyColumn(onModify),
+        fullWidthColumn(),
+    ];
 };
 
 export const getHistoryColumns = (
@@ -143,5 +175,5 @@ export const getHistoryColumns = (
     tab: string
 ): ColDef[] => {
     const args = { intl, filterEnums, getEnumLabel, tab };
-    return [typeColumn(args), nameColumn(args), sinceColumn(args), modifiedByColumn(args)];
+    return [typeColumn(args), nameColumn(args), sinceColumn(args), modifiedByColumn(args), fullWidthColumn()];
 };

@@ -34,6 +34,12 @@ export const monitorApi = monitorGeneratedApi.enhanceEndpoints({
                 { type: MonitorTags.ProcessExecutionReportsSeverities, id: executionId },
             ],
         },
+        getAutomaticProcessConfigs: {
+            providesTags: (_result, _error, queryArg) => [{ type: MonitorTags.AutomaticProcessConfigs }],
+        },
+        getAutomaticProcessConfigsHistory: {
+            providesTags: (_result, _error, queryArg) => [{ type: MonitorTags.AutomaticProcessConfigs }],
+        },
     },
 });
 
@@ -55,6 +61,10 @@ export const invalidateProcessExecutionReportsSeverities = (dispatch: AppDispatc
             { type: MonitorTags.ProcessExecutionReportsSeverities, id: processExecutionId },
         ])
     );
+
+export const invalidateAllAutomaticProcessConfigs = (dispatch: AppDispatch) => {
+    dispatch(monitorApi.util.invalidateTags([{ type: MonitorTags.AutomaticProcessConfigs }]));
+};
 
 export const invalidateAllQueries = (dispatch: AppDispatch) => {
     dispatch(monitorApi.util.invalidateTags(Object.values(MonitorTags)));

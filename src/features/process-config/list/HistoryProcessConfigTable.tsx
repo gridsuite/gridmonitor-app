@@ -11,7 +11,7 @@ import { useIntl } from 'react-intl';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { CustomAGGrid, DefaultCellRenderer, TableType, updateAgGridFilters } from '@gridsuite/commons-ui';
 import { AgGridReact } from 'ag-grid-react';
-import { GridApi, RowStyle } from 'ag-grid-community';
+import { ColDef, GridApi, RowStyle } from 'ag-grid-community';
 import { AutomaticProcessConfigInfos } from '../../../shared/api/monitor-api';
 import { getHistoryColumns } from './ProcessConfigListUtil';
 import { AGGRID_LOCALES } from '../../../shared/translations/not-intl/aggrid-locales';
@@ -61,7 +61,7 @@ export function HistoryProcessConfigTable({ configs }: Readonly<HistoryProcessCo
         );
     }, [tableFilters]);
 
-    const defaultColDef = useMemo(
+    const defaultColDef: ColDef = useMemo(
         () => ({
             filter: true,
             sortable: true,
@@ -69,6 +69,7 @@ export function HistoryProcessConfigTable({ configs }: Readonly<HistoryProcessCo
             lockPinned: true,
             wrapHeaderText: true,
             autoHeaderHeight: true,
+            suppressMovable: true,
             cellRenderer: DefaultCellRenderer,
         }),
         []
