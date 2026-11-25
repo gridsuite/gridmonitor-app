@@ -45,7 +45,7 @@
     "Refresh": "Actualiser",
     "nav.launchHistory": "Historique d'exécution",
     "createConfig": "Créer une configuration",
-    "referenceConfigs": "Configurations de référence",
+    "autoRunConfig": "Configuration des chaînes automatiques",
     "activeConfigs": "Actives",
     "configsHistory": "Historique",
     "AnalysisType": "Type d'analyse",

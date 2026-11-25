@@ -61,45 +61,48 @@ type ColumnsArgs = {
     intl: IntlShape;
     filterEnums: FilterEnumsType;
     getEnumLabel: (value: string) => string;
-    tab: string;
+    tab?: string;
 };
 
+// Without a tab, columns are neither sortable nor filterable through the store: no context, no filterParams
 const typeColumn = ({ intl, filterEnums, getEnumLabel, tab }: ColumnsArgs): ColDef => {
-    const { filterParams } = createTableParams(tab);
+    const params = tab ? createTableParams(tab) : undefined;
     return makeAgGridCustomHeaderColumn<CustomAggridAutocompleteFilterParams>({
         headerName: intl.formatMessage({ id: 'AnalysisType' }),
         colId: 'processType',
         field: 'processType',
         pinned: true,
         minWidth: 210,
-        filterParams: createEnumFilterParams(),
-        context: {
-            filterComponent: CustomAggridAutocompleteFilter,
-            filterComponentParams: {
-                filterParams: { dataType: FilterDataTypes.TEXT, ...filterParams },
-                options: filterEnums.processType ?? [],
-                getOptionLabel: getEnumLabel,
+        ...(params && {
+            filterParams: createEnumFilterParams(),
+            context: {
+                filterComponent: CustomAggridAutocompleteFilter,
+                filterComponentParams: {
+                    filterParams: { dataType: FilterDataTypes.TEXT, ...params.filterParams },
+                    options: filterEnums.processType ?? [],
+                    getOptionLabel: getEnumLabel,
+                },
             },
-        },
-        valueGetter: (params) => params.data.processType,
-        valueFormatter: (params: ValueFormatterParams) => getEnumLabel(params.data.processType),
+        }),
+        valueGetter: (p) => p.data.processType,
+        valueFormatter: (p: ValueFormatterParams) => getEnumLabel(p.data.processType),
     });
 };
 
 const nameColumn = ({ intl, tab }: ColumnsArgs): ColDef => {
-    const { sortParams, filterParams } = createTableParams(tab);
+    const params = tab ? createTableParams(tab) : undefined;
     return makeAgGridCustomHeaderColumn({
         headerName: intl.formatMessage({ id: 'Name' }),
         colId: 'processConfigName',
         field: 'processConfigName',
         minWidth: 300,
-        context: textFilterContext(sortParams, filterParams),
-        valueGetter: (params) => params.data.processConfigName,
+        ...(params && { context: textFilterContext(params.sortParams, params.filterParams) }),
+        valueGetter: (p) => p.data.processConfigName,
     });
 };
 
 const sinceColumn = ({ intl, tab }: ColumnsArgs): ColDef => {
-    const { sortParams } = createTableParams(tab);
+    const params = tab ? createTableParams(tab) : undefined;
     return makeAgGridCustomHeaderColumn({
         headerName: intl.formatMessage({ id: 'Since' }),
         colId: 'processConfigChangedAt',
@@ -108,13 +111,13 @@ const sinceColumn = ({ intl, tab }: ColumnsArgs): ColDef => {
         maxWidth: 183,
         resizable: false,
         cellRenderer: ConfigDateCellRenderer,
-        context: { sortParams },
-        valueGetter: (params) => params.data.changedAt,
+        ...(params && { context: { sortParams: params.sortParams } }),
+        valueGetter: (p) => p.data.changedAt,
     });
 };
 
 const modifiedByColumn = ({ intl, tab }: ColumnsArgs): ColDef => {
-    const { sortParams, filterParams } = createTableParams(tab);
+    const params = tab ? createTableParams(tab) : undefined;
     return makeAgGridCustomHeaderColumn({
         headerName: intl.formatMessage({ id: 'ModifiedBy' }),
         colId: 'processConfigChangedBy',
@@ -124,8 +127,8 @@ const modifiedByColumn = ({ intl, tab }: ColumnsArgs): ColDef => {
         resizable: false,
         cellRenderer: ConfigUserCellRenderer,
         cellRendererParams: { backgroundColor: 'text.secondary' },
-        context: textFilterContext(sortParams, filterParams),
-        valueGetter: (params) => params.data.changedBy,
+        ...(params && { context: textFilterContext(params.sortParams, params.filterParams) }),
+        valueGetter: (p) => p.data.changedBy,
     });
 };
 
@@ -154,10 +157,9 @@ export const getActiveColumns = (
     intl: IntlShape,
     filterEnums: FilterEnumsType,
     getEnumLabel: (value: string) => string,
-    tab: string,
     onModify: (config: AutomaticProcessConfigInfos) => void
 ): ColDef[] => {
-    const args = { intl, filterEnums, getEnumLabel, tab };
+    const args = { intl, filterEnums, getEnumLabel };
     return [
         typeColumn(args),
         nameColumn(args),

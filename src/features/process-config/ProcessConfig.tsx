@@ -30,7 +30,7 @@ function ProcessConfig() {
                     }}
                 >
                     <Typography variant="h5">
-                        <FormattedMessage id="referenceConfigs" />
+                        <FormattedMessage id="autoRunConfig" />
                     </Typography>
                     <Button variant="contained" onClick={() => setDialogOpen(true)} startIcon={<Add />}>
                         <FormattedMessage id="createConfig" />
