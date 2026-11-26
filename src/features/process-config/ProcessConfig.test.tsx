@@ -20,8 +20,9 @@ vi.mock('@gridsuite/commons-ui', async (importOriginal) => {
     };
 });
 
-const config = (uuid: string, processType: string, changedBy: string) => ({
-    processConfigUuid: uuid,
+const config = (name: string, processType: string, changedBy: string) => ({
+    processConfigUuid: `uuid-${name}`,
+    processConfigName: name,
     processType,
     changedAt: '2026-01-01T10:00:00Z',
     changedBy,
@@ -31,18 +32,18 @@ describe('ProcessConfig page', () => {
     it('displays active and history tables', async () => {
         server.use(
             http.get('*/v1/automatic-process-configs/history', () =>
-                HttpResponse.json([config('uuid-history', 'LOADFLOW', 'user-history')])
+                HttpResponse.json([config('history-config-name', 'LOADFLOW', 'user-history')])
             ),
             http.get('*/v1/automatic-process-configs', () =>
-                HttpResponse.json([config('uuid-active', 'SECURITY_ANALYSIS', 'user-active')])
+                HttpResponse.json([config('active-config-name', 'SECURITY_ANALYSIS', 'user-active')])
             )
         );
         renderWithProviders(<ProcessConfig />);
-        expect(screen.getByText('Active')).toBeVisible();
+        expect(screen.getByText('Actives')).toBeVisible();
         expect(screen.getByText('History')).toBeVisible();
-        expect(await screen.findByText('uuid-active')).toBeVisible();
-        expect(await screen.findByText('uuid-history')).toBeVisible();
-        expect(screen.getByText('user-active')).toBeVisible();
-        expect(screen.getByText('user-history')).toBeVisible();
+        expect(await screen.findByText('active-config-name')).toBeInTheDocument();
+        expect(await screen.findByText('history-config-name')).toBeInTheDocument();
+        expect(screen.getByText('user-active')).toBeInTheDocument();
+        expect(screen.getByText('user-history')).toBeInTheDocument();
     });
 });
