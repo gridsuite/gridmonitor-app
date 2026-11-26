@@ -7,11 +7,15 @@
 
 import { screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { ProcessStatus, StepStatus, type ProcessExecution } from '../../../shared/api/monitor-api';
+import {
+    ProcessStatus,
+    StepStatus,
+    type ProcessExecution,
+    ProcessExecutionTriggerType,
+} from '../../../shared/api/monitor-api';
 import { renderWithProviders } from '../../../test-utils/render-with-providers';
 import { ProcessExecutionDetailsView } from './ProcessExecutionDetailsView';
 import type { ProcessStepModel } from '../models/process-execution';
-import { ProcessExecutionTriggerType } from '../../../shared/api/monitor-api/monitor.generated';
 
 vi.mock('@gridsuite/commons-ui', async (importOriginal) => {
     const actual = await importOriginal<typeof import('@gridsuite/commons-ui')>();

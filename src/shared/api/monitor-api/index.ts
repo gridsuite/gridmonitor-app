@@ -28,6 +28,7 @@ export {
     ResultType,
     Severity,
     StepStatus,
+    ProcessExecutionTriggerType,
 } from './monitor.generated';
 
 export type {
