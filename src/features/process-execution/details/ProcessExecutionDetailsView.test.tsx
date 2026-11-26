@@ -11,6 +11,7 @@ import { ProcessStatus, StepStatus, type ProcessExecution } from '../../../share
 import { renderWithProviders } from '../../../test-utils/render-with-providers';
 import { ProcessExecutionDetailsView } from './ProcessExecutionDetailsView';
 import type { ProcessStepModel } from '../models/process-execution';
+import { ProcessExecutionTriggerType } from '../../../shared/api/monitor-api/monitor.generated';
 
 vi.mock('@gridsuite/commons-ui', async (importOriginal) => {
     const actual = await importOriginal<typeof import('@gridsuite/commons-ui')>();
@@ -41,6 +42,7 @@ const execution: ProcessExecution = {
     caseUuid: 'case-1',
     processConfigId: 'process-config-1',
     status: ProcessStatus.Running,
+    triggerType: ProcessExecutionTriggerType.Manual,
     executionEnvName: 'test',
     scheduledAt: '2026-01-01T09:55:00Z',
     startedAt: '2026-01-01T10:00:00Z',
