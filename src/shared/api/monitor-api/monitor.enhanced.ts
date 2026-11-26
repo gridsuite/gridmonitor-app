@@ -35,10 +35,10 @@ export const monitorApi = monitorGeneratedApi.enhanceEndpoints({
             ],
         },
         getAutomaticProcessConfigs: {
-            providesTags: (_result, _error, queryArg) => [{ type: MonitorTags.AutomaticProcessConfigs }],
+            providesTags: [{ type: MonitorTags.AutomaticProcessConfigs }],
         },
         getAutomaticProcessConfigsHistory: {
-            providesTags: (_result, _error, queryArg) => [{ type: MonitorTags.AutomaticProcessConfigs }],
+            providesTags: [{ type: MonitorTags.AutomaticProcessConfigs }],
         },
     },
 });
