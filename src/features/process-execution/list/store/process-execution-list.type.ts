@@ -11,12 +11,8 @@ interface TablesState {
     uuid: UUID | null;
 }
 
-export type TableFiltersState = {
-    columnsFilters: TableColumnFilter;
-};
-
 export interface ProcessTablesState {
     tableSort: TableSort;
     tables: TablesState;
-    tableFilters: TableFiltersState;
+    tableFilters: TableColumnFilter;
 }

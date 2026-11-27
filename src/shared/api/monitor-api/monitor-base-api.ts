@@ -14,6 +14,7 @@ export const MonitorTags = {
     ProcessExecutionSteps: 'ProcessExecutionSteps',
     ProcessExecutionReports: 'ProcessExecutionReports',
     ProcessExecutionReportsSeverities: 'ProcessExecutionReportsSeverities',
+    AutomaticProcessConfigs: 'AutomaticProcessConfigs',
 } as const;
 
 export const monitorBaseApi = createApi({

@@ -11,9 +11,12 @@ export { downloadExecutionResultsCsv } from './download-execution-results';
 export {
     useGetProcessConfigsQuery,
     useGetProcessConfigQuery,
+    useGetAutomaticProcessConfigsQuery,
+    useGetAutomaticProcessConfigsHistoryQuery,
     useGetStepsInfosQuery,
     useGetProcessExecutionsQuery,
     useExecuteProcessMutation,
+    useUpdateAutomaticProcessConfigMutation,
     useGetExecutionQuery,
     useGetExecutionResultsQuery,
     useGetExecutionReportsQuery,
@@ -25,6 +28,7 @@ export {
     ResultType,
     Severity,
     StepStatus,
+    ProcessExecutionTriggerType,
 } from './monitor.generated';
 
 export type {
@@ -35,6 +39,7 @@ export type {
     ExportExecutionResultsCsvApiResponse,
     ExportExecutionResultsCsvApiArg,
     ExecuteProcessApiArg,
+    AutomaticProcessConfigInfos,
 } from './monitor.generated';
 
 export type { PersistedProcessConfig, ProcessConfig } from './monitor.type';

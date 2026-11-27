@@ -7,7 +7,12 @@
 
 import { screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { ProcessStatus, StepStatus, type ProcessExecution } from '../../../shared/api/monitor-api';
+import {
+    ProcessStatus,
+    StepStatus,
+    type ProcessExecution,
+    ProcessExecutionTriggerType,
+} from '../../../shared/api/monitor-api';
 import { renderWithProviders } from '../../../test-utils/render-with-providers';
 import { ProcessExecutionDetailsView } from './ProcessExecutionDetailsView';
 import type { ProcessStepModel } from '../models/process-execution';
@@ -41,6 +46,7 @@ const execution: ProcessExecution = {
     caseUuid: 'case-1',
     processConfigId: 'process-config-1',
     status: ProcessStatus.Running,
+    triggerType: ProcessExecutionTriggerType.Manual,
     executionEnvName: 'test',
     scheduledAt: '2026-01-01T09:55:00Z',
     startedAt: '2026-01-01T10:00:00Z',

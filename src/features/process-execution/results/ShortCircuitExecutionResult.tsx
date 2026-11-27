@@ -23,7 +23,7 @@ import type { DisplayedColumnsChangedEvent, GridReadyEvent, RowDataUpdatedEvent 
 import { ProcessStatus, downloadExecutionResultsCsv } from 'shared/api/monitor-api';
 import { SHORT_CIRCUIT_RESULT_TYPES } from 'shared/api/monitor-api/result-subtypes';
 import { useShortCircuitExecutionResults } from './hooks/use-execution-results';
-import { CustomAggridReduxProvider } from '../list/custom-aggrid-redux-provider';
+import { ProcessExecutionListProvider } from '../list/process-execution-list-provider';
 import { EMPTY_RESULT_FILTERS, EMPTY_RESULT_SORT } from './result-column-filters';
 import { prepareShortCircuitQuery, serializeResultQuery } from './result-query-adapters';
 import { useResultPagination } from './hooks/use-result-pagination';
@@ -52,7 +52,7 @@ export function ShortCircuitExecutionResultTable({
     );
     const filters = useAppSelector(
         (state) =>
-            state.processExecutionList.tableFilters.columnsFilters[TableType.ShortcircuitAnalysis]?.[FILTER_TAB] ??
+            state.processExecutionList.tableFilters[TableType.ShortcircuitAnalysis]?.[FILTER_TAB] ??
             EMPTY_RESULT_FILTERS
     );
     const query = useMemo(() => prepareShortCircuitQuery(filters, sort), [filters, sort]);
@@ -100,7 +100,7 @@ export function ShortCircuitExecutionResultTable({
     );
 
     return (
-        <CustomAggridReduxProvider>
+        <ProcessExecutionListProvider>
             <Box
                 sx={{
                     display: 'flex',
@@ -173,6 +173,6 @@ export function ShortCircuitExecutionResultTable({
                     />
                 </Box>
             </Box>
-        </CustomAggridReduxProvider>
+        </ProcessExecutionListProvider>
     );
 }

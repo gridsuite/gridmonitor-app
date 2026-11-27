@@ -8,6 +8,7 @@ import { ProcessType } from './monitor.generated';
 
 export enum NotificationType {
     PROCESS_EXECUTION_UPDATED = 'PROCESS_EXECUTION_UPDATED',
+    AUTOMATIC_PROCESS_CONFIG_UPDATED = 'AUTOMATIC_PROCESS_CONFIG_UPDATED',
 }
 
 // EventData
@@ -21,8 +22,21 @@ export type MonitorExecutionEventData = {
     payload?: unknown;
 };
 
+export type MonitorAutomaticProcessConfigEventData = {
+    headers: {
+        updateType: NotificationType;
+    };
+    payload?: unknown;
+};
+
 // Predicates
 
 export function isProcessExecutionUpdateNotification(notif: any): notif is MonitorExecutionEventData {
     return notif?.headers?.updateType === NotificationType.PROCESS_EXECUTION_UPDATED;
+}
+
+export function isAutomaticProcessConfigUpdateNotification(
+    notif: any
+): notif is MonitorAutomaticProcessConfigEventData {
+    return notif?.headers?.updateType === NotificationType.AUTOMATIC_PROCESS_CONFIG_UPDATED;
 }

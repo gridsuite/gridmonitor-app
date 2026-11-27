@@ -8,7 +8,7 @@
 import { renderHook } from '@testing-library/react';
 import { NotificationsUrlKeys, useNotificationsListener } from '@gridsuite/commons-ui';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { usePreferencesInvalidationListener } from './use-preferences-invalidation-listener';
+import { useConfigDataInvalidationListener } from './use-config-data-invalidation-listener';
 import { invalidateConfigQueries } from '../../shared/api/config-api';
 import { createTestContext } from '../../test-utils/create-test-context';
 
@@ -46,7 +46,7 @@ describe('usePreferencesInvalidationListener', () => {
         const { wrapper } = createTestContext();
 
         expect(listenerCallbackMessage).not.toBeDefined();
-        renderHook(() => usePreferencesInvalidationListener(), { wrapper });
+        renderHook(() => useConfigDataInvalidationListener(), { wrapper });
 
         expect(useNotificationsListener).toHaveBeenCalledWith(NotificationsUrlKeys.CONFIG, {
             listenerCallbackMessage: expect.any(Function),
@@ -57,7 +57,7 @@ describe('usePreferencesInvalidationListener', () => {
     it('invalidates config queries when receiving a parameter name', () => {
         const { wrapper } = createTestContext();
 
-        renderHook(() => usePreferencesInvalidationListener(), { wrapper });
+        renderHook(() => useConfigDataInvalidationListener(), { wrapper });
 
         listenerCallbackMessage?.({
             data: JSON.stringify({
@@ -72,7 +72,7 @@ describe('usePreferencesInvalidationListener', () => {
     it('does nothing when parameterName is missing', () => {
         const { wrapper } = createTestContext();
 
-        renderHook(() => usePreferencesInvalidationListener(), { wrapper });
+        renderHook(() => useConfigDataInvalidationListener(), { wrapper });
 
         listenerCallbackMessage?.({
             data: JSON.stringify({
@@ -86,7 +86,7 @@ describe('usePreferencesInvalidationListener', () => {
     it('throws on invalid JSON payloads', () => {
         const { wrapper } = createTestContext();
 
-        renderHook(() => usePreferencesInvalidationListener(), { wrapper });
+        renderHook(() => useConfigDataInvalidationListener(), { wrapper });
 
         expect(() => {
             listenerCallbackMessage?.({

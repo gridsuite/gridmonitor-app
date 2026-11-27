@@ -26,6 +26,16 @@ const injectedRtkApi = api.injectEndpoints({
         method: "DELETE",
       }),
     }),
+    updateAutomaticProcessConfig: build.mutation<
+      UpdateAutomaticProcessConfigApiResponse,
+      UpdateAutomaticProcessConfigApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/v1/automatic-process-configs/${queryArg.processType}`,
+        method: "PUT",
+        body: queryArg.body,
+      }),
+    }),
     getProcessConfigs: build.query<
       GetProcessConfigsApiResponse,
       GetProcessConfigsApiArg
@@ -71,6 +81,15 @@ const injectedRtkApi = api.injectEndpoints({
           sort: queryArg.sort,
           filters: queryArg.filters,
         },
+      }),
+    }),
+    cancelProcess: build.mutation<
+      CancelProcessApiResponse,
+      CancelProcessApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/v1/executions/${queryArg.executionId}/cancel`,
+        method: "POST",
       }),
     }),
     executeProcess: build.mutation<
@@ -199,6 +218,18 @@ const injectedRtkApi = api.injectEndpoints({
         url: `/v1/executions/${queryArg.executionId}/debug-infos`,
       }),
     }),
+    getAutomaticProcessConfigs: build.query<
+      GetAutomaticProcessConfigsApiResponse,
+      GetAutomaticProcessConfigsApiArg
+    >({
+      query: () => ({ url: `/v1/automatic-process-configs` }),
+    }),
+    getAutomaticProcessConfigsHistory: build.query<
+      GetAutomaticProcessConfigsHistoryApiResponse,
+      GetAutomaticProcessConfigsHistoryApiArg
+    >({
+      query: () => ({ url: `/v1/automatic-process-configs/history` }),
+    }),
   }),
   overrideExisting: false,
 });
@@ -219,6 +250,12 @@ export type DeleteProcessConfigApiResponse = unknown;
 export type DeleteProcessConfigApiArg = {
   /** process config UUID */
   uuid: string;
+};
+export type UpdateAutomaticProcessConfigApiResponse = unknown;
+export type UpdateAutomaticProcessConfigApiArg = {
+  /** process type */
+  processType: ProcessType;
+  body: string;
 };
 export type GetProcessConfigsApiResponse =
   /** status 200 The process configs of the given type were returned */ PersistedProcessConfig[];
@@ -250,6 +287,11 @@ export type ExportExecutionResultsCsvApiArg = {
   sort?: string[];
   filters?: string;
   csvExportRequest: CsvExportRequest;
+};
+export type CancelProcessApiResponse = unknown;
+export type CancelProcessApiArg = {
+  /** Execution UUID */
+  executionId: string;
 };
 export type ExecuteProcessApiResponse =
   /** status 200 The process execution has been started */ string;
@@ -354,6 +396,12 @@ export type GetDebugInfosApiArg = {
   /** Execution UUID */
   executionId: string;
 };
+export type GetAutomaticProcessConfigsApiResponse =
+  /** status 200 Current automatic process configs */ AutomaticProcessConfigInfos[];
+export type GetAutomaticProcessConfigsApiArg = void;
+export type GetAutomaticProcessConfigsHistoryApiResponse =
+  /** status 200 Automatic process configs history */ AutomaticProcessConfigInfos[];
+export type GetAutomaticProcessConfigsHistoryApiArg = void;
 export type ProcessConfigBase = {
   processType: string;
 };
@@ -415,6 +463,7 @@ export type ProcessExecution = {
   caseUuid: string;
   processConfigId: string;
   status: ProcessStatus;
+  triggerType: ProcessExecutionTriggerType;
   executionEnvName: string;
   scheduledAt?: string;
   startedAt?: string;
@@ -457,6 +506,13 @@ export type MatchPosition = {
   page?: number;
   rowIndex?: number;
 };
+export type AutomaticProcessConfigInfos = {
+  processConfigUuid?: string;
+  processConfigName?: string;
+  processType?: ProcessType;
+  changedAt?: string;
+  changedBy?: string;
+};
 export enum ProcessType {
   SecurityAnalysis = "SECURITY_ANALYSIS",
   Loadflow = "LOADFLOW",
@@ -465,8 +521,14 @@ export enum ProcessType {
 export enum ProcessStatus {
   Scheduled = "SCHEDULED",
   Running = "RUNNING",
+  Canceling = "CANCELING",
+  Canceled = "CANCELED",
   Completed = "COMPLETED",
   Failed = "FAILED",
+}
+export enum ProcessExecutionTriggerType {
+  Manual = "MANUAL",
+  Auto = "AUTO",
 }
 export enum StepStatus {
   Scheduled = "SCHEDULED",
@@ -474,6 +536,7 @@ export enum StepStatus {
   Completed = "COMPLETED",
   Failed = "FAILED",
   Skipped = "SKIPPED",
+  Canceled = "CANCELED",
 }
 export enum ResultType {
   SecurityAnalysis = "SECURITY_ANALYSIS",
@@ -494,10 +557,12 @@ export const {
   useGetProcessConfigQuery,
   useUpdateProcessConfigMutation,
   useDeleteProcessConfigMutation,
+  useUpdateAutomaticProcessConfigMutation,
   useGetProcessConfigsQuery,
   useCreateProcessConfigMutation,
   useDuplicateProcessConfigMutation,
   useExportExecutionResultsCsvMutation,
+  useCancelProcessMutation,
   useExecuteProcessMutation,
   useGetProcessConfigsMetadataQuery,
   useCompareProcessConfigsQuery,
@@ -511,4 +576,6 @@ export const {
   useGetExecutionLogsQuery,
   useGetExecutionLogsSearchQuery,
   useGetDebugInfosQuery,
+  useGetAutomaticProcessConfigsQuery,
+  useGetAutomaticProcessConfigsHistoryQuery,
 } = injectedRtkApi;

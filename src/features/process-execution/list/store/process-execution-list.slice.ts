@@ -5,36 +5,18 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {
-    FilterConfig,
-    PROCESS_EXECUTION,
-    SortConfig,
-    SortWay,
-    TableSortConfig,
-    TableType,
-} from '@gridsuite/commons-ui';
+import { createSlice } from '@reduxjs/toolkit';
+import { PROCESS_EXECUTION, SortWay, TableSortConfig, TableType } from '@gridsuite/commons-ui';
+import { tableStateReducers } from '../../../../shared/lib/aggrid-table-state/table-state.reducers';
 import { ProcessTablesState } from './process-execution-list.type';
-import { PROCESS_EXECUTION_LIST_SORT_STORE } from './process-execution-list.constants';
-
-type SetTableSortPayload = {
-    table: string;
-    tab: string;
-    sorts: SortConfig[];
-};
-
-type SetTableFiltersPayload = {
-    filterType: TableType;
-    filterSubType: string;
-    filters: FilterConfig[];
-};
+import { PROCESS_EXECUTION_LIST, PROCESS_EXECUTION_LIST_STORE } from './process-execution-list.constants';
 
 const initialSortState: TableSortConfig = {
-    [PROCESS_EXECUTION_LIST_SORT_STORE]: [{ colId: 'processScheduledAt', sort: SortWay.DESC }],
+    [PROCESS_EXECUTION_LIST]: [{ colId: 'processScheduledAt', sort: SortWay.DESC }],
 };
 
 const initialProcessExecutionListFilterState = {
-    [PROCESS_EXECUTION_LIST_SORT_STORE]: [],
+    [PROCESS_EXECUTION_LIST]: [],
 };
 
 const initialLogsFilterState = {
@@ -43,21 +25,19 @@ const initialLogsFilterState = {
 
 const initialState: ProcessTablesState = {
     tableSort: {
-        [PROCESS_EXECUTION_LIST_SORT_STORE]: {
+        [PROCESS_EXECUTION_LIST_STORE]: {
             ...initialSortState,
         },
     },
     tableFilters: {
-        columnsFilters: {
-            [TableType.ProcessExecutionList]: {
-                ...initialProcessExecutionListFilterState,
-            },
-            [TableType.Logs]: {
-                ...initialLogsFilterState,
-            },
-            [TableType.SecurityAnalysis]: {},
-            [TableType.ShortcircuitAnalysis]: {},
+        [PROCESS_EXECUTION_LIST_STORE]: {
+            ...initialProcessExecutionListFilterState,
         },
+        [TableType.Logs]: {
+            ...initialLogsFilterState,
+        },
+        [TableType.SecurityAnalysis]: {},
+        [TableType.ShortcircuitAnalysis]: {},
     },
     tables: { uuid: null },
 };
@@ -65,18 +45,7 @@ const initialState: ProcessTablesState = {
 const processExecutionListSlice = createSlice({
     name: 'processExecutionList',
     initialState,
-    reducers: {
-        setTableSort: (state, action: PayloadAction<SetTableSortPayload>) => {
-            const { table, tab, sorts } = action.payload;
-            state.tableSort[table] ??= {};
-            state.tableSort[table][tab] = sorts;
-        },
-        setTableFilters: (state, action: PayloadAction<SetTableFiltersPayload>) => {
-            const { filterType, filterSubType, filters } = action.payload;
-            state.tableFilters.columnsFilters[filterType] ??= {};
-            state.tableFilters.columnsFilters[filterType][filterSubType] = filters;
-        },
-    },
+    reducers: { ...tableStateReducers },
 });
 
 export const { setTableSort, setTableFilters } = processExecutionListSlice.actions;

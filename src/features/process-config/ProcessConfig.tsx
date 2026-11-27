@@ -5,15 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Button, Grid, Stack, Typography } from '@mui/material';
-import { Add } from '@mui/icons-material';
-import { useState } from 'react';
+import { Box, Grid, Stack, Typography } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { CreateProcessConfigDialog } from './create/CreateProcessConfigDialog';
+import { ActiveProcessConfigTable } from './list/actives/ActiveProcessConfigTable';
+import { HistoryProcessConfigTable } from './list/history/HistoryProcessConfigTable';
+import { CreateProcessConfigButton } from './create/CreateProcessConfigButton';
 
 function ProcessConfig() {
-    const [dialogOpen, setDialogOpen] = useState(false);
-
     return (
         <Box sx={{ p: 3 }}>
             <Stack>
@@ -25,13 +23,12 @@ function ProcessConfig() {
                     }}
                 >
                     <Typography variant="h5">
-                        <FormattedMessage id="referenceConfigs" />
+                        <FormattedMessage id="autoRunConfig" />
                     </Typography>
-                    <Button variant="contained" onClick={() => setDialogOpen(true)} startIcon={<Add />}>
-                        <FormattedMessage id="createConfig" />
-                    </Button>
+                    <CreateProcessConfigButton />
                 </Grid>
-                <CreateProcessConfigDialog open={dialogOpen} onClose={() => setDialogOpen(false)} />
+                <ActiveProcessConfigTable />
+                <HistoryProcessConfigTable />
             </Stack>
         </Box>
     );

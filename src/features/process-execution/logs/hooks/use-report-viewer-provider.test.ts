@@ -57,10 +57,8 @@ describe('useReportViewerProvider', () => {
                 processExecutionList: {
                     tableSort: {},
                     tableFilters: {
-                        columnsFilters: {
-                            [TableType.Logs]: {
-                                [PROCESS_EXECUTION]: filters,
-                            },
+                        [TableType.Logs]: {
+                            [PROCESS_EXECUTION]: filters,
                         },
                     },
                     tables: { uuid: null },
@@ -169,9 +167,9 @@ describe('useReportViewerProvider', () => {
         });
 
         await waitFor(() => {
-            expect(
-                store.getState().processExecutionList.tableFilters.columnsFilters?.[TableType.Logs]?.[PROCESS_EXECUTION]
-            ).toEqual(filters);
+            expect(store.getState().processExecutionList.tableFilters?.[TableType.Logs]?.[PROCESS_EXECUTION]).toEqual(
+                filters
+            );
         });
     });
 
