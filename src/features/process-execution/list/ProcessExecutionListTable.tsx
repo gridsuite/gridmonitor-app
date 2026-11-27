@@ -13,9 +13,9 @@ import { ProcessExecutionInfos } from '../models/process-execution';
 import { processExecutionListColumnsDefinition } from './ProcessExecutionListUtil';
 import { APP_PATHS } from '../../../app/router/paths';
 import { useAppSelector } from '../../../app/store/hooks';
-import { PROCESS_EXECUTION_LIST_SORT_STORE } from './store/process-execution-list.constants';
+import { PROCESS_EXECUTION_LIST, PROCESS_EXECUTION_LIST_STORE } from './store/process-execution-list.constants';
 import { MonitorAGGrid } from '../../../shared/components/ag-grid/MonitorAGGrid';
-import { MONITOR_DEFAULT_COL_DEF } from '../../../shared/components/ag-grid/ag-grid-default-col-def';
+import { MONITOR_DEFAULT_COL_DEF_WITH_FRONTEND_FILTER } from '../../../shared/components/ag-grid/ag-grid-default-col-def';
 import { useAgGridTableState } from '../../../shared/hooks/use-ag-grid-table-state';
 import { useEnumLabel } from '../../../shared/hooks/use-enum-label';
 import { monitorProcessConfigs } from '../../../shared/lib/process-configs';
@@ -49,12 +49,13 @@ export function ProcessExecutionListTable({ executions }: Readonly<ProcessExecut
     const tableSort = useAppSelector((state) => state.processExecutionList.tableSort);
     const tableFilters = useAppSelector((state) => state.processExecutionList.tableFilters);
 
+    console.log('FILTRE', tableFilters);
     const { onGridReady } = useAgGridTableState({
         gridRef,
         tableSort,
         tableFilters,
-        sortStore: PROCESS_EXECUTION_LIST_SORT_STORE,
-        tab: PROCESS_EXECUTION_LIST_SORT_STORE,
+        sortStore: PROCESS_EXECUTION_LIST_STORE,
+        tab: PROCESS_EXECUTION_LIST,
     });
 
     const columns = useMemo(
@@ -67,7 +68,7 @@ export function ProcessExecutionListTable({ executions }: Readonly<ProcessExecut
             gridRef={gridRef}
             rowData={executions}
             columnDefs={columns}
-            defaultColDef={MONITOR_DEFAULT_COL_DEF}
+            defaultColDef={MONITOR_DEFAULT_COL_DEF_WITH_FRONTEND_FILTER}
             onGridReady={onGridReady}
             onRowClicked={({ data }) => navigate(APP_PATHS.process.stepInfos(data?.id ?? ''))}
             sx={GRID_SX}

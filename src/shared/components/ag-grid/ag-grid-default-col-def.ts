@@ -15,3 +15,5 @@ export const MONITOR_DEFAULT_COL_DEF: ColDef = {
     suppressMovable: true,
     lockPinned: true,
 };
+
+export const MONITOR_DEFAULT_COL_DEF_WITH_FRONTEND_FILTER = { ...MONITOR_DEFAULT_COL_DEF, filter: true };

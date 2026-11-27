@@ -9,14 +9,14 @@ import { createSlice } from '@reduxjs/toolkit';
 import { PROCESS_EXECUTION, SortWay, TableSortConfig, TableType } from '@gridsuite/commons-ui';
 import { tableStateReducers } from '../../../../shared/lib/aggrid-table-state/table-state.reducers';
 import { ProcessTablesState } from './process-execution-list.type';
-import { PROCESS_EXECUTION_LIST_SORT_STORE } from './process-execution-list.constants';
+import { PROCESS_EXECUTION_LIST, PROCESS_EXECUTION_LIST_STORE } from './process-execution-list.constants';
 
 const initialSortState: TableSortConfig = {
-    [PROCESS_EXECUTION_LIST_SORT_STORE]: [{ colId: 'processScheduledAt', sort: SortWay.DESC }],
+    [PROCESS_EXECUTION_LIST]: [{ colId: 'processScheduledAt', sort: SortWay.DESC }],
 };
 
 const initialProcessExecutionListFilterState = {
-    [PROCESS_EXECUTION_LIST_SORT_STORE]: [],
+    [PROCESS_EXECUTION_LIST]: [],
 };
 
 const initialLogsFilterState = {
@@ -25,12 +25,12 @@ const initialLogsFilterState = {
 
 const initialState: ProcessTablesState = {
     tableSort: {
-        [PROCESS_EXECUTION_LIST_SORT_STORE]: {
+        [PROCESS_EXECUTION_LIST_STORE]: {
             ...initialSortState,
         },
     },
     tableFilters: {
-        [TableType.ProcessExecutionList]: {
+        [PROCESS_EXECUTION_LIST_STORE]: {
             ...initialProcessExecutionListFilterState,
         },
         [TableType.Logs]: {

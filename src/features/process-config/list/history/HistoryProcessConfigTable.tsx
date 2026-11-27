@@ -14,7 +14,7 @@ import { getHistoryColumns } from '../ProcessConfigListUtil';
 import { useAppSelector } from '../../../../app/store/hooks';
 import { PROCESS_CONFIG_HISTORY, PROCESS_CONFIG_LIST } from '../store/process-config-list.constants';
 import { MonitorAGGrid } from '../../../../shared/components/ag-grid/MonitorAGGrid';
-import { MONITOR_DEFAULT_COL_DEF } from '../../../../shared/components/ag-grid/ag-grid-default-col-def';
+import { MONITOR_DEFAULT_COL_DEF_WITH_FRONTEND_FILTER } from '../../../../shared/components/ag-grid/ag-grid-default-col-def';
 import { useAgGridTableState } from '../../../../shared/hooks/use-ag-grid-table-state';
 import { useEnumLabel } from '../../../../shared/hooks/use-enum-label';
 import { ProcessConfigListProvider } from '../ProcessConfigListProvider';
@@ -56,7 +56,7 @@ export function HistoryProcessConfigTable() {
                     gridRef={gridRef}
                     rowData={historyConfigs}
                     columnDefs={columns}
-                    defaultColDef={{ ...MONITOR_DEFAULT_COL_DEF, filter: true }}
+                    defaultColDef={MONITOR_DEFAULT_COL_DEF_WITH_FRONTEND_FILTER}
                     onGridReady={onGridReady}
                     height={300}
                 />

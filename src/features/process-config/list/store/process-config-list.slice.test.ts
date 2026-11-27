@@ -6,7 +6,7 @@
  */
 
 import { describe, expect, it } from 'vitest';
-import { SortWay, TableType } from '@gridsuite/commons-ui';
+import { SortWay } from '@gridsuite/commons-ui';
 import { processConfigListReducer, setTableFilters, setTableSort } from './process-config-list.slice';
 import { PROCESS_CONFIG_HISTORY, PROCESS_CONFIG_LIST } from './process-config-list.constants';
 
@@ -26,12 +26,12 @@ describe('processConfigList slice', () => {
         const filtered = processConfigListReducer(
             sorted,
             setTableFilters({
-                filterType: TableType.ProcessExecutionList,
+                filterType: PROCESS_CONFIG_LIST,
                 filterSubType: PROCESS_CONFIG_HISTORY,
                 filters: [{ column: 'processType', value: 'LOADFLOW' } as never],
             })
         );
-        const filters = filtered.tableFilters[TableType.ProcessExecutionList];
+        const filters = filtered.tableFilters[PROCESS_CONFIG_LIST];
         expect(filters[PROCESS_CONFIG_HISTORY]).toHaveLength(1);
     });
 });
